@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "EEB 830/831",
+    "section": "",
+    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "01-intro.html",
+    "href": "01-intro.html",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "",
+    "text": "1.1 Hi!\nHi! Welcome to the ebook for IBIO/PLB/ENT 830, the introductory statistics course in Michigan State University’s Ecology and Evolutionary Biology Graduate program.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01-intro.html#learning-goals",
+    "href": "01-intro.html#learning-goals",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "1.2 Learning Goals",
+    "text": "1.2 Learning Goals\nCourse learning goals go here",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01-intro.html#themes",
+    "href": "01-intro.html#themes",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "1.3 Themes",
+    "text": "1.3 Themes\nThroughout the course we’ll be talking about the following themes…",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01-intro.html#who-we-are",
+    "href": "01-intro.html#who-we-are",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "1.4 Who we are",
+    "text": "1.4 Who we are\nStuff about the professors goes here",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01-intro.html#how-this-book-works",
+    "href": "01-intro.html#how-this-book-works",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "1.5 How this book works",
+    "text": "1.5 How this book works\nStuff about logistics goes here.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "2  Summary",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  }
+]
