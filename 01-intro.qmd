@@ -1,0 +1,33 @@
+---
+title: "Chapter 1 -- Introduction"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+
+library(tidyverse)
+```
+
+## Hi!
+
+Hi! Welcome to the ebook for IBIO/PLB/ENT 830, the introductory statistics course in Michigan State University's Ecology and Evolutionary Biology Graduate program.
+
+
+## Learning Goals 
+
+Course learning goals go here
+
+## Themes
+
+Throughout the course we'll be talking about the following themes...
+
+## Who we are
+
+Stuff about the professors goes here
+
+## How this book works
+
+Stuff about logistics goes here. 
