@@ -62,11 +62,31 @@
   {
     "objectID": "02-probability.html",
     "href": "02-probability.html",
-    "title": "2  Summary",
+    "title": "2  Chapter 2 – Probability",
     "section": "",
-    "text": "In summary, this book has no content whatsoever.",
+    "text": "2.1 What are we doing here?\nIn this chapter, we’ll talk about the basics of probability and learn how to simulate data to investigate the probability in different scenarios.\nThere are lots of reasons we might care about probability.",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Summary</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Probability</span>"
+    ]
+  },
+  {
+    "objectID": "02-probability.html#what-are-we-doing-here",
+    "href": "02-probability.html#what-are-we-doing-here",
+    "title": "2  Chapter 2 – Probability",
+    "section": "",
+    "text": "Many important biological processes are influenced by chance so we need probability to describe these processes.\nWe don’t want to tell science stories about coincidences. We can use probability to describe the potential for our data to be shaped by coincidence vs the process we are interested in.\nUnderstanding probability helps us understand statistics!",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Probability</span>"
+    ]
+  },
+  {
+    "objectID": "02-probability.html#definitions",
+    "href": "02-probability.html#definitions",
+    "title": "2  Chapter 2 – Probability",
+    "section": "2.2 Definitions",
+    "text": "2.2 Definitions\n\n2.2.1 Sample Space\nThe sample space is the set of all possible outcomes. For example, when you flip a coin the possible outcomes are heads and tails.\n\n\n2.2.2 Probability\nWe can think about the probability of some outcome as the frequency of that outcome amongst all possible outcomes.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Probability</span>"
     ]
   }
 ]

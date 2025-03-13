@@ -10,9 +10,8 @@ book:
     - index.qmd
     - 01-intro.qmd
     - 02-probability.qmd
-    - references.qmd
 
-bibliography: references.bib
+#bibliography: references.bib
 
 format:
   html:

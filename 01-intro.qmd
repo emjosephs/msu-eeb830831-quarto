@@ -15,8 +15,7 @@ library(tidyverse)
 
 Hi! Welcome to the ebook for IBIO/PLB/ENT 830, the introductory statistics course in Michigan State University's Ecology and Evolutionary Biology Graduate program.
 
-
-## Learning Goals 
+## Learning Goals
 
 Course learning goals go here
 
@@ -30,4 +29,4 @@ Stuff about the professors goes here
 
 ## How this book works
 
-Stuff about logistics goes here. 
+Stuff about logistics goes here.

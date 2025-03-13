@@ -1,3 +1,47 @@
-# Summary
+---
+title: "Chapter 2 -- Probability"
+format: html
+editor: source
+---
 
-In summary, this book has no content whatsoever.
+```{r}
+#| label: load-packages
+#| include: false
+
+library(tidyverse)
+```
+
+## What are we doing here?
+
+In this chapter, we'll talk about the basics of probability and learn how to simulate data to investigate the probability in different scenarios.
+
+There are lots of reasons we might care about probability.
+
+-   Many important biological processes are influenced by chance so we need probability to describe these processes.
+
+-   We don't want to tell science stories about coincidences. We can use probability to describe the potential for our data to be shaped by coincidence vs the process we are interested in.
+
+-   Understanding probability helps us understand statistics!
+
+
+## Motivating examples
+
+ Will I get to Park Place?
+
+```{r, out.width="600px",echo=FALSE,fig.align="center"}
+	knitr::include_graphics("figs/monopoly.png")
+```
+
+
+
+
+## Definitions
+
+### Sample Space
+
+The **sample space** is the set of all possible outcomes. For example, when you flip a coin the possible outcomes are heads and tails.
+
+
+### Probability
+
+We can think about the **probability** of some outcome as the frequency of that outcome within the sample space.  
