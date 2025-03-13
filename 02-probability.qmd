@@ -26,9 +26,10 @@ There are lots of reasons we might care about probability.
 
 ## Motivating examples
 
- Will I get to Park Place?
 
-```{r, out.width="600px",echo=FALSE,fig.align="center"}
+ We can use probability in lots of ways. For example, if I'm playing Monopoly and I'm on Park Place, what is the probability that my next roll will take me to Boardwalk?
+
+```{r, out.width="400px",echo=FALSE,fig.align="center"}
 	knitr::include_graphics("figs/monopoly.png")
 ```
 

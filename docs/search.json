@@ -83,8 +83,18 @@
     "objectID": "02-probability.html#definitions",
     "href": "02-probability.html#definitions",
     "title": "2  Chapter 2 – Probability",
-    "section": "2.2 Definitions",
-    "text": "2.2 Definitions\n\n2.2.1 Sample Space\nThe sample space is the set of all possible outcomes. For example, when you flip a coin the possible outcomes are heads and tails.\n\n\n2.2.2 Probability\nWe can think about the probability of some outcome as the frequency of that outcome amongst all possible outcomes.",
+    "section": "2.3 Definitions",
+    "text": "2.3 Definitions\n\n2.3.1 Sample Space\nThe sample space is the set of all possible outcomes. For example, when you flip a coin the possible outcomes are heads and tails.\n\n\n2.3.2 Probability\nWe can think about the probability of some outcome as the frequency of that outcome within the sample space.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Probability</span>"
+    ]
+  },
+  {
+    "objectID": "02-probability.html#motivating-examples",
+    "href": "02-probability.html#motivating-examples",
+    "title": "2  Chapter 2 – Probability",
+    "section": "2.2 Motivating examples",
+    "text": "2.2 Motivating examples\nWe can use probability in lots of ways. For example, if I’m playing Monopoly and I’m on Park Place, what is the probability that my next roll will take me to Boardwalk?",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Probability</span>"
     ]
