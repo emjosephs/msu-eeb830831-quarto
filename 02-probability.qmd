@@ -23,17 +23,54 @@ There are lots of reasons we might care about probability.
 
 -   Understanding probability helps us understand statistics!
 
-
-## Motivating examples
-
-
- We can use probability in lots of ways. For example, if I'm playing Monopoly and I'm on Park Place, what is the probability that my next roll will take me to Boardwalk?
+We can use probability in lots of ways. For example, if I'm playing Monopoly and I'm on Park Place, what is the probability that my next roll will take me to Boardwalk?
 
 ```{r, out.width="400px",echo=FALSE,fig.align="center"}
 	knitr::include_graphics("figs/monopoly.png")
 ```
 
+Or, imagine that you're pregnant with a due date of Oct 22. What is the probability that you'll give birth on a specific day?
 
+
+```{r, out.width="400px",echo=FALSE,fig.align="center"}
+	knitr::include_graphics("figs/duedate1.png")
+```
+
+## Simulating data
+
+You may have learned some mathematical rules to describe probability in a previous class. If so, that's great! For now though, pretend that you don't know these rules because this chapter will focus on using simulations to understand probability.
+
+One of the most powerful tools that we'll have in our statistics learning toolkit are simulations. Simulations let you generate data that you know should look a certain way, so you can test your intuitions. Simulations also let you do the same thing over and over and over.
+
+Let's start by simulating our class. We'll create a vector with a number corresponding to each person in the class.
+
+```{r}
+thisClass = 1:25
+thisClass
+```
+
+Now let's use the R function sample() to sample a random person from the class.
+
+```{r}
+sample(thisClass, size=1)
+```
+
+We can do this again to conduct a second sample.
+
+```{r}
+sample(thisClass, size=1)
+```
+
+We can use sample() to answer the following questions:
+
+If we randomly pick a student, how likely are we to select student #19?
+
+```{r}
+mySamples <- replicate(1000, sample(thisClass, size=1))
+sum(mySamples==19)/10000
+```
+
+What we've done here is write code that samples one student from the class and then we've used replicate() to repeat that sampling 1000 times. After that, we checked how many times we sampled student #19.
 
 
 ## Definitions
