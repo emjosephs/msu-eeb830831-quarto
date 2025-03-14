@@ -245,14 +245,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(thisClass, <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3</code></pre>
+<pre><code>[1] 5</code></pre>
 </div>
 </div>
 <p>We can do this again to conduct a second sample.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(thisClass, <span class="at">size=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 9</code></pre>
+<pre><code>[1] 25</code></pre>
 </div>
 </div>
 <p>We can use sample() to answer the following questions:</p>
@@ -261,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>mySamples <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">sample</span>(thisClass, <span class="at">size=</span><span class="dv">1</span>))</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(mySamples<span class="sc">==</span><span class="dv">19</span>)<span class="sc">/</span><span class="dv">10000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0054</code></pre>
+<pre><code>[1] 0.0032</code></pre>
 </div>
 </div>
 <p>What we’ve done here is write code that samples one student from the class and then we’ve used replicate() to repeat that sampling 1000 times. After that, we checked how many times we sampled student #19.</p>
@@ -270,7 +270,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="2.3" class="anchored" data-anchor-id="definitions"><span class="header-section-number">2.3</span> Definitions</h2>
 <section id="sample-space" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="sample-space"><span class="header-section-number">2.3.1</span> Sample Space</h3>
-<p>The <strong>sample space</strong> is the set of all possible outcomes. For example, when you flip a coin the possible outcomes are heads and tails.</p>
+<p>The <strong>sample space</strong> is the set of all possible outcomes. For example, when you flip a coin the possible outcomes are heads and tails. The sample space for our class example was the set of all the students in the class.</p>
+<p>It also might help to think about sample space using the following example of balls falling through different bins.</p>
+<div id="fig-fallingballs" class="quarto-float quarto-figure quarto-figure-center anchored" alt="An image of balls falling through three potential, mutually exclusive bins that are orange, green, and blue">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fallingballs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/fallingballs.gif" class="img-fluid figure-img" alt="An image of balls falling through three potential, mutually exclusive bins that are orange, green, and blue">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fallingballs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: An example of probability. Here outcomes <span style="color:#EDA158;">A</span>, <span style="color:#62CAA7;">B</span>, and <span style="color:#98C5EB;">C</span> are mutatually exclusive and make up all of state space
+</figcaption>
+</figure>
+</div>
+<p>The sample space for this example is that (<span style="color:#EDA158;">A</span>), The ball can fall through the orange bin, (<span style="color:#62CAA7;">B</span>) the ball can fall through the green bin, and (<span style="color:#98C5EB;">C</span>) the ball can fall through the blue bin</p>
 </section>
 <section id="probability" class="level3" data-number="2.3.2">
 <h3 data-number="2.3.2" class="anchored" data-anchor-id="probability"><span class="header-section-number">2.3.2</span> Probability</h3>

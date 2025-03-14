@@ -77,8 +77,13 @@ What we've done here is write code that samples one student from the class and t
 
 ### Sample Space
 
-The **sample space** is the set of all possible outcomes. For example, when you flip a coin the possible outcomes are heads and tails.
+The **sample space** is the set of all possible outcomes. For example, when you flip a coin the possible outcomes are heads and tails. The sample space for our class example was the set of all the students in the class.
 
+It also might help to think about sample space using the following example of balls falling through different bins.
+
+![An example of probability. Here outcomes <span style="color:#EDA158;">A</span>, <span style="color:#62CAA7;">B</span>, and <span style="color:#98C5EB;">C</span> are mutatually exclusive and make up all of state space](figs/fallingballs.gif){#fig-fallingballs fig-alt="An image of balls falling through three potential, mutually exclusive bins that are orange, green, and blue"}
+
+The sample space for this example is that (<span style="color:#EDA158;">A</span>), The ball can fall through the orange bin, (<span style="color:#62CAA7;">B</span>) the ball can fall through the green bin, and (<span style="color:#98C5EB;">C</span>) the ball can fall through the blue bin
 
 ### Probability
 
