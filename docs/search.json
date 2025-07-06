@@ -100,5 +100,45 @@
     "title": "1  Chapter 1 – Introduction",
     "section": "1.1 Hi!",
     "text": "1.1 Hi!\nHi! Welcome to the ebook for IBIO/PLB/ENT 830, the introductory statistics course in Michigan State University’s Ecology and Evolutionary Biology Graduate program."
+  },
+  {
+    "objectID": "02-likelihood.html",
+    "href": "02-likelihood.html",
+    "title": "2  Chapter 2 – Likelihood",
+    "section": "",
+    "text": "2.1 What are we doing here?\nIn this chapter, we’ll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+    ]
+  },
+  {
+    "objectID": "02-likelihood.html#motivating-question",
+    "href": "02-likelihood.html#motivating-question",
+    "title": "2  Chapter 2 – Likelihood",
+    "section": "2.2 Motivating question",
+    "text": "2.2 Motivating question\nSomeone hands us a coin and we flip it 100 times and get 46 heads.\nIs the coin fair? (probability of heads = 50%)\nWhat is the most likely probability of flipping heads for this coin?",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+    ]
+  },
+  {
+    "objectID": "02-likelihood.html#likelihood",
+    "href": "02-likelihood.html#likelihood",
+    "title": "2  Chapter 2 – Likelihood",
+    "section": "2.3 Likelihood",
+    "text": "2.3 Likelihood\nThe likelihood of the data is the probability of the data as a function of some unknown parameters.\nLikelihood is probability…in reverse!\nIn probability, we think about some stochastic process, and figure out ways to calculate the probability of possible outcomes\nFor example: given that the coin is fair, what’s the probability of getting 46 heads out of 100 flips?\nIn calculating probabilities, we consider a single parameter value and describe the probabilities of all possible outcomes of a process parameterized by that value.\nIn statistics, we start with some observed outcomes, and try to figure out the underlying process.\nFor example: given some flip data, can we figure out the fairness of the coin?\nIn calculating likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.\nIn formulating the problem this way, we are treating the observed data (\\(k=46\\)) as a known, and treating \\(p\\) as an unknown parameter of the model.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+    ]
+  },
+  {
+    "objectID": "02-likelihood.html#parametric-statistics",
+    "href": "02-likelihood.html#parametric-statistics",
+    "title": "2  Chapter 2 – Likelihood",
+    "section": "2.4 Parametric statistics",
+    "text": "2.4 Parametric statistics\nWe can use likelihood in a framework of parametric statistics.\nIn parametric inference, we treat observed data as draws from an underlying process or population, and we try to learn about that population from our sample.\nA statistical parameter is a value that tells you something about a population, like the true mean height of students in our class, or the true frequency of a genetic variant in a species.\nBUT, we rarely get to know the truth!\n(we would know the truth if we censused everyone in a population, or repeated a random process an infinite number of times)\nInstead, we can take samples to try to learn about –\nor estimate – parameters.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+    ]
   }
 ]
