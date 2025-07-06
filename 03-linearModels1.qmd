@@ -1,5 +1,5 @@
 ---
-title: "Chapter 2 -- Likelihood"
+title: "Chapter 3 -- Linear Models 1: The Mean"
 format: html
 editor: source
 ---
@@ -13,66 +13,50 @@ library(tidyverse)
 
 ## What are we doing here?
 
-
-
 In this chapter, we will meet the linear model and discuss what it is exactly that we are doing when we build linear models.
 
 We'll build the most basic type of linear model by fitting the mean of a distribution.
 
 We'll also learn to interpret residuals and visualize them with R.
 
-## Motivating question
-Someone hands us a coin and we flip it 100 times and get 46 heads. 
+## Linear models
 
-Is the coin fair? (probability of heads = 50%)
+As biologists, we often want to understand if one thing causes another thing.
 
-What is the _most likely_ probability of flipping heads for this coin?
+* Do traits determine an organism's fitness? In other words, are traits under selection?
+* Does genotype at this locus determine phenotype?
+* Do the amount of resources shape community diversity?
+* **get Lauren et al to fill in some other questions**
 
-## Likelihood
+To answer these types questions, we need a way to carefully relate two variables together. We will refer throughout this course to two types of variables:
 
-The **likelihood** of the data is the probability of the 
-data as a function of some unknown parameters.
+1. Explanatory variables, also called independent variables or predictor variables.
+2. Response variables, also called dependent variables.
 
-Likelihood is probability...in reverse!
+Linear models estimate the conditional mean of the $i^{th}$ observation of a continuous response variable, $\hat{Y}_i$ from a (combination) of value(s) of the explanatory variables ($\text{explanatory variables}_i$): 
 
-In probability, we think about some stochastic process, 
-and figure out ways to calculate the probability of possible outcomes
- 
-For example: given that the coin is fair, what's the probability of getting 46 heads out of 100 flips?
+\begin{equation} 
+\hat{Y}_i = f(\text{explanatory variables}_i)
+\end{equation} 
 
-In calculating probabilities, we consider a single parameter value 
-and describe the probabilities of all possible outcomes of a 
-process parameterized by that value.
- 		
-In statistics, we start with some observed outcomes, 
- and try to figure out the underlying process.
- 
- For example: given some flip data, can we figure out the fairness of the coin?
- 
-In calculating likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.
+These models are "linear" because we estimate of the conditional mean ($\hat{Y}_i$) by adding up all components of the model. So, each explanatory variable $y_{j,i}$ is multiplied by its effect size $b_j$. It might help to look at an example model below:
 
-In formulating the problem this way, 
-we are treating the observed data ($k=46$) as a _known_, 
-and treating $p$ as an unknown **_parameter_** of the model.
+\begin{equation} 
+\hat{Y}_i = a + b_1  y_{1,i} + b_2 y_{2,i} + \dots{}
+\end{equation}
 
-## Parametric statistics
+In this example, $\hat{Y}_i$ is estimated as the sum of the "intercept" ($a$), its value for the first explanatory variable ($y_{1,i}$) times the effect of this variable ($b_1$), its value for the second explanatory variable ($y_{2,i}$) times the effect of this variable, $b_2$, and so on for all included explanatory variables.
 
-We can use likelihood in a framework of parametric statistics.
+In practice, fitting a linear model requires picking explanatory variables and then estimating the values of $a$, $b_1$, $b_2$, and so on. These estimates then tell us how the explanatory variables relate to the response variable.
 
-In parametric inference, 
-we treat observed data as draws from 
-an underlying process or **_population_**, 
-and we try to learn about that population from our sample.
 
-A **_statistical parameter_** is a value that tells you something 
-about a **_population_**, like the _true_ mean height of students in our class, 
-or the _true_ frequency of a genetic variant in a species.
+## The mean
 
-BUT, we rarely get to know the truth!
+We are going to start with the simplest linear model possible. You likely already know how to calculate the mean ($\overline{y}$) of a set of data: $\overline{y} = \frac{\sum y_i}{n}$ where $y_i$ is each data point and $n$ is the number of samples.
 
-(we would know the truth if we censused everyone in a population, 
-or repeated a random process an infinite number of times) 
+In the simplest linear model we can also think of the mean as the intercept ($b_0$) so 
+we can predict each data point $y_i$ as simply the mean plus an error term or residual ($e_i$).
 
-Instead, we can take _samples_ to try to learn about --  
-or **_estimate_** -- parameters.  
+$$\hat{y}_i = b_0 + e_i$$
+
 
