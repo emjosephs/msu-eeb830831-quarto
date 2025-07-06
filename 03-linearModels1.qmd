@@ -1,0 +1,74 @@
+---
+title: "Chapter 2 -- Likelihood"
+format: html
+editor: source
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+
+library(tidyverse)
+```
+
+## What are we doing here?
+
+In this chapter, we'll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.
+
+
+
+## Motivating question
+Someone hands us a coin and we flip it 100 times and get 46 heads. 
+
+Is the coin fair? (probability of heads = 50%)
+
+What is the _most likely_ probability of flipping heads for this coin?
+
+## Likelihood
+
+The **likelihood** of the data is the probability of the 
+data as a function of some unknown parameters.
+
+Likelihood is probability...in reverse!
+
+In probability, we think about some stochastic process, 
+and figure out ways to calculate the probability of possible outcomes
+ 
+For example: given that the coin is fair, what's the probability of getting 46 heads out of 100 flips?
+
+In calculating probabilities, we consider a single parameter value 
+and describe the probabilities of all possible outcomes of a 
+process parameterized by that value.
+ 		
+In statistics, we start with some observed outcomes, 
+ and try to figure out the underlying process.
+ 
+ For example: given some flip data, can we figure out the fairness of the coin?
+ 
+In calculating likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.
+
+In formulating the problem this way, 
+we are treating the observed data ($k=46$) as a _known_, 
+and treating $p$ as an unknown **_parameter_** of the model.
+
+## Parametric statistics
+
+We can use likelihood in a framework of parametric statistics.
+
+In parametric inference, 
+we treat observed data as draws from 
+an underlying process or **_population_**, 
+and we try to learn about that population from our sample.
+
+A **_statistical parameter_** is a value that tells you something 
+about a **_population_**, like the _true_ mean height of students in our class, 
+or the _true_ frequency of a genetic variant in a species.
+
+BUT, we rarely get to know the truth!
+
+(we would know the truth if we censused everyone in a population, 
+or repeated a random process an infinite number of times) 
+
+Instead, we can take _samples_ to try to learn about --  
+or **_estimate_** -- parameters.  
+

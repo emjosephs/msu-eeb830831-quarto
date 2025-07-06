@@ -10,6 +10,7 @@ book:
     - index.qmd
     - 01-intro.qmd
     - 02-likelihood.qmd
+    - 03-linearModels1.qmd
 
 #bibliography: references.bib
 
