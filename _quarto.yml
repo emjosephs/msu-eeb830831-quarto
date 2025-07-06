@@ -9,7 +9,7 @@ book:
   chapters:
     - index.qmd
     - 01-intro.qmd
-    - 02-probability.qmd
+    - 02-likelihood.qmd
 
 #bibliography: references.bib
 

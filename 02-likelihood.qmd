@@ -1,0 +1,43 @@
+---
+title: "Chapter 2 -- Likelihood"
+format: html
+editor: source
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+
+library(tidyverse)
+```
+
+## What are we doing here?
+
+In this chapter, we'll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.
+
+
+
+## Motivating question
+Someone hands us a coin and we flip it 100 times and get 46 heads. 
+
+Is the coin fair? (probability of heads = 50%)
+
+What is the _most likely_ probability of flipping heads for this coin?
+
+## Likelihood
+
+The **likelihood** of the data is the probability of the 
+data as a function of some unknown parameters.
+
+<div class="centered">
+\
+\
+\
+\
+Likelihood is probability...in reverse!
+</div>
+
+
+```{r, out.width="400px",echo=FALSE,fig.align="center"}
+	knitr::include_graphics("figs/monopoly.png")
+```
