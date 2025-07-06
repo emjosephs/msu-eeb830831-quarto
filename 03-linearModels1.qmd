@@ -13,9 +13,13 @@ library(tidyverse)
 
 ## What are we doing here?
 
-In this chapter, we'll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.
 
 
+In this chapter, we will meet the linear model and discuss what it is exactly that we are doing when we build linear models.
+
+We'll build the most basic type of linear model by fitting the mean of a distribution.
+
+We'll also learn to interpret residuals and visualize them with R.
 
 ## Motivating question
 Someone hands us a coin and we flip it 100 times and get 46 heads. 
