@@ -134,7 +134,47 @@
     "href": "03-linearModels1.html#using-rs-lm-function",
     "title": "3  Linear Models 1: The Mean",
     "section": "3.4 Using R’s lm() function",
-    "text": "3.4 Using R’s lm() function",
+    "text": "3.4 Using R’s lm() function\nYou can use the lm() function to build a linear model in R.\nThroughout this section we’ll be using a dataset of penguin traits. This data should be already available in your version of R, but if it isn’t, use the following code to install it.\n\ninstall.packages(\"palmerpenguins\")\nlibrary(\"palmerpenguins\")\n\nYou can read more about all the variables available in the package\n\n?penguins\n\nWe’ll start by thinking about body size. We want to model each penguin’s body mass as the sum of a mean body mass and a residual.\n\\[\\text{penguin body mass} = \\text{mean body mass} + e_i\\]\nBelow is code for this linear model.\n\nmodel1 = lm(body_mass ~ 1, data = penguins)\nmodel1\n\n\nCall:\nlm(formula = body_mass ~ 1, data = penguins)\n\nCoefficients:\n(Intercept)  \n       4202  \n\n\nThe output gives us the estimated intercept — which, in this case with no predictors, is simply the mean\nWe can also use the summarize() function to look more carefully at the model\n\nsummary(model1)\n\n\nCall:\nlm(formula = body_mass ~ 1, data = penguins)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-1501.8  -651.8  -151.8   548.2  2098.2 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  4201.75      43.36   96.89   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 802 on 341 degrees of freedom\n  (2 observations deleted due to missingness)\n\n\nWe can update our model from above with our new parameter estimate of the mean.\n\\[\\text{penguin body mass} = 4201.75 + e_i\\]",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#more-on-residuals",
+    "href": "03-linearModels1.html#more-on-residuals",
+    "title": "3  Linear Models 1: The Mean",
+    "section": "3.5 More on residuals",
+    "text": "3.5 More on residuals\nThe residual (\\(e_i\\)) for each individual penguin tells us how much that penguin’s mass differs from the population mean.\nFor example, we can look at one specific penguin\n\npenguins[1,]\n\n  species    island bill_len bill_dep flipper_len body_mass  sex year\n1  Adelie Torgersen     39.1     18.7         181      3750 male 2007\n\n\nThis is a male Adelie penguin from Torgersen Island. Its body mass is 3750. We can describe this penguin’s mass as\n\\[3750 = 4201.75 + e_i\\] \\(e_i = 4201.75-3750 = 451.75\\)\nBelow I plot all the body mass data. Each point is a penguin. You can hover over the points to see the body mass of each penguin and the residual.\n\n\nCode\nlibrary(plotly)\nprop_hybrid_plot &lt;- penguins                          |&gt;\n  filter(!is.na(body_mass))                         |&gt;\n  mutate(i = 1:n(),\n         e_i = body_mass - mean(body_mass),\n         e_i = round(e_i, digits = 3),\n         y_hat_i = round(mean(body_mass),digits=3),\n         y_i = round(body_mass, digits = 3))                         |&gt;\n  ggplot(aes(x = i, y = y_i, y_hat_i = y_hat_i, e_i = e_i))+\n  geom_point(size = 4, alpha = .6)+\n  scale_color_manual(values = c(\"black\",\"darkgreen\"))+\n  geom_hline(yintercept = 4201.76,\n             linetype = \"dashed\", color = \"red\", size = 2)+\n  labs(y = \"Body Mass\", title =\"This plot is interactive!! Hover over a point to see its residual\")+\n  theme(legend.position = \"none\")\n\nggplotly(prop_hybrid_plot)",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#generating-residuals.",
+    "href": "03-linearModels1.html#generating-residuals.",
+    "title": "3  Linear Models 1: The Mean",
+    "section": "3.6 Generating residuals.",
+    "text": "3.6 Generating residuals.\nYou can look at residuals and model predictions using the augment() function in the broom package. The code below uses augment() to make a table where each row has a penguin’s body mass, the expectation of body mass from the fitted model, and the residual.\n\n#install.packages('broom')  ##uncomment this code to install the broom package\nlibrary(broom)\n\naugment(model1) |&gt; select(body_mass, .fitted, .resid)\n\n# A tibble: 342 × 3\n   body_mass .fitted .resid\n       &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;\n 1      3750   4202. -452. \n 2      3800   4202. -402. \n 3      3250   4202. -952. \n 4      3450   4202. -752. \n 5      3650   4202. -552. \n 6      3625   4202. -577. \n 7      4675   4202.  473. \n 8      3475   4202. -727. \n 9      4250   4202.   48.2\n10      3300   4202. -902. \n# ℹ 332 more rows\n\n\nYou could also generate residuals without any additional packages by using the following code\n\npenguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs\nmodel1Residuals &lt;-  penguins2$body_mass - model1$fitted.values",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#calculating-the-ss_residual",
+    "href": "03-linearModels1.html#calculating-the-ss_residual",
+    "title": "3  Linear Models 1: The Mean",
+    "section": "3.7 Calculating the \\(SS_residual\\)",
+    "text": "3.7 Calculating the \\(SS_residual\\)\nTODO explain why if we’re doing this\n\nlibrary(broom)\nmodel1       |&gt;\n augment()                |&gt;\n mutate(sq_resid=.resid^2)|&gt;\n summarise(SS=sum(sq_resid))\n\n# A tibble: 1 × 1\n          SS\n       &lt;dbl&gt;\n1 219307697.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#the-mean-minimixes-ss_residual",
+    "href": "03-linearModels1.html#the-mean-minimixes-ss_residual",
+    "title": "3  Linear Models 1: The Mean",
+    "section": "3.8 The mean minimixes \\(SS_residual\\)",
+    "text": "3.8 The mean minimixes \\(SS_residual\\)",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
     ]

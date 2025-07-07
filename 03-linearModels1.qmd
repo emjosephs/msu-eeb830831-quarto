@@ -75,3 +75,129 @@ $$y_i = \hat{y}_i + e_i$$
 
 You can use the lm() function to build a linear model in R.
 
+Throughout this section we'll be using a dataset of penguin traits. This data should be already available in your version of R, but if it isn't, use the following code to install it.
+
+```{r, eval=F}
+install.packages("palmerpenguins")
+library("palmerpenguins")
+```
+
+You can read more about all the variables available in the package
+
+```{r}
+?penguins
+```
+
+We'll start by thinking about body size. We want to model each penguin's body mass as the sum of a mean body mass and a residual.
+
+$$\text{penguin body mass} = \text{mean body mass} + e_i$$
+
+
+
+Below is code for this linear model.
+
+
+```{r}
+model1 = lm(body_mass ~ 1, data = penguins)
+model1
+```
+
+The output gives us the estimated intercept — which, in this case with no predictors, is simply the mean
+
+We can also use the summarize() function to look more carefully at the model
+
+```{r}
+summary(model1)
+```
+
+We can update our model from above with our new parameter estimate of the mean.
+
+$$\text{penguin body mass} = 4201.75 + e_i$$
+
+
+
+## More on residuals
+
+The residual ($e_i$) for each individual penguin tells us how much that penguin's mass differs from the population mean.
+
+
+For example, we can look at one specific penguin
+
+```{r}
+penguins[1,]
+
+```
+
+This is a male Adelie penguin from Torgersen Island. Its body mass is 3750. We can describe this penguin's mass as
+
+$$3750 = 4201.75 + e_i$$
+$e_i = 4201.75-3750 = 451.75$
+
+
+Below I plot all the body mass data. Each point is a penguin. You can hover over the points to see the body mass of each penguin and the residual.
+
+```{r, eval=F}
+#| code-fold: true
+#| message: false
+#| warning: false
+#| label: fig-plotly
+#| fig-cap: "An interactive plot showing the mean body size of a penguin. Each point represents an individual penguin, and the dashed red line shows the sample mean across all penguins. Hovering over a point reveals its residual — the difference between the observed value and the mean."
+#| fig-alt: "Interactive scatterplot of observed mean body mass of penguins. Points are plotted by index along the x-axis, with body mass on the y-axis. A horizontal dashed red line marks the sample mean. When hovering over a point, the residual (difference between the point’s value and the mean) is displayed."
+#| cap-location: margin
+library(plotly)
+prop_hybrid_plot <- penguins                          |>
+  filter(!is.na(body_mass))                         |>
+  mutate(i = 1:n(),
+         e_i = body_mass - mean(body_mass),
+         e_i = round(e_i, digits = 3),
+         y_hat_i = round(mean(body_mass),digits=3),
+         y_i = round(body_mass, digits = 3))                         |>
+  ggplot(aes(x = i, y = y_i, y_hat_i = y_hat_i, e_i = e_i))+
+  geom_point(size = 4, alpha = .6)+
+  scale_color_manual(values = c("black","darkgreen"))+
+  geom_hline(yintercept = 4201.76,
+             linetype = "dashed", color = "red", size = 2)+
+  labs(y = "Body Mass", title ="This plot is interactive!! Hover over a point to see its residual")+
+  theme(legend.position = "none")
+
+ggplotly(prop_hybrid_plot)
+```
+
+## Generating residuals.
+
+You can look at residuals and model predictions using the augment() function in the broom package. 
+The code below uses augment() to make a table where each row has a penguin's body mass, the expectation 
+of body mass from the fitted model, and the residual.
+
+
+```{r}
+#install.packages('broom')  ##uncomment this code to install the broom package
+library(broom)
+
+augment(model1) |> select(body_mass, .fitted, .resid)
+                          
+```
+
+You could also generate residuals without any additional packages by using the following code
+
+```{r}
+penguins2 <- penguins |> filter(!is.na(body_mass)) ##filter out ones with NAs
+model1Residuals <-  penguins2$body_mass - model1$fitted.values
+
+```
+
+
+## Calculating the $SS_residual$ 
+
+TODO explain why if we're doing this 
+```{r}
+library(broom)
+model1       |>
+ augment()                |>
+ mutate(sq_resid=.resid^2)|>
+ summarise(SS=sum(sq_resid))
+
+```
+
+
+## The mean minimixes $SS_residual$
