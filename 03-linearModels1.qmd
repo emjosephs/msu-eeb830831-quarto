@@ -9,6 +9,7 @@ editor: source
 #| include: false
 
 library(tidyverse)
+library('DT')
 ```
 
 ## What are we doing here?
