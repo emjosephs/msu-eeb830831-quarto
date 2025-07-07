@@ -73,3 +73,5 @@ $$y_i = \hat{y}_i + e_i$$
 
 ## Using R's lm() function 
 
+You can use the lm() function to build a linear model in R.
+
