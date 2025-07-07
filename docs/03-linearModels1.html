@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -175,6 +209,10 @@ window.Quarto = {
   <li><a href="#wait-whats-a-residual" id="toc-wait-whats-a-residual" class="nav-link" data-scroll-target="#wait-whats-a-residual"><span class="header-section-number">3.3.1</span> Wait, what’s a residual?</a></li>
   </ul></li>
   <li><a href="#using-rs-lm-function" id="toc-using-rs-lm-function" class="nav-link" data-scroll-target="#using-rs-lm-function"><span class="header-section-number">3.4</span> Using R’s lm() function</a></li>
+  <li><a href="#more-on-residuals" id="toc-more-on-residuals" class="nav-link" data-scroll-target="#more-on-residuals"><span class="header-section-number">3.5</span> More on residuals</a></li>
+  <li><a href="#generating-residuals." id="toc-generating-residuals." class="nav-link" data-scroll-target="#generating-residuals."><span class="header-section-number">3.6</span> Generating residuals.</a></li>
+  <li><a href="#calculating-the-ss_residual" id="toc-calculating-the-ss_residual" class="nav-link" data-scroll-target="#calculating-the-ss_residual"><span class="header-section-number">3.7</span> Calculating the <span class="math inline">\(SS_residual\)</span></a></li>
+  <li><a href="#the-mean-minimixes-ss_residual" id="toc-the-mean-minimixes-ss_residual" class="nav-link" data-scroll-target="#the-mean-minimixes-ss_residual"><span class="header-section-number">3.8</span> The mean minimixes <span class="math inline">\(SS_residual\)</span></a></li>
   </ul>
 </nav>
     </div>
@@ -247,6 +285,144 @@ window.Quarto = {
 </section>
 <section id="using-rs-lm-function" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="using-rs-lm-function"><span class="header-section-number">3.4</span> Using R’s lm() function</h2>
+<p>Throughout this section we’ll be using a dataset of penguin traits. This data should be already available in your version of R, but if it isn’t, use the following code to install it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"palmerpenguins"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"palmerpenguins"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can read more about all the variables available in the package</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>?penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We’ll start by thinking about body size. We want to model each penguin’s body mass as the sum of a mean body mass and a residual.</p>
+<p><span class="math display">\[\text{penguin body mass} = \text{mean body mass} + e_i\]</span></p>
+<p>Below is code for this linear model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">=</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> penguins)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ 1, data = penguins)
+
+Coefficients:
+(Intercept)  
+       4202  </code></pre>
+</div>
+</div>
+<p>The output gives us the estimated intercept — which, in this case with no predictors, is simply the mean</p>
+<p>We can also use the summarize() function to look more carefully at the model</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ 1, data = penguins)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1501.8  -651.8  -151.8   548.2  2098.2 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  4201.75      43.36   96.89   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 802 on 341 degrees of freedom
+  (2 observations deleted due to missingness)</code></pre>
+</div>
+</div>
+<p>We can update our model from above with our new parameter estimate of the mean.</p>
+<p><span class="math display">\[\text{penguin body mass} = 4201.75 + e_i\]</span></p>
+</section>
+<section id="more-on-residuals" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="more-on-residuals"><span class="header-section-number">3.5</span> More on residuals</h2>
+<p>The residual (<span class="math inline">\(e_i\)</span>) for each individual penguin tells us how much that penguin’s mass differs from the population mean.</p>
+<p>For example, we can look at one specific penguin</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>penguins[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  species    island bill_len bill_dep flipper_len body_mass  sex year
+1  Adelie Torgersen     39.1     18.7         181      3750 male 2007</code></pre>
+</div>
+</div>
+<p>This is a male Adelie penguin from Torgersen Island. Its body mass is 3750. We can describe this penguin’s mass as</p>
+<p><span class="math display">\[3750 = 4201.75 + e_i\]</span> <span class="math inline">\(e_i = 4201.75-3750 = 451.75\)</span></p>
+<p>Below I plot all the body mass data. Each point is a penguin. You can hover over the points to see the body mass of each penguin and the residual.</p>
+<div class="cell" data-cap-location="margin">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9" data-cap-location="margin"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>prop_hybrid_plot <span class="ot">&lt;-</span> penguins                          <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass))                         <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_i =</span> body_mass <span class="sc">-</span> <span class="fu">mean</span>(body_mass),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_i =</span> <span class="fu">round</span>(e_i, <span class="at">digits =</span> <span class="dv">3</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_hat_i =</span> <span class="fu">round</span>(<span class="fu">mean</span>(body_mass),<span class="at">digits=</span><span class="dv">3</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_i =</span> <span class="fu">round</span>(body_mass, <span class="at">digits =</span> <span class="dv">3</span>))                         <span class="sc">|&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> i, <span class="at">y =</span> y_i, <span class="at">y_hat_i =</span> y_hat_i, <span class="at">e_i =</span> e_i))<span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>, <span class="at">alpha =</span> .<span class="dv">6</span>)<span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"black"</span>,<span class="st">"darkgreen"</span>))<span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">4201.76</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Body Mass"</span>, <span class="at">title =</span><span class="st">"This plot is interactive!! Hover over a point to see its residual"</span>)<span class="sc">+</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(prop_hybrid_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="generating-residuals." class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="generating-residuals."><span class="header-section-number">3.6</span> Generating residuals.</h2>
+<p>You can look at residuals and model predictions using the augment() function in the broom package. The code below uses augment() to make a table where each row has a penguin’s body mass, the expectation of body mass from the fitted model, and the residual.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('broom')  ##uncomment this code to install the broom package</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass, .fitted, .resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 342 × 3
+   body_mass .fitted .resid
+       &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1      3750   4202. -452. 
+ 2      3800   4202. -402. 
+ 3      3250   4202. -952. 
+ 4      3450   4202. -752. 
+ 5      3650   4202. -552. 
+ 6      3625   4202. -577. 
+ 7      4675   4202.  473. 
+ 8      3475   4202. -727. 
+ 9      4250   4202.   48.2
+10      3300   4202. -902. 
+# ℹ 332 more rows</code></pre>
+</div>
+</div>
+<p>You could also generate residuals without any additional packages by using the following code</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass)) <span class="do">##filter out ones with NAs</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>model1Residuals <span class="ot">&lt;-</span>  penguins2<span class="sc">$</span>body_mass <span class="sc">-</span> model1<span class="sc">$</span>fitted.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="calculating-the-ss_residual" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="calculating-the-ss_residual"><span class="header-section-number">3.7</span> Calculating the <span class="math inline">\(SS_residual\)</span></h2>
+<p>TODO explain why if we’re doing this</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>model1       <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">augment</span>()                <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="at">sq_resid=</span>.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">SS=</span><span class="fu">sum</span>(sq_resid))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+          SS
+       &lt;dbl&gt;
+1 219307697.</code></pre>
+</div>
+</div>
+</section>
+<section id="the-mean-minimixes-ss_residual" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="the-mean-minimixes-ss_residual"><span class="header-section-number">3.8</span> The mean minimixes <span class="math inline">\(SS_residual\)</span></h2>
 
 
 </section>
