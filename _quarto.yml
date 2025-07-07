@@ -11,6 +11,7 @@ book:
     - 01-intro.qmd
     - 02-likelihood.qmd
     - 03-linearModels1.qmd
+    - 04-linearModels2.qmd
 
 #bibliography: references.bib
 

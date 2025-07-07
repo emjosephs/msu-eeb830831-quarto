@@ -164,7 +164,7 @@ prop_hybrid_plot <- penguins                          |>
 ggplotly(prop_hybrid_plot)
 ```
 
-## Generating residuals.
+## Calculating residuals
 
 You can look at residuals and model predictions using the augment() function in the broom package. 
 The code below uses augment() to make a table where each row has a penguin's body mass, the expectation 

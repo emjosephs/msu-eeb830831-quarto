@@ -1,0 +1,69 @@
+---
+title: "Intro to Linear Models"
+format: html
+editor: source
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+
+library(tidyverse)
+library('DT')
+library(LaCroixColoR)
+palette(lacroix_palette("Mango", type = "discrete"))
+```
+
+## What are we doing here?
+
+We previously discussed linear models and learned to build a very simple linear model to estimate the mean. We also learned how to calculate residuals, which in this case were the differences between each datapoint and the mean.
+
+In this section we'll expand our linear model to test for differences between categories.
+
+## Motivating example
+
+You may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let's look more closely by making a plot of the body masses by color.
+
+```{r}
+#penguins2 <- penguins |> filter(!is.na(body_mass)) ##filter out ones with NAs
+plot(penguins$body_mass, bty="n", ylab = "body mass", 
+     col=penguins$species, lwd=2)
+legend('topleft',levels(penguins$species),bty="n", pch=1, pt.lwd=2, col=palette())
+
+```
+
+It definitely looks like something is different between these different species.
+But can we use linear models to confidently say so?
+
+## Estimating conditional means
+
+
+We want to start by estimating the mean body mass of each species of penguin. 
+The code below does this
+
+```{r}
+penguins                                             |>
+  filter(!is.na(body_mass) , !is.na(species)) |>  #remove NAs
+  group_by(species)                             |>
+  summarise(mean_body_mass = mean(body_mass))
+```
+
+You may be wondering why I am referring to this as a conditional mean.
+To explain this I'll walk through the math of the model, focussing only on Adelie and Gentoo penguins.
+
+We will model body mass of an individual penguin, $i$, conditional on its species.
+
+$$\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i + e_i $$
+
+* $b_0$ is the intercept and, in this case, the mean body mass of Gentoo penguins
+* $b_1$ is the difference in mass between Adelie and Gentoo penguins.
+* $\text{Adelie}_i$ is an indicator variable that is $1$ if individual $i$ is an Adelie penguin and $0$ if individual $i$ is a Gentoo penguin.
+* $e_i$ is the residual 
+
+We could rewrite the above equation as
+$$ Mass_{i|\text{Adelie}} = b_0 + e_i$$
+$$ Mass_{i|\text{Gentoo}} = b_0 + b_1 + e_i$$
+
+
+
+

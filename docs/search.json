@@ -150,11 +150,11 @@
     ]
   },
   {
-    "objectID": "03-linearModels1.html#generating-residuals.",
-    "href": "03-linearModels1.html#generating-residuals.",
+    "objectID": "03-linearModels1.html#calculating-residuals",
+    "href": "03-linearModels1.html#calculating-residuals",
     "title": "3  Intro to Linear Models",
-    "section": "3.6 Generating residuals.",
-    "text": "3.6 Generating residuals.\nYou can look at residuals and model predictions using the augment() function in the broom package. The code below uses augment() to make a table where each row has a penguin’s body mass, the expectation of body mass from the fitted model, and the residual.\n\nlibrary(broom)\naugment(model1) |&gt; select(body_mass, .fitted, .resid)\n\n\n\n\n\n\n\nYou could also generate residuals without any additional packages by using the following code\n\npenguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs\nmodel1Residuals &lt;-  penguins2$body_mass - model1$fitted.values",
+    "section": "3.6 Calculating residuals",
+    "text": "3.6 Calculating residuals\nYou can look at residuals and model predictions using the augment() function in the broom package. The code below uses augment() to make a table where each row has a penguin’s body mass, the expectation of body mass from the fitted model, and the residual.\n\nlibrary(broom)\naugment(model1) |&gt; select(body_mass, .fitted, .resid)\n\n\n\n\n\n\n\nYou could also generate residuals without any additional packages by using the following code\n\npenguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs\nmodel1Residuals &lt;-  penguins2$body_mass - model1$fitted.values",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Intro to Linear Models</span>"
     ]
