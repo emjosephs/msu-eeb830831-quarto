@@ -1,5 +1,5 @@
 ---
-title: "Linear Models 1: The Mean"
+title: "Intro to Linear Models"
 format: html
 editor: source
 ---
@@ -171,14 +171,22 @@ The code below uses augment() to make a table where each row has a penguin's bod
 of body mass from the fitted model, and the residual.
 
 
-```{r}
-#install.packages('broom')  ##uncomment this code to install the broom package
+```{r, eval=F}
 library(broom)
-
 augment(model1) |> select(body_mass, .fitted, .resid)
                           
 ```
 
+```{r, echo=F, message=F, warning=F}
+library(broom)
+library(DT)
+
+  augment(model1) |> 
+    select(body_mass, .fitted, .resid) |>
+    mutate_all(round, digits = 2)         |>
+  datatable(options = list(pageLength = 5))
+
+```
 You could also generate residuals without any additional packages by using the following code
 
 ```{r}
@@ -188,7 +196,7 @@ model1Residuals <-  penguins2$body_mass - model1$fitted.values
 ```
 
 
-## Calculating the $SS_residual$ 
+## Calculating the $SS_{residual}$ 
 
 TODO explain why if we're doing this 
 ```{r}
@@ -201,4 +209,4 @@ model1       |>
 ```
 
 
-## The mean minimixes $SS_residual$
+## The mean minimizes $SS_{residual}$
