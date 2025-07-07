@@ -1,5 +1,5 @@
 ---
-title: "Chapter 3 -- Linear Models 1: The Mean"
+title: "Linear Models 1: The Mean"
 format: html
 editor: source
 ---
@@ -47,8 +47,7 @@ These models are "linear" because we estimate of the conditional mean ($\hat{Y}_
 
 In this example, $\hat{Y}_i$ is estimated as the sum of the "intercept" ($a$), its value for the first explanatory variable ($y_{1,i}$) times the effect of this variable ($b_1$), its value for the second explanatory variable ($y_{2,i}$) times the effect of this variable, $b_2$, and so on for all included explanatory variables.
 
-In practice, fitting a linear model requires picking explanatory variables and then estimating the values of $a$, $b_1$, $b_2$, and so on. These estimates then tell us how the explanatory variables relate to the response variable.
-
+In practice, fitting a linear model requires picking explanatory variables and then estimating the values of $a$, $b_1$, $b_2$, and so on that best predict the response variables. These estimates then tell us how the explanatory variables relate to the response variable.
 
 ## The mean
 
@@ -59,4 +58,18 @@ we can predict each data point $y_i$ as simply the mean plus an error term or re
 
 $$\hat{y}_i = b_0 + e_i$$
 
+### Wait, what's a residual?
+
+Observed values often differ from the predictions made by a linear model.
+
+We define a residual ($e_i$) as the difference between an observed value($Y_i$) and its predicted value from a linear model  ($\hat{y}_i$).
+
+
+$$e_i = y_i - \hat{y}_i$$
+
+You can also rearrange this to think about it the other way around so that the observed variable ($Y_i$) is the sum of the value predicted by the model ($\hat{y}_i$) and the residual $e_i$.
+
+$$y_i = \hat{y}_i + e_i$$
+
+## Using R's lm() function 
 

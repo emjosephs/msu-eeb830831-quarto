@@ -144,11 +144,11 @@
   {
     "objectID": "03-linearModels1.html",
     "href": "03-linearModels1.html",
-    "title": "3  Chapter 3 – Linear Models 1: The Mean",
+    "title": "3  Linear Models 1: The Mean",
     "section": "",
     "text": "3.1 What are we doing here?\nIn this chapter, we will meet the linear model and discuss what it is exactly that we are doing when we build linear models.\nWe’ll build the most basic type of linear model by fitting the mean of a distribution.\nWe’ll also learn to interpret residuals and visualize them with R.",
     "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Chapter 3 -- Linear Models 1: The Mean</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
     ]
   },
   {
@@ -164,21 +164,31 @@
   {
     "objectID": "03-linearModels1.html#the-mean",
     "href": "03-linearModels1.html#the-mean",
-    "title": "3  Chapter 3 – Linear Models 1: The Mean",
+    "title": "3  Linear Models 1: The Mean",
     "section": "3.3 The mean",
-    "text": "3.3 The mean\nWe are going to start with the simplest linear model possible. You likely already know how to calculate the mean (\\(\\overline{y}\\)) of a set of data: \\(\\overline{y} = \\frac{\\sum y_i}{n}\\) where \\(y_i\\) is each data point and \\(n\\) is the number of samples.\nIn the simplest linear model we can also think of the mean as the intercept (\\(b_0\\)) so we can predict each data point \\(y_i\\) as simply the mean plus an error term or residual (\\(e_i\\)).\n\\[\\hat{y}_i = b_0 + e_i\\]",
+    "text": "3.3 The mean\nWe are going to start with the simplest linear model possible. You likely already know how to calculate the mean (\\(\\overline{y}\\)) of a set of data: \\(\\overline{y} = \\frac{\\sum y_i}{n}\\) where \\(y_i\\) is each data point and \\(n\\) is the number of samples.\nIn the simplest linear model we can also think of the mean as the intercept (\\(b_0\\)) so we can predict each data point \\(y_i\\) as simply the mean plus an error term or residual (\\(e_i\\)).\n\\[\\hat{y}_i = b_0 + e_i\\]\n\n3.3.1 Wait, what’s a residual?\nObserved values often differ from the predictions made by a linear model.\nWe define a residual (\\(e_i\\)) as the difference between an observed value(\\(Y_i\\)) and its predicted value from a linear model (\\(\\hat{y}_i\\)).\n\\[e_i = y_i - \\hat{y}_i\\]\nYou can also rearrange this to think about it the other way around so that the observed variable (\\(Y_i\\)) is the sum of the value predicted by the model (\\(\\hat{y}_i\\)) and the residual \\(e_i\\).\n\\[y_i = \\hat{y}_i + e_i\\]",
     "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Chapter 3 -- Linear Models 1: The Mean</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
     ]
   },
   {
     "objectID": "03-linearModels1.html#linear-models",
     "href": "03-linearModels1.html#linear-models",
-    "title": "3  Chapter 3 – Linear Models 1: The Mean",
+    "title": "3  Linear Models 1: The Mean",
     "section": "3.2 Linear models",
-    "text": "3.2 Linear models\nAs biologists, we often want to understand if one thing causes another thing.\n\nDo traits determine an organism’s fitness? In other words, are traits under selection?\nDoes genotype at this locus determine phenotype?\nDo the amount of resources shape community diversity?\nget Lauren et al to fill in some other questions\n\nTo answer these types questions, we need a way to carefully relate two variables together. We will refer throughout this course to two types of variables:\n\nExplanatory variables, also called independent variables or predictor variables.\nResponse variables, also called dependent variables.\n\nLinear models estimate the conditional mean of the \\(i^{th}\\) observation of a continuous response variable, \\(\\hat{Y}_i\\) from a (combination) of value(s) of the explanatory variables (\\(\\text{explanatory variables}_i\\)):\n\\[\\begin{equation}\n\\hat{Y}_i = f(\\text{explanatory variables}_i)\n\\end{equation}\\]\nThese models are “linear” because we estimate of the conditional mean (\\(\\hat{Y}_i\\)) by adding up all components of the model. So, each explanatory variable \\(y_{j,i}\\) is multiplied by its effect size \\(b_j\\). It might help to look at an example model below:\n\\[\\begin{equation}\n\\hat{Y}_i = a + b_1  y_{1,i} + b_2 y_{2,i} + \\dots{}\n\\end{equation}\\]\nIn this example, \\(\\hat{Y}_i\\) is estimated as the sum of the “intercept” (\\(a\\)), its value for the first explanatory variable (\\(y_{1,i}\\)) times the effect of this variable (\\(b_1\\)), its value for the second explanatory variable (\\(y_{2,i}\\)) times the effect of this variable, \\(b_2\\), and so on for all included explanatory variables.\nIn practice, fitting a linear model requires picking explanatory variables and then estimating the values of \\(a\\), \\(b_1\\), \\(b_2\\), and so on. These estimates then tell us how the explanatory variables relate to the response variable.",
+    "text": "3.2 Linear models\nAs biologists, we often want to understand if one thing causes another thing.\n\nDo traits determine an organism’s fitness? In other words, are traits under selection?\nDoes genotype at this locus determine phenotype?\nDo the amount of resources shape community diversity?\nget Lauren et al to fill in some other questions\n\nTo answer these types questions, we need a way to carefully relate two variables together. We will refer throughout this course to two types of variables:\n\nExplanatory variables, also called independent variables or predictor variables.\nResponse variables, also called dependent variables.\n\nLinear models estimate the conditional mean of the \\(i^{th}\\) observation of a continuous response variable, \\(\\hat{Y}_i\\) from a (combination) of value(s) of the explanatory variables (\\(\\text{explanatory variables}_i\\)):\n\\[\\begin{equation}\n\\hat{Y}_i = f(\\text{explanatory variables}_i)\n\\end{equation}\\]\nThese models are “linear” because we estimate of the conditional mean (\\(\\hat{Y}_i\\)) by adding up all components of the model. So, each explanatory variable \\(y_{j,i}\\) is multiplied by its effect size \\(b_j\\). It might help to look at an example model below:\n\\[\\begin{equation}\n\\hat{Y}_i = a + b_1  y_{1,i} + b_2 y_{2,i} + \\dots{}\n\\end{equation}\\]\nIn this example, \\(\\hat{Y}_i\\) is estimated as the sum of the “intercept” (\\(a\\)), its value for the first explanatory variable (\\(y_{1,i}\\)) times the effect of this variable (\\(b_1\\)), its value for the second explanatory variable (\\(y_{2,i}\\)) times the effect of this variable, \\(b_2\\), and so on for all included explanatory variables.\nIn practice, fitting a linear model requires picking explanatory variables and then estimating the values of \\(a\\), \\(b_1\\), \\(b_2\\), and so on that best predict the response variables. These estimates then tell us how the explanatory variables relate to the response variable.",
     "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Chapter 3 -- Linear Models 1: The Mean</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#using-rs-lm-function",
+    "href": "03-linearModels1.html#using-rs-lm-function",
+    "title": "3  Linear Models 1: The Mean",
+    "section": "3.4 Using R’s lm() function",
+    "text": "3.4 Using R’s lm() function",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
     ]
   }
 ]
