@@ -1,0 +1,142 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "EEB 830/831",
+    "section": "",
+    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.",
+    "crumbs": [
+      "Preface"
+    ]
+  },
+  {
+    "objectID": "01-intro.html",
+    "href": "01-intro.html",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "",
+    "text": "1.1 Hi!\nHi! Welcome to the ebook for IBIO/PLB/ENT 830, the introductory statistics course in Michigan State University’s Ecology and Evolutionary Biology Graduate program.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01-intro.html#learning-goals",
+    "href": "01-intro.html#learning-goals",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "1.2 Learning Goals",
+    "text": "1.2 Learning Goals\nCourse learning goals go here",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01-intro.html#themes",
+    "href": "01-intro.html#themes",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "1.3 Themes",
+    "text": "1.3 Themes\nThroughout the course we’ll be talking about the following themes…",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01-intro.html#who-we-are",
+    "href": "01-intro.html#who-we-are",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "1.4 Who we are",
+    "text": "1.4 Who we are\nStuff about the professors goes here",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01-intro.html#how-this-book-works",
+    "href": "01-intro.html#how-this-book-works",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "1.5 How this book works",
+    "text": "1.5 How this book works\nStuff about logistics goes here.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "02-likelihood.html",
+    "href": "02-likelihood.html",
+    "title": "2  Chapter 2 – Likelihood",
+    "section": "",
+    "text": "2.1 What are we doing here?\nIn this chapter, we’ll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+    ]
+  },
+  {
+    "objectID": "02-likelihood.html#motivating-question",
+    "href": "02-likelihood.html#motivating-question",
+    "title": "2  Chapter 2 – Likelihood",
+    "section": "2.2 Motivating question",
+    "text": "2.2 Motivating question\nSomeone hands us a coin and we flip it 100 times and get 46 heads.\nIs the coin fair? (probability of heads = 50%)\nWhat is the most likely probability of flipping heads for this coin?",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+    ]
+  },
+  {
+    "objectID": "02-likelihood.html#likelihood",
+    "href": "02-likelihood.html#likelihood",
+    "title": "2  Chapter 2 – Likelihood",
+    "section": "2.3 Likelihood",
+    "text": "2.3 Likelihood\nThe likelihood of the data is the probability of the data as a function of some unknown parameters.\nLikelihood is probability…in reverse!\nIn probability, we think about some stochastic process, and figure out ways to calculate the probability of possible outcomes\nFor example: given that the coin is fair, what’s the probability of getting 46 heads out of 100 flips?\nIn calculating probabilities, we consider a single parameter value and describe the probabilities of all possible outcomes of a process parameterized by that value.\nIn statistics, we start with some observed outcomes, and try to figure out the underlying process.\nFor example: given some flip data, can we figure out the fairness of the coin?\nIn calculating likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.\nIn formulating the problem this way, we are treating the observed data (\\(k=46\\)) as a known, and treating \\(p\\) as an unknown parameter of the model.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+    ]
+  },
+  {
+    "objectID": "02-likelihood.html#parametric-statistics",
+    "href": "02-likelihood.html#parametric-statistics",
+    "title": "2  Chapter 2 – Likelihood",
+    "section": "2.4 Parametric statistics",
+    "text": "2.4 Parametric statistics\nWe can use likelihood in a framework of parametric statistics.\nIn parametric inference, we treat observed data as draws from an underlying process or population, and we try to learn about that population from our sample.\nA statistical parameter is a value that tells you something about a population, like the true mean height of students in our class, or the true frequency of a genetic variant in a species.\nBUT, we rarely get to know the truth!\n(we would know the truth if we censused everyone in a population, or repeated a random process an infinite number of times)\nInstead, we can take samples to try to learn about –\nor estimate – parameters.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html",
+    "href": "03-linearModels1.html",
+    "title": "3  Linear Models 1: The Mean",
+    "section": "",
+    "text": "3.1 What are we doing here?\nIn this chapter, we will meet the linear model and discuss what it is exactly that we are doing when we build linear models.\nWe’ll build the most basic type of linear model by fitting the mean of a distribution.\nWe’ll also learn to interpret residuals and visualize them with R.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#linear-models",
+    "href": "03-linearModels1.html#linear-models",
+    "title": "3  Linear Models 1: The Mean",
+    "section": "3.2 Linear models",
+    "text": "3.2 Linear models\nAs biologists, we often want to understand if one thing causes another thing.\n\nDo traits determine an organism’s fitness? In other words, are traits under selection?\nDoes genotype at this locus determine phenotype?\nDo the amount of resources shape community diversity?\nget Lauren et al to fill in some other questions\n\nTo answer these types questions, we need a way to carefully relate two variables together. We will refer throughout this course to two types of variables:\n\nExplanatory variables, also called independent variables or predictor variables.\nResponse variables, also called dependent variables.\n\nLinear models estimate the conditional mean of the \\(i^{th}\\) observation of a continuous response variable, \\(\\hat{Y}_i\\) from a (combination) of value(s) of the explanatory variables (\\(\\text{explanatory variables}_i\\)):\n\\[\\begin{equation}\n\\hat{Y}_i = f(\\text{explanatory variables}_i)\n\\end{equation}\\]\nThese models are “linear” because we estimate of the conditional mean (\\(\\hat{Y}_i\\)) by adding up all components of the model. So, each explanatory variable \\(y_{j,i}\\) is multiplied by its effect size \\(b_j\\). It might help to look at an example model below:\n\\[\\begin{equation}\n\\hat{Y}_i = a + b_1  y_{1,i} + b_2 y_{2,i} + \\dots{}\n\\end{equation}\\]\nIn this example, \\(\\hat{Y}_i\\) is estimated as the sum of the “intercept” (\\(a\\)), its value for the first explanatory variable (\\(y_{1,i}\\)) times the effect of this variable (\\(b_1\\)), its value for the second explanatory variable (\\(y_{2,i}\\)) times the effect of this variable, \\(b_2\\), and so on for all included explanatory variables.\nIn practice, fitting a linear model requires picking explanatory variables and then estimating the values of \\(a\\), \\(b_1\\), \\(b_2\\), and so on that best predict the response variables. These estimates then tell us how the explanatory variables relate to the response variable.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#the-mean",
+    "href": "03-linearModels1.html#the-mean",
+    "title": "3  Linear Models 1: The Mean",
+    "section": "3.3 The mean",
+    "text": "3.3 The mean\nWe are going to start with the simplest linear model possible. You likely already know how to calculate the mean (\\(\\overline{y}\\)) of a set of data: \\(\\overline{y} = \\frac{\\sum y_i}{n}\\) where \\(y_i\\) is each data point and \\(n\\) is the number of samples.\nIn the simplest linear model we can also think of the mean as the intercept (\\(b_0\\)) so we can predict each data point \\(y_i\\) as simply the mean plus an error term or residual (\\(e_i\\)).\n\\[\\hat{y}_i = b_0 + e_i\\]\n\n3.3.1 Wait, what’s a residual?\nObserved values often differ from the predictions made by a linear model.\nWe define a residual (\\(e_i\\)) as the difference between an observed value(\\(Y_i\\)) and its predicted value from a linear model (\\(\\hat{y}_i\\)).\n\\[e_i = y_i - \\hat{y}_i\\]\nYou can also rearrange this to think about it the other way around so that the observed variable (\\(Y_i\\)) is the sum of the value predicted by the model (\\(\\hat{y}_i\\)) and the residual \\(e_i\\).\n\\[y_i = \\hat{y}_i + e_i\\]",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#using-rs-lm-function",
+    "href": "03-linearModels1.html#using-rs-lm-function",
+    "title": "3  Linear Models 1: The Mean",
+    "section": "3.4 Using R’s lm() function",
+    "text": "3.4 Using R’s lm() function",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Linear Models 1: The Mean</span>"
+    ]
+  }
+]
