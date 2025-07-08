@@ -156,11 +156,26 @@ myPenguins = penguins[sample(1:nrow(penguins), 2),]
 
 myPenguins
 
-dornom(myPenguin$body_mass[1], mean=4600, sd=40])
+dnorm(myPenguins$body_mass[1], mean=4600, sd=40)*dnorm(myPenguins$body_mass[2], mean=4600, sd=40)
+```
 
-dnorm(myPenguin$body_mass, mean=4600, sd=40)
+Since the dnorm() function is vectorized, we can also write this as one line of code.
+```{r}
+prod(dnorm(myPenguins$body_mass, mean=4600, sd=40))
 
 ```
+
+This new code formulation lets us calculate the likelihood for any length vector of observations. We can even calculate the likelihood of observing the entire penguin data set.
+
+```{r}
+penguins2 <- penguins |> filter(!is.na(body_mass)) ##filter out ones with NAs
+prod(dnorm(penguins2$body_mass, mean=4600, sd=40))
+```
+
+Wait, what's going on? How are we getting a probability of 0?
+
+### Log likelihood solves underflow problems
+
 
 ### Estimating paramaters with maximum likelihood
 
