@@ -211,6 +211,11 @@ window.Quarto = {
   <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">4.1</span> What are we doing here?</a></li>
   <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">4.2</span> Motivating example</a></li>
   <li><a href="#estimating-conditional-means" id="toc-estimating-conditional-means" class="nav-link" data-scroll-target="#estimating-conditional-means"><span class="header-section-number">4.3</span> Estimating conditional means</a></li>
+  <li><a href="#building-a-model-with-lm" id="toc-building-a-model-with-lm" class="nav-link" data-scroll-target="#building-a-model-with-lm"><span class="header-section-number">4.4</span> Building a model with lm()</a></li>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">4.5</span> Residuals</a></li>
+  <li><a href="#more-than-two-categories" id="toc-more-than-two-categories" class="nav-link" data-scroll-target="#more-than-two-categories"><span class="header-section-number">4.6</span> More than two categories</a></li>
+  <li><a href="#building-a-model-with-more-than-two-categories-with-lm" id="toc-building-a-model-with-more-than-two-categories-with-lm" class="nav-link" data-scroll-target="#building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">4.7</span> Building a model with more than two categories with lm()</a></li>
+  <li><a href="#a-note-on-the-reference-categories." id="toc-a-note-on-the-reference-categories." class="nav-link" data-scroll-target="#a-note-on-the-reference-categories."><span class="header-section-number">4.8</span> A note on the reference categories.</a></li>
   </ul>
 </nav>
     </div>
@@ -286,7 +291,32 @@ window.Quarto = {
 <li><span class="math inline">\(e_i\)</span> is the residual</li>
 </ul>
 <p>We could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo. <span class="math display">\[ \text{Mass}_{i|\text{Adelie}} = b_0 + e_i\]</span> <span class="math display">\[ \text{Mass}_{i|\text{Gentoo}} = b_0 + b_1 + e_i\]</span></p>
-<p>We can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (<span class="math inline">\(b_0\)</span>) is 3701 and since the mean mass of a Gentoo penguin is 5076, <span class="math inline">\(b_1 = 1375\)</span>.</p>
+<p>We can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (<span class="math inline">\(b_0\)</span>) is 3701 and since the mean mass of a Gentoo penguin is 5076, <span class="math inline">\(b_1 =\)</span> 1375$.</p>
+</section>
+<section id="building-a-model-with-lm" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="building-a-model-with-lm"><span class="header-section-number">4.4</span> Building a model with lm()</h2>
+</section>
+<section id="residuals" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="residuals"><span class="header-section-number">4.5</span> Residuals</h2>
+</section>
+<section id="more-than-two-categories" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="more-than-two-categories"><span class="header-section-number">4.6</span> More than two categories</h2>
+<p>What if we want to look at all three species? We can use the same modelling approach as before.</p>
+<p><span class="math display">\[\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i +b_2 \times \text{Chinstrap} + e_i \]</span></p>
+<ul>
+<li><span class="math inline">\(b_0\)</span> is the intercept and, in this case, the mean body mass of Gentoo penguins</li>
+<li><span class="math inline">\(b_1\)</span> is the difference in mass between Adelie and Gentoo penguins.</li>
+<li><span class="math inline">\(b_2\)</span> is the difference in mass between Chinstrap and Gentoo penguins.</li>
+<li><span class="math inline">\(\text{Adelie}_i\)</span> is an indicator variable that is <span class="math inline">\(1\)</span> if individual <span class="math inline">\(i\)</span> is an Adelie penguin and <span class="math inline">\(0\)</span> if not.</li>
+<li><span class="math inline">\(\text{Chinstrap}_i\)</span> is an indicator variable that is <span class="math inline">\(1\)</span> if individual <span class="math inline">\(i\)</span> is a Chinstrap penguin and <span class="math inline">\(0\)</span> if not.</li>
+<li><span class="math inline">\(e_i\)</span> is the residual</li>
+</ul>
+</section>
+<section id="building-a-model-with-more-than-two-categories-with-lm" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">4.7</span> Building a model with more than two categories with lm()</h2>
+</section>
+<section id="a-note-on-the-reference-categories." class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="a-note-on-the-reference-categories."><span class="header-section-number">4.8</span> A note on the reference categories.</h2>
 
 
 </section>
