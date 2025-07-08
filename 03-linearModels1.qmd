@@ -72,9 +72,8 @@ You can also rearrange this to think about it the other way around so that the o
 
 $$y_i = \hat{y}_i + e_i$$
 
-## Using R's lm() function 
-
-You can use the lm() function to build a linear model in R.
+## Fitting a linear model with maximum likelihood
+We will use the principals of likelihood to pick the parameters that best fit the linear model.
 
 Throughout this section we'll be using a dataset of penguin traits. This data should be already available in your version of R, but if it isn't, use the following code to install it.
 
@@ -93,9 +92,85 @@ We'll start by thinking about body size. We want to model each penguin's body ma
 
 $$\text{penguin body mass} = \text{mean body mass} + e_i$$
 
+### The distribution of residuals
+A key piece of our linear model is that the residuals follow a specific distribution. 
+In this part of the course we will focus on the normal distribution since it is broadly useful, but you could use any distribution you want.
+Models with residuals that follow non-normal distributions are called **Generalized Linear Models** 
+
+In math terms, we would write
+
+$$ e_i \sim N(0, \sigma^2)$$
+where $\sigma^2$ is the variance of the residuals. The mean of the residuals is 0. 
+
+We can combine the equation for a linear model with the equation describing the distribution of the variables and get
+
+$$y_i = \hat{y}_i + N(0, \sigma^2)$$
+
+and this simplifies to
+
+$$ y_i \sim N(\hat{y}_i, \sigma^2)$$
+
+For our penguin example
+
+$$ \text{penguin body mass} \sim N(\text{mean body mass}, \sigma^2)$$
+
+### The likelihood of one data point given specific parameters
+
+We can use the dnorm() function in R to calculate the probability of observing a specific penguin body mass given known parameters.
+
+Let's pick a random penguin
+
+```{r}
+set.seed(14)
+myPenguin = penguins[sample(1:nrow(penguins), 1),]
+
+myPenguin
+```
+
+We can calculate the likelihood of our penguin's body mass if $\hat{y}_i = 4500$ and $\sigma^2$ = 40 with the following code:
+
+```{r}
+dnorm(myPenguin$body_mass, mean=4500, sd=40)
+```
+
+What happens if we change the parameters?
 
 
-Below is code for this linear model.
+```{r}
+dnorm(myPenguin$body_mass, mean=4600, sd=40)
+```
+
+Given that our penguin weighs 4650 grams, it is more likely to observe this data if the underlying model has a mean closer to 4650. 
+
+
+## Calculating the likelihood of many datapoints
+
+We will get better parameter estimates if we have more data -- this is a basic fact of statistics. But, how do we calculate a likelihood of many data points?
+
+Remember from our probability rules that if you want to know the probability of observing two things, you can multiply the probability of observing the first thing times the probability of observing the second thing. And remember that likelihoods are just probabilities
+
+So, if we wanted to calculate the likelihood of observing two penguin body masses for specific parameters, we calculate the likelihood of observing each penguin body mass and multiply those likelihoods together.
+
+```{r}
+myPenguins = penguins[sample(1:nrow(penguins), 2),]
+
+myPenguins
+
+dornom(myPenguin$body_mass[1], mean=4600, sd=40])
+
+dnorm(myPenguin$body_mass, mean=4600, sd=40)
+
+```
+
+### Estimating paramaters with maximum likelihood
+
+
+## Using R's lm() function 
+
+You can use the lm() function to build a linear model in R.
+
+
+Below is code for this linear model with the penguins data.
 
 
 ```{r}
