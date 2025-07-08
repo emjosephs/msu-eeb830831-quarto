@@ -233,7 +233,7 @@ window.Quarto = {
   <li><a href="#calculating-the-likelihood-of-many-datapoints" id="toc-calculating-the-likelihood-of-many-datapoints" class="nav-link" data-scroll-target="#calculating-the-likelihood-of-many-datapoints"><span class="header-section-number">3.5</span> Calculating the likelihood of many datapoints</a>
   <ul class="collapse">
   <li><a href="#log-likelihood-solves-underflow-problems" id="toc-log-likelihood-solves-underflow-problems" class="nav-link" data-scroll-target="#log-likelihood-solves-underflow-problems"><span class="header-section-number">3.5.1</span> Log likelihood solves underflow problems</a></li>
-  <li><a href="#estimating-paramaters-with-maximum-likelihood" id="toc-estimating-paramaters-with-maximum-likelihood" class="nav-link" data-scroll-target="#estimating-paramaters-with-maximum-likelihood"><span class="header-section-number">3.5.2</span> Estimating paramaters with maximum likelihood</a></li>
+  <li><a href="#estimating-paramaters-with-maximum-likelihood-using-grid-search." id="toc-estimating-paramaters-with-maximum-likelihood-using-grid-search." class="nav-link" data-scroll-target="#estimating-paramaters-with-maximum-likelihood-using-grid-search."><span class="header-section-number">3.5.2</span> Estimating paramaters with maximum likelihood using grid search.</a></li>
   </ul></li>
   <li><a href="#using-rs-lm-function" id="toc-using-rs-lm-function" class="nav-link" data-scroll-target="#using-rs-lm-function"><span class="header-section-number">3.6</span> Using R’s lm() function</a></li>
   <li><a href="#more-on-residuals" id="toc-more-on-residuals" class="nav-link" data-scroll-target="#more-on-residuals"><span class="header-section-number">3.7</span> More on residuals</a></li>
@@ -395,25 +395,53 @@ window.Quarto = {
 </div>
 <p>This new code formulation lets us calculate the likelihood for any length vector of observations. We can even calculate the likelihood of observing the entire penguin data set.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(penguins<span class="sc">$</span>body_mass, <span class="at">mean=</span><span class="dv">4600</span>, <span class="at">sd=</span><span class="dv">40</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass)) <span class="do">##filter out ones with NAs</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(penguins2<span class="sc">$</span>body_mass, <span class="at">mean=</span><span class="dv">4600</span>, <span class="at">sd=</span><span class="dv">40</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] NA</code></pre>
+<pre><code>[1] 0</code></pre>
 </div>
 </div>
+<p>Wait, what’s going on? How are we getting a probability of 0?</p>
 <section id="log-likelihood-solves-underflow-problems" class="level3" data-number="3.5.1">
 <h3 data-number="3.5.1" class="anchored" data-anchor-id="log-likelihood-solves-underflow-problems"><span class="header-section-number">3.5.1</span> Log likelihood solves underflow problems</h3>
+<p><img src="figs/comp_on_fire.jpg" class="img-fluid"></p>
+<p>The product of small numbers are smaller numbers. Very very very small numbers cannot be represented in your computer’s memory. This problem is called underflow.</p>
+<p>We often deal with underflow by using logs. You may remember from your high school or undergrad math classes that</p>
+<p><span class="math display">\[\text{log}(A \times B \times C) = \text{log}(A) + \text{log}(B) + \text{log}(C)\]</span><br>
+and more generally:</p>
+<p><span class="math display">\[\text{log}\left(\prod\limits_{i=1}^n X_i \right) = \sum\limits_{i=1}^n \text{log}(X_i)\]</span> Additionally, the log is monotonic which means that</p>
+<p>If <span class="math inline">\(X &gt; Y\)</span> then <span class="math inline">\(\text{log}(X) &gt; \text{log}(Y)\)</span></p>
+<p>In practice, instead of multiplying likelihoods together to calculate the likelihood of observing a large dataset, we can sum log likelihoods together.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">dnorm</span>(myPenguins<span class="sc">$</span>body_mass, <span class="at">mean=</span><span class="dv">4600</span>, <span class="at">sd=</span><span class="dv">40</span>, <span class="at">log=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -337.5359</code></pre>
+</div>
+</div>
 </section>
-<section id="estimating-paramaters-with-maximum-likelihood" class="level3" data-number="3.5.2">
-<h3 data-number="3.5.2" class="anchored" data-anchor-id="estimating-paramaters-with-maximum-likelihood"><span class="header-section-number">3.5.2</span> Estimating paramaters with maximum likelihood</h3>
+<section id="estimating-paramaters-with-maximum-likelihood-using-grid-search." class="level3" data-number="3.5.2">
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="estimating-paramaters-with-maximum-likelihood-using-grid-search."><span class="header-section-number">3.5.2</span> Estimating paramaters with maximum likelihood using grid search.</h3>
+<p>We aren’t just interested in estimating the likelihood for one parameter – instead we want to find the parameters that give us the highest likelihood of observing our data. One way to do this is with a grid search where we calculate the log likelihood for a grid of parameters and identify the parameter associated with the highest likelihood. We’ll do this here for a grid of possible values of <span class="math inline">\(\hat{y}_i\)</span> (we won’t mess with <span class="math inline">\(\sigma^2\)</span> here).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>myGrid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">2000</span>,<span class="dv">6000</span>,<span class="at">length.out=</span><span class="dv">1000</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>myLogLikes <span class="ot">&lt;-</span> <span class="fu">sapply</span>(myGrid,<span class="cf">function</span>(m)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  {<span class="fu">sum</span>(<span class="fu">dnorm</span>(penguins2<span class="sc">$</span>body_mass,<span class="at">mean=</span>m,<span class="at">sd=</span><span class="dv">40</span>,<span class="at">log=</span><span class="cn">TRUE</span>))})</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>myGrid[<span class="fu">which.max</span>(myLogLikes)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4202.202</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="using-rs-lm-function" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="using-rs-lm-function"><span class="header-section-number">3.6</span> Using R’s lm() function</h2>
-<p>You can use the lm() function to build a linear model in R.</p>
-<p>Below is code for this linear model with the penguins data.</p>
+<p>In practice, grid searchers are very inefficient and it is often easier to use premade R functions to fit linear models.</p>
+<p>Below is code for linear model with the penguins data using R’s lm() function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">=</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> penguins)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">=</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> penguins)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -427,7 +455,7 @@ Coefficients:
 <p>The output gives us the estimated intercept — which, in this case with no predictors, is simply the mean</p>
 <p>We can also use the summarize() function to look more carefully at the model</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -455,7 +483,7 @@ Residual standard error: 802 on 341 degrees of freedom
 <p>The residual (<span class="math inline">\(e_i\)</span>) for each individual penguin tells us how much that penguin’s mass differs from the population mean.</p>
 <p>For example, we can look at one specific penguin</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>penguins[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>penguins[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  species    island bill_len bill_dep flipper_len body_mass  sex year
 1  Adelie Torgersen     39.1     18.7         181      3750 male 2007</code></pre>
@@ -467,23 +495,23 @@ Residual standard error: 802 on 341 degrees of freedom
 <div class="cell" data-cap-location="margin">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23" data-cap-location="margin"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>prop_hybrid_plot <span class="ot">&lt;-</span> penguins                          <span class="sc">|&gt;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass))                         <span class="sc">|&gt;</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(),</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_i =</span> body_mass <span class="sc">-</span> <span class="fu">mean</span>(body_mass),</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_i =</span> <span class="fu">round</span>(e_i, <span class="at">digits =</span> <span class="dv">3</span>),</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_hat_i =</span> <span class="fu">round</span>(<span class="fu">mean</span>(body_mass),<span class="at">digits=</span><span class="dv">3</span>),</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_i =</span> <span class="fu">round</span>(body_mass, <span class="at">digits =</span> <span class="dv">3</span>))                         <span class="sc">|&gt;</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> i, <span class="at">y =</span> y_i, <span class="at">y_hat_i =</span> y_hat_i, <span class="at">e_i =</span> e_i))<span class="sc">+</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>, <span class="at">alpha =</span> .<span class="dv">6</span>)<span class="sc">+</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"black"</span>,<span class="st">"darkgreen"</span>))<span class="sc">+</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">4201.76</span>,</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Body Mass"</span>, <span class="at">title =</span><span class="st">"This plot is interactive!! Hover over a point to see its residual"</span>)<span class="sc">+</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(prop_hybrid_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27" data-cap-location="margin"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>prop_hybrid_plot <span class="ot">&lt;-</span> penguins                          <span class="sc">|&gt;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass))                         <span class="sc">|&gt;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_i =</span> body_mass <span class="sc">-</span> <span class="fu">mean</span>(body_mass),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_i =</span> <span class="fu">round</span>(e_i, <span class="at">digits =</span> <span class="dv">3</span>),</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_hat_i =</span> <span class="fu">round</span>(<span class="fu">mean</span>(body_mass),<span class="at">digits=</span><span class="dv">3</span>),</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_i =</span> <span class="fu">round</span>(body_mass, <span class="at">digits =</span> <span class="dv">3</span>))                         <span class="sc">|&gt;</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> i, <span class="at">y =</span> y_i, <span class="at">y_hat_i =</span> y_hat_i, <span class="at">e_i =</span> e_i))<span class="sc">+</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>, <span class="at">alpha =</span> .<span class="dv">6</span>)<span class="sc">+</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"black"</span>,<span class="st">"darkgreen"</span>))<span class="sc">+</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">4201.76</span>,</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Body Mass"</span>, <span class="at">title =</span><span class="st">"This plot is interactive!! Hover over a point to see its residual"</span>)<span class="sc">+</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(prop_hybrid_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -491,8 +519,8 @@ Residual standard error: 802 on 341 degrees of freedom
 <h2 data-number="3.8" class="anchored" data-anchor-id="calculating-residuals"><span class="header-section-number">3.8</span> Calculating residuals</h2>
 <p>You can look at residuals and model predictions using the augment() function in the broom package. The code below uses augment() to make a table where each row has a penguin’s body mass, the expectation of body mass from the fitted model, and the residual.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass, .fitted, .resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass, .fitted, .resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -502,19 +530,19 @@ Residual standard error: 802 on 341 degrees of freedom
 </div>
 <p>You could also generate residuals without any additional packages by using the following code</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass)) <span class="do">##filter out ones with NAs</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>model1Residuals <span class="ot">&lt;-</span>  penguins2<span class="sc">$</span>body_mass <span class="sc">-</span> model1<span class="sc">$</span>fitted.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass)) <span class="do">##filter out ones with NAs</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>model1Residuals <span class="ot">&lt;-</span>  penguins2<span class="sc">$</span>body_mass <span class="sc">-</span> model1<span class="sc">$</span>fitted.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="calculating-the-ss_residual" class="level2" data-number="3.9">
 <h2 data-number="3.9" class="anchored" data-anchor-id="calculating-the-ss_residual"><span class="header-section-number">3.9</span> Calculating the <span class="math inline">\(SS_{residual}\)</span></h2>
 <p>TODO explain why if we’re doing this</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>model1       <span class="sc">|&gt;</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">augment</span>()                <span class="sc">|&gt;</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="at">sq_resid=</span>.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">|&gt;</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">SS=</span><span class="fu">sum</span>(sq_resid))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>model1       <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">augment</span>()                <span class="sc">|&gt;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="at">sq_resid=</span>.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">|&gt;</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">SS=</span><span class="fu">sum</span>(sq_resid))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
           SS

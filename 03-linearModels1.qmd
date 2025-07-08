@@ -176,16 +176,51 @@ Wait, what's going on? How are we getting a probability of 0?
 
 ### Log likelihood solves underflow problems
 
+![](figs/comp_on_fire.jpg)
 
-### Estimating paramaters with maximum likelihood
+The product of small numbers are smaller numbers. Very very very small numbers cannot be represented in your computer's memory.
+This problem is called underflow.
+
+We often deal with underflow by using logs. You may remember from your high school or undergrad math classes that
+
+$$\text{log}(A \times B \times C) = \text{log}(A) + \text{log}(B) + \text{log}(C)$$
+\
+and more generally:
+
+$$\text{log}\left(\prod\limits_{i=1}^n X_i \right) = \sum\limits_{i=1}^n \text{log}(X_i)$$
+Additionally, the log is monotonic which means that
+
+If $X > Y$ then $\text{log}(X) > \text{log}(Y)$
+
+In practice, instead of multiplying likelihoods together to calculate the likelihood of observing a large dataset, we can
+sum log likelihoods together. 
+
+```{r}
+sum(dnorm(myPenguins$body_mass, mean=4600, sd=40, log=T))
+
+```
+
+
+### Estimating paramaters with maximum likelihood using grid search.
+
+We aren't just interested in estimating the likelihood for one parameter -- instead we want to find the parameters that give us the highest likelihood of observing our data. One way to do this is with a grid search where we calculate the log likelihood for a grid of parameters and identify the parameter associated with the highest likelihood. We'll do this here for a grid of possible values of $\hat{y}_i$ (we won't mess with $\sigma^2$ here).
+
+```{r}
+myGrid <- seq(2000,6000,length.out=1000)
+
+myLogLikes <- sapply(myGrid,function(m)
+  {sum(dnorm(penguins2$body_mass,mean=m,sd=40,log=TRUE))})
+
+myGrid[which.max(myLogLikes)]
+
+```
 
 
 ## Using R's lm() function 
 
-You can use the lm() function to build a linear model in R.
+In practice, grid searchers are very inefficient and it is often easier to use premade R functions to fit linear models. 
 
-
-Below is code for this linear model with the penguins data.
+Below is code for linear model with the penguins data using R's lm() function.
 
 
 ```{r}
