@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Intro to Linear Models – EEB 830/831</title>
+<title>6&nbsp; Intro to Linear Models – EEB 830/831</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./03-linearModels1.html" rel="prev">
+<link href="./06-lm-multiplepredictors.html" rel="next">
+<link href="./04-lm-categories.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -143,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-linearModels2.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-lm-continuousvars.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -188,14 +189,50 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-linearModels1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  <a href="./02.5-pvalues.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Chapter 2 – Likelihood</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-linearModels2.html" class="sidebar-item-text sidebar-link active">
+  <a href="./03-linearModels1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-lm-categories.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-lm-continuousvars.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-lm-multiplepredictors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-lm-interactions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-multipletesting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-GWAS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
   </div>
 </li>
     </ul>
@@ -208,14 +245,14 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">4.1</span> What are we doing here?</a></li>
-  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">4.2</span> Motivating example</a></li>
-  <li><a href="#estimating-conditional-means" id="toc-estimating-conditional-means" class="nav-link" data-scroll-target="#estimating-conditional-means"><span class="header-section-number">4.3</span> Estimating conditional means</a></li>
-  <li><a href="#building-a-model-with-lm" id="toc-building-a-model-with-lm" class="nav-link" data-scroll-target="#building-a-model-with-lm"><span class="header-section-number">4.4</span> Building a model with lm()</a></li>
-  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">4.5</span> Residuals</a></li>
-  <li><a href="#more-than-two-categories" id="toc-more-than-two-categories" class="nav-link" data-scroll-target="#more-than-two-categories"><span class="header-section-number">4.6</span> More than two categories</a></li>
-  <li><a href="#building-a-model-with-more-than-two-categories-with-lm" id="toc-building-a-model-with-more-than-two-categories-with-lm" class="nav-link" data-scroll-target="#building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">4.7</span> Building a model with more than two categories with lm()</a></li>
-  <li><a href="#a-note-on-the-reference-categories." id="toc-a-note-on-the-reference-categories." class="nav-link" data-scroll-target="#a-note-on-the-reference-categories."><span class="header-section-number">4.8</span> A note on the reference categories.</a></li>
+  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">6.1</span> What are we doing here?</a></li>
+  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">6.2</span> Motivating example</a></li>
+  <li><a href="#estimating-conditional-means" id="toc-estimating-conditional-means" class="nav-link" data-scroll-target="#estimating-conditional-means"><span class="header-section-number">6.3</span> Estimating conditional means</a></li>
+  <li><a href="#building-a-model-with-lm" id="toc-building-a-model-with-lm" class="nav-link" data-scroll-target="#building-a-model-with-lm"><span class="header-section-number">6.4</span> Building a model with lm()</a></li>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.5</span> Residuals</a></li>
+  <li><a href="#more-than-two-categories" id="toc-more-than-two-categories" class="nav-link" data-scroll-target="#more-than-two-categories"><span class="header-section-number">6.6</span> More than two categories</a></li>
+  <li><a href="#building-a-model-with-more-than-two-categories-with-lm" id="toc-building-a-model-with-more-than-two-categories-with-lm" class="nav-link" data-scroll-target="#building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">6.7</span> Building a model with more than two categories with lm()</a></li>
+  <li><a href="#a-note-on-the-reference-categories." id="toc-a-note-on-the-reference-categories." class="nav-link" data-scroll-target="#a-note-on-the-reference-categories."><span class="header-section-number">6.8</span> A note on the reference categories.</a></li>
   </ul>
 </nav>
     </div>
@@ -224,7 +261,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></h1>
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></h1>
 </div>
 
 
@@ -241,13 +278,13 @@ window.Quarto = {
 </header>
 
 
-<section id="what-are-we-doing-here" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">4.1</span> What are we doing here?</h2>
+<section id="what-are-we-doing-here" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">6.1</span> What are we doing here?</h2>
 <p>We previously discussed linear models and learned to build a very simple linear model to estimate the mean. We also learned how to calculate residuals, which in this case were the differences between each datapoint and the mean.</p>
 <p>In this section we’ll expand our linear model to incorporate differences between categories.</p>
 </section>
-<section id="motivating-example" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">4.2</span> Motivating example</h2>
+<section id="motivating-example" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">6.2</span> Motivating example</h2>
 <p>You may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#penguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs</span></span>
@@ -257,15 +294,15 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="04-linearModels2_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>It definitely looks like something is different between these different species. But can we use linear models to confidently say so?</p>
 </section>
-<section id="estimating-conditional-means" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="estimating-conditional-means"><span class="header-section-number">4.3</span> Estimating conditional means</h2>
+<section id="estimating-conditional-means" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="estimating-conditional-means"><span class="header-section-number">6.3</span> Estimating conditional means</h2>
 <p>We want to start by estimating the mean body mass of each species of penguin. The code below does this</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>penguins                                             <span class="sc">|&gt;</span></span>
@@ -293,14 +330,14 @@ window.Quarto = {
 <p>We could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo. <span class="math display">\[ \text{Mass}_{i|\text{Adelie}} = b_0 + e_i\]</span> <span class="math display">\[ \text{Mass}_{i|\text{Gentoo}} = b_0 + b_1 + e_i\]</span></p>
 <p>We can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (<span class="math inline">\(b_0\)</span>) is 3701 and since the mean mass of a Gentoo penguin is 5076, <span class="math inline">\(b_1 =\)</span> 1375$.</p>
 </section>
-<section id="building-a-model-with-lm" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="building-a-model-with-lm"><span class="header-section-number">4.4</span> Building a model with lm()</h2>
+<section id="building-a-model-with-lm" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="building-a-model-with-lm"><span class="header-section-number">6.4</span> Building a model with lm()</h2>
 </section>
-<section id="residuals" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="residuals"><span class="header-section-number">4.5</span> Residuals</h2>
+<section id="residuals" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="residuals"><span class="header-section-number">6.5</span> Residuals</h2>
 </section>
-<section id="more-than-two-categories" class="level2" data-number="4.6">
-<h2 data-number="4.6" class="anchored" data-anchor-id="more-than-two-categories"><span class="header-section-number">4.6</span> More than two categories</h2>
+<section id="more-than-two-categories" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="more-than-two-categories"><span class="header-section-number">6.6</span> More than two categories</h2>
 <p>What if we want to look at all three species? We can use the same modelling approach as before.</p>
 <p><span class="math display">\[\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i +b_2 \times \text{Chinstrap} + e_i \]</span></p>
 <ul>
@@ -312,11 +349,11 @@ window.Quarto = {
 <li><span class="math inline">\(e_i\)</span> is the residual</li>
 </ul>
 </section>
-<section id="building-a-model-with-more-than-two-categories-with-lm" class="level2" data-number="4.7">
-<h2 data-number="4.7" class="anchored" data-anchor-id="building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">4.7</span> Building a model with more than two categories with lm()</h2>
+<section id="building-a-model-with-more-than-two-categories-with-lm" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">6.7</span> Building a model with more than two categories with lm()</h2>
 </section>
-<section id="a-note-on-the-reference-categories." class="level2" data-number="4.8">
-<h2 data-number="4.8" class="anchored" data-anchor-id="a-note-on-the-reference-categories."><span class="header-section-number">4.8</span> A note on the reference categories.</h2>
+<section id="a-note-on-the-reference-categories." class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="a-note-on-the-reference-categories."><span class="header-section-number">6.8</span> A note on the reference categories.</h2>
 
 
 </section>
@@ -741,11 +778,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./03-linearModels1.html" class="pagination-link" aria-label="Intro to Linear Models">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span>
+      <a href="./04-lm-categories.html" class="pagination-link" aria-label="Intro to Linear Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./06-lm-multiplepredictors.html" class="pagination-link" aria-label="Intro to Linear Models">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

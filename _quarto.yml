@@ -10,9 +10,14 @@ book:
     - index.qmd
     - 01-intro.qmd
     - 02-likelihood.qmd
+    - 02.5-pvalues.qmd
     - 03-linearModels1.qmd
-    - 04-linearModels2.qmd
-    - 05-linearModels3.qmd
+    - 04-lm-categories.qmd
+    - 05-lm-continuousvars.qmd
+    - 06-lm-multiplepredictors.qmd
+    - 07-lm-interactions.qmd
+    - 08-multipletesting.qmd
+    - 09-GWAS.qmd
 
 #bibliography: references.bib
 

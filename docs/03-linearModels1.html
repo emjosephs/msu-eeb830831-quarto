@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Intro to Linear Models – EEB 830/831</title>
+<title>4&nbsp; Intro to Linear Models – EEB 830/831</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./04-linearModels2.html" rel="next">
-<link href="./02-likelihood.html" rel="prev">
+<link href="./04-lm-categories.html" rel="next">
+<link href="./02.5-pvalues.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -154,7 +154,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-linearModels1.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-linearModels1.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -199,14 +199,50 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-linearModels1.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  <a href="./02.5-pvalues.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Chapter 2 – Likelihood</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-linearModels2.html" class="sidebar-item-text sidebar-link">
+  <a href="./03-linearModels1.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-lm-categories.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-lm-continuousvars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-lm-multiplepredictors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-lm-interactions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-multipletesting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-GWAS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
   </div>
 </li>
     </ul>
@@ -219,27 +255,27 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">3.1</span> What are we doing here?</a></li>
-  <li><a href="#linear-models" id="toc-linear-models" class="nav-link" data-scroll-target="#linear-models"><span class="header-section-number">3.2</span> Linear models</a></li>
-  <li><a href="#the-mean" id="toc-the-mean" class="nav-link" data-scroll-target="#the-mean"><span class="header-section-number">3.3</span> The mean</a>
+  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">4.1</span> What are we doing here?</a></li>
+  <li><a href="#linear-models" id="toc-linear-models" class="nav-link" data-scroll-target="#linear-models"><span class="header-section-number">4.2</span> Linear models</a></li>
+  <li><a href="#the-mean" id="toc-the-mean" class="nav-link" data-scroll-target="#the-mean"><span class="header-section-number">4.3</span> The mean</a>
   <ul class="collapse">
-  <li><a href="#wait-whats-a-residual" id="toc-wait-whats-a-residual" class="nav-link" data-scroll-target="#wait-whats-a-residual"><span class="header-section-number">3.3.1</span> Wait, what’s a residual?</a></li>
+  <li><a href="#wait-whats-a-residual" id="toc-wait-whats-a-residual" class="nav-link" data-scroll-target="#wait-whats-a-residual"><span class="header-section-number">4.3.1</span> Wait, what’s a residual?</a></li>
   </ul></li>
-  <li><a href="#fitting-a-linear-model-with-maximum-likelihood" id="toc-fitting-a-linear-model-with-maximum-likelihood" class="nav-link" data-scroll-target="#fitting-a-linear-model-with-maximum-likelihood"><span class="header-section-number">3.4</span> Fitting a linear model with maximum likelihood</a>
+  <li><a href="#fitting-a-linear-model-with-maximum-likelihood" id="toc-fitting-a-linear-model-with-maximum-likelihood" class="nav-link" data-scroll-target="#fitting-a-linear-model-with-maximum-likelihood"><span class="header-section-number">4.4</span> Fitting a linear model with maximum likelihood</a>
   <ul class="collapse">
-  <li><a href="#the-distribution-of-residuals" id="toc-the-distribution-of-residuals" class="nav-link" data-scroll-target="#the-distribution-of-residuals"><span class="header-section-number">3.4.1</span> The distribution of residuals</a></li>
-  <li><a href="#the-likelihood-of-one-data-point-given-specific-parameters" id="toc-the-likelihood-of-one-data-point-given-specific-parameters" class="nav-link" data-scroll-target="#the-likelihood-of-one-data-point-given-specific-parameters"><span class="header-section-number">3.4.2</span> The likelihood of one data point given specific parameters</a></li>
+  <li><a href="#the-distribution-of-residuals" id="toc-the-distribution-of-residuals" class="nav-link" data-scroll-target="#the-distribution-of-residuals"><span class="header-section-number">4.4.1</span> The distribution of residuals</a></li>
+  <li><a href="#the-likelihood-of-one-data-point-given-specific-parameters" id="toc-the-likelihood-of-one-data-point-given-specific-parameters" class="nav-link" data-scroll-target="#the-likelihood-of-one-data-point-given-specific-parameters"><span class="header-section-number">4.4.2</span> The likelihood of one data point given specific parameters</a></li>
   </ul></li>
-  <li><a href="#calculating-the-likelihood-of-many-datapoints" id="toc-calculating-the-likelihood-of-many-datapoints" class="nav-link" data-scroll-target="#calculating-the-likelihood-of-many-datapoints"><span class="header-section-number">3.5</span> Calculating the likelihood of many datapoints</a>
+  <li><a href="#calculating-the-likelihood-of-many-datapoints" id="toc-calculating-the-likelihood-of-many-datapoints" class="nav-link" data-scroll-target="#calculating-the-likelihood-of-many-datapoints"><span class="header-section-number">4.5</span> Calculating the likelihood of many datapoints</a>
   <ul class="collapse">
-  <li><a href="#log-likelihood-solves-underflow-problems" id="toc-log-likelihood-solves-underflow-problems" class="nav-link" data-scroll-target="#log-likelihood-solves-underflow-problems"><span class="header-section-number">3.5.1</span> Log likelihood solves underflow problems</a></li>
-  <li><a href="#estimating-paramaters-with-maximum-likelihood-using-grid-search." id="toc-estimating-paramaters-with-maximum-likelihood-using-grid-search." class="nav-link" data-scroll-target="#estimating-paramaters-with-maximum-likelihood-using-grid-search."><span class="header-section-number">3.5.2</span> Estimating paramaters with maximum likelihood using grid search.</a></li>
+  <li><a href="#log-likelihood-solves-underflow-problems" id="toc-log-likelihood-solves-underflow-problems" class="nav-link" data-scroll-target="#log-likelihood-solves-underflow-problems"><span class="header-section-number">4.5.1</span> Log likelihood solves underflow problems</a></li>
+  <li><a href="#estimating-paramaters-with-maximum-likelihood-using-grid-search." id="toc-estimating-paramaters-with-maximum-likelihood-using-grid-search." class="nav-link" data-scroll-target="#estimating-paramaters-with-maximum-likelihood-using-grid-search."><span class="header-section-number">4.5.2</span> Estimating paramaters with maximum likelihood using grid search.</a></li>
   </ul></li>
-  <li><a href="#using-rs-lm-function" id="toc-using-rs-lm-function" class="nav-link" data-scroll-target="#using-rs-lm-function"><span class="header-section-number">3.6</span> Using R’s lm() function</a></li>
-  <li><a href="#more-on-residuals" id="toc-more-on-residuals" class="nav-link" data-scroll-target="#more-on-residuals"><span class="header-section-number">3.7</span> More on residuals</a></li>
-  <li><a href="#calculating-residuals" id="toc-calculating-residuals" class="nav-link" data-scroll-target="#calculating-residuals"><span class="header-section-number">3.8</span> Calculating residuals</a></li>
-  <li><a href="#calculating-the-ss_residual" id="toc-calculating-the-ss_residual" class="nav-link" data-scroll-target="#calculating-the-ss_residual"><span class="header-section-number">3.9</span> Calculating the <span class="math inline">\(SS_{residual}\)</span></a></li>
-  <li><a href="#the-mean-minimizes-ss_residual" id="toc-the-mean-minimizes-ss_residual" class="nav-link" data-scroll-target="#the-mean-minimizes-ss_residual"><span class="header-section-number">3.10</span> The mean minimizes <span class="math inline">\(SS_{residual}\)</span></a></li>
+  <li><a href="#using-rs-lm-function" id="toc-using-rs-lm-function" class="nav-link" data-scroll-target="#using-rs-lm-function"><span class="header-section-number">4.6</span> Using R’s lm() function</a></li>
+  <li><a href="#more-on-residuals" id="toc-more-on-residuals" class="nav-link" data-scroll-target="#more-on-residuals"><span class="header-section-number">4.7</span> More on residuals</a></li>
+  <li><a href="#calculating-residuals" id="toc-calculating-residuals" class="nav-link" data-scroll-target="#calculating-residuals"><span class="header-section-number">4.8</span> Calculating residuals</a></li>
+  <li><a href="#calculating-the-ss_residual" id="toc-calculating-the-ss_residual" class="nav-link" data-scroll-target="#calculating-the-ss_residual"><span class="header-section-number">4.9</span> Calculating the <span class="math inline">\(SS_{residual}\)</span></a></li>
+  <li><a href="#the-mean-minimizes-ss_residual" id="toc-the-mean-minimizes-ss_residual" class="nav-link" data-scroll-target="#the-mean-minimizes-ss_residual"><span class="header-section-number">4.10</span> The mean minimizes <span class="math inline">\(SS_{residual}\)</span></a></li>
   </ul>
 </nav>
     </div>
@@ -248,7 +284,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></h1>
 </div>
 
 
@@ -265,14 +301,14 @@ window.Quarto = {
 </header>
 
 
-<section id="what-are-we-doing-here" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">3.1</span> What are we doing here?</h2>
+<section id="what-are-we-doing-here" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">4.1</span> What are we doing here?</h2>
 <p>In this chapter, we will meet the linear model and discuss what it is exactly that we are doing when we build linear models.</p>
 <p>We’ll build the most basic type of linear model by fitting the mean of a distribution.</p>
 <p>We’ll also learn to interpret residuals and visualize them with R.</p>
 </section>
-<section id="linear-models" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="linear-models"><span class="header-section-number">3.2</span> Linear models</h2>
+<section id="linear-models" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="linear-models"><span class="header-section-number">4.2</span> Linear models</h2>
 <p>As biologists, we often want to understand if one thing causes another thing.</p>
 <ul>
 <li>Do traits determine an organism’s fitness? In other words, are traits under selection?</li>
@@ -296,13 +332,13 @@ window.Quarto = {
 <p>In this example, <span class="math inline">\(\hat{Y}_i\)</span> is estimated as the sum of the “intercept” (<span class="math inline">\(a\)</span>), its value for the first explanatory variable (<span class="math inline">\(y_{1,i}\)</span>) times the effect of this variable (<span class="math inline">\(b_1\)</span>), its value for the second explanatory variable (<span class="math inline">\(y_{2,i}\)</span>) times the effect of this variable, <span class="math inline">\(b_2\)</span>, and so on for all included explanatory variables.</p>
 <p>In practice, fitting a linear model requires picking explanatory variables and then estimating the values of <span class="math inline">\(a\)</span>, <span class="math inline">\(b_1\)</span>, <span class="math inline">\(b_2\)</span>, and so on that best predict the response variables. These estimates then tell us how the explanatory variables relate to the response variable.</p>
 </section>
-<section id="the-mean" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="the-mean"><span class="header-section-number">3.3</span> The mean</h2>
+<section id="the-mean" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="the-mean"><span class="header-section-number">4.3</span> The mean</h2>
 <p>We are going to start with the simplest linear model possible. You likely already know how to calculate the mean (<span class="math inline">\(\overline{y}\)</span>) of a set of data: <span class="math inline">\(\overline{y} = \frac{\sum y_i}{n}\)</span> where <span class="math inline">\(y_i\)</span> is each data point and <span class="math inline">\(n\)</span> is the number of samples.</p>
 <p>In the simplest linear model we can also think of the mean as the intercept (<span class="math inline">\(b_0\)</span>) so we can predict each data point <span class="math inline">\(y_i\)</span> as simply the mean plus an error term or residual (<span class="math inline">\(e_i\)</span>).</p>
 <p><span class="math display">\[\hat{y}_i = b_0 + e_i\]</span></p>
-<section id="wait-whats-a-residual" class="level3" data-number="3.3.1">
-<h3 data-number="3.3.1" class="anchored" data-anchor-id="wait-whats-a-residual"><span class="header-section-number">3.3.1</span> Wait, what’s a residual?</h3>
+<section id="wait-whats-a-residual" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="wait-whats-a-residual"><span class="header-section-number">4.3.1</span> Wait, what’s a residual?</h3>
 <p>Observed values often differ from the predictions made by a linear model.</p>
 <p>We define a residual (<span class="math inline">\(e_i\)</span>) as the difference between an observed value(<span class="math inline">\(Y_i\)</span>) and its predicted value from a linear model (<span class="math inline">\(\hat{y}_i\)</span>).</p>
 <p><span class="math display">\[e_i = y_i - \hat{y}_i\]</span></p>
@@ -310,8 +346,8 @@ window.Quarto = {
 <p><span class="math display">\[y_i = \hat{y}_i + e_i\]</span></p>
 </section>
 </section>
-<section id="fitting-a-linear-model-with-maximum-likelihood" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="fitting-a-linear-model-with-maximum-likelihood"><span class="header-section-number">3.4</span> Fitting a linear model with maximum likelihood</h2>
+<section id="fitting-a-linear-model-with-maximum-likelihood" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="fitting-a-linear-model-with-maximum-likelihood"><span class="header-section-number">4.4</span> Fitting a linear model with maximum likelihood</h2>
 <p>We will use the principals of likelihood to pick the parameters that best fit the linear model.</p>
 <p>Throughout this section we’ll be using a dataset of penguin traits. This data should be already available in your version of R, but if it isn’t, use the following code to install it.</p>
 <div class="cell">
@@ -324,8 +360,8 @@ window.Quarto = {
 </div>
 <p>We’ll start by thinking about body size. We want to model each penguin’s body mass as the sum of a mean body mass and a residual.</p>
 <p><span class="math display">\[\text{penguin body mass} = \text{mean body mass} + e_i\]</span></p>
-<section id="the-distribution-of-residuals" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="the-distribution-of-residuals"><span class="header-section-number">3.4.1</span> The distribution of residuals</h3>
+<section id="the-distribution-of-residuals" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="the-distribution-of-residuals"><span class="header-section-number">4.4.1</span> The distribution of residuals</h3>
 <p>A key piece of our linear model is that the residuals follow a specific distribution. In this part of the course we will focus on the normal distribution since it is broadly useful, but you could use any distribution you want. Models with residuals that follow non-normal distributions are called <strong>Generalized Linear Models</strong></p>
 <p>In math terms, we would write</p>
 <p><span class="math display">\[ e_i \sim N(0, \sigma^2)\]</span> where <span class="math inline">\(\sigma^2\)</span> is the variance of the residuals. The mean of the residuals is 0.</p>
@@ -336,8 +372,8 @@ window.Quarto = {
 <p>For our penguin example</p>
 <p><span class="math display">\[ \text{penguin body mass} \sim N(\text{mean body mass}, \sigma^2)\]</span></p>
 </section>
-<section id="the-likelihood-of-one-data-point-given-specific-parameters" class="level3" data-number="3.4.2">
-<h3 data-number="3.4.2" class="anchored" data-anchor-id="the-likelihood-of-one-data-point-given-specific-parameters"><span class="header-section-number">3.4.2</span> The likelihood of one data point given specific parameters</h3>
+<section id="the-likelihood-of-one-data-point-given-specific-parameters" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="the-likelihood-of-one-data-point-given-specific-parameters"><span class="header-section-number">4.4.2</span> The likelihood of one data point given specific parameters</h3>
 <p>We can use the dnorm() function in R to calculate the probability of observing a specific penguin body mass given known parameters.</p>
 <p>Let’s pick a random penguin</p>
 <div class="cell">
@@ -367,8 +403,8 @@ window.Quarto = {
 <p>Given that our penguin weighs 4650 grams, it is more likely to observe this data if the underlying model has a mean closer to 4650.</p>
 </section>
 </section>
-<section id="calculating-the-likelihood-of-many-datapoints" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="calculating-the-likelihood-of-many-datapoints"><span class="header-section-number">3.5</span> Calculating the likelihood of many datapoints</h2>
+<section id="calculating-the-likelihood-of-many-datapoints" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="calculating-the-likelihood-of-many-datapoints"><span class="header-section-number">4.5</span> Calculating the likelihood of many datapoints</h2>
 <p>We will get better parameter estimates if we have more data – this is a basic fact of statistics. But, how do we calculate a likelihood of many data points?</p>
 <p>Remember from our probability rules that if you want to know the probability of observing two things, you can multiply the probability of observing the first thing times the probability of observing the second thing. And remember that likelihoods are just probabilities</p>
 <p>So, if we wanted to calculate the likelihood of observing two penguin body masses for specific parameters, we calculate the likelihood of observing each penguin body mass and multiply those likelihoods together.</p>
@@ -402,8 +438,8 @@ window.Quarto = {
 </div>
 </div>
 <p>Wait, what’s going on? How are we getting a probability of 0?</p>
-<section id="log-likelihood-solves-underflow-problems" class="level3" data-number="3.5.1">
-<h3 data-number="3.5.1" class="anchored" data-anchor-id="log-likelihood-solves-underflow-problems"><span class="header-section-number">3.5.1</span> Log likelihood solves underflow problems</h3>
+<section id="log-likelihood-solves-underflow-problems" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="log-likelihood-solves-underflow-problems"><span class="header-section-number">4.5.1</span> Log likelihood solves underflow problems</h3>
 <p><img src="figs/comp_on_fire.jpg" class="img-fluid"></p>
 <p>The product of small numbers are smaller numbers. Very very very small numbers cannot be represented in your computer’s memory. This problem is called underflow.</p>
 <p>We often deal with underflow by using logs. You may remember from your high school or undergrad math classes that</p>
@@ -419,29 +455,37 @@ and more generally:</p>
 </div>
 </div>
 </section>
-<section id="estimating-paramaters-with-maximum-likelihood-using-grid-search." class="level3" data-number="3.5.2">
-<h3 data-number="3.5.2" class="anchored" data-anchor-id="estimating-paramaters-with-maximum-likelihood-using-grid-search."><span class="header-section-number">3.5.2</span> Estimating paramaters with maximum likelihood using grid search.</h3>
+<section id="estimating-paramaters-with-maximum-likelihood-using-grid-search." class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="estimating-paramaters-with-maximum-likelihood-using-grid-search."><span class="header-section-number">4.5.2</span> Estimating paramaters with maximum likelihood using grid search.</h3>
 <p>We aren’t just interested in estimating the likelihood for one parameter – instead we want to find the parameters that give us the highest likelihood of observing our data. One way to do this is with a grid search where we calculate the log likelihood for a grid of parameters and identify the parameter associated with the highest likelihood. We’ll do this here for a grid of possible values of <span class="math inline">\(\hat{y}_i\)</span> (we won’t mess with <span class="math inline">\(\sigma^2\)</span> here).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>myGrid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">2000</span>,<span class="dv">6000</span>,<span class="at">length.out=</span><span class="dv">1000</span>)</span>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>myGrid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">2000</span>,<span class="dv">6000</span>,<span class="at">length.out=</span><span class="dv">100</span>) <span class="co">#make the grid</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>myLogLikes <span class="ot">&lt;-</span> <span class="fu">sapply</span>(myGrid,<span class="cf">function</span>(m)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  {<span class="fu">sum</span>(<span class="fu">dnorm</span>(penguins2<span class="sc">$</span>body_mass,<span class="at">mean=</span>m,<span class="at">sd=</span><span class="dv">40</span>,<span class="at">log=</span><span class="cn">TRUE</span>))})</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  {<span class="fu">sum</span>(<span class="fu">dnorm</span>(penguins2<span class="sc">$</span>body_mass,<span class="at">mean=</span>m,<span class="at">sd=</span><span class="dv">40</span>,<span class="at">log=</span><span class="cn">TRUE</span>))}) <span class="do">## function to calculate the log likeliood for each value in the grid</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>myGrid[<span class="fu">which.max</span>(myLogLikes)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>myGrid[<span class="fu">which.max</span>(myLogLikes)] <span class="do">## figure out the grid value that corresponds to the maximum likelihood</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4202.202</code></pre>
+<pre><code>[1] 4181.818</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(myGrid, myLogLikes, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">xlab =</span> <span class="st">"mean body weight"</span>, <span class="at">ylab =</span> <span class="st">"log likelihood"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-linearModels1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 </section>
-<section id="using-rs-lm-function" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="using-rs-lm-function"><span class="header-section-number">3.6</span> Using R’s lm() function</h2>
+<section id="using-rs-lm-function" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="using-rs-lm-function"><span class="header-section-number">4.6</span> Using R’s lm() function</h2>
 <p>In practice, grid searchers are very inefficient and it is often easier to use premade R functions to fit linear models.</p>
 <p>Below is code for linear model with the penguins data using R’s lm() function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">=</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> penguins)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">=</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> penguins)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -455,7 +499,7 @@ Coefficients:
 <p>The output gives us the estimated intercept — which, in this case with no predictors, is simply the mean</p>
 <p>We can also use the summarize() function to look more carefully at the model</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -478,12 +522,12 @@ Residual standard error: 802 on 341 degrees of freedom
 <p>We can update our model from above with our new parameter estimate of the mean.</p>
 <p><span class="math display">\[\text{penguin body mass} = 4201.75 + e_i\]</span></p>
 </section>
-<section id="more-on-residuals" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="more-on-residuals"><span class="header-section-number">3.7</span> More on residuals</h2>
+<section id="more-on-residuals" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="more-on-residuals"><span class="header-section-number">4.7</span> More on residuals</h2>
 <p>The residual (<span class="math inline">\(e_i\)</span>) for each individual penguin tells us how much that penguin’s mass differs from the population mean.</p>
 <p>For example, we can look at one specific penguin</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>penguins[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>penguins[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  species    island bill_len bill_dep flipper_len body_mass  sex year
 1  Adelie Torgersen     39.1     18.7         181      3750 male 2007</code></pre>
@@ -495,32 +539,32 @@ Residual standard error: 802 on 341 degrees of freedom
 <div class="cell" data-cap-location="margin">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27" data-cap-location="margin"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>prop_hybrid_plot <span class="ot">&lt;-</span> penguins                          <span class="sc">|&gt;</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass))                         <span class="sc">|&gt;</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(),</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_i =</span> body_mass <span class="sc">-</span> <span class="fu">mean</span>(body_mass),</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_i =</span> <span class="fu">round</span>(e_i, <span class="at">digits =</span> <span class="dv">3</span>),</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_hat_i =</span> <span class="fu">round</span>(<span class="fu">mean</span>(body_mass),<span class="at">digits=</span><span class="dv">3</span>),</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_i =</span> <span class="fu">round</span>(body_mass, <span class="at">digits =</span> <span class="dv">3</span>))                         <span class="sc">|&gt;</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> i, <span class="at">y =</span> y_i, <span class="at">y_hat_i =</span> y_hat_i, <span class="at">e_i =</span> e_i))<span class="sc">+</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>, <span class="at">alpha =</span> .<span class="dv">6</span>)<span class="sc">+</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"black"</span>,<span class="st">"darkgreen"</span>))<span class="sc">+</span></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">4201.76</span>,</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Body Mass"</span>, <span class="at">title =</span><span class="st">"This plot is interactive!! Hover over a point to see its residual"</span>)<span class="sc">+</span></span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(prop_hybrid_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28" data-cap-location="margin"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>prop_hybrid_plot <span class="ot">&lt;-</span> penguins                          <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass))                         <span class="sc">|&gt;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(),</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_i =</span> body_mass <span class="sc">-</span> <span class="fu">mean</span>(body_mass),</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">e_i =</span> <span class="fu">round</span>(e_i, <span class="at">digits =</span> <span class="dv">3</span>),</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_hat_i =</span> <span class="fu">round</span>(<span class="fu">mean</span>(body_mass),<span class="at">digits=</span><span class="dv">3</span>),</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_i =</span> <span class="fu">round</span>(body_mass, <span class="at">digits =</span> <span class="dv">3</span>))                         <span class="sc">|&gt;</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> i, <span class="at">y =</span> y_i, <span class="at">y_hat_i =</span> y_hat_i, <span class="at">e_i =</span> e_i))<span class="sc">+</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>, <span class="at">alpha =</span> .<span class="dv">6</span>)<span class="sc">+</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"black"</span>,<span class="st">"darkgreen"</span>))<span class="sc">+</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">4201.76</span>,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Body Mass"</span>, <span class="at">title =</span><span class="st">"This plot is interactive!! Hover over a point to see its residual"</span>)<span class="sc">+</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(prop_hybrid_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
-<section id="calculating-residuals" class="level2" data-number="3.8">
-<h2 data-number="3.8" class="anchored" data-anchor-id="calculating-residuals"><span class="header-section-number">3.8</span> Calculating residuals</h2>
+<section id="calculating-residuals" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="calculating-residuals"><span class="header-section-number">4.8</span> Calculating residuals</h2>
 <p>You can look at residuals and model predictions using the augment() function in the broom package. The code below uses augment() to make a table where each row has a penguin’s body mass, the expectation of body mass from the fitted model, and the residual.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass, .fitted, .resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass, .fitted, .resid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -530,19 +574,19 @@ Residual standard error: 802 on 341 degrees of freedom
 </div>
 <p>You could also generate residuals without any additional packages by using the following code</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass)) <span class="do">##filter out ones with NAs</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>model1Residuals <span class="ot">&lt;-</span>  penguins2<span class="sc">$</span>body_mass <span class="sc">-</span> model1<span class="sc">$</span>fitted.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass)) <span class="do">##filter out ones with NAs</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>model1Residuals <span class="ot">&lt;-</span>  penguins2<span class="sc">$</span>body_mass <span class="sc">-</span> model1<span class="sc">$</span>fitted.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="calculating-the-ss_residual" class="level2" data-number="3.9">
-<h2 data-number="3.9" class="anchored" data-anchor-id="calculating-the-ss_residual"><span class="header-section-number">3.9</span> Calculating the <span class="math inline">\(SS_{residual}\)</span></h2>
+<section id="calculating-the-ss_residual" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="calculating-the-ss_residual"><span class="header-section-number">4.9</span> Calculating the <span class="math inline">\(SS_{residual}\)</span></h2>
 <p>TODO explain why if we’re doing this</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>model1       <span class="sc">|&gt;</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">augment</span>()                <span class="sc">|&gt;</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="at">sq_resid=</span>.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">|&gt;</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">SS=</span><span class="fu">sum</span>(sq_resid))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>model1       <span class="sc">|&gt;</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">augment</span>()                <span class="sc">|&gt;</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="at">sq_resid=</span>.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">|&gt;</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">SS=</span><span class="fu">sum</span>(sq_resid))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
           SS
@@ -551,8 +595,8 @@ Residual standard error: 802 on 341 degrees of freedom
 </div>
 </div>
 </section>
-<section id="the-mean-minimizes-ss_residual" class="level2" data-number="3.10">
-<h2 data-number="3.10" class="anchored" data-anchor-id="the-mean-minimizes-ss_residual"><span class="header-section-number">3.10</span> The mean minimizes <span class="math inline">\(SS_{residual}\)</span></h2>
+<section id="the-mean-minimizes-ss_residual" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="the-mean-minimizes-ss_residual"><span class="header-section-number">4.10</span> The mean minimizes <span class="math inline">\(SS_{residual}\)</span></h2>
 
 
 </section>
@@ -977,13 +1021,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./02-likelihood.html" class="pagination-link" aria-label="Chapter 2 -- Likelihood">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Chapter 2 – Likelihood</span></span>
+      <a href="./02.5-pvalues.html" class="pagination-link" aria-label="Chapter 2 -- Likelihood">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Chapter 2 – Likelihood</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./04-linearModels2.html" class="pagination-link" aria-label="Intro to Linear Models">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./04-lm-categories.html" class="pagination-link" aria-label="Intro to Linear Models">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
