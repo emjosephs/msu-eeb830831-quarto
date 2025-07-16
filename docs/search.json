@@ -102,41 +102,21 @@
   {
     "objectID": "02.5-pvalues.html",
     "href": "02.5-pvalues.html",
-    "title": "3  Chapter 2 – Likelihood",
+    "title": "3  P values",
     "section": "",
     "text": "3.1 What are we doing here?\nIn this chapter, we’ll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.",
     "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
     ]
   },
   {
     "objectID": "02.5-pvalues.html#motivating-question",
     "href": "02.5-pvalues.html#motivating-question",
-    "title": "3  Chapter 2 – Likelihood",
+    "title": "3  P values",
     "section": "3.2 Motivating question",
     "text": "3.2 Motivating question\nSomeone hands us a coin and we flip it 100 times and get 46 heads.\nIs the coin fair? (probability of heads = 50%)\nWhat is the most likely probability of flipping heads for this coin?",
     "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
-    ]
-  },
-  {
-    "objectID": "02.5-pvalues.html#likelihood",
-    "href": "02.5-pvalues.html#likelihood",
-    "title": "3  Chapter 2 – Likelihood",
-    "section": "3.3 Likelihood",
-    "text": "3.3 Likelihood\nThe likelihood of the data is the probability of the data as a function of some unknown parameters.\nLikelihood is probability…in reverse!\nIn probability, we think about some stochastic process, and figure out ways to calculate the probability of possible outcomes\nFor example: given that the coin is fair, what’s the probability of getting 46 heads out of 100 flips?\nIn calculating probabilities, we consider a single parameter value and describe the probabilities of all possible outcomes of a process parameterized by that value.\nIn statistics, we start with some observed outcomes, and try to figure out the underlying process.\nFor example: given some flip data, can we figure out the fairness of the coin?\nIn calculating likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.\nIn formulating the problem this way, we are treating the observed data (\\(k=46\\)) as a known, and treating \\(p\\) as an unknown parameter of the model.",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
-    ]
-  },
-  {
-    "objectID": "02.5-pvalues.html#parametric-statistics",
-    "href": "02.5-pvalues.html#parametric-statistics",
-    "title": "3  Chapter 2 – Likelihood",
-    "section": "3.4 Parametric statistics",
-    "text": "3.4 Parametric statistics\nWe can use likelihood in a framework of parametric statistics.\nIn parametric inference, we treat observed data as draws from an underlying process or population, and we try to learn about that population from our sample.\nA statistical parameter is a value that tells you something about a population, like the true mean height of students in our class, or the true frequency of a genetic variant in a species.\nBUT, we rarely get to know the truth!\n(we would know the truth if we censused everyone in a population, or repeated a random process an infinite number of times)\nInstead, we can take samples to try to learn about –\nor estimate – parameters.",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
     ]
   },
   {
@@ -322,401 +302,81 @@
   {
     "objectID": "05-lm-continuousvars.html",
     "href": "05-lm-continuousvars.html",
-    "title": "6  Intro to Linear Models",
+    "title": "6  Linear models with continuous variables",
     "section": "",
-    "text": "6.1 What are we doing here?\nWe previously discussed linear models and learned to build a very simple linear model to estimate the mean. We also learned how to calculate residuals, which in this case were the differences between each datapoint and the mean.\nIn this section we’ll expand our linear model to incorporate differences between categories.",
+    "text": "6.1 What are we doing here?",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "05-lm-continuousvars.html#motivating-example",
-    "href": "05-lm-continuousvars.html#motivating-example",
-    "title": "6  Intro to Linear Models",
-    "section": "6.2 Motivating example",
-    "text": "6.2 Motivating example\nYou may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.\n\n#penguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs\nplot(penguins$body_mass, bty=\"n\", ylab = \"body mass\", \n     col=penguins$species, lwd=2)\nlegend('topleft',levels(penguins$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nIt definitely looks like something is different between these different species. But can we use linear models to confidently say so?",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "05-lm-continuousvars.html#estimating-conditional-means",
-    "href": "05-lm-continuousvars.html#estimating-conditional-means",
-    "title": "6  Intro to Linear Models",
-    "section": "6.3 Estimating conditional means",
-    "text": "6.3 Estimating conditional means\nWe want to start by estimating the mean body mass of each species of penguin. The code below does this\n\npenguins                                             |&gt;\n  filter(!is.na(body_mass) , !is.na(species)) |&gt;  #remove NAs\n  group_by(species)                             |&gt;\n  summarise(mean_body_mass = mean(body_mass))\n\n# A tibble: 3 × 2\n  species   mean_body_mass\n  &lt;fct&gt;              &lt;dbl&gt;\n1 Adelie             3701.\n2 Chinstrap          3733.\n3 Gentoo             5076.\n\n\nYou may be wondering why I am referring to this as a conditional mean. To explain this I’ll walk through the math of the model, focussing only on Adelie and Gentoo penguins.\nWe will model body mass of an individual penguin, \\(i\\), conditional on its species.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if individual \\(i\\) is a Gentoo penguin.\n\\(e_i\\) is the residual\n\nWe could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo. \\[ \\text{Mass}_{i|\\text{Adelie}} = b_0 + e_i\\] \\[ \\text{Mass}_{i|\\text{Gentoo}} = b_0 + b_1 + e_i\\]\nWe can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (\\(b_0\\)) is 3701 and since the mean mass of a Gentoo penguin is 5076, \\(b_1 =\\) 1375$.",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "05-lm-continuousvars.html#building-a-model-with-lm",
-    "href": "05-lm-continuousvars.html#building-a-model-with-lm",
-    "title": "6  Intro to Linear Models",
-    "section": "6.4 Building a model with lm()",
-    "text": "6.4 Building a model with lm()",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "05-lm-continuousvars.html#residuals",
-    "href": "05-lm-continuousvars.html#residuals",
-    "title": "6  Intro to Linear Models",
-    "section": "6.5 Residuals",
-    "text": "6.5 Residuals",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "05-lm-continuousvars.html#more-than-two-categories",
-    "href": "05-lm-continuousvars.html#more-than-two-categories",
-    "title": "6  Intro to Linear Models",
-    "section": "6.6 More than two categories",
-    "text": "6.6 More than two categories\nWhat if we want to look at all three species? We can use the same modelling approach as before.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i +b_2 \\times \\text{Chinstrap} + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(b_2\\) is the difference in mass between Chinstrap and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if not.\n\\(\\text{Chinstrap}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is a Chinstrap penguin and \\(0\\) if not.\n\\(e_i\\) is the residual",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "05-lm-continuousvars.html#building-a-model-with-more-than-two-categories-with-lm",
-    "href": "05-lm-continuousvars.html#building-a-model-with-more-than-two-categories-with-lm",
-    "title": "6  Intro to Linear Models",
-    "section": "6.7 Building a model with more than two categories with lm()",
-    "text": "6.7 Building a model with more than two categories with lm()",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "05-lm-continuousvars.html#a-note-on-the-reference-categories.",
-    "href": "05-lm-continuousvars.html#a-note-on-the-reference-categories.",
-    "title": "6  Intro to Linear Models",
-    "section": "6.8 A note on the reference categories.",
-    "text": "6.8 A note on the reference categories.",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
     ]
   },
   {
     "objectID": "06-lm-multiplepredictors.html",
     "href": "06-lm-multiplepredictors.html",
-    "title": "7  Intro to Linear Models",
+    "title": "7  Linear models with multiple predicotrs",
     "section": "",
-    "text": "7.1 What are we doing here?\nWe previously discussed linear models and learned to build a very simple linear model to estimate the mean. We also learned how to calculate residuals, which in this case were the differences between each datapoint and the mean.\nIn this section we’ll expand our linear model to incorporate differences between categories.",
+    "text": "7.1 What are we doing here?",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#motivating-example",
-    "href": "06-lm-multiplepredictors.html#motivating-example",
-    "title": "7  Intro to Linear Models",
-    "section": "7.2 Motivating example",
-    "text": "7.2 Motivating example\nYou may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.\n\n#penguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs\nplot(penguins$body_mass, bty=\"n\", ylab = \"body mass\", \n     col=penguins$species, lwd=2)\nlegend('topleft',levels(penguins$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nIt definitely looks like something is different between these different species. But can we use linear models to confidently say so?",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#estimating-conditional-means",
-    "href": "06-lm-multiplepredictors.html#estimating-conditional-means",
-    "title": "7  Intro to Linear Models",
-    "section": "7.3 Estimating conditional means",
-    "text": "7.3 Estimating conditional means\nWe want to start by estimating the mean body mass of each species of penguin. The code below does this\n\npenguins                                             |&gt;\n  filter(!is.na(body_mass) , !is.na(species)) |&gt;  #remove NAs\n  group_by(species)                             |&gt;\n  summarise(mean_body_mass = mean(body_mass))\n\n# A tibble: 3 × 2\n  species   mean_body_mass\n  &lt;fct&gt;              &lt;dbl&gt;\n1 Adelie             3701.\n2 Chinstrap          3733.\n3 Gentoo             5076.\n\n\nYou may be wondering why I am referring to this as a conditional mean. To explain this I’ll walk through the math of the model, focussing only on Adelie and Gentoo penguins.\nWe will model body mass of an individual penguin, \\(i\\), conditional on its species.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if individual \\(i\\) is a Gentoo penguin.\n\\(e_i\\) is the residual\n\nWe could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo. \\[ \\text{Mass}_{i|\\text{Adelie}} = b_0 + e_i\\] \\[ \\text{Mass}_{i|\\text{Gentoo}} = b_0 + b_1 + e_i\\]\nWe can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (\\(b_0\\)) is 3701 and since the mean mass of a Gentoo penguin is 5076, \\(b_1 =\\) 1375$.",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#building-a-model-with-lm",
-    "href": "06-lm-multiplepredictors.html#building-a-model-with-lm",
-    "title": "7  Intro to Linear Models",
-    "section": "7.4 Building a model with lm()",
-    "text": "7.4 Building a model with lm()",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#residuals",
-    "href": "06-lm-multiplepredictors.html#residuals",
-    "title": "7  Intro to Linear Models",
-    "section": "7.5 Residuals",
-    "text": "7.5 Residuals",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#more-than-two-categories",
-    "href": "06-lm-multiplepredictors.html#more-than-two-categories",
-    "title": "7  Intro to Linear Models",
-    "section": "7.6 More than two categories",
-    "text": "7.6 More than two categories\nWhat if we want to look at all three species? We can use the same modelling approach as before.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i +b_2 \\times \\text{Chinstrap} + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(b_2\\) is the difference in mass between Chinstrap and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if not.\n\\(\\text{Chinstrap}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is a Chinstrap penguin and \\(0\\) if not.\n\\(e_i\\) is the residual",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#building-a-model-with-more-than-two-categories-with-lm",
-    "href": "06-lm-multiplepredictors.html#building-a-model-with-more-than-two-categories-with-lm",
-    "title": "7  Intro to Linear Models",
-    "section": "7.7 Building a model with more than two categories with lm()",
-    "text": "7.7 Building a model with more than two categories with lm()",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#a-note-on-the-reference-categories.",
-    "href": "06-lm-multiplepredictors.html#a-note-on-the-reference-categories.",
-    "title": "7  Intro to Linear Models",
-    "section": "7.8 A note on the reference categories.",
-    "text": "7.8 A note on the reference categories.",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predicotrs</span>"
     ]
   },
   {
     "objectID": "07-lm-interactions.html",
     "href": "07-lm-interactions.html",
-    "title": "8  Intro to Linear Models",
+    "title": "8  Linear models and interactions",
     "section": "",
     "text": "8.1 What are we doing here?\nWe previously discussed linear models and learned to build a very simple linear model to estimate the mean. We also learned how to calculate residuals, which in this case were the differences between each datapoint and the mean.\nIn this section we’ll expand our linear model to incorporate differences between categories.",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Linear models and interactions</span>"
     ]
   },
   {
     "objectID": "07-lm-interactions.html#motivating-example",
     "href": "07-lm-interactions.html#motivating-example",
-    "title": "8  Intro to Linear Models",
+    "title": "8  Linear models and interactions",
     "section": "8.2 Motivating example",
-    "text": "8.2 Motivating example\nYou may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.\n\n#penguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs\nplot(penguins$body_mass, bty=\"n\", ylab = \"body mass\", \n     col=penguins$species, lwd=2)\nlegend('topleft',levels(penguins$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nIt definitely looks like something is different between these different species. But can we use linear models to confidently say so?",
+    "text": "8.2 Motivating example",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "07-lm-interactions.html#estimating-conditional-means",
-    "href": "07-lm-interactions.html#estimating-conditional-means",
-    "title": "8  Intro to Linear Models",
-    "section": "8.3 Estimating conditional means",
-    "text": "8.3 Estimating conditional means\nWe want to start by estimating the mean body mass of each species of penguin. The code below does this\n\npenguins                                             |&gt;\n  filter(!is.na(body_mass) , !is.na(species)) |&gt;  #remove NAs\n  group_by(species)                             |&gt;\n  summarise(mean_body_mass = mean(body_mass))\n\n# A tibble: 3 × 2\n  species   mean_body_mass\n  &lt;fct&gt;              &lt;dbl&gt;\n1 Adelie             3701.\n2 Chinstrap          3733.\n3 Gentoo             5076.\n\n\nYou may be wondering why I am referring to this as a conditional mean. To explain this I’ll walk through the math of the model, focussing only on Adelie and Gentoo penguins.\nWe will model body mass of an individual penguin, \\(i\\), conditional on its species.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if individual \\(i\\) is a Gentoo penguin.\n\\(e_i\\) is the residual\n\nWe could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo. \\[ \\text{Mass}_{i|\\text{Adelie}} = b_0 + e_i\\] \\[ \\text{Mass}_{i|\\text{Gentoo}} = b_0 + b_1 + e_i\\]\nWe can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (\\(b_0\\)) is 3701 and since the mean mass of a Gentoo penguin is 5076, \\(b_1 =\\) 1375$.",
-    "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "07-lm-interactions.html#building-a-model-with-lm",
-    "href": "07-lm-interactions.html#building-a-model-with-lm",
-    "title": "8  Intro to Linear Models",
-    "section": "8.4 Building a model with lm()",
-    "text": "8.4 Building a model with lm()",
-    "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "07-lm-interactions.html#residuals",
-    "href": "07-lm-interactions.html#residuals",
-    "title": "8  Intro to Linear Models",
-    "section": "8.5 Residuals",
-    "text": "8.5 Residuals",
-    "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "07-lm-interactions.html#more-than-two-categories",
-    "href": "07-lm-interactions.html#more-than-two-categories",
-    "title": "8  Intro to Linear Models",
-    "section": "8.6 More than two categories",
-    "text": "8.6 More than two categories\nWhat if we want to look at all three species? We can use the same modelling approach as before.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i +b_2 \\times \\text{Chinstrap} + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(b_2\\) is the difference in mass between Chinstrap and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if not.\n\\(\\text{Chinstrap}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is a Chinstrap penguin and \\(0\\) if not.\n\\(e_i\\) is the residual",
-    "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "07-lm-interactions.html#building-a-model-with-more-than-two-categories-with-lm",
-    "href": "07-lm-interactions.html#building-a-model-with-more-than-two-categories-with-lm",
-    "title": "8  Intro to Linear Models",
-    "section": "8.7 Building a model with more than two categories with lm()",
-    "text": "8.7 Building a model with more than two categories with lm()",
-    "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "07-lm-interactions.html#a-note-on-the-reference-categories.",
-    "href": "07-lm-interactions.html#a-note-on-the-reference-categories.",
-    "title": "8  Intro to Linear Models",
-    "section": "8.8 A note on the reference categories.",
-    "text": "8.8 A note on the reference categories.",
-    "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Linear models and interactions</span>"
     ]
   },
   {
     "objectID": "08-multipletesting.html",
     "href": "08-multipletesting.html",
-    "title": "9  Intro to Linear Models",
+    "title": "9  Multiple testing issues (and opportunities)",
     "section": "",
-    "text": "9.1 What are we doing here?\nWe previously discussed linear models and learned to build a very simple linear model to estimate the mean. We also learned how to calculate residuals, which in this case were the differences between each datapoint and the mean.\nIn this section we’ll expand our linear model to incorporate differences between categories.",
+    "text": "9.1 What are we doing here?",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Multiple testing issues (and opportunities)</span>"
     ]
   },
   {
     "objectID": "08-multipletesting.html#motivating-example",
     "href": "08-multipletesting.html#motivating-example",
-    "title": "9  Intro to Linear Models",
+    "title": "9  Multiple testing issues (and opportunities)",
     "section": "9.2 Motivating example",
-    "text": "9.2 Motivating example\nYou may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.\n\n#penguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs\nplot(penguins$body_mass, bty=\"n\", ylab = \"body mass\", \n     col=penguins$species, lwd=2)\nlegend('topleft',levels(penguins$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nIt definitely looks like something is different between these different species. But can we use linear models to confidently say so?",
+    "text": "9.2 Motivating example\nYou may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "08-multipletesting.html#estimating-conditional-means",
-    "href": "08-multipletesting.html#estimating-conditional-means",
-    "title": "9  Intro to Linear Models",
-    "section": "9.3 Estimating conditional means",
-    "text": "9.3 Estimating conditional means\nWe want to start by estimating the mean body mass of each species of penguin. The code below does this\n\npenguins                                             |&gt;\n  filter(!is.na(body_mass) , !is.na(species)) |&gt;  #remove NAs\n  group_by(species)                             |&gt;\n  summarise(mean_body_mass = mean(body_mass))\n\n# A tibble: 3 × 2\n  species   mean_body_mass\n  &lt;fct&gt;              &lt;dbl&gt;\n1 Adelie             3701.\n2 Chinstrap          3733.\n3 Gentoo             5076.\n\n\nYou may be wondering why I am referring to this as a conditional mean. To explain this I’ll walk through the math of the model, focussing only on Adelie and Gentoo penguins.\nWe will model body mass of an individual penguin, \\(i\\), conditional on its species.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if individual \\(i\\) is a Gentoo penguin.\n\\(e_i\\) is the residual\n\nWe could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo. \\[ \\text{Mass}_{i|\\text{Adelie}} = b_0 + e_i\\] \\[ \\text{Mass}_{i|\\text{Gentoo}} = b_0 + b_1 + e_i\\]\nWe can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (\\(b_0\\)) is 3701 and since the mean mass of a Gentoo penguin is 5076, \\(b_1 =\\) 1375$.",
-    "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "08-multipletesting.html#building-a-model-with-lm",
-    "href": "08-multipletesting.html#building-a-model-with-lm",
-    "title": "9  Intro to Linear Models",
-    "section": "9.4 Building a model with lm()",
-    "text": "9.4 Building a model with lm()",
-    "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "08-multipletesting.html#residuals",
-    "href": "08-multipletesting.html#residuals",
-    "title": "9  Intro to Linear Models",
-    "section": "9.5 Residuals",
-    "text": "9.5 Residuals",
-    "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "08-multipletesting.html#more-than-two-categories",
-    "href": "08-multipletesting.html#more-than-two-categories",
-    "title": "9  Intro to Linear Models",
-    "section": "9.6 More than two categories",
-    "text": "9.6 More than two categories\nWhat if we want to look at all three species? We can use the same modelling approach as before.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i +b_2 \\times \\text{Chinstrap} + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(b_2\\) is the difference in mass between Chinstrap and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if not.\n\\(\\text{Chinstrap}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is a Chinstrap penguin and \\(0\\) if not.\n\\(e_i\\) is the residual",
-    "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "08-multipletesting.html#building-a-model-with-more-than-two-categories-with-lm",
-    "href": "08-multipletesting.html#building-a-model-with-more-than-two-categories-with-lm",
-    "title": "9  Intro to Linear Models",
-    "section": "9.7 Building a model with more than two categories with lm()",
-    "text": "9.7 Building a model with more than two categories with lm()",
-    "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "08-multipletesting.html#a-note-on-the-reference-categories.",
-    "href": "08-multipletesting.html#a-note-on-the-reference-categories.",
-    "title": "9  Intro to Linear Models",
-    "section": "9.8 A note on the reference categories.",
-    "text": "9.8 A note on the reference categories.",
-    "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Multiple testing issues (and opportunities)</span>"
     ]
   },
   {
     "objectID": "09-GWAS.html",
     "href": "09-GWAS.html",
-    "title": "10  Intro to Linear Models",
+    "title": "10  Applying linear models with GWAS",
     "section": "",
-    "text": "10.1 What are we doing here?\nWe previously discussed linear models and learned to build a very simple linear model to estimate the mean. We also learned how to calculate residuals, which in this case were the differences between each datapoint and the mean.\nIn this section we’ll expand our linear model to incorporate differences between categories.",
+    "text": "10.1 What are we doing here?",
     "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
     ]
   },
   {
     "objectID": "09-GWAS.html#motivating-example",
     "href": "09-GWAS.html#motivating-example",
-    "title": "10  Intro to Linear Models",
+    "title": "10  Applying linear models with GWAS",
     "section": "10.2 Motivating example",
-    "text": "10.2 Motivating example\nYou may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.\n\n#penguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs\nplot(penguins$body_mass, bty=\"n\", ylab = \"body mass\", \n     col=penguins$species, lwd=2)\nlegend('topleft',levels(penguins$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nIt definitely looks like something is different between these different species. But can we use linear models to confidently say so?",
+    "text": "10.2 Motivating example",
     "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "09-GWAS.html#estimating-conditional-means",
-    "href": "09-GWAS.html#estimating-conditional-means",
-    "title": "10  Intro to Linear Models",
-    "section": "10.3 Estimating conditional means",
-    "text": "10.3 Estimating conditional means\nWe want to start by estimating the mean body mass of each species of penguin. The code below does this\n\npenguins                                             |&gt;\n  filter(!is.na(body_mass) , !is.na(species)) |&gt;  #remove NAs\n  group_by(species)                             |&gt;\n  summarise(mean_body_mass = mean(body_mass))\n\n# A tibble: 3 × 2\n  species   mean_body_mass\n  &lt;fct&gt;              &lt;dbl&gt;\n1 Adelie             3701.\n2 Chinstrap          3733.\n3 Gentoo             5076.\n\n\nYou may be wondering why I am referring to this as a conditional mean. To explain this I’ll walk through the math of the model, focussing only on Adelie and Gentoo penguins.\nWe will model body mass of an individual penguin, \\(i\\), conditional on its species.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if individual \\(i\\) is a Gentoo penguin.\n\\(e_i\\) is the residual\n\nWe could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo. \\[ \\text{Mass}_{i|\\text{Adelie}} = b_0 + e_i\\] \\[ \\text{Mass}_{i|\\text{Gentoo}} = b_0 + b_1 + e_i\\]\nWe can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (\\(b_0\\)) is 3701 and since the mean mass of a Gentoo penguin is 5076, \\(b_1 =\\) 1375$.",
-    "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "09-GWAS.html#building-a-model-with-lm",
-    "href": "09-GWAS.html#building-a-model-with-lm",
-    "title": "10  Intro to Linear Models",
-    "section": "10.4 Building a model with lm()",
-    "text": "10.4 Building a model with lm()",
-    "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "09-GWAS.html#residuals",
-    "href": "09-GWAS.html#residuals",
-    "title": "10  Intro to Linear Models",
-    "section": "10.5 Residuals",
-    "text": "10.5 Residuals",
-    "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "09-GWAS.html#more-than-two-categories",
-    "href": "09-GWAS.html#more-than-two-categories",
-    "title": "10  Intro to Linear Models",
-    "section": "10.6 More than two categories",
-    "text": "10.6 More than two categories\nWhat if we want to look at all three species? We can use the same modelling approach as before.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i +b_2 \\times \\text{Chinstrap} + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(b_2\\) is the difference in mass between Chinstrap and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if not.\n\\(\\text{Chinstrap}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is a Chinstrap penguin and \\(0\\) if not.\n\\(e_i\\) is the residual",
-    "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "09-GWAS.html#building-a-model-with-more-than-two-categories-with-lm",
-    "href": "09-GWAS.html#building-a-model-with-more-than-two-categories-with-lm",
-    "title": "10  Intro to Linear Models",
-    "section": "10.7 Building a model with more than two categories with lm()",
-    "text": "10.7 Building a model with more than two categories with lm()",
-    "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Intro to Linear Models</span>"
-    ]
-  },
-  {
-    "objectID": "09-GWAS.html#a-note-on-the-reference-categories.",
-    "href": "09-GWAS.html#a-note-on-the-reference-categories.",
-    "title": "10  Intro to Linear Models",
-    "section": "10.8 A note on the reference categories.",
-    "text": "10.8 A note on the reference categories.",
-    "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
     ]
   }
 ]
