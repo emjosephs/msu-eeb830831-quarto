@@ -1,5 +1,5 @@
 ---
-title: "Intro to Linear Models"
+title: "Linear models with categories"
 format: html
 editor: source
 ---

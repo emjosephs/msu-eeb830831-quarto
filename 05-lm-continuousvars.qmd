@@ -16,3 +16,57 @@ palette(lacroix_palette("Mango", type = "discrete"))
 
 ## What are we doing here?
 
+Many of the variables you are interested are continuous, not categorical. In this section we'll extend our linear models to incorporate continuous predictor variables.
+
+## Motivating example
+
+Continuing with the penguin example data, imagine that we are interested in understanding how bill length determines body mass -- do penguins with longer bills also have larger bodies?
+
+```{r}
+penguins2 <- penguins |> filter(!is.na(body_mass) & !is.na(bill_len)) ##filter out ones with NAs
+plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
+
+```
+
+We can plot out the data and see that there is potentially a relationship between bill length and body mass. But, imagine we have a biological reason for wanting to model body mass as a function of bill length. How would we do that?
+
+## Starting with categories
+
+In the last section we learned about testing for differences between categorical predictor variables. 
+We could start there to think about how to approach this challenge.
+Specifically, imagine we divide our penguins in half and compare body mass between the half with longer bills and the half with shorter bills.
+
+We'll start by making a categorical variable, "long", that is true if a penguin's bill length is greater than the median bill length and otherwise false.
+```{r}
+penguins2 <- mutate(penguins2, long = bill_len>median(bill_len))
+
+```
+
+Next, we will see if long bill length predicts mass, using a categorical model:
+
+$$\text{Mass}_i = b_0 + b_1 \times \text{Long}_i + e_i $$
+Now, let's fit this model with lm()
+
+```{r}
+model1 <- lm(body_mass ~ long, data = penguins2)
+summary(model1)
+```
+
+We get a pretty strong signal that the long-billed penguins are larger than small-billed penguins since $b_1$ is estimated to be 872.22, which is the difference in means between long-billed and short-billed penguins.
+
+You are likely shaking your head at this model, since we are losing a lot of information about our data by collapsing what we have into two means. In fact, doing this type of collapsing of continuous data into categorical data is often a really bad idea for multiple reasons.
+
+NOTE IS THIS A GOOD APPROACH I DON'T KNOW
+
+
+## Linear models with continuous predictors
+
+Instead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable.
+
+The equation will look very similar to before, except we have replaced the categorical indicator variable with a continuous variable:
+
+$$\text{Mass}_i = b_0 + b_1 \times \text{Length}_i + e_i $$
+or more generally
+
+$$\hat{y}_i = b_0 + b_1 \times x_i + e_i$$
+As before, $y_i$ is the conditional mean of the response variable for an individual with value $x_i$, $b_0$ is the intercept or the conditional mean of an individual with a value of $x_i = 0$. However, we can think of $b_1$ now as the slope of the relationship between the predictor and response variable.

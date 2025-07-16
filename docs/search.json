@@ -222,81 +222,81 @@
   {
     "objectID": "04-lm-categories.html",
     "href": "04-lm-categories.html",
-    "title": "5  Intro to Linear Models",
+    "title": "5  Linear models with categories",
     "section": "",
     "text": "5.1 What are we doing here?\nWe previously discussed linear models and learned to build a very simple linear model to estimate the mean. We also learned how to calculate residuals, which in this case were the differences between each datapoint and the mean.\nIn this section we’ll expand our linear model to incorporate differences between categories.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
   },
   {
     "objectID": "04-lm-categories.html#motivating-example",
     "href": "04-lm-categories.html#motivating-example",
-    "title": "5  Intro to Linear Models",
+    "title": "5  Linear models with categories",
     "section": "5.2 Motivating example",
     "text": "5.2 Motivating example\nYou may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.\n\n#penguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs\nplot(penguins$body_mass, bty=\"n\", ylab = \"body mass\", \n     col=penguins$species, lwd=2)\nlegend('topleft',levels(penguins$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nIt definitely looks like something is different between these different species. But can we use linear models to confidently say so?",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
   },
   {
     "objectID": "04-lm-categories.html#estimating-conditional-means",
     "href": "04-lm-categories.html#estimating-conditional-means",
-    "title": "5  Intro to Linear Models",
+    "title": "5  Linear models with categories",
     "section": "5.3 Estimating conditional means",
     "text": "5.3 Estimating conditional means\nWe want to start by estimating the mean body mass of each species of penguin. The code below does this\n\npenguins                                             |&gt;\n  filter(!is.na(body_mass) , !is.na(species)) |&gt;  #remove NAs\n  group_by(species)                             |&gt;\n  summarise(mean_body_mass = mean(body_mass))\n\n# A tibble: 3 × 2\n  species   mean_body_mass\n  &lt;fct&gt;              &lt;dbl&gt;\n1 Adelie             3701.\n2 Chinstrap          3733.\n3 Gentoo             5076.\n\n\nYou may be wondering why I am referring to this as a conditional mean. To explain this I’ll walk through the math of the model, focussing only on Adelie and Gentoo penguins.\nWe will model body mass of an individual penguin, \\(i\\), conditional on its species.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if individual \\(i\\) is a Gentoo penguin.\n\\(e_i\\) is the residual\n\nWe could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo. \\[ \\text{Mass}_{i|\\text{Adelie}} = b_0 + e_i\\] \\[ \\text{Mass}_{i|\\text{Gentoo}} = b_0 + b_1 + e_i\\]\nWe can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (\\(b_0\\)) is 3701 and since the mean mass of a Gentoo penguin is 5076, \\(b_1 =\\) 1375$.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
   },
   {
     "objectID": "04-lm-categories.html#building-a-model-with-lm",
     "href": "04-lm-categories.html#building-a-model-with-lm",
-    "title": "5  Intro to Linear Models",
+    "title": "5  Linear models with categories",
     "section": "5.4 Building a model with lm()",
     "text": "5.4 Building a model with lm()",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
   },
   {
     "objectID": "04-lm-categories.html#residuals",
     "href": "04-lm-categories.html#residuals",
-    "title": "5  Intro to Linear Models",
+    "title": "5  Linear models with categories",
     "section": "5.5 Residuals",
     "text": "5.5 Residuals",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
   },
   {
     "objectID": "04-lm-categories.html#more-than-two-categories",
     "href": "04-lm-categories.html#more-than-two-categories",
-    "title": "5  Intro to Linear Models",
+    "title": "5  Linear models with categories",
     "section": "5.6 More than two categories",
     "text": "5.6 More than two categories\nWhat if we want to look at all three species? We can use the same modelling approach as before.\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Adelie}_i +b_2 \\times \\text{Chinstrap} + e_i \\]\n\n\\(b_0\\) is the intercept and, in this case, the mean body mass of Gentoo penguins\n\\(b_1\\) is the difference in mass between Adelie and Gentoo penguins.\n\\(b_2\\) is the difference in mass between Chinstrap and Gentoo penguins.\n\\(\\text{Adelie}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is an Adelie penguin and \\(0\\) if not.\n\\(\\text{Chinstrap}_i\\) is an indicator variable that is \\(1\\) if individual \\(i\\) is a Chinstrap penguin and \\(0\\) if not.\n\\(e_i\\) is the residual",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
   },
   {
     "objectID": "04-lm-categories.html#building-a-model-with-more-than-two-categories-with-lm",
     "href": "04-lm-categories.html#building-a-model-with-more-than-two-categories-with-lm",
-    "title": "5  Intro to Linear Models",
+    "title": "5  Linear models with categories",
     "section": "5.7 Building a model with more than two categories with lm()",
     "text": "5.7 Building a model with more than two categories with lm()",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
   },
   {
     "objectID": "04-lm-categories.html#a-note-on-the-reference-categories.",
     "href": "04-lm-categories.html#a-note-on-the-reference-categories.",
-    "title": "5  Intro to Linear Models",
+    "title": "5  Linear models with categories",
     "section": "5.8 A note on the reference categories.",
     "text": "5.8 A note on the reference categories.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
   },
   {
@@ -304,7 +304,37 @@
     "href": "05-lm-continuousvars.html",
     "title": "6  Linear models with continuous variables",
     "section": "",
-    "text": "6.1 What are we doing here?",
+    "text": "6.1 What are we doing here?\nMany of the variables you are interested are continuous, not categorical. In this section we’ll extend our linear models to incorporate continuous predictor variables.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
+    ]
+  },
+  {
+    "objectID": "05-lm-continuousvars.html#motivating-example",
+    "href": "05-lm-continuousvars.html#motivating-example",
+    "title": "6  Linear models with continuous variables",
+    "section": "6.2 Motivating example",
+    "text": "6.2 Motivating example\nContinuing with the penguin example data, imagine that we are interested in understanding how bill length determines body mass – do penguins with longer bills also have larger bodies?\n\npenguins2 &lt;- penguins |&gt; filter(!is.na(body_mass) & !is.na(bill_len)) ##filter out ones with NAs\nplot(penguins2$bill_len, penguins2$body_mass, bty=\"n\", ylab = \"body mass\", xlab = \"bill length\", lwd=2, col = palette()[1])\n\n\n\n\n\n\n\n\nWe can plot out the data and see that there is potentially a relationship between bill length and body mass. But, imagine we have a biological reason for wanting to model body mass as a function of bill length. How would we do that?",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
+    ]
+  },
+  {
+    "objectID": "05-lm-continuousvars.html#starting-with-categories",
+    "href": "05-lm-continuousvars.html#starting-with-categories",
+    "title": "6  Linear models with continuous variables",
+    "section": "6.3 Starting with categories",
+    "text": "6.3 Starting with categories\nIn the last section we learned about testing for differences between categorical predictor variables. We could start there to think about how to approach this challenge. Specifically, imagine we divide our penguins in half and compare body mass between the half with longer bills and the half with shorter bills.\nWe’ll start by making a categorical variable, “long”, that is true if a penguin’s bill length is greater than the median bill length and otherwise false.\n\npenguins2 &lt;- mutate(penguins2, long = bill_len&gt;median(bill_len))\n\nNext, we will see if long bill length predicts mass, using a categorical model:\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Long}_i + e_i \\] Now, let’s fit this model with lm()\n\nmodel1 &lt;- lm(body_mass ~ long, data = penguins2)\nsummary(model1)\n\n\nCall:\nlm(formula = body_mass ~ long, data = penguins2)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1937.87  -487.87   -14.25   512.13  1662.13 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  3765.64      51.51   73.11   &lt;2e-16 ***\nlongTRUE      872.22      72.85   11.97   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 673.6 on 340 degrees of freedom\nMultiple R-squared:  0.2966,    Adjusted R-squared:  0.2945 \nF-statistic: 143.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16\n\n\nWe get a pretty strong signal that the long-billed penguins are larger than small-billed penguins since \\(b_1\\) is estimated to be 872.22, which is the difference in means between long-billed and short-billed penguins.\nYou are likely shaking your head at this model, since we are losing a lot of information about our data by collapsing what we have into two means. In fact, doing this type of collapsing of continuous data into categorical data is often a really bad idea for multiple reasons.\nNOTE IS THIS A GOOD APPROACH I DON’T KNOW",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
+    ]
+  },
+  {
+    "objectID": "05-lm-continuousvars.html#linear-models-with-continuous-predictors",
+    "href": "05-lm-continuousvars.html#linear-models-with-continuous-predictors",
+    "title": "6  Linear models with continuous variables",
+    "section": "6.4 Linear models with continuous predictors",
+    "text": "6.4 Linear models with continuous predictors\nInstead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable.\nThe equation will look very similar to before, except we have replaced the categorical indicator variable with a continuous variable:\n\\[\\text{Mass}_i = b_0 + b_1 \\times \\text{Length}_i + e_i \\] or more generally\n\\[\\hat{y}_i = b_0 + b_1 \\times x_i + e_i\\] As before, \\(y_i\\) is the conditional mean of the response variable for an individual with value \\(x_i\\), \\(b_0\\) is the intercept or the conditional mean of an individual with a value of \\(x_i = 0\\). However, we can think of \\(b_1\\) now as the slope of the relationship between the predictor and response variable.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
     ]
