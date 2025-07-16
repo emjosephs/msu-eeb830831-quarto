@@ -12,6 +12,7 @@ book:
     - 02-likelihood.qmd
     - 03-linearModels1.qmd
     - 04-linearModels2.qmd
+    - 05-linearModels3.qmd
 
 #bibliography: references.bib
 

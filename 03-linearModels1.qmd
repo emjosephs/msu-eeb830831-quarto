@@ -206,12 +206,15 @@ sum(dnorm(myPenguins$body_mass, mean=4600, sd=40, log=T))
 We aren't just interested in estimating the likelihood for one parameter -- instead we want to find the parameters that give us the highest likelihood of observing our data. One way to do this is with a grid search where we calculate the log likelihood for a grid of parameters and identify the parameter associated with the highest likelihood. We'll do this here for a grid of possible values of $\hat{y}_i$ (we won't mess with $\sigma^2$ here).
 
 ```{r}
-myGrid <- seq(2000,6000,length.out=1000)
+myGrid <- seq(2000,6000,length.out=100) #make the grid
 
 myLogLikes <- sapply(myGrid,function(m)
-  {sum(dnorm(penguins2$body_mass,mean=m,sd=40,log=TRUE))})
+  {sum(dnorm(penguins2$body_mass,mean=m,sd=40,log=TRUE))}) ## function to calculate the log likeliood for each value in the grid
 
-myGrid[which.max(myLogLikes)]
+myGrid[which.max(myLogLikes)] ## figure out the grid value that corresponds to the maximum likelihood
+
+
+plot(myGrid, myLogLikes, bty="n", xlab = "mean body weight", ylab = "log likelihood")
 
 ```
 
