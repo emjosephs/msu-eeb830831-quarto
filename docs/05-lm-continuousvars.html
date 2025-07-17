@@ -257,7 +257,8 @@ window.Quarto = {
   <li><a href="#likelihood-and-linear-models" id="toc-likelihood-and-linear-models" class="nav-link" data-scroll-target="#likelihood-and-linear-models"><span class="header-section-number">6.6</span> Likelihood and linear models</a></li>
   <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">6.7</span> Fitting with lm()</a>
   <ul class="collapse">
-  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.7.1</span> Residuals</a></li>
+  <li><a href="#fitting-with-glmmtmb" id="toc-fitting-with-glmmtmb" class="nav-link" data-scroll-target="#fitting-with-glmmtmb"><span class="header-section-number">6.7.1</span> Fitting with glmmTMB()</a></li>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.7.2</span> Residuals</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -386,27 +387,19 @@ Coefficients:
 <p>Based on these estimates, we can now write out our model as</p>
 <p><span class="math display">\[\text{Body mass}_i = 362.31 + 87.42 \times \text{Bill length}_i \]</span></p>
 <p>We can interpret this as for every mm of bill length increase, body mass increases by 87 grams.</p>
+<p>We can also estimate <span class="math inline">\(\sigma^2\)</span>, the variance of the residuals.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sigma</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 645.4333</code></pre>
+</div>
+</div>
+<p>This allows us to write our model including the stochastic function as:</p>
+<p><span class="math display">\[ \text{Body mass}_i \sim N(362.31 + 87.42 \times \text{Bill length}_i, 645.43) \]</span></p>
 <p>We can also plot the predictions from this model over the raw data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">1</span>])</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model1, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">3</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<section id="residuals" class="level3" data-number="6.7.1">
-<h3 data-number="6.7.1" class="anchored" data-anchor-id="residuals"><span class="header-section-number">6.7.1</span> Residuals</h3>
-<p>It can be a bit confusing to think about the distribution of residuals in these types of models. Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.</p>
-<p>Let’s look at the residuals from this model</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>myResiduals <span class="ot">&lt;-</span> <span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass, .fitted, .resid)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(myResiduals<span class="sc">$</span>.resid, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"residuals"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">1</span>])</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model1, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">3</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -415,7 +408,59 @@ Coefficients:
 </div>
 </div>
 </div>
-<p>It helps me to imagine that the residuals themselves follow a normal distribution centered around a mean that follows the model predictions.</p>
+<section id="fitting-with-glmmtmb" class="level3" data-number="6.7.1">
+<h3 data-number="6.7.1" class="anchored" data-anchor-id="fitting-with-glmmtmb"><span class="header-section-number">6.7.1</span> Fitting with glmmTMB()</h3>
+</section>
+<section id="residuals" class="level3" data-number="6.7.2">
+<h3 data-number="6.7.2" class="anchored" data-anchor-id="residuals"><span class="header-section-number">6.7.2</span> Residuals</h3>
+<p>It can be a bit confusing to think about the distribution of residuals in these types of models. Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.</p>
+<p>Let’s look at the residuals from this model</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>myResiduals <span class="ot">&lt;-</span> <span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass, .fitted, .resid)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(myResiduals<span class="sc">$</span>.resid, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"residuals"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It helps me to imagine that the values themselves follow a normal distribution centered around a mean that follows the model predictions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">1</span>])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model1, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">3</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">40</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">47</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">4</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">54</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">5</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnorm</span>(<span class="at">mean=</span>model1<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span>model1<span class="sc">$</span>coefficients[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">40</span>, <span class="at">sd =</span> <span class="fu">sigma</span>(model1), <span class="at">n=</span><span class="dv">1000</span>), <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"body mass"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">freq=</span>F, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">7000</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnorm</span>(<span class="at">mean=</span>model1<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span>model1<span class="sc">$</span>coefficients[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">47</span>, <span class="at">sd =</span> <span class="fu">sigma</span>(model1), <span class="at">n=</span><span class="dv">1000</span>), <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"body mass"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">4</span>], <span class="at">freq=</span>F, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">7000</span>))</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnorm</span>(<span class="at">mean=</span>model1<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span>model1<span class="sc">$</span>coefficients[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">54</span>, <span class="at">sd =</span> <span class="fu">sigma</span>(model1), <span class="at">n=</span><span class="dv">1000</span>), <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"body mass"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">5</span>], <span class="at">freq=</span>F, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">7000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#   lines(seq(30,65,length.out=100),</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                                   dnorm(seq(30,65,length.out=100),</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#                                   mean=model1$coefficients[2],</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#                                   sd=sigma(model1)))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 </section>

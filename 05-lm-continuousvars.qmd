@@ -110,6 +110,17 @@ $$\text{Body mass}_i = 362.31 + 87.42 \times \text{Bill length}_i $$
 
 We can interpret this as for every mm of bill length increase, body mass increases by 87 grams.
 
+We can also estimate $\sigma^2$, the variance of the residuals.
+
+```{r}
+sigma(model1)
+
+```
+
+This allows us to write our model including the stochastic function as:
+
+$$ \text{Body mass}_i \sim N(362.31 + 87.42 \times \text{Bill length}_i, 645.43) $$ 
+
 We can also plot the predictions from this model over the raw data.
 
 ```{r}
@@ -117,6 +128,8 @@ plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab 
 abline(model1, col=palette()[3], lwd=2)
 
 ```
+
+### Fitting with glmmTMB()
 
 ### Residuals
 
@@ -130,5 +143,27 @@ myResiduals <- augment(model1) |> select(body_mass, .fitted, .resid)
 hist(myResiduals$.resid, main="", xlab = "residuals", border="white", col=palette()[2])
 ```
 
-It helps me to imagine that the residuals themselves follow a normal distribution centered around a mean that follows the model predictions.
+It helps me to imagine that the values themselves follow a normal distribution centered around a mean that follows the model predictions.
+
+```{r}
+
+plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
+abline(model1, col=palette()[3], lwd=2)
+abline(v=40, col=palette()[2], lty=2, lwd=2)
+abline(v=47, col=palette()[4], lty=2, lwd=2)
+abline(v=54, col=palette()[5], lty=2, lwd=2)
+
+par(mfrow=c(3,1))
+
+hist(rnorm(mean=model1$coefficients[1]+model1$coefficients[2]*40, sd = sigma(model1), n=1000), main="", xlab = "body mass", border="white", col=palette()[2], freq=F, xlim=c(2000, 7000))
+
+hist(rnorm(mean=model1$coefficients[1]+model1$coefficients[2]*47, sd = sigma(model1), n=1000), main="", xlab = "body mass", border="white", col=palette()[4], freq=F, xlim=c(2000, 7000))
+
+hist(rnorm(mean=model1$coefficients[1]+model1$coefficients[2]*54, sd = sigma(model1), n=1000), main="", xlab = "body mass", border="white", col=palette()[5], freq=F, xlim=c(2000, 7000))
+
+#	lines(seq(30,65,length.out=100),
+#									dnorm(seq(30,65,length.out=100),
+#									mean=model1$coefficients[2],
+#									sd=sigma(model1)))
+```
 
