@@ -27,3 +27,10 @@ In the previous sections, we found that both species and bill length affect body
 model2 <- lm(body_mass~bill_len+species,data=penguins2)
 summary(model2)
 ```
+
+```{r}
+plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = penguins2$species)
+legend('topleft',levels(penguins$species),bty="n", pch=1, pt.lwd=2, col=palette())
+
+
+```
