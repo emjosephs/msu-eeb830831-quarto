@@ -61,12 +61,74 @@ NOTE IS THIS A GOOD APPROACH I DON'T KNOW
 
 ## Linear models with continuous predictors
 
-Instead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable.
+Instead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable. This model is called **linear regression** and it has two components: the **determenistic function** and the **stochastic function**
 
-The equation will look very similar to before, except we have replaced the categorical indicator variable with a continuous variable:
+### The deterministic function
 
-$$\text{Mass}_i = b_0 + b_1 \times \text{Length}_i + e_i $$
-or more generally
+The deterministic function describes how the explanatory variables relate to the conditional mean of the response variable. In this case, since this is a linear model, we are modelling the response variable as a line:
 
-$$\hat{y}_i = b_0 + b_1 \times x_i + e_i$$
-As before, $y_i$ is the conditional mean of the response variable for an individual with value $x_i$, $b_0$ is the intercept or the conditional mean of an individual with a value of $x_i = 0$. However, we can think of $b_1$ now as the slope of the relationship between the predictor and response variable.
+$$\hat{y}_i = b_0 + b_1 \times x_i$$
+As before, $y_i$ is the conditional mean of the response variable for an individual with value $x_i$, $b_0$ is the intercept or the conditional mean of an individual with a value of $x_i = 0$ (although this value will not be meaningful if it lies far outside the range of the data). 
+
+However, we can think of $b_1$ now as the slope of the relationship between the predictor and response variable. This means that for every increase of 1 unit in $x$, $y$ increases by $b_1$.
+
+### The stochastic function
+
+The **stochastic function** explains how the residuals are distributed around the conditional means predicted by the deterministic function. Since we are working with regular linear models, we will assume that the residuals are normally distributed.
+
+$$ e_i \sim N(0, \sigma^2)$$
+
+We can combine the deterministic and stochastic functions into one model:
+
+$$y_i = \hat{y}_i + N(b_0 + b_1 \times x_i, \sigma^2)$$
+
+
+
+## Estimating parameters
+
+$$b_1 = \frac{cov_{x,y}}{s^2_x}  =  \frac{\frac{1}{(n-1)}\sum(x_i-\bar{x})(y_i-\bar{y})}{\frac{1}{(n-1)}\sum(x_i-\bar{x})^2}=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}$$ 
+
+(only include this if we do variance and covariance somewhere)
+
+## Likelihood and linear models
+
+## Fitting with lm()
+
+Let's try applying a linear model to our penguin data. We'll use the lm() function in R.
+
+$$\text{Body mass}_i = b_0 + b_1 \times \text{Bill length}_i $$
+
+```{r}
+model1 <- lm(body_mass ~ bill_len, data=penguins2)
+model1
+```
+
+Based on these estimates, we can now write out our model as
+
+
+$$\text{Body mass}_i = 362.31 + 87.42 \times \text{Bill length}_i $$
+
+We can interpret this as for every mm of bill length increase, body mass increases by 87 grams.
+
+We can also plot the predictions from this model over the raw data.
+
+```{r}
+plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
+abline(model1, col=palette()[3], lwd=2)
+
+```
+
+### Residuals
+
+It can be a bit confusing to think about the distribution of residuals in these types of models. Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.
+
+Let's look at the residuals from this model
+```{r}
+library(broom)
+myResiduals <- augment(model1) |> select(body_mass, .fitted, .resid)
+
+hist(myResiduals$.resid, main="", xlab = "residuals", border="white", col=palette()[2])
+```
+
+It helps me to imagine that the residuals themselves follow a normal distribution centered around a mean that follows the model predictions.
+
