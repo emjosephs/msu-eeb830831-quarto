@@ -430,11 +430,6 @@ Coefficients:
 </div>
 <p>It helps me to imagine that the values themselves follow a normal distribution centered around a mean that follows the model predictions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">1</span>])</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model1, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">3</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">40</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">47</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">4</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">54</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">5</span>], <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -442,24 +437,6 @@ Coefficients:
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnorm</span>(<span class="at">mean=</span>model1<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span>model1<span class="sc">$</span>coefficients[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">40</span>, <span class="at">sd =</span> <span class="fu">sigma</span>(model1), <span class="at">n=</span><span class="dv">1000</span>), <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"body mass"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">freq=</span>F, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">7000</span>))</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnorm</span>(<span class="at">mean=</span>model1<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span>model1<span class="sc">$</span>coefficients[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">47</span>, <span class="at">sd =</span> <span class="fu">sigma</span>(model1), <span class="at">n=</span><span class="dv">1000</span>), <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"body mass"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">4</span>], <span class="at">freq=</span>F, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">7000</span>))</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">rnorm</span>(<span class="at">mean=</span>model1<span class="sc">$</span>coefficients[<span class="dv">1</span>]<span class="sc">+</span>model1<span class="sc">$</span>coefficients[<span class="dv">2</span>]<span class="sc">*</span><span class="dv">54</span>, <span class="at">sd =</span> <span class="fu">sigma</span>(model1), <span class="at">n=</span><span class="dv">1000</span>), <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"body mass"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">5</span>], <span class="at">freq=</span>F, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">2000</span>, <span class="dv">7000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#   lines(seq(30,65,length.out=100),</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#                                   dnorm(seq(30,65,length.out=100),</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#                                   mean=model1$coefficients[2],</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#                                   sd=sigma(model1)))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

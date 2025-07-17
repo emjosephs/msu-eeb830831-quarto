@@ -145,7 +145,9 @@ hist(myResiduals$.resid, main="", xlab = "residuals", border="white", col=palett
 
 It helps me to imagine that the values themselves follow a normal distribution centered around a mean that follows the model predictions.
 
-```{r}
+```{r, echo=F}
+
+par(mfrow=c(1,2))
 
 plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
 abline(model1, col=palette()[3], lwd=2)
@@ -153,17 +155,35 @@ abline(v=40, col=palette()[2], lty=2, lwd=2)
 abline(v=47, col=palette()[4], lty=2, lwd=2)
 abline(v=54, col=palette()[5], lty=2, lwd=2)
 
-par(mfrow=c(3,1))
 
-hist(rnorm(mean=model1$coefficients[1]+model1$coefficients[2]*40, sd = sigma(model1), n=1000), main="", xlab = "body mass", border="white", col=palette()[2], freq=F, xlim=c(2000, 7000))
 
-hist(rnorm(mean=model1$coefficients[1]+model1$coefficients[2]*47, sd = sigma(model1), n=1000), main="", xlab = "body mass", border="white", col=palette()[4], freq=F, xlim=c(2000, 7000))
+#hist(rnorm(mean=model1$coefficients[1]+model1$coefficients[2]*40, sd = sigma(model1), n=1000), main="", xlab = "body mass", border="white", col=palette()[2], freq=F, xlim=c(2000, 7000))
 
-hist(rnorm(mean=model1$coefficients[1]+model1$coefficients[2]*54, sd = sigma(model1), n=1000), main="", xlab = "body mass", border="white", col=palette()[5], freq=F, xlim=c(2000, 7000))
+#hist(rnorm(mean=model1$coefficients[1]+model1$coefficients[2]*47, sd = sigma(model1), n=1000), main="", xlab = "body mass", border="white", col=palette()[4], freq=F, xlim=c(2000, 7000))
 
-#	lines(seq(30,65,length.out=100),
-#									dnorm(seq(30,65,length.out=100),
-#									mean=model1$coefficients[2],
-#									sd=sigma(model1)))
+#hist(rnorm(mean=model1$coefficients[1]+model1$coefficients[2]*54, sd = sigma(model1), n=1000), main="", xlab = "body mass", border="white", col=palette()[5], freq=F, xlim=c(2000, 7000))
+
+
+### OR
+
+plot(-5,-5, xlim = c(2000,7000), ylim = c(0,0.0006), xlab = "body mass", ylab = "", bty="n")
+lines(seq(2000,7000,length.out=100),
+									dnorm(seq(2000,7000,length.out=100),
+									mean=model1$coefficients[1]+model1$coefficients[2]*40,
+									sd=sigma(model1)),
+                  col = palette()[2], lwd=2, lty=2)
+
+lines(seq(2000,7000,length.out=100),
+									dnorm(seq(2000,7000,length.out=100),
+									mean=model1$coefficients[1]+model1$coefficients[2]*47,
+									sd=sigma(model1)),
+                  col = palette()[4], lwd=2, lty=2)
+
+lines(seq(2000,7000,length.out=100),
+									dnorm(seq(2000,7000,length.out=100),
+									mean=model1$coefficients[1]+model1$coefficients[2]*54,
+									sd=sigma(model1)),
+                  col = palette()[5], lwd=2, lty=2)
+
 ```
 

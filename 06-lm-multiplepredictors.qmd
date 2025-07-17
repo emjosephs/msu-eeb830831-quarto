@@ -12,6 +12,18 @@ library(tidyverse)
 library('DT')
 library(LaCroixColoR)
 palette(lacroix_palette("Mango", type = "discrete"))
+
+penguins2 <- penguins |> filter(!is.na(body_mass) & !is.na(bill_len)) ##filter out ones 
 ```
 
 ## What are we doing here?
+
+
+## Motivating example
+
+In the previous sections, we found that both species and bill length affect body mass. Can we build a model that incorporates both?
+
+```{r}
+model2 <- lm(body_mass~bill_len+species,data=penguins2)
+summary(model2)
+```
