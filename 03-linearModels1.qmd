@@ -322,7 +322,12 @@ penguins2 <- penguins |> filter(!is.na(body_mass)) ##filter out ones with NAs
 model1Residuals <-  penguins2$body_mass - model1$fitted.values
 
 ```
-
+ or even more simply, the lm() output includes the residuals.
+ 
+```{r}
+model1Residuals <- model1$residuals 
+ 
+```
 
 ## Calculating the $SS_{residual}$ 
 
@@ -346,26 +351,32 @@ model1       |>
 
 
 b) calculate mean bill length
-```{r}
+```{r, echo=F, eval=F}
 mean(penguins2$bill_len)
 
 ```
 
 c) calculate the likelihood of your data given the mean from part b and a $sigma^2$ of 5. 
-```{r}
+```{r, echo=F, eval=F}
 prod(dnorm(penguins2$bill_len, mean=43.92, sd=5, log=F))
 
 ```
 
 d) calculate the log likelihood of your data given the mean from part b
-```{r}
+```{r, echo=F, eval=F}
 
 sum(dnorm(penguins2$bill_len, mean=43.92, sd=5, log=T))
 ```
 
 e) calculate the log likelihood for a grid of means of 100 values ranging from 20 to 60. Make a plot showing these values.
 
-```{r}
+```{r, echo=F, eval=F}
+myGrid = seq(20,60, length.out=100)
 
+myLogLikes <- sapply(myGrid,function(m)
+  {sum(dnorm(penguins2$bill_len,mean=m,sd=5,log=TRUE))}) 
 
+plot(myGrid, myLogLikes, ylab = "log likelihood", xlab = "mean bill length")
 ```
+
+f) describe in words what the plot below is showing you about your data on bill length

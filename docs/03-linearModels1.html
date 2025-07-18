@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -224,7 +224,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-lm-multiplepredictors.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Linear models with multiple predicotrs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Linear models with multiple predictors</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -276,6 +276,7 @@ window.Quarto = {
   <li><a href="#calculating-residuals" id="toc-calculating-residuals" class="nav-link" data-scroll-target="#calculating-residuals"><span class="header-section-number">4.8</span> Calculating residuals</a></li>
   <li><a href="#calculating-the-ss_residual" id="toc-calculating-the-ss_residual" class="nav-link" data-scroll-target="#calculating-the-ss_residual"><span class="header-section-number">4.9</span> Calculating the <span class="math inline">\(SS_{residual}\)</span></a></li>
   <li><a href="#the-mean-minimizes-ss_residual" id="toc-the-mean-minimizes-ss_residual" class="nav-link" data-scroll-target="#the-mean-minimizes-ss_residual"><span class="header-section-number">4.10</span> The mean minimizes <span class="math inline">\(SS_{residual}\)</span></a></li>
+  <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">4.11</span> Practice problems</a></li>
   </ul>
 </nav>
     </div>
@@ -577,16 +578,20 @@ Residual standard error: 802 on 341 degrees of freedom
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass)) <span class="do">##filter out ones with NAs</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>model1Residuals <span class="ot">&lt;-</span>  penguins2<span class="sc">$</span>body_mass <span class="sc">-</span> model1<span class="sc">$</span>fitted.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>or even more simply, the lm() output includes the residuals.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model1Residuals <span class="ot">&lt;-</span> model1<span class="sc">$</span>residuals </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="calculating-the-ss_residual" class="level2" data-number="4.9">
 <h2 data-number="4.9" class="anchored" data-anchor-id="calculating-the-ss_residual"><span class="header-section-number">4.9</span> Calculating the <span class="math inline">\(SS_{residual}\)</span></h2>
 <p>TODO explain why if we’re doing this</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>model1       <span class="sc">|&gt;</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">augment</span>()                <span class="sc">|&gt;</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="at">sq_resid=</span>.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">|&gt;</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">SS=</span><span class="fu">sum</span>(sq_resid))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>model1       <span class="sc">|&gt;</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">augment</span>()                <span class="sc">|&gt;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="at">sq_resid=</span>.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">|&gt;</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">SS=</span><span class="fu">sum</span>(sq_resid))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
           SS
@@ -597,6 +602,27 @@ Residual standard error: 802 on 341 degrees of freedom
 </section>
 <section id="the-mean-minimizes-ss_residual" class="level2" data-number="4.10">
 <h2 data-number="4.10" class="anchored" data-anchor-id="the-mean-minimizes-ss_residual"><span class="header-section-number">4.10</span> The mean minimizes <span class="math inline">\(SS_{residual}\)</span></h2>
+</section>
+<section id="practice-problems" class="level2" data-number="4.11">
+<h2 data-number="4.11" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">4.11</span> Practice problems</h2>
+<ol type="1">
+<li>Continuing with the penguin data, we will look at a different variable: bill length. a) write out a linear model of bill length with one paramater for the mean.</li>
+</ol>
+<ol start="2" type="a">
+<li>calculate mean bill length</li>
+</ol>
+<ol start="3" type="a">
+<li>calculate the likelihood of your data given the mean from part b and a <span class="math inline">\(sigma^2\)</span> of 5.</li>
+</ol>
+<ol start="4" type="a">
+<li>calculate the log likelihood of your data given the mean from part b</li>
+</ol>
+<ol start="5" type="a">
+<li>calculate the log likelihood for a grid of means of 100 values ranging from 20 to 60. Make a plot showing these values.</li>
+</ol>
+<ol start="6" type="a">
+<li>describe in words what the plot below is showing you about your data on bill length</li>
+</ol>
 
 
 </section>
