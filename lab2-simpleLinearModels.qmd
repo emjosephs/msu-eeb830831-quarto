@@ -1,0 +1,16 @@
+---
+title: "Lab 2 -- Simple Linear Models"
+format: html
+editor: visual
+---
+
+This is a lab to practice simple linear models with means and categories.
+
+We will be simulating data to use in this model. 
+
+```{r}
+library(tidyverse)
+
+```
+
+

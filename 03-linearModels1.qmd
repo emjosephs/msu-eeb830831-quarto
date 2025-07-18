@@ -356,7 +356,7 @@ mean(penguins2$bill_len)
 
 ```
 
-c) calculate the likelihood of your data given the mean from part b and a $sigma^2$ of 5. 
+c) calculate the likelihood of your data given the mean from part b and a $\sigma^2$ of 5. 
 ```{r, echo=F, eval=F}
 prod(dnorm(penguins2$bill_len, mean=43.92, sd=5, log=F))
 
