@@ -6,11 +6,43 @@ editor: visual
 
 This is a lab to practice simple linear models with means and categories.
 
-We will be simulating data to use in this model. 
+We will be simulating data to use in this model.
+
 
 ```{r}
+#| label: load-packages
+#| include: false
 library(tidyverse)
-
+palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
 ```
 
 
+Pretend that you're interested in studying selection on Partridge Peas (*Chamaecrista fasciculata*). You estimate fitness (fruit count) for 200 genotypes in a common garden and want to use a linear model to estimate the mean fitness.
+ 
+$$ \text{Fitness} \sim \beta_0 + e_i$$
+$$e_i \sim N(0, \sigma^2)$$
+ 
+ 
+We will start by simulating data under this model using a normal distribution. Use the following parameters:
+$\beta_0$ = 55 and $\sigma$=5
+
+```{r}
+set.seed(20)
+myData = rnorm(n=200, mean=55, sd=5)
+
+```
+ 
+Make a histogram visualizing your data
+
+```{r}
+hist(myData, col=palette()[6], border="white", main="", xlab = "fitness")
+```
+ 
+ 
+Estimate the mean of the population using a maximum likelihood approach with a grid search. Your grid should go from 35 to 75 and have 200 points.
+
+```{r}
+
+
+```
+ 
