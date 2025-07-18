@@ -338,3 +338,34 @@ model1       |>
 
 
 ## The mean minimizes $SS_{residual}$
+
+
+## Practice problems
+
+1. Continuing with the penguin data, we will look at a different variable: bill length. a) write out a linear model of bill length with one paramater for the mean.
+
+
+b) calculate mean bill length
+```{r}
+mean(penguins2$bill_len)
+
+```
+
+c) calculate the likelihood of your data given the mean from part b and a $sigma^2$ of 5. 
+```{r}
+prod(dnorm(penguins2$bill_len, mean=43.92, sd=5, log=F))
+
+```
+
+d) calculate the log likelihood of your data given the mean from part b
+```{r}
+
+sum(dnorm(penguins2$bill_len, mean=43.92, sd=5, log=T))
+```
+
+e) calculate the log likelihood for a grid of means of 100 values ranging from 20 to 60. Make a plot showing these values.
+
+```{r}
+
+
+```
