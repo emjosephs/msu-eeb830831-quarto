@@ -187,3 +187,20 @@ lines(seq(2000,7000,length.out=100),
 
 ```
 
+
+
+
+```{r, echo=F}
+## some noodling to convince myself of stuff
+
+myExp = runif(500)*100
+myResp = myExp + rnorm(500, sd=10) 
+
+plot(myExp, myResp)
+
+myModel <- lm(myResp ~ myExp)
+
+sigma(myModel)
+
+```
+

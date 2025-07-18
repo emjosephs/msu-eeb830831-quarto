@@ -1,5 +1,5 @@
 ---
-title: "Linear models with multiple predicotrs"
+title: "Linear models with multiple predictors"
 format: html
 editor: source
 ---
