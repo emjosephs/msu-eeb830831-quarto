@@ -39,10 +39,136 @@ hist(myData, col=palette()[6], border="white", main="", xlab = "fitness")
 ```
  
  
-Estimate the mean of the population using a maximum likelihood approach with a grid search. Your grid should go from 35 to 75 and have 200 points.
+Estimate the mean of the population using a maximum likelihood approach with a grid search. Your grid should go from 35 to 75 and have 200 points. For all calculations, set $\sigma = 5$.
 
 ```{r}
+myGrid <- seq(35, 75, length.out=200)
+myLogLikes <- sapply(myGrid,function(m)
+  {sum(dnorm(myData,mean=m,sd=5,log=TRUE))}) 
 
+plot(myGrid, myLogLikes, ylab = "log likelihood", xlab = "mean fitness", bty="n")
 
+myMaxLikelihood = myGrid[which(myLogLikes == max(myLogLikes))]
+myMaxLikelihood
 ```
  
+ 
+Try doing the opposite -- keep the mean as 55 and try a grid search of $\sigma$ with 200 values of sigma.
+
+```{r}
+myGrid <- seq(1, 20, length.out=200)
+myLogLikes <- sapply(myGrid,function(m)
+  {sum(dnorm(myData,mean=55,sd=m,log=TRUE))}) 
+
+plot(myGrid, myLogLikes, ylab = "log likelihood", xlab = "mean fitness", bty="n")
+
+
+myGrid[which(myLogLikes == max(myLogLikes))]
+```
+
+Now use lm() to fit the model
+
+```{r}
+model1 <- lm(myData~1)
+
+model1
+sigma(model1)
+```
+
+
+Now let's simulate new data for two categories of plants, with 30 plants each. We will have a population of C. fasciculata from Florida and a population of C. fasciculata from Illinois. 
+
+The code below does the simulation
+
+
+```{r}
+n.1 <- 30
+n.2 <- 30
+mean.1 <- 30
+mean.2 <- 50
+sd.1 <- 5
+
+set.seed(5)
+
+#sample fitnesses based on parameters above (the round function gives us integers)
+cFlorida <- round(
+  rnorm(n=n.1, mean=mean.1, sd=sd.1))
+cIllinois <- round(
+  rnorm(n=n.2, mean=mean.2, sd=sd.1))
+
+## but data together in a dataframe
+cData <- data.frame(fitness = c(cFlorida, cIllinois), 
+		    pop=c(rep('Fla', n.1), rep('Ill', n.2)))
+
+#look at it
+plot(jitter(rep(c(0, 1), c(n.1, n.2))), cData$fitness, bty="n", xlim=c(-.5,1.5),
+     xlab = "", ylab = "fitness", xaxt="n")
+axis(1, at=c(1,0), lab = c('Fla','Ill'))
+
+```
+
+The above is an approach called "mean parameterization".
+
+We can also simulate with "effects parameterization"
+
+```{r}
+n <- n.1+n.2 # Total sample size
+beta.0 <- mean.1 # Mean for females serves as the intercept
+beta.1 <- mean.2 - mean.1 # beta.1 is the difference between categories
+x <- rep(c(0, 1), c(n.1, n.2)) # Indicator for population
+E.y <- beta.0 + beta.1 * x # Expectation
+y.obs <- rnorm(n = n, mean = E.y, sd = sd.1) # Add random variation
+
+plot(jitter(x), y.obs, bty="n", xlim=c(-.5,1.5),
+     xlab = "", ylab = "fitness", xaxt="n")
+axis(1, at=c(1,0), lab = c('Fla','Ill'))
+```
+
+Fit both models using maximum likelihood
+
+```{r}
+out.effects <- lm(cData$fitness ~ cData$pop)
+
+out.means <- lm(cData$fitness ~ cData$pop-1)
+
+summary(out.effects)
+summary(out.means)
+```
+
+What's different between these two models?
+
+Try looking at the output of these commands:
+```{r}
+model.matrix(out.effects)
+model.matrix(out.means)
+
+out.effects$coefficients
+out.means$coefficients
+```
+
+Which formulation makes the most sense to you?
+
+# Residual Diagnostics 
+
+```{r}
+# Extract residuals.
+res.vals <- out.effects$residuals
+# Extract the fitted values. 
+pred.vals <- out.effects$fitted.values
+
+
+# Is there a pattern in the residuals?
+plot(pred.vals, res.vals, main = "Residuals vs. predicted values", 
+     las = 1, xlab = "Predicted values", ylab = "Residuals", 
+     pch = 19)
+abline(h = 0)
+# What are we looking for here?
+
+```
+
+```{r}
+# Alternative approach ----------------------------------------------------
+# Another way to do this analysis is with the function t.test
+t.test(cData$fitness ~ cData$pop, var.equal = TRUE)
+# What is the default parameterization for t.test?
+```
