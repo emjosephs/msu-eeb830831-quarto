@@ -134,7 +134,7 @@
     "href": "03-linearModels1.html#linear-models",
     "title": "4  Intro to Linear Models",
     "section": "4.2 Linear models",
-    "text": "4.2 Linear models\nAs biologists, we often want to understand if one thing causes another thing.\n\nDo traits determine an organism’s fitness? In other words, are traits under selection?\nDoes genotype at this locus determine phenotype?\nDo the amount of resources shape community diversity?\nget Lauren et al to fill in some other questions\n\nTo answer these types questions, we need a way to carefully relate two variables together. We will refer throughout this course to two types of variables:\n\nExplanatory variables, also called independent variables or predictor variables.\nResponse variables, also called dependent variables.\n\nLinear models estimate the conditional mean of the \\(i^{th}\\) observation of a continuous response variable, \\(\\hat{Y}_i\\) from a (combination) of value(s) of the explanatory variables (\\(\\text{explanatory variables}_i\\)):\n\\[\\begin{equation}\n\\hat{Y}_i = f(\\text{explanatory variables}_i)\n\\end{equation}\\]\nThese models are “linear” because we estimate of the conditional mean (\\(\\hat{Y}_i\\)) by adding up all components of the model. So, each explanatory variable \\(y_{j,i}\\) is multiplied by its effect size \\(b_j\\). It might help to look at an example model below:\n\\[\\begin{equation}\n\\hat{Y}_i = a + b_1  y_{1,i} + b_2 y_{2,i} + \\dots{}\n\\end{equation}\\]\nIn this example, \\(\\hat{Y}_i\\) is estimated as the sum of the “intercept” (\\(a\\)), its value for the first explanatory variable (\\(y_{1,i}\\)) times the effect of this variable (\\(b_1\\)), its value for the second explanatory variable (\\(y_{2,i}\\)) times the effect of this variable, \\(b_2\\), and so on for all included explanatory variables.\nIn practice, fitting a linear model requires picking explanatory variables and then estimating the values of \\(a\\), \\(b_1\\), \\(b_2\\), and so on that best predict the response variables. These estimates then tell us how the explanatory variables relate to the response variable.",
+    "text": "4.2 Linear models\nAs biologists, we often want to understand if one thing causes another thing.\n\nDo traits determine an organism’s fitness? In other words, are traits under selection?\nDoes genotype at this locus determine phenotype?\nDo the amount of resources shape community diversity?\nget Lauren et al to fill in some other questions\n\nTo answer these types questions, we need a way to carefully relate two variables together. We will refer throughout this course to two types of variables:\n\nExplanatory variables, also called independent variables or predictor variables.\nResponse variables, also called dependent variables.\n\nLinear models estimate the conditional mean of the \\(i^{th}\\) observation of a continuous response variable, \\(\\hat{Y}_i\\) from a (combination) of value(s) of the explanatory variables (\\(\\text{explanatory variables}_i\\)):\n\\[\\begin{equation}\n\\hat{Y}_i = f(\\text{explanatory variables}_i)\n\\end{equation}\\]\nThese models are “linear” because we estimate of the conditional mean (\\(\\hat{Y}_i\\)) by adding up all components of the model. So, each explanatory variable \\(y_{j,i}\\) is multiplied by its effect size \\(b_j\\). It might help to look at an example model below:\n\\[\\begin{equation}\n\\hat{Y}_i = a + b_1  x_{1,i} + b_2 x_{2,i} + \\dots{}\n\\end{equation}\\]\nIn this example, \\(\\hat{Y}_i\\) is estimated as the sum of the “intercept” (\\(a\\)), its value for the first explanatory variable (\\(y_{1,i}\\)) times the effect of this variable (\\(b_1\\)), its value for the second explanatory variable (\\(y_{2,i}\\)) times the effect of this variable, \\(b_2\\), and so on for all included explanatory variables.\nIn practice, fitting a linear model requires picking explanatory variables and then estimating the values of \\(a\\), \\(b_1\\), \\(b_2\\), and so on that best predict the response variables. These estimates then tell us how the explanatory variables relate to the response variable.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intro to Linear Models</span>"
     ]
@@ -224,7 +224,7 @@
     "href": "03-linearModels1.html#practice-problems",
     "title": "4  Intro to Linear Models",
     "section": "4.11 Practice problems",
-    "text": "4.11 Practice problems\n\nContinuing with the penguin data, we will look at a different variable: bill length. a) write out a linear model of bill length with one paramater for the mean.\n\n\ncalculate mean bill length\n\n\ncalculate the likelihood of your data given the mean from part b and a \\(sigma^2\\) of 5.\n\n\ncalculate the log likelihood of your data given the mean from part b\n\n\ncalculate the log likelihood for a grid of means of 100 values ranging from 20 to 60. Make a plot showing these values.\n\n\ndescribe in words what the plot below is showing you about your data on bill length",
+    "text": "4.11 Practice problems\n\nContinuing with the penguin data, we will look at a different variable: bill length. a) write out a linear model of bill length with one paramater for the mean.\n\n\ncalculate mean bill length\n\n\ncalculate the likelihood of your data given the mean from part b and a \\(\\sigma^2\\) of 5.\n\n\ncalculate the log likelihood of your data given the mean from part b\n\n\ncalculate the log likelihood for a grid of means of 100 values ranging from 20 to 60. Make a plot showing these values.\n\n\ndescribe in words what the plot below is showing you about your data on bill length",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intro to Linear Models</span>"
     ]
@@ -394,7 +394,7 @@
     "href": "06-lm-multiplepredictors.html#motivating-example",
     "title": "7  Linear models with multiple predictors",
     "section": "7.2 Motivating example",
-    "text": "7.2 Motivating example\nIn the previous sections, we found that both species and bill length affect body mass. Can we build a model that incorporates both?\n\nmodel2 &lt;- lm(body_mass~bill_len+species,data=penguins2)\nsummary(model2)\n\n\nCall:\nlm(formula = body_mass ~ bill_len + species, data = penguins2)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-871.21 -246.17    5.29  213.13 1084.73 \n\nCoefficients:\n                 Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)       153.740    268.901   0.572    0.568    \nbill_len           91.436      6.887  13.276  &lt; 2e-16 ***\nspeciesChinstrap -885.812     88.250 -10.038  &lt; 2e-16 ***\nspeciesGentoo     578.629     75.362   7.678 1.76e-13 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 375.3 on 338 degrees of freedom\nMultiple R-squared:  0.7829,    Adjusted R-squared:  0.781 \nF-statistic: 406.3 on 3 and 338 DF,  p-value: &lt; 2.2e-16\n\n\n\nplot(penguins2$bill_len, penguins2$body_mass, bty=\"n\", ylab = \"body mass\", xlab = \"bill length\", lwd=2, col = penguins2$species)\nlegend('topleft',levels(penguins$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())",
+    "text": "7.2 Motivating example\nIn the previous sections, we found that both species and bill length affect body mass. Can we build a model that incorporates both?\nTo make things a bit simpler we will only look at Adelie and Gentoo penguins\n\npenguins2 &lt;- penguins |&gt; filter(!is.na(body_mass) & !is.na(bill_len) & !species==\"Chinstrap\") |&gt; droplevels() ##filter out missing data and chinstrap\n\n\nplot(penguins2$bill_len, penguins2$body_mass, bty=\"n\", ylab = \"body mass\", xlab = \"bill length\", lwd=2, col = penguins2$species)\nlegend('topleft',levels(penguins2$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nExamining the data, we can generate some hypotheses about how bill length and species relate to body mass.",
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
     ]
@@ -457,6 +457,46 @@
     "text": "10.2 Motivating example",
     "crumbs": [
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#building-the-model",
+    "href": "06-lm-multiplepredictors.html#building-the-model",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.3 Building the model",
+    "text": "7.3 Building the model\nLet’s think about a model of some response variable (\\(y\\)) based on two explanatory variables, \\(x_1\\) and \\(y_1\\).\nOur model looks like it did before, except now it has multiple predictors, each with its own coefficient.\n\\[ \\hat{y}_i = b_0 + b_1x_1i + b_2x_2i e_i\\]\nin our penguin example\n\\[ \\text{Body mass} = b_0 + b_1\\text{species_gentoo} + b_2\\text{bill length} + e_i\\]\nwhere \\(b_1\\) is the difference in means between Gentoo and Adelie and \\(b_2\\) is the effect of increasing bill length one unit on body mass. \\(b_0\\) is the intercept, or the predicted body mass for an Adelie penguin with a bill length of 0 (we may question how useful this value is for predictions but it is certainly useful for the model). Note that this assumes that Adelie and Gentoo penguins have the same slope, which may not always be the case.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#fitting-with-lm",
+    "href": "06-lm-multiplepredictors.html#fitting-with-lm",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.5 Fitting with lm()",
+    "text": "7.5 Fitting with lm()\n\nmodel1 &lt;- lm(body_mass~bill_len+species,data=penguins2)\nmodel1\n\n\nCall:\nlm(formula = body_mass ~ bill_len + species, data = penguins2)\n\nCoefficients:\n  (Intercept)       bill_len  speciesGentoo  \n       -267.6          102.3          484.0  \n\n\nWe can now rewrite our equation with these estimated values\n\\[ \\text{Body mass} = -267.6 + 484.0 \\times \\text{species_gentoo} + 102.3 \\times \\text{bill length} + e_i \\]\nNote that the intercept does not provide a particularly useful prediction.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#general-vs-generalized-linear-models",
+    "href": "06-lm-multiplepredictors.html#general-vs-generalized-linear-models",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.4 General vs Generalized linear models",
+    "text": "7.4 General vs Generalized linear models",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#interactions",
+    "href": "06-lm-multiplepredictors.html#interactions",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.6 Interactions",
+    "text": "7.6 Interactions\nI noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.\nWe can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a statistical interaction.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
     ]
   }
 ]

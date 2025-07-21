@@ -13,7 +13,6 @@ library('DT')
 library(LaCroixColoR)
 palette(lacroix_palette("Mango", type = "discrete"))
 
-penguins2 <- penguins |> filter(!is.na(body_mass) & !is.na(bill_len)) ##filter out ones 
 ```
 
 ## What are we doing here?
@@ -23,14 +22,54 @@ penguins2 <- penguins |> filter(!is.na(body_mass) & !is.na(bill_len)) ##filter o
 
 In the previous sections, we found that both species and bill length affect body mass. Can we build a model that incorporates both?
 
-```{r}
-model2 <- lm(body_mass~bill_len+species,data=penguins2)
-summary(model2)
-```
+To make things a bit simpler we will only look at Adelie and Gentoo penguins
+
 
 ```{r}
+penguins2 <- penguins |> filter(!is.na(body_mass) & !is.na(bill_len) & !species=="Chinstrap") |> droplevels() ##filter out missing data and chinstrap
+
+
 plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = penguins2$species)
-legend('topleft',levels(penguins$species),bty="n", pch=1, pt.lwd=2, col=palette())
-
+legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette())
 
 ```
+
+Examining the data, we can generate some hypotheses about how bill length and species relate to body mass.
+
+## Building the model
+
+Let's think about a model of some response variable ($y$) based on two explanatory variables, $x_1$ and $y_1$.
+
+Our model looks like it did before, except now it has multiple predictors, each with its own coefficient.
+
+$$ \hat{y}_i = b_0 + b_1x_1i + b_2x_2i e_i$$
+
+in our penguin example
+
+$$ \text{Body mass} = b_0 + b_1\text{species_gentoo} + b_2\text{bill length} + e_i$$
+
+where $b_1$ is the difference in means between Gentoo and Adelie and $b_2$ is the effect of increasing bill length one unit on body mass. 
+$b_0$ is the intercept, or the predicted body mass for an Adelie penguin with a bill length of 0 (we may question how useful this value is for predictions but it is certainly useful for the model).
+Note that this assumes that Adelie and Gentoo penguins have the same slope, which may not always be the case.
+
+
+## General vs Generalized linear models
+
+## Fitting with lm()
+
+```{r}
+model1 <- lm(body_mass~bill_len+species,data=penguins2)
+model1
+```
+
+We can now rewrite our equation with these estimated values
+
+$$ \text{Body mass} = -267.6 + 484.0 \times \text{species_gentoo} + 102.3 \times \text{bill length} + e_i $$
+
+Note that the intercept does not provide a particularly useful prediction.
+
+## Interactions
+
+I noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.
+
+We can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a **statistical interaction**.

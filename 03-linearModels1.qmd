@@ -43,7 +43,7 @@ Linear models estimate the conditional mean of the $i^{th}$ observation of a con
 These models are "linear" because we estimate of the conditional mean ($\hat{Y}_i$) by adding up all components of the model. So, each explanatory variable $y_{j,i}$ is multiplied by its effect size $b_j$. It might help to look at an example model below:
 
 \begin{equation} 
-\hat{Y}_i = a + b_1  y_{1,i} + b_2 y_{2,i} + \dots{}
+\hat{Y}_i = a + b_1  x_{1,i} + b_2 x_{2,i} + \dots{}
 \end{equation}
 
 In this example, $\hat{Y}_i$ is estimated as the sum of the "intercept" ($a$), its value for the first explanatory variable ($y_{1,i}$) times the effect of this variable ($b_1$), its value for the second explanatory variable ($y_{2,i}$) times the effect of this variable, $b_2$, and so on for all included explanatory variables.
