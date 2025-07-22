@@ -46,7 +46,7 @@ $$ \hat{y}_i = b_0 + b_1x_1i + b_2x_2i e_i$$
 
 in our penguin example
 
-$$ \text{Body mass} = b_0 + b_1\text{species_gentoo} + b_2\text{bill length} + e_i$$
+$$ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + e_i $$
 
 where $b_1$ is the difference in means between Gentoo and Adelie and $b_2$ is the effect of increasing bill length one unit on body mass. 
 $b_0$ is the intercept, or the predicted body mass for an Adelie penguin with a bill length of 0 (we may question how useful this value is for predictions but it is certainly useful for the model).
@@ -64,7 +64,7 @@ model1
 
 We can now rewrite our equation with these estimated values
 
-$$ \text{Body mass} = -267.6 + 484.0 \times \text{species_gentoo} + 102.3 \times \text{bill length} + e_i $$
+$$ \text{Body mass} = -267.6 + 484.0 \times \text{Gentoo} + 102.3 \times \text{bill length} + e_i $$
 
 Note that the intercept does not provide a particularly useful prediction.
 
@@ -73,3 +73,20 @@ Note that the intercept does not provide a particularly useful prediction.
 I noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.
 
 We can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a **statistical interaction**.
+
+$$ \hat{y}_i = b_0 + b_1x_1i + b_2x_2i + b_3 x_1 \times x_2 e_i$$
+
+in our penguin example
+
+$$ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + b_3 \text{Gentoo} \times \text{bill length} + e_i $$
+
+We can fit the model with lm() using the following code:
+
+```{r}
+model2 <- lm(body_mass~bill_len+species+bill_len*species,data=penguins2)
+summary(model2)
+
+```
+
+In this case the statistical interaction isn't significant, suggesting that the slope of the relationship between bill length and mass does not differ between species.
+
