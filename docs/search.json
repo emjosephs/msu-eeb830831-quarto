@@ -434,7 +434,7 @@
     "href": "06-lm-multiplepredictors.html#the-general-linear-model",
     "title": "7  Linear models with multiple predictors",
     "section": "7.6 The General Linear Model",
-    "text": "7.6 The General Linear Model\nFor the last few classes, we have been building up to a General Linear Model (not to be confused with a Generalized Linear Model!).\n\n7.6.1 Assumptions of the general linear model\nThere are a few major assumptions of general linear models.\n\nThe predictor \\(x_1\\) is linearly related to the response variable \\(y_1\\).\nThe errors (residuals), \\(e_i\\), are independent and identically distributed\nThe errors, \\(e_i\\), have a constant variance \\(\\sigma^2\\)\nIf performing inference, the errors, \\(e_i\\), are normally distributed\n\nHowever, if your data doesn’t seem to meet these assumptions, you have options.\n\nYou can transform your data\nYou can pick a new model\nYou can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point\n\nWhatever you decide to do, be transparent in your paper!\n\nGeneral vs Generalized linear models\nThese are often confused!",
+    "text": "7.6 The General Linear Model\nFor the last few classes, we have been building up to a General Linear Model (not to be confused with a Generalized Linear Model!).\n\n7.6.1 Assumptions of the general linear model\nThere are a few major assumptions of general linear models.\n\nThe predictor \\(x_1\\) is linearly related to the response variable \\(y_1\\).\nThe errors (residuals), \\(e_i\\), are independent and identically distributed\nThe errors, \\(e_i\\), have a constant variance \\(\\sigma^2\\)\nIf performing inference, the errors, \\(e_i\\), are normally distributed\n\nHowever, if your data doesn’t seem to meet these assumptions, you have options.\n\nYou can transform your data\nYou can pick a new model\nYou can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point\n\nWhatever you decide to do, be transparent in your paper!",
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
     ]
@@ -497,6 +497,16 @@
     "text": "10.2 Motivating example",
     "crumbs": [
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#general-vs-generalized-linear-models",
+    "href": "06-lm-multiplepredictors.html#general-vs-generalized-linear-models",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.7 General vs Generalized linear models",
+    "text": "7.7 General vs Generalized linear models\nThese are often confused!",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
     ]
   }
 ]

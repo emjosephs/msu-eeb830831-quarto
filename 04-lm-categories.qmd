@@ -90,4 +90,14 @@ $$\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i +b_2 \times \text{Chinstrap} 
 
 ## A note on the reference categories.
 
+## ANOVA
+
+There may be times where we have multiple category values but instead of knowing the effect of each category value on the outcome, we want to know how much variation the categories explain in general.
+
+For example, if we had 100s of penguin species, we might care less about the effect of each species than how much species matter in general. This latter value would be easier to interpret.
+
+Answering this question requires an ANOVA, which stands for "Analysis of Variance".
+
+
+
 
