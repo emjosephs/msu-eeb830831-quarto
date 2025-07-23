@@ -116,8 +116,9 @@ $$\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i +b_2 \times \text{Chinstrap} 
 ## Building a model with more than two categories with lm()
 
 ```{r}
-model1 <- lm(body_mass ~ species - 1, data = penguins)
+model1 <- lm(body_mass ~ species, data = penguins)
 model1
+summary(model1)
 ```
 
 ## A note on the reference categories.
@@ -129,6 +130,8 @@ For example, if we had 100s of penguin species, we might care less about the eff
 
 Answering this question requires an ANOVA, which stands for "Analysis of Variance"
 Formally, we are asking if individuals from different categories are drawn from the same distribution (our null hypothesis) or different distributions (our alternative hypothesis).
+
+The ANOVA also solves some other problems with multiple category linear models. The model above compares Gentoo and Chinstrap penguins with Adelie penguins but it doesn't compare Gentoo and Chinstrap with each other. Making that comparison requires rearranging the order of the model. 
 
 ### Fitting an ANOVA with in R
 ```{r}
