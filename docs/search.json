@@ -244,7 +244,7 @@
     "href": "04-lm-categories.html#motivating-example",
     "title": "5  Linear models with categories",
     "section": "5.2 Motivating example",
-    "text": "5.2 Motivating example\nYou may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.\n\n#penguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs\nplot(penguins$body_mass, bty=\"n\", ylab = \"body mass\", \n     col=penguins$species, lwd=2)\nlegend('topleft',levels(penguins$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nIt definitely looks like something is different between these different species. But can we use linear models to confidently say so?",
+    "text": "5.2 Motivating example\nYou may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.\n\nplot(penguins$body_mass, bty=\"n\", ylab = \"body mass\", \n     col=penguins$species, lwd=2)\nlegend('topleft',levels(penguins$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nIt definitely looks like something is different between these different species. But can we use linear models to confidently say so?",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
@@ -274,7 +274,7 @@
     "href": "04-lm-categories.html#residuals",
     "title": "5  Linear models with categories",
     "section": "5.5 Residuals",
-    "text": "5.5 Residuals",
+    "text": "5.5 Residuals\n\nLinear models vs t tests\nHow is what we’ve just done different from a t-test? Or is it?\n\nadelies = dplyr::filter(penguins, species==\"Adelie\")\ngentoos = dplyr::filter(penguins, species==\"Gentoo\")\n\nt.test(adelies$body_mass, gentoos$body_mass)\n\n\n    Welch Two Sample t-test\n\ndata:  adelies$body_mass and gentoos$body_mass\nt = -23.386, df = 249.64, p-value &lt; 2.2e-16\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n -1491.183 -1259.525\nsample estimates:\nmean of x mean of y \n 3700.662  5076.016 \n\n\nBoth a t-test and the linear models we’ve discussed so far are based on a normal distribution. However, the t-test uses a t distribution. The t-distribution incorporates uncertainty in our estimate of the standard deviation of a normal distribution. The more data we have, the closer the t-distribution approximates a normal distribution.\nNote that we can compare the output of our t.test above and the summary of the corresponding linear model and the t-value for species is the same!",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
@@ -294,7 +294,7 @@
     "href": "04-lm-categories.html#building-a-model-with-more-than-two-categories-with-lm",
     "title": "5  Linear models with categories",
     "section": "5.7 Building a model with more than two categories with lm()",
-    "text": "5.7 Building a model with more than two categories with lm()",
+    "text": "5.7 Building a model with more than two categories with lm()\n\nmodel1 &lt;- lm(body_mass ~ species - 1, data = penguins)\nmodel1\n\n\nCall:\nlm(formula = body_mass ~ species - 1, data = penguins)\n\nCoefficients:\n   speciesAdelie  speciesChinstrap     speciesGentoo  \n            3701              3733              5076",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
@@ -374,7 +374,7 @@
     "href": "05-lm-continuousvars.html#fitting-with-lm",
     "title": "6  Linear models with continuous variables",
     "section": "6.7 Fitting with lm()",
-    "text": "6.7 Fitting with lm()\nLet’s try applying a linear model to our penguin data. We’ll use the lm() function in R.\n\\[\\text{Body mass}_i = b_0 + b_1 \\times \\text{Bill length}_i \\]\n\nmodel1 &lt;- lm(body_mass ~ bill_len, data=penguins2)\nmodel1\n\n\nCall:\nlm(formula = body_mass ~ bill_len, data = penguins2)\n\nCoefficients:\n(Intercept)     bill_len  \n     362.31        87.42  \n\n\nBased on these estimates, we can now write out our model as\n\\[\\text{Body mass}_i = 362.31 + 87.42 \\times \\text{Bill length}_i \\]\nWe can interpret this as for every mm of bill length increase, body mass increases by 87 grams.\nWe can also estimate \\(\\sigma^2\\), the variance of the residuals.\n\nsigma(model1)\n\n[1] 645.4333\n\n\nThis allows us to write our model including the stochastic function as:\n\\[ \\text{Body mass}_i \\sim N(362.31 + 87.42 \\times \\text{Bill length}_i, 645.43) \\]\nWe can also plot the predictions from this model over the raw data.\n\nplot(penguins2$bill_len, penguins2$body_mass, bty=\"n\", ylab = \"body mass\", xlab = \"bill length\", lwd=2, col = palette()[1])\nabline(model1, col=palette()[3], lwd=2)\n\n\n\n\n\n\n\n\n\n6.7.1 Fitting with glmmTMB()\n\n\n6.7.2 Residuals\nIt can be a bit confusing to think about the distribution of residuals in these types of models. Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.\nLet’s look at the residuals from this model\n\nlibrary(broom)\nmyResiduals &lt;- augment(model1) |&gt; select(body_mass, .fitted, .resid)\n\nhist(myResiduals$.resid, main=\"\", xlab = \"residuals\", border=\"white\", col=palette()[2])\n\n\n\n\n\n\n\n\nIt helps me to imagine that the values themselves follow a normal distribution centered around a mean that follows the model predictions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] 9.882282",
+    "text": "6.7 Fitting with lm()\nLet’s try applying a linear model to our penguin data. We’ll use the lm() function in R.\n\\[\\text{Body mass}_i = b_0 + b_1 \\times \\text{Bill length}_i \\]\n\nmodel1 &lt;- lm(body_mass ~ bill_len, data=penguins2)\nmodel1\n\n\nCall:\nlm(formula = body_mass ~ bill_len, data = penguins2)\n\nCoefficients:\n(Intercept)     bill_len  \n     362.31        87.42  \n\n\nBased on these estimates, we can now write out our model as\n\\[\\text{Body mass}_i = 362.31 + 87.42 \\times \\text{Bill length}_i \\]\nWe can interpret this as for every mm of bill length increase, body mass increases by 87 grams.\nWe can also estimate \\(\\sigma^2\\), the variance of the residuals.\n\nsigma(model1)\n\n[1] 645.4333\n\n\nThis allows us to write our model including the stochastic function as:\n\\[ \\text{Body mass}_i \\sim N(362.31 + 87.42 \\times \\text{Bill length}_i, 645.43) \\]\nWe can also plot the predictions from this model over the raw data.\n\nplot(penguins2$bill_len, penguins2$body_mass, bty=\"n\", ylab = \"body mass\", xlab = \"bill length\", lwd=2, col = palette()[1])\nabline(model1, col=palette()[3], lwd=2)\n\n\n\n\n\n\n\n\n\n6.7.1 Fitting with glmmTMB()\n\n\n6.7.2 Residuals\nIt can be a bit confusing to think about the distribution of residuals in these types of models. Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.\nLet’s look at the residuals from this model\n\nlibrary(broom)\nmyResiduals &lt;- augment(model1) |&gt; select(body_mass, .fitted, .resid)\n\nhist(myResiduals$.resid, main=\"\", xlab = \"residuals\", border=\"white\", col=palette()[2])\n\n\n\n\n\n\n\n\nIt helps me to imagine that the values themselves follow a normal distribution centered around a mean that follows the model predictions.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
     ]
@@ -503,10 +503,40 @@
     "objectID": "06-lm-multiplepredictors.html#general-vs-generalized-linear-models",
     "href": "06-lm-multiplepredictors.html#general-vs-generalized-linear-models",
     "title": "7  Linear models with multiple predictors",
-    "section": "7.7 General vs Generalized linear models",
-    "text": "7.7 General vs Generalized linear models\nThese are often confused!",
+    "section": "7.8 General vs Generalized linear models",
+    "text": "7.8 General vs Generalized linear models\nThese are often confused!",
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#matrix-notation",
+    "href": "06-lm-multiplepredictors.html#matrix-notation",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.7 Matrix notation",
+    "text": "7.7 Matrix notation\nIt might be helpful for some of you to see a linear model written out in matrix notation. The equation of three matrices below describes a linear model.\n\\[\\begin{equation}\n\\begin{pmatrix}\n    1 & x_{1,1} & x_{2,1} & \\dots  & x_{k,1} \\\\\n    1 & x_{1,2} & x_{2,2} & \\dots  & x_{k,2} \\\\\n    \\vdots & \\vdots & \\vdots & \\ddots & \\vdots \\\\\n    1 & x_{1,n} & x_{2,n} & \\dots  & x_{k,n}\n\\end{pmatrix}\n\\cdot\n\\begin{pmatrix}\n    b_0 \\\\\n    b_{1}\\\\\n    b_{2}\\\\\n    \\vdots  \\\\\n     b_{k}\n\\end{pmatrix}\n=\n\\begin{pmatrix}\n    \\hat{Y_1} \\\\\n    \\hat{Y_2}\\\\\n    \\vdots  \\\\\n    \\hat{Y_n}\n\\end{pmatrix}\n\\end{equation}\\]\nThe leftmost matrix is a design matrix where each row corresponds to an individual \\(i\\) and each column corresponds to an explanatory variable. A cell in the \\(i^{th}\\) row and \\(j^{th}\\) column corresponds to individual \\(i\\)’s value for the \\(j^{th}\\) explanatory variable. The first row corresponds to the intercept so all individuals have a value of 1.\nThe middle matrix is a list of the estimated effect sizes for each corresponding explanatory variable.\nThe dot product of these two matrices gives us the predicted value for the response variable for each individual.\n\nGeneral vs Generalized linear models\nThese are often confused!",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
+    "objectID": "04-lm-categories.html#fitting-a-model-with-lm",
+    "href": "04-lm-categories.html#fitting-a-model-with-lm",
+    "title": "5  Linear models with categories",
+    "section": "5.4 Fitting a model with lm()",
+    "text": "5.4 Fitting a model with lm()\n\n## first filter out chinstraps and anything with missing data\npenguins2 &lt;- penguins                                             |&gt;\n  filter(!is.na(body_mass) , !is.na(species), species != \"Chinstrap\") |&gt; \n  droplevels()\n\nmodel1 &lt;- lm(body_mass ~ species, data=penguins2)\nsummary(model1)\n\n\nCall:\nlm(formula = body_mass ~ species, data = penguins2)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1126.02  -369.50   -26.02   343.00  1223.98 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)    3700.66      39.02   94.83   &lt;2e-16 ***\nspeciesGentoo  1375.35      58.24   23.61   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 479.5 on 272 degrees of freedom\nMultiple R-squared:  0.6721,    Adjusted R-squared:  0.6709 \nF-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
+    ]
+  },
+  {
+    "objectID": "04-lm-categories.html#anova",
+    "href": "04-lm-categories.html#anova",
+    "title": "5  Linear models with categories",
+    "section": "5.9 ANOVA",
+    "text": "5.9 ANOVA\nThere may be times where we have multiple category values but instead of knowing the effect of each category value on the outcome, we just want to know if individuals from different species have different body masses in general. For example, if we had 100s of penguin species, we might care less about the effect of each species than how much species matter in general. This latter value would be easier to interpret.\nAnswering this question requires an ANOVA, which stands for “Analysis of Variance” Formally, we are asking if individuals from different categories are drawn from the same distribution (our null hypothesis) or different distributions (our alternative hypothesis).\n\n5.9.1 Fitting an ANOVA with in R\n\n#install.packages('car')\nlibrary(car)\n\nLoading required package: carData\n\n\n\nAttaching package: 'car'\n\n\nThe following object is masked from 'package:dplyr':\n\n    recode\n\n\nThe following object is masked from 'package:purrr':\n\n    some\n\nAnova(model1)\n\nAnova Table (Type II tests)\n\nResponse: body_mass\n              Sum Sq  Df F value    Pr(&gt;F)    \nspecies   6184785267   3  9647.3 &lt; 2.2e-16 ***\nResiduals   72443483 339                      \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
   }
 ]

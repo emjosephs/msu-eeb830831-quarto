@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -249,11 +249,15 @@ window.Quarto = {
   <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">5.1</span> What are we doing here?</a></li>
   <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">5.2</span> Motivating example</a></li>
   <li><a href="#estimating-conditional-means" id="toc-estimating-conditional-means" class="nav-link" data-scroll-target="#estimating-conditional-means"><span class="header-section-number">5.3</span> Estimating conditional means</a></li>
-  <li><a href="#building-a-model-with-lm" id="toc-building-a-model-with-lm" class="nav-link" data-scroll-target="#building-a-model-with-lm"><span class="header-section-number">5.4</span> Building a model with lm()</a></li>
+  <li><a href="#fitting-a-model-with-lm" id="toc-fitting-a-model-with-lm" class="nav-link" data-scroll-target="#fitting-a-model-with-lm"><span class="header-section-number">5.4</span> Fitting a model with lm()</a></li>
   <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">5.5</span> Residuals</a></li>
   <li><a href="#more-than-two-categories" id="toc-more-than-two-categories" class="nav-link" data-scroll-target="#more-than-two-categories"><span class="header-section-number">5.6</span> More than two categories</a></li>
   <li><a href="#building-a-model-with-more-than-two-categories-with-lm" id="toc-building-a-model-with-more-than-two-categories-with-lm" class="nav-link" data-scroll-target="#building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">5.7</span> Building a model with more than two categories with lm()</a></li>
   <li><a href="#a-note-on-the-reference-categories." id="toc-a-note-on-the-reference-categories." class="nav-link" data-scroll-target="#a-note-on-the-reference-categories."><span class="header-section-number">5.8</span> A note on the reference categories.</a></li>
+  <li><a href="#anova" id="toc-anova" class="nav-link" data-scroll-target="#anova"><span class="header-section-number">5.9</span> ANOVA</a>
+  <ul class="collapse">
+  <li><a href="#fitting-an-anova-with-in-r" id="toc-fitting-an-anova-with-in-r" class="nav-link" data-scroll-target="#fitting-an-anova-with-in-r"><span class="header-section-number">5.9.1</span> Fitting an ANOVA with in R</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -288,10 +292,9 @@ window.Quarto = {
 <h2 data-number="5.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">5.2</span> Motivating example</h2>
 <p>You may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#penguins2 &lt;- penguins |&gt; filter(!is.na(body_mass)) ##filter out ones with NAs</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span>penguins<span class="sc">$</span>species, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topleft'</span>,<span class="fu">levels</span>(penguins<span class="sc">$</span>species),<span class="at">bty=</span><span class="st">"n"</span>, <span class="at">pch=</span><span class="dv">1</span>, <span class="at">pt.lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="fu">palette</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span>penguins<span class="sc">$</span>species, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topleft'</span>,<span class="fu">levels</span>(penguins<span class="sc">$</span>species),<span class="at">bty=</span><span class="st">"n"</span>, <span class="at">pch=</span><span class="dv">1</span>, <span class="at">pt.lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="fu">palette</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -331,11 +334,65 @@ window.Quarto = {
 <p>We could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo. <span class="math display">\[ \text{Mass}_{i|\text{Adelie}} = b_0 + e_i\]</span> <span class="math display">\[ \text{Mass}_{i|\text{Gentoo}} = b_0 + b_1 + e_i\]</span></p>
 <p>We can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (<span class="math inline">\(b_0\)</span>) is 3701 and since the mean mass of a Gentoo penguin is 5076, <span class="math inline">\(b_1 =\)</span> 1375$.</p>
 </section>
-<section id="building-a-model-with-lm" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="building-a-model-with-lm"><span class="header-section-number">5.4</span> Building a model with lm()</h2>
+<section id="fitting-a-model-with-lm" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="fitting-a-model-with-lm"><span class="header-section-number">5.4</span> Fitting a model with lm()</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## first filter out chinstraps and anything with missing data</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins                                             <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass) , <span class="sc">!</span><span class="fu">is.na</span>(species), species <span class="sc">!=</span> <span class="st">"Chinstrap"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> species, <span class="at">data=</span>penguins2)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ species, data = penguins2)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1126.02  -369.50   -26.02   343.00  1223.98 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3700.66      39.02   94.83   &lt;2e-16 ***
+speciesGentoo  1375.35      58.24   23.61   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 479.5 on 272 degrees of freedom
+Multiple R-squared:  0.6721,    Adjusted R-squared:  0.6709 
+F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
 </section>
 <section id="residuals" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="residuals"><span class="header-section-number">5.5</span> Residuals</h2>
+<div class="fyi">
+<p><strong>Linear models vs t tests</strong></p>
+<p>How is what we’ve just done different from a t-test? Or is it?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>adelies <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins, species<span class="sc">==</span><span class="st">"Adelie"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>gentoos <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins, species<span class="sc">==</span><span class="st">"Gentoo"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(adelies<span class="sc">$</span>body_mass, gentoos<span class="sc">$</span>body_mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  adelies$body_mass and gentoos$body_mass
+t = -23.386, df = 249.64, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -1491.183 -1259.525
+sample estimates:
+mean of x mean of y 
+ 3700.662  5076.016 </code></pre>
+</div>
+</div>
+<p>Both a t-test and the linear models we’ve discussed so far are based on a normal distribution. However, the t-test uses a t distribution. The t-distribution incorporates uncertainty in our estimate of the standard deviation of a normal distribution. The more data we have, the closer the t-distribution approximates a normal distribution.</p>
+<p>Note that we can compare the output of our t.test above and the summary of the corresponding linear model and the t-value for species is the same!</p>
+</div>
 </section>
 <section id="more-than-two-categories" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="more-than-two-categories"><span class="header-section-number">5.6</span> More than two categories</h2>
@@ -352,11 +409,64 @@ window.Quarto = {
 </section>
 <section id="building-a-model-with-more-than-two-categories-with-lm" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">5.7</span> Building a model with more than two categories with lm()</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> species <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data =</span> penguins)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ species - 1, data = penguins)
+
+Coefficients:
+   speciesAdelie  speciesChinstrap     speciesGentoo  
+            3701              3733              5076  </code></pre>
+</div>
+</div>
 </section>
 <section id="a-note-on-the-reference-categories." class="level2" data-number="5.8">
 <h2 data-number="5.8" class="anchored" data-anchor-id="a-note-on-the-reference-categories."><span class="header-section-number">5.8</span> A note on the reference categories.</h2>
+</section>
+<section id="anova" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="anova"><span class="header-section-number">5.9</span> ANOVA</h2>
+<p>There may be times where we have multiple category values but instead of knowing the effect of each category value on the outcome, we just want to know if individuals from different species have different body masses in general. For example, if we had 100s of penguin species, we might care less about the effect of each species than how much species matter in general. This latter value would be easier to interpret.</p>
+<p>Answering this question requires an ANOVA, which stands for “Analysis of Variance” Formally, we are asking if individuals from different categories are drawn from the same distribution (our null hypothesis) or different distributions (our alternative hypothesis).</p>
+<section id="fitting-an-anova-with-in-r" class="level3" data-number="5.9.1">
+<h3 data-number="5.9.1" class="anchored" data-anchor-id="fitting-an-anova-with-in-r"><span class="header-section-number">5.9.1</span> Fitting an ANOVA with in R</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('car')</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: carData</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'car'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    recode</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    some</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type II tests)
+
+Response: body_mass
+              Sum Sq  Df F value    Pr(&gt;F)    
+species   6184785267   3  9647.3 &lt; 2.2e-16 ***
+Residuals   72443483 339                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

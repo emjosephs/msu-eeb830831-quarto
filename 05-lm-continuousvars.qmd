@@ -189,8 +189,7 @@ lines(seq(2000,7000,length.out=100),
 
 
 
-
-```{r, echo=F}
+```{r, echo=F, eval=F}
 ## some noodling to convince myself of stuff
 
 myExp = runif(500)*100

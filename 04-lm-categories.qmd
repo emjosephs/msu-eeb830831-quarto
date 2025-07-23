@@ -65,10 +65,39 @@ $$ \text{Mass}_{i|\text{Gentoo}} = b_0 + b_1 + e_i$$
 
 We can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin ($b_0$) is 3701 and since the mean mass of a Gentoo penguin is 5076, $b_1 =$ 1375$.
 
-## Building a model with lm()
+## Fitting a model with lm()
 
+```{r}
+## first filter out chinstraps and anything with missing data
+penguins2 <- penguins                                             |>
+  filter(!is.na(body_mass) , !is.na(species), species != "Chinstrap") |> 
+  droplevels()
+
+model1 <- lm(body_mass ~ species, data=penguins2)
+summary(model1)
+```
 
 ## Residuals
+
+:::fyi
+**Linear models vs t-tests**
+
+How is what we've just done different from a t-test? Or is it?
+
+```{r}
+adelies = dplyr::filter(penguins, species=="Adelie")
+gentoos = dplyr::filter(penguins, species=="Gentoo")
+
+t.test(adelies$body_mass, gentoos$body_mass)
+
+```
+
+Both a t-test and the linear models we've discussed so far are based on a normal distribution.
+However, the t-test uses a t distribution. The t-distribution incorporates uncertainty in our estimate of the standard deviation of a normal distribution. The more data we have, the closer the t-distribution approximates a normal distribution.
+
+Note that we can compare the output of our t.test above and the summary of the corresponding linear model and the t-value for species is the same!
+
+:::
 
 
 ## More than two categories
