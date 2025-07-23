@@ -25,7 +25,6 @@ In this section we'll expand our linear model to incorporate differences between
 You may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let's look more closely by making a plot of the body masses by color.
 
 ```{r}
-#penguins2 <- penguins |> filter(!is.na(body_mass)) ##filter out ones with NAs
 plot(penguins$body_mass, bty="n", ylab = "body mass", 
      col=penguins$species, lwd=2)
 legend('topleft',levels(penguins$species),bty="n", pch=1, pt.lwd=2, col=palette())
@@ -87,17 +86,27 @@ $$\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i +b_2 \times \text{Chinstrap} 
 
 ## Building a model with more than two categories with lm()
 
+```{r}
+model1 <- lm(body_mass ~ species - 1, data = penguins)
+model1
+```
 
 ## A note on the reference categories.
 
 ## ANOVA
 
-There may be times where we have multiple category values but instead of knowing the effect of each category value on the outcome, we want to know how much variation the categories explain in general.
-
+There may be times where we have multiple category values but instead of knowing the effect of each category value on the outcome, we just want to know if individuals from different species have different body masses in general.
 For example, if we had 100s of penguin species, we might care less about the effect of each species than how much species matter in general. This latter value would be easier to interpret.
 
-Answering this question requires an ANOVA, which stands for "Analysis of Variance".
+Answering this question requires an ANOVA, which stands for "Analysis of Variance"
+Formally, we are asking if individuals from different categories are drawn from the same distribution (our null hypothesis) or different distributions (our alternative hypothesis).
 
+### Fitting an ANOVA with in R
+```{r}
+#install.packages('car')
+library(car)
 
+Anova(model1)
+```
 
 
