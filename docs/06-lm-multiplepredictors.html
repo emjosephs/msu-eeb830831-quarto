@@ -133,6 +133,7 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="assets/sticky-notes.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -249,6 +250,11 @@ window.Quarto = {
   <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">7.2</span> Motivating example</a></li>
   <li><a href="#building-the-model" id="toc-building-the-model" class="nav-link" data-scroll-target="#building-the-model"><span class="header-section-number">7.3</span> Building the model</a></li>
   <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">7.4</span> Fitting with lm()</a></li>
+  <li><a href="#interactions" id="toc-interactions" class="nav-link" data-scroll-target="#interactions"><span class="header-section-number">7.5</span> Interactions</a></li>
+  <li><a href="#the-general-linear-model" id="toc-the-general-linear-model" class="nav-link" data-scroll-target="#the-general-linear-model"><span class="header-section-number">7.6</span> The General Linear Model</a>
+  <ul class="collapse">
+  <li><a href="#assumptions-of-the-general-linear-model" id="toc-assumptions-of-the-general-linear-model" class="nav-link" data-scroll-target="#assumptions-of-the-general-linear-model"><span class="header-section-number">7.6.1</span> Assumptions of the general linear model</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -280,9 +286,13 @@ window.Quarto = {
 <section id="motivating-example" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">7.2</span> Motivating example</h2>
 <p>In the previous sections, we found that both species and bill length affect body mass. Can we build a model that incorporates both?</p>
+<p>To make things a bit simpler we will only look at Adelie and Gentoo penguins</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> penguins2<span class="sc">$</span>species)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topleft'</span>,<span class="fu">levels</span>(penguins<span class="sc">$</span>species),<span class="at">bty=</span><span class="st">"n"</span>, <span class="at">pch=</span><span class="dv">1</span>, <span class="at">pt.lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="fu">palette</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(bill_len) <span class="sc">&amp;</span> <span class="sc">!</span>species<span class="sc">==</span><span class="st">"Chinstrap"</span>) <span class="sc">|&gt;</span> <span class="fu">droplevels</span>() <span class="do">##filter out missing data and chinstrap</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> penguins2<span class="sc">$</span>species)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topleft'</span>,<span class="fu">levels</span>(penguins2<span class="sc">$</span>species),<span class="at">bty=</span><span class="st">"n"</span>, <span class="at">pch=</span><span class="dv">1</span>, <span class="at">pt.lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="fu">palette</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -297,38 +307,93 @@ window.Quarto = {
 <h2 data-number="7.3" class="anchored" data-anchor-id="building-the-model"><span class="header-section-number">7.3</span> Building the model</h2>
 <p>Let’s think about a model of some response variable (<span class="math inline">\(y\)</span>) based on two explanatory variables, <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y_1\)</span>.</p>
 <p>Our model looks like it did before, except now it has multiple predictors, each with its own coefficient.</p>
-<p><span class="math display">\[ \hat{y}_i = b_0 + b_1*x_1i + b_2*x_2i e_i\]</span></p>
+<p><span class="math display">\[ \hat{y}_i = b_0 + b_1x_1i + b_2x_2i e_i\]</span></p>
+<p>in our penguin example</p>
+<p><span class="math display">\[ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + e_i \]</span></p>
+<p>where <span class="math inline">\(b_1\)</span> is the difference in means between Gentoo and Adelie and <span class="math inline">\(b_2\)</span> is the effect of increasing bill length one unit on body mass. <span class="math inline">\(b_0\)</span> is the intercept, or the predicted body mass for an Adelie penguin with a bill length of 0 (we may question how useful this value is for predictions but it is certainly useful for the model). Note that this assumes that Adelie and Gentoo penguins have the same slope, which may not always be the case.</p>
 </section>
 <section id="fitting-with-lm" class="level2" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">7.4</span> Fitting with lm()</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>bill_len<span class="sc">+</span>species,<span class="at">data=</span>penguins2)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>bill_len<span class="sc">+</span>species,<span class="at">data=</span>penguins2)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
 lm(formula = body_mass ~ bill_len + species, data = penguins2)
 
+Coefficients:
+  (Intercept)       bill_len  speciesGentoo  
+       -267.6          102.3          484.0  </code></pre>
+</div>
+</div>
+<p>We can now rewrite our equation with these estimated values</p>
+<p><span class="math display">\[ \text{Body mass} = -267.6 + 484.0 \times \text{Gentoo} + 102.3 \times \text{bill length} + e_i \]</span></p>
+<p>Note that the intercept does not provide a particularly useful prediction.</p>
+</section>
+<section id="interactions" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="interactions"><span class="header-section-number">7.5</span> Interactions</h2>
+<p>I noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.</p>
+<p>We can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a <strong>statistical interaction</strong>.</p>
+<p><span class="math display">\[ \hat{y}_i = b_0 + b_1x_1i + b_2x_2i + b_3 x_1 \times x_2 e_i\]</span></p>
+<p>in our penguin example</p>
+<p><span class="math display">\[ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + b_3 \text{Gentoo} \times \text{bill length} + e_i \]</span></p>
+<p>We can fit the model with lm() using the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>bill_len<span class="sc">+</span>species<span class="sc">+</span>bill_len<span class="sc">*</span>species,<span class="at">data=</span>penguins2)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ bill_len + species + bill_len * species, 
+    data = penguins2)
+
 Residuals:
-    Min      1Q  Median      3Q     Max 
--871.21 -246.17    5.29  213.13 1084.73 
+   Min     1Q Median     3Q    Max 
+-782.6 -261.8  -12.9  249.2 1126.3 
 
 Coefficients:
-                 Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)       153.740    268.901   0.572    0.568    
-bill_len           91.436      6.887  13.276  &lt; 2e-16 ***
-speciesChinstrap -885.812     88.250 -10.038  &lt; 2e-16 ***
-speciesGentoo     578.629     75.362   7.678 1.76e-13 ***
+                       Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)               34.88     453.96   0.077    0.939    
+bill_len                  94.50      11.68   8.094 1.98e-14 ***
+speciesGentoo           -158.71     699.81  -0.227    0.821    
+bill_len:speciesGentoo    14.96      16.17   0.925    0.356    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 375.3 on 338 degrees of freedom
-Multiple R-squared:  0.7829,    Adjusted R-squared:  0.781 
-F-statistic: 406.3 on 3 and 338 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 380.8 on 270 degrees of freedom
+Multiple R-squared:  0.7947,    Adjusted R-squared:  0.7924 
+F-statistic: 348.4 on 3 and 270 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
+</div>
+<p>In this case the statistical interaction isn’t significant, suggesting that the slope of the relationship between bill length and mass does not differ between species.</p>
+</section>
+<section id="the-general-linear-model" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="the-general-linear-model"><span class="header-section-number">7.6</span> The General Linear Model</h2>
+<p>For the last few classes, we have been building up to a General Linear Model (not to be confused with a Generalized Linear Model!).</p>
+<section id="assumptions-of-the-general-linear-model" class="level3" data-number="7.6.1">
+<h3 data-number="7.6.1" class="anchored" data-anchor-id="assumptions-of-the-general-linear-model"><span class="header-section-number">7.6.1</span> Assumptions of the general linear model</h3>
+<p>There are a few major assumptions of general linear models.</p>
+<ul>
+<li><p>The predictor <span class="math inline">\(x_1\)</span> is linearly related to the response variable <span class="math inline">\(y_1\)</span>.</p></li>
+<li><p>The errors (residuals), <span class="math inline">\(e_i\)</span>, are independent and identically distributed</p></li>
+<li><p>The errors, <span class="math inline">\(e_i\)</span>, have a constant variance <span class="math inline">\(\sigma^2\)</span></p></li>
+<li><p>If performing inference, the errors, <span class="math inline">\(e_i\)</span>, are normally distributed</p></li>
+</ul>
+<p>However, if your data doesn’t seem to meet these assumptions, you have options.</p>
+<ol type="1">
+<li>You can transform your data</li>
+<li>You can pick a new model</li>
+<li>You can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point</li>
+</ol>
+<p>Whatever you decide to do, be transparent in your paper!</p>
+<div class="fyi">
+<p>General vs Generalized linear models</p>
+<p>These are often confused!</p>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

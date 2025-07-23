@@ -53,8 +53,6 @@ $b_0$ is the intercept, or the predicted body mass for an Adelie penguin with a 
 Note that this assumes that Adelie and Gentoo penguins have the same slope, which may not always be the case.
 
 
-## General vs Generalized linear models
-
 ## Fitting with lm()
 
 ```{r}
@@ -90,3 +88,33 @@ summary(model2)
 
 In this case the statistical interaction isn't significant, suggesting that the slope of the relationship between bill length and mass does not differ between species.
 
+
+## The General Linear Model
+
+For the last few classes, we have been building up to a General Linear Model (not to be confused with a Generalized Linear Model!). 
+
+### Assumptions of the general linear model
+
+There are a few major assumptions of general linear models.
+
+* The predictor $x_1$ is linearly related to the response variable $y_1$.
+
+* The errors (residuals), $e_i$, are independent and identically distributed
+
+* The errors, $e_i$, have a constant variance $\sigma^2$
+
+* If performing inference, the errors, $e_i$, are normally distributed
+
+However, if your data doesn't seem to meet these assumptions, you have options.
+
+1. You can transform your data
+2. You can pick a new model
+3. You can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point
+
+Whatever you decide to do, be transparent in your paper!
+
+:::fyi
+General vs Generalized linear models
+
+These are often confused!
+:::

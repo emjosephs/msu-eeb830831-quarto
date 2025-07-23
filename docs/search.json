@@ -374,7 +374,7 @@
     "href": "05-lm-continuousvars.html#fitting-with-lm",
     "title": "6  Linear models with continuous variables",
     "section": "6.7 Fitting with lm()",
-    "text": "6.7 Fitting with lm()\nLet’s try applying a linear model to our penguin data. We’ll use the lm() function in R.\n\\[\\text{Body mass}_i = b_0 + b_1 \\times \\text{Bill length}_i \\]\n\nmodel1 &lt;- lm(body_mass ~ bill_len, data=penguins2)\nmodel1\n\n\nCall:\nlm(formula = body_mass ~ bill_len, data = penguins2)\n\nCoefficients:\n(Intercept)     bill_len  \n     362.31        87.42  \n\n\nBased on these estimates, we can now write out our model as\n\\[\\text{Body mass}_i = 362.31 + 87.42 \\times \\text{Bill length}_i \\]\nWe can interpret this as for every mm of bill length increase, body mass increases by 87 grams.\nWe can also estimate \\(\\sigma^2\\), the variance of the residuals.\n\nsigma(model1)\n\n[1] 645.4333\n\n\nThis allows us to write our model including the stochastic function as:\n\\[ \\text{Body mass}_i \\sim N(362.31 + 87.42 \\times \\text{Bill length}_i, 645.43) \\]\nWe can also plot the predictions from this model over the raw data.\n\nplot(penguins2$bill_len, penguins2$body_mass, bty=\"n\", ylab = \"body mass\", xlab = \"bill length\", lwd=2, col = palette()[1])\nabline(model1, col=palette()[3], lwd=2)\n\n\n\n\n\n\n\n\n\n6.7.1 Fitting with glmmTMB()\n\n\n6.7.2 Residuals\nIt can be a bit confusing to think about the distribution of residuals in these types of models. Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.\nLet’s look at the residuals from this model\n\nlibrary(broom)\nmyResiduals &lt;- augment(model1) |&gt; select(body_mass, .fitted, .resid)\n\nhist(myResiduals$.resid, main=\"\", xlab = \"residuals\", border=\"white\", col=palette()[2])\n\n\n\n\n\n\n\n\nIt helps me to imagine that the values themselves follow a normal distribution centered around a mean that follows the model predictions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] 10.19582",
+    "text": "6.7 Fitting with lm()\nLet’s try applying a linear model to our penguin data. We’ll use the lm() function in R.\n\\[\\text{Body mass}_i = b_0 + b_1 \\times \\text{Bill length}_i \\]\n\nmodel1 &lt;- lm(body_mass ~ bill_len, data=penguins2)\nmodel1\n\n\nCall:\nlm(formula = body_mass ~ bill_len, data = penguins2)\n\nCoefficients:\n(Intercept)     bill_len  \n     362.31        87.42  \n\n\nBased on these estimates, we can now write out our model as\n\\[\\text{Body mass}_i = 362.31 + 87.42 \\times \\text{Bill length}_i \\]\nWe can interpret this as for every mm of bill length increase, body mass increases by 87 grams.\nWe can also estimate \\(\\sigma^2\\), the variance of the residuals.\n\nsigma(model1)\n\n[1] 645.4333\n\n\nThis allows us to write our model including the stochastic function as:\n\\[ \\text{Body mass}_i \\sim N(362.31 + 87.42 \\times \\text{Bill length}_i, 645.43) \\]\nWe can also plot the predictions from this model over the raw data.\n\nplot(penguins2$bill_len, penguins2$body_mass, bty=\"n\", ylab = \"body mass\", xlab = \"bill length\", lwd=2, col = palette()[1])\nabline(model1, col=palette()[3], lwd=2)\n\n\n\n\n\n\n\n\n\n6.7.1 Fitting with glmmTMB()\n\n\n6.7.2 Residuals\nIt can be a bit confusing to think about the distribution of residuals in these types of models. Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.\nLet’s look at the residuals from this model\n\nlibrary(broom)\nmyResiduals &lt;- augment(model1) |&gt; select(body_mass, .fitted, .resid)\n\nhist(myResiduals$.resid, main=\"\", xlab = \"residuals\", border=\"white\", col=palette()[2])\n\n\n\n\n\n\n\n\nIt helps me to imagine that the values themselves follow a normal distribution centered around a mean that follows the model predictions.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n[1] 9.882282",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
     ]
@@ -394,7 +394,47 @@
     "href": "06-lm-multiplepredictors.html#motivating-example",
     "title": "7  Linear models with multiple predictors",
     "section": "7.2 Motivating example",
-    "text": "7.2 Motivating example\nIn the previous sections, we found that both species and bill length affect body mass. Can we build a model that incorporates both?\n\nplot(penguins2$bill_len, penguins2$body_mass, bty=\"n\", ylab = \"body mass\", xlab = \"bill length\", lwd=2, col = penguins2$species)\nlegend('topleft',levels(penguins$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nExamining the data, we can generate some hypotheses about how bill length and species relate to body mass.",
+    "text": "7.2 Motivating example\nIn the previous sections, we found that both species and bill length affect body mass. Can we build a model that incorporates both?\nTo make things a bit simpler we will only look at Adelie and Gentoo penguins\n\npenguins2 &lt;- penguins |&gt; filter(!is.na(body_mass) & !is.na(bill_len) & !species==\"Chinstrap\") |&gt; droplevels() ##filter out missing data and chinstrap\n\n\nplot(penguins2$bill_len, penguins2$body_mass, bty=\"n\", ylab = \"body mass\", xlab = \"bill length\", lwd=2, col = penguins2$species)\nlegend('topleft',levels(penguins2$species),bty=\"n\", pch=1, pt.lwd=2, col=palette())\n\n\n\n\n\n\n\n\nExamining the data, we can generate some hypotheses about how bill length and species relate to body mass.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#building-the-model",
+    "href": "06-lm-multiplepredictors.html#building-the-model",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.3 Building the model",
+    "text": "7.3 Building the model\nLet’s think about a model of some response variable (\\(y\\)) based on two explanatory variables, \\(x_1\\) and \\(y_1\\).\nOur model looks like it did before, except now it has multiple predictors, each with its own coefficient.\n\\[ \\hat{y}_i = b_0 + b_1x_1i + b_2x_2i e_i\\]\nin our penguin example\n\\[ \\text{Body mass} = b_0 + b_1 \\text{Gentoo} + b_2 \\text{bill length} + e_i \\]\nwhere \\(b_1\\) is the difference in means between Gentoo and Adelie and \\(b_2\\) is the effect of increasing bill length one unit on body mass. \\(b_0\\) is the intercept, or the predicted body mass for an Adelie penguin with a bill length of 0 (we may question how useful this value is for predictions but it is certainly useful for the model). Note that this assumes that Adelie and Gentoo penguins have the same slope, which may not always be the case.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#fitting-with-lm",
+    "href": "06-lm-multiplepredictors.html#fitting-with-lm",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.4 Fitting with lm()",
+    "text": "7.4 Fitting with lm()\n\nmodel1 &lt;- lm(body_mass~bill_len+species,data=penguins2)\nmodel1\n\n\nCall:\nlm(formula = body_mass ~ bill_len + species, data = penguins2)\n\nCoefficients:\n  (Intercept)       bill_len  speciesGentoo  \n       -267.6          102.3          484.0  \n\n\nWe can now rewrite our equation with these estimated values\n\\[ \\text{Body mass} = -267.6 + 484.0 \\times \\text{Gentoo} + 102.3 \\times \\text{bill length} + e_i \\]\nNote that the intercept does not provide a particularly useful prediction.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#interactions",
+    "href": "06-lm-multiplepredictors.html#interactions",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.5 Interactions",
+    "text": "7.5 Interactions\nI noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.\nWe can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a statistical interaction.\n\\[ \\hat{y}_i = b_0 + b_1x_1i + b_2x_2i + b_3 x_1 \\times x_2 e_i\\]\nin our penguin example\n\\[ \\text{Body mass} = b_0 + b_1 \\text{Gentoo} + b_2 \\text{bill length} + b_3 \\text{Gentoo} \\times \\text{bill length} + e_i \\]\nWe can fit the model with lm() using the following code:\n\nmodel2 &lt;- lm(body_mass~bill_len+species+bill_len*species,data=penguins2)\nsummary(model2)\n\n\nCall:\nlm(formula = body_mass ~ bill_len + species + bill_len * species, \n    data = penguins2)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n-782.6 -261.8  -12.9  249.2 1126.3 \n\nCoefficients:\n                       Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)               34.88     453.96   0.077    0.939    \nbill_len                  94.50      11.68   8.094 1.98e-14 ***\nspeciesGentoo           -158.71     699.81  -0.227    0.821    \nbill_len:speciesGentoo    14.96      16.17   0.925    0.356    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 380.8 on 270 degrees of freedom\nMultiple R-squared:  0.7947,    Adjusted R-squared:  0.7924 \nF-statistic: 348.4 on 3 and 270 DF,  p-value: &lt; 2.2e-16\n\n\nIn this case the statistical interaction isn’t significant, suggesting that the slope of the relationship between bill length and mass does not differ between species.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#the-general-linear-model",
+    "href": "06-lm-multiplepredictors.html#the-general-linear-model",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.6 The General Linear Model",
+    "text": "7.6 The General Linear Model\nFor the last few classes, we have been building up to a General Linear Model (not to be confused with a Generalized Linear Model!).\n\n7.6.1 Assumptions of the general linear model\nThere are a few major assumptions of general linear models.\n\nThe predictor \\(x_1\\) is linearly related to the response variable \\(y_1\\).\nThe errors (residuals), \\(e_i\\), are independent and identically distributed\nThe errors, \\(e_i\\), have a constant variance \\(\\sigma^2\\)\nIf performing inference, the errors, \\(e_i\\), are normally distributed\n\nHowever, if your data doesn’t seem to meet these assumptions, you have options.\n\nYou can transform your data\nYou can pick a new model\nYou can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point\n\nWhatever you decide to do, be transparent in your paper!\n\nGeneral vs Generalized linear models\nThese are often confused!",
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
     ]
@@ -457,46 +497,6 @@
     "text": "10.2 Motivating example",
     "crumbs": [
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#building-the-model",
-    "href": "06-lm-multiplepredictors.html#building-the-model",
-    "title": "7  Linear models with multiple predictors",
-    "section": "7.3 Building the model",
-    "text": "7.3 Building the model\nLet’s think about a model of some response variable (\\(y\\)) based on two explanatory variables, \\(x_1\\) and \\(y_1\\).\nOur model looks like it did before, except now it has multiple predictors, each with its own coefficient.\n\\[ \\hat{y}_i = b_0 + b_1*x_1i + b_2*x_2i e_i\\]",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#fitting-with-lm",
-    "href": "06-lm-multiplepredictors.html#fitting-with-lm",
-    "title": "7  Linear models with multiple predictors",
-    "section": "7.4 Fitting with lm()",
-    "text": "7.4 Fitting with lm()\n\nmodel2 &lt;- lm(body_mass~bill_len+species,data=penguins2)\nsummary(model2)\n\n\nCall:\nlm(formula = body_mass ~ bill_len + species, data = penguins2)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-871.21 -246.17    5.29  213.13 1084.73 \n\nCoefficients:\n                 Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)       153.740    268.901   0.572    0.568    \nbill_len           91.436      6.887  13.276  &lt; 2e-16 ***\nspeciesChinstrap -885.812     88.250 -10.038  &lt; 2e-16 ***\nspeciesGentoo     578.629     75.362   7.678 1.76e-13 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 375.3 on 338 degrees of freedom\nMultiple R-squared:  0.7829,    Adjusted R-squared:  0.781 \nF-statistic: 406.3 on 3 and 338 DF,  p-value: &lt; 2.2e-16",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#general-vs-generalized-linear-models",
-    "href": "06-lm-multiplepredictors.html#general-vs-generalized-linear-models",
-    "title": "7  Linear models with multiple predictors",
-    "section": "7.4 General vs Generalized linear models",
-    "text": "7.4 General vs Generalized linear models",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#interactions",
-    "href": "06-lm-multiplepredictors.html#interactions",
-    "title": "7  Linear models with multiple predictors",
-    "section": "7.6 Interactions",
-    "text": "7.6 Interactions\nI noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.\nWe can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a statistical interaction.\n\\[ \\hat{y}_i = b_0 + b_1x_1i + b_2x_2i + b_3 x_1 \\times x_2 e_i\\]\nin our penguin example\n\\[ \\text{Body mass} = b_0 + b_1 \\text{Gentoo} + b_2 \\text{bill length} + b_3 \\text{Gentoo} \\times \\text{bill length} + e_i \\]",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
     ]
   }
 ]
