@@ -141,4 +141,28 @@ library(car)
 Anova(model1)
 ```
 
+### Pairwise comparisons
 
+Now, to determine if there is a difference between any pair of categories, like Chinstrap and Gentoo, we can do a post-hoc pairwise comparison. **Post-hoc** tells us that we are doing these tests after we reject the null hypothesis that all of these categories have the same distribution.
+
+If we want to look at all possible comparisons, this is called doing **unplanned comparisons**
+
+```{r}
+#install.packages("emmeans")
+library(emmeans)
+
+out.emmeans <- emmeans(model1, specs = "species")
+pairs(out.emmeans)
+```
+
+### Tukey-Kramer method
+
+An alternative method EXPLAIN THE DIFFERENCES
+
+```{r}
+aov(model1) |> ## this code is the same as running aov(body_mass~species, data=penguins)
+  TukeyHSD()
+
+```
+
+### Assumptions of an ANOVA

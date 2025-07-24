@@ -100,7 +100,13 @@ Models with residuals that follow non-normal distributions are called **Generali
 In math terms, we would write
 
 $$ e_i \sim N(0, \sigma^2)$$
-where $\sigma^2$ is the variance of the residuals. The mean of the residuals is 0. 
+where $\sigma^2$ is the variance of the residuals. The mean of the residuals is 0.
+
+:::fyi
+Remember that the standard error is the standard deviation divided by the square root of the sample size: $\sigma_{\bar{x}} = \frac{\sigma}{\sqrt{n}}$
+
+:::
+
 
 We can combine the equation for a linear model with the equation describing the distribution of the variables and get
 

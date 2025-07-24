@@ -367,6 +367,9 @@ window.Quarto = {
 <p>A key piece of our linear model is that the residuals follow a specific distribution. In this part of the course we will focus on the normal distribution since it is broadly useful, but you could use any distribution you want. Models with residuals that follow non-normal distributions are called <strong>Generalized Linear Models</strong></p>
 <p>In math terms, we would write</p>
 <p><span class="math display">\[ e_i \sim N(0, \sigma^2)\]</span> where <span class="math inline">\(\sigma^2\)</span> is the variance of the residuals. The mean of the residuals is 0.</p>
+<div class="fyi">
+<p>Remember that the standard error is the standard deviation divided by the square root of the sample size: <span class="math inline">\(\sigma_{\bar{x}} = \frac{\sigma}{\sqrt{n}}\)</span></p>
+</div>
 <p>We can combine the equation for a linear model with the equation describing the distribution of the variables and get</p>
 <p><span class="math display">\[y_i = \hat{y}_i + N(0, \sigma^2)\]</span></p>
 <p>and this simplifies to</p>

@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -255,7 +255,6 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#assumptions-of-the-general-linear-model" id="toc-assumptions-of-the-general-linear-model" class="nav-link" data-scroll-target="#assumptions-of-the-general-linear-model"><span class="header-section-number">7.6.1</span> Assumptions of the general linear model</a></li>
   </ul></li>
-  <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation"><span class="header-section-number">7.7</span> Matrix notation</a></li>
   </ul>
 </nav>
     </div>
@@ -388,43 +387,13 @@ F-statistic: 348.4 on 3 and 270 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li>You can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point</li>
 </ol>
 <p>Whatever you decide to do, be transparent in your paper!</p>
-</section>
-</section>
-<section id="matrix-notation" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="matrix-notation"><span class="header-section-number">7.7</span> Matrix notation</h2>
-<p>It might be helpful for some of you to see a linear model written out in matrix notation. The equation of three matrices below describes a linear model.</p>
-<p><span class="math display">\[\begin{equation}
-\begin{pmatrix}
-    1 &amp; x_{1,1} &amp; x_{2,1} &amp; \dots  &amp; x_{k,1} \\
-    1 &amp; x_{1,2} &amp; x_{2,2} &amp; \dots  &amp; x_{k,2} \\
-    \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
-    1 &amp; x_{1,n} &amp; x_{2,n} &amp; \dots  &amp; x_{k,n}
-\end{pmatrix}
-\cdot
-\begin{pmatrix}
-    b_0 \\
-    b_{1}\\
-    b_{2}\\
-    \vdots  \\
-     b_{k}
-\end{pmatrix}
-=
-\begin{pmatrix}
-    \hat{Y_1} \\
-    \hat{Y_2}\\
-    \vdots  \\
-    \hat{Y_n}
-\end{pmatrix}
-\end{equation}\]</span></p>
-<p>The leftmost matrix is a <em>design matrix</em> where each row corresponds to an individual <span class="math inline">\(i\)</span> and each column corresponds to an explanatory variable. A cell in the <span class="math inline">\(i^{th}\)</span> row and <span class="math inline">\(j^{th}\)</span> column corresponds to individual <span class="math inline">\(i\)</span>’s value for the <span class="math inline">\(j^{th}\)</span> explanatory variable. The first row corresponds to the intercept so all individuals have a value of 1.</p>
-<p>The middle matrix is a list of the estimated effect sizes for each corresponding explanatory variable.</p>
-<p>The dot product of these two matrices gives us the predicted value for the response variable for each individual.</p>
 <div class="fyi">
-<p><strong>General vs Generalized linear models</strong></p>
+<p>General vs Generalized linear models</p>
 <p>These are often confused!</p>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
