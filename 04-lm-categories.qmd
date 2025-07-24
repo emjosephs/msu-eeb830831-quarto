@@ -129,9 +129,63 @@ There may be times where we have multiple category values but instead of knowing
 For example, if we had 100s of penguin species, we might care less about the effect of each species than how much species matter in general. This latter value would be easier to interpret.
 
 Answering this question requires an ANOVA, which stands for "Analysis of Variance"
-Formally, we are asking if individuals from different categories are drawn from the same distribution (our null hypothesis) or different distributions (our alternative hypothesis).
+Formally, we are asking if individuals from different groups are drawn from the same distribution (our null hypothesis) or different distributions (our alternative hypothesis).
 
 The ANOVA also solves some other problems with multiple category linear models. The model above compares Gentoo and Chinstrap penguins with Adelie penguins but it doesn't compare Gentoo and Chinstrap with each other. Making that comparison requires rearranging the order of the model. 
+
+###
+
+ANOVAs work by estimating the amount of variation within groups and among groups.
+The null hypothesis suggests that individuals from different groups will be no more different from each other than individuals from the same group.
+If this is true, then the variance among groups should equal the variance within groups.
+ANOVAs test this claim using a F statistic which calculates the ratio of these two values. 
+
+$$ F = \frac{\text{Variance among groups}}{\text{Variance between groups}}$$
+While different terms are used across texts, here we will call the variance among groups is called the **group mean square** or $\text{MS}_{\text{groups}}$ and it is calculated as $\text{MS}_{\text{groups}} =  \frac{\text{SS}_{\text{groups}}}{df_{\text{groups}}}$. $\text{SS}_{\text{error}} =  \Sigma_{i} n_{i}(\hat{Y_i} - \bar{Y})^{2}$ where $\hat{Y_i}$ is the mean of the $i^{th}$ group, $n_i$ is the number of individuals in the group, and $\bar{Y}$ is the mean of the entire sample. 
+
+The variance within groups will be called the **error means square** or $\text{MS}_{\text{error}}$ and is calculated as $\text{MS}_{\text{error}}  = \frac{\text{SS}_{\text{error}}}{df_{\text{error}}}$ where $\text{SS}_{\text{error}}$ is the *sum of squares error* and calculated as $\text{SS}_{\text{error}} = \Sigma_{i}\Sigma{j}(Y_{ij} - \bar{Y_i})^2$ where $Y_{ij}$ is the value for each individual $j$ in group $i$.
+
+TODO: update the below figure for penguin data
+```{r, eval=F, fig.cap = "Partitioning deviations in an ANOVA. **A** Shows the difference between each observation, $Y_i$, and the grand mean, $\\overline{\\overline{Y}}$. This is the basis for calculating $MS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the grand mean, $\\overline{\\overline{Y}}$. This is the basis for calculating $MS_{model}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $MS_{error}$.", fig.height=2.3, fig.width=7.6, echo=FALSE}
+a <- ggplot(mutate(sqrl, id = 1:n(), mean_temp = mean(body_temp)) , 
+            aes(x = id, y = body_temp, color = ambient_temp))+
+  geom_point(alpha = .5)+
+  geom_hline(aes(yintercept = mean_temp))+
+  geom_segment(aes( xend = id, yend = mean_temp ), 
+               color = "black", alpha = .5)+
+  theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())+ 
+  labs(title = "Total deviation               = ")+
+  scale_color_manual(values = c("blue", "orange", "red"))
+
+b<-ggplot(mutate(augment(sqrl_lm), id = 1:n(), mean_temp = mean(body_temp)) ,
+          aes(x = id, y = body_temp, color = ambient_temp))+
+  geom_point(alpha = .5)+
+  geom_hline(aes(yintercept = mean_temp))+
+  geom_segment(aes( xend = id,y = .fitted,  yend = mean_temp ), 
+               color = "black", alpha = .5)+
+    geom_line(aes(y = .fitted), alpha  = 2)+ 
+    theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())+ 
+  labs(title = "Model deviation             +")+
+  scale_color_manual(values = c("blue", "orange", "red"))
+
+c<-ggplot(mutate(augment(sqrl_lm), id = 1:n(), mean_temp = mean(body_temp)) ,
+          aes(x = id, y = body_temp, color = ambient_temp))+
+  geom_point(alpha = .5)+
+  geom_hline(aes(yintercept = mean_temp))+
+  geom_segment(aes( xend = id,  yend = .fitted), 
+               color = "black", alpha = .5)+
+    geom_line(aes(y = .fitted), alpha  = 2)+ 
+    theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())+ 
+  labs(title = "Error (residual) deviation")+
+  scale_color_manual(values = c("blue", "orange", "red"))
+
+plot_grid(plot_grid(a + theme(legend.position = "none"),
+          b + theme(legend.position = "none"),
+          c + theme(legend.position = "none"), ncol = 3, labels = c("a","b","c"), label_y = .9),
+           get_legend(a+theme(legend.position = "bottom")), 
+                      ncol = 1, rel_heights = c(1,.1))
+```
+
 
 ### Fitting an ANOVA with in R
 ```{r}

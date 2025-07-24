@@ -23,3 +23,6 @@ Someone hands us a coin and we flip it 100 times and get 46 heads.
 Is the coin fair? (probability of heads = 50%)
 
 What is the _most likely_ probability of flipping heads for this coin?
+
+
+## Degrees of freedom
