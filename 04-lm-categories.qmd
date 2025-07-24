@@ -12,6 +12,9 @@ library(tidyverse)
 library('DT')
 library(LaCroixColoR)
 palette(lacroix_palette("Mango", type = "discrete"))
+library(emmeans)
+library(broom)
+library(cowplot)
 ```
 
 ## What are we doing here?
@@ -116,9 +119,9 @@ $$\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i +b_2 \times \text{Chinstrap} 
 ## Building a model with more than two categories with lm()
 
 ```{r}
-model1 <- lm(body_mass ~ species, data = penguins)
-model1
-summary(model1)
+model2 <- lm(body_mass ~ species, data = penguins)
+model2
+summary(model2)
 ```
 
 ## A note on the reference categories.
@@ -146,32 +149,32 @@ While different terms are used across texts, here we will call the variance amon
 The variance within groups will be called the **error means square** or $\text{MS}_{\text{error}}$ and is calculated as $\text{MS}_{\text{error}}  = \frac{\text{SS}_{\text{error}}}{df_{\text{error}}}$ where $\text{SS}_{\text{error}}$ is the *sum of squares error* and calculated as $\text{SS}_{\text{error}} = \Sigma_{i}\Sigma{j}(Y_{ij} - \bar{Y_i})^2$ where $Y_{ij}$ is the value for each individual $j$ in group $i$.
 
 TODO: update the below figure for penguin data
-```{r, eval=F, fig.cap = "Partitioning deviations in an ANOVA. **A** Shows the difference between each observation, $Y_i$, and the grand mean, $\\overline{\\overline{Y}}$. This is the basis for calculating $MS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the grand mean, $\\overline{\\overline{Y}}$. This is the basis for calculating $MS_{model}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $MS_{error}$.", fig.height=2.3, fig.width=7.6, echo=FALSE}
-a <- ggplot(mutate(sqrl, id = 1:n(), mean_temp = mean(body_temp)) , 
-            aes(x = id, y = body_temp, color = ambient_temp))+
+```{r, fig.cap = "Partitioning deviations in an ANOVA. **A** Shows the difference between each observation, $Y_i$, and the grand mean, $\\overline{\\overline{Y}}$. This is the basis for calculating $MS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the grand mean, $\\overline{\\overline{Y}}$. This is the basis for calculating $MS_{model}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $MS_{error}$.", fig.height=2.3, fig.width=7.6, echo=FALSE}
+a <- ggplot(mutate(penguins, id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) , 
+            aes(x = id, y = body_mass, color = species))+
   geom_point(alpha = .5)+
-  geom_hline(aes(yintercept = mean_temp))+
-  geom_segment(aes( xend = id, yend = mean_temp ), 
+  geom_hline(aes(yintercept = mean_mass))+
+  geom_segment(aes( xend = id, yend = mean_mass ), 
                color = "black", alpha = .5)+
   theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())+ 
   labs(title = "Total deviation               = ")+
   scale_color_manual(values = c("blue", "orange", "red"))
 
-b<-ggplot(mutate(augment(sqrl_lm), id = 1:n(), mean_temp = mean(body_temp)) ,
-          aes(x = id, y = body_temp, color = ambient_temp))+
+b<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass)) ,
+          aes(x = id, y = body_mass, color = species))+
   geom_point(alpha = .5)+
-  geom_hline(aes(yintercept = mean_temp))+
-  geom_segment(aes( xend = id,y = .fitted,  yend = mean_temp ), 
+  geom_hline(aes(yintercept = mean_mass))+
+  geom_segment(aes( xend = id,y = .fitted,  yend = body_mass ), 
                color = "black", alpha = .5)+
     geom_line(aes(y = .fitted), alpha  = 2)+ 
     theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())+ 
   labs(title = "Model deviation             +")+
   scale_color_manual(values = c("blue", "orange", "red"))
 
-c<-ggplot(mutate(augment(sqrl_lm), id = 1:n(), mean_temp = mean(body_temp)) ,
-          aes(x = id, y = body_temp, color = ambient_temp))+
+c<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass)) ,
+          aes(x = id, y = body_mass, color = species))+
   geom_point(alpha = .5)+
-  geom_hline(aes(yintercept = mean_temp))+
+  geom_hline(aes(yintercept = mean_mass))+
   geom_segment(aes( xend = id,  yend = .fitted), 
                color = "black", alpha = .5)+
     geom_line(aes(y = .fitted), alpha  = 2)+ 
