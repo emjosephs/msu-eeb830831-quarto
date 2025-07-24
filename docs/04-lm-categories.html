@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -257,6 +257,9 @@ window.Quarto = {
   <li><a href="#anova" id="toc-anova" class="nav-link" data-scroll-target="#anova"><span class="header-section-number">5.9</span> ANOVA</a>
   <ul class="collapse">
   <li><a href="#fitting-an-anova-with-in-r" id="toc-fitting-an-anova-with-in-r" class="nav-link" data-scroll-target="#fitting-an-anova-with-in-r"><span class="header-section-number">5.9.1</span> Fitting an ANOVA with in R</a></li>
+  <li><a href="#pairwise-comparisons" id="toc-pairwise-comparisons" class="nav-link" data-scroll-target="#pairwise-comparisons"><span class="header-section-number">5.9.2</span> Pairwise comparisons</a></li>
+  <li><a href="#tukey-kramer-method" id="toc-tukey-kramer-method" class="nav-link" data-scroll-target="#tukey-kramer-method"><span class="header-section-number">5.9.3</span> Tukey-Kramer method</a></li>
+  <li><a href="#assumptions-of-an-anova" id="toc-assumptions-of-an-anova" class="nav-link" data-scroll-target="#assumptions-of-an-anova"><span class="header-section-number">5.9.4</span> Assumptions of an ANOVA</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -369,7 +372,7 @@ F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="residuals" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="residuals"><span class="header-section-number">5.5</span> Residuals</h2>
 <div class="fyi">
-<p><strong>Linear models vs t tests</strong></p>
+<p><strong>Linear models vs t-tests</strong></p>
 <p>How is what we’ve just done different from a t-test? Or is it?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>adelies <span class="ot">=</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins, species<span class="sc">==</span><span class="st">"Adelie"</span>)</span>
@@ -410,16 +413,39 @@ mean of x mean of y
 <section id="building-a-model-with-more-than-two-categories-with-lm" class="level2" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">5.7</span> Building a model with more than two categories with lm()</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> species <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data =</span> penguins)</span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> species, <span class="at">data =</span> penguins)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = body_mass ~ species - 1, data = penguins)
+lm(formula = body_mass ~ species, data = penguins)
 
 Coefficients:
-   speciesAdelie  speciesChinstrap     speciesGentoo  
-            3701              3733              5076  </code></pre>
+     (Intercept)  speciesChinstrap     speciesGentoo  
+         3700.66             32.43           1375.35  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ species, data = penguins)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1126.02  -333.09   -33.09   316.91  1223.98 
+
+Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       3700.66      37.62   98.37   &lt;2e-16 ***
+speciesChinstrap    32.43      67.51    0.48    0.631    
+speciesGentoo     1375.35      56.15   24.50   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 462.3 on 339 degrees of freedom
+  (2 observations deleted due to missingness)
+Multiple R-squared:  0.6697,    Adjusted R-squared:  0.6677 
+F-statistic: 343.6 on 2 and 339 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
@@ -430,11 +456,12 @@ Coefficients:
 <h2 data-number="5.9" class="anchored" data-anchor-id="anova"><span class="header-section-number">5.9</span> ANOVA</h2>
 <p>There may be times where we have multiple category values but instead of knowing the effect of each category value on the outcome, we just want to know if individuals from different species have different body masses in general. For example, if we had 100s of penguin species, we might care less about the effect of each species than how much species matter in general. This latter value would be easier to interpret.</p>
 <p>Answering this question requires an ANOVA, which stands for “Analysis of Variance” Formally, we are asking if individuals from different categories are drawn from the same distribution (our null hypothesis) or different distributions (our alternative hypothesis).</p>
+<p>The ANOVA also solves some other problems with multiple category linear models. The model above compares Gentoo and Chinstrap penguins with Adelie penguins but it doesn’t compare Gentoo and Chinstrap with each other. Making that comparison requires rearranging the order of the model.</p>
 <section id="fitting-an-anova-with-in-r" class="level3" data-number="5.9.1">
 <h3 data-number="5.9.1" class="anchored" data-anchor-id="fitting-an-anova-with-in-r"><span class="header-section-number">5.9.1</span> Fitting an ANOVA with in R</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('car')</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('car')</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: carData</code></pre>
 </div>
@@ -452,18 +479,65 @@ Attaching package: 'car'</code></pre>
 
     some</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type II tests)
 
 Response: body_mass
-              Sum Sq  Df F value    Pr(&gt;F)    
-species   6184785267   3  9647.3 &lt; 2.2e-16 ***
-Residuals   72443483 339                      
+             Sum Sq  Df F value    Pr(&gt;F)    
+species   146864214   2  343.63 &lt; 2.2e-16 ***
+Residuals  72443483 339                      
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
+</section>
+<section id="pairwise-comparisons" class="level3" data-number="5.9.2">
+<h3 data-number="5.9.2" class="anchored" data-anchor-id="pairwise-comparisons"><span class="header-section-number">5.9.2</span> Pairwise comparisons</h3>
+<p>Now, to determine if there is a difference between any pair of categories, like Chinstrap and Gentoo, we can do a post-hoc pairwise comparison. <strong>Post-hoc</strong> tells us that we are doing these tests after we reject the null hypothesis that all of these categories have the same distribution.</p>
+<p>If we want to look at all possible comparisons, this is called doing <strong>unplanned comparisons</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("emmeans")</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Welcome to emmeans.
+Caution: You lose important information if you filter this package's results.
+See '? untidy'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>out.emmeans <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(model1, <span class="at">specs =</span> <span class="st">"species"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(out.emmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> contrast           estimate   SE  df t.ratio p.value
+ Adelie - Chinstrap    -32.4 67.5 339  -0.480  0.8807
+ Adelie - Gentoo     -1375.4 56.1 339 -24.495  &lt;.0001
+ Chinstrap - Gentoo  -1342.9 69.9 339 -19.224  &lt;.0001
+
+P value adjustment: tukey method for comparing a family of 3 estimates </code></pre>
+</div>
+</div>
+</section>
+<section id="tukey-kramer-method" class="level3" data-number="5.9.3">
+<h3 data-number="5.9.3" class="anchored" data-anchor-id="tukey-kramer-method"><span class="header-section-number">5.9.3</span> Tukey-Kramer method</h3>
+<p>An alternative method EXPLAIN THE DIFFERENCES</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(model1) <span class="sc">|&gt;</span> <span class="do">## this code is the same as running aov(body_mass~species, data=penguins)</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">TukeyHSD</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = model1)
+
+$species
+                       diff       lwr       upr     p adj
+Chinstrap-Adelie   32.42598 -126.5002  191.3522 0.8806666
+Gentoo-Adelie    1375.35401 1243.1786 1507.5294 0.0000000
+Gentoo-Chinstrap 1342.92802 1178.4810 1507.3750 0.0000000</code></pre>
+</div>
+</div>
+</section>
+<section id="assumptions-of-an-anova" class="level3" data-number="5.9.4">
+<h3 data-number="5.9.4" class="anchored" data-anchor-id="assumptions-of-an-anova"><span class="header-section-number">5.9.4</span> Assumptions of an ANOVA</h3>
 
 
 </section>

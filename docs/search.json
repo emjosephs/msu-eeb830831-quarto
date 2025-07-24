@@ -260,11 +260,11 @@
     ]
   },
   {
-    "objectID": "04-lm-categories.html#building-a-model-with-lm",
-    "href": "04-lm-categories.html#building-a-model-with-lm",
+    "objectID": "04-lm-categories.html#fitting-a-model-with-lm",
+    "href": "04-lm-categories.html#fitting-a-model-with-lm",
     "title": "5  Linear models with categories",
-    "section": "5.4 Building a model with lm()",
-    "text": "5.4 Building a model with lm()",
+    "section": "5.4 Fitting a model with lm()",
+    "text": "5.4 Fitting a model with lm()\n\n## first filter out chinstraps and anything with missing data\npenguins2 &lt;- penguins                                             |&gt;\n  filter(!is.na(body_mass) , !is.na(species), species != \"Chinstrap\") |&gt; \n  droplevels()\n\nmodel1 &lt;- lm(body_mass ~ species, data=penguins2)\nsummary(model1)\n\n\nCall:\nlm(formula = body_mass ~ species, data = penguins2)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1126.02  -369.50   -26.02   343.00  1223.98 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)    3700.66      39.02   94.83   &lt;2e-16 ***\nspeciesGentoo  1375.35      58.24   23.61   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 479.5 on 272 degrees of freedom\nMultiple R-squared:  0.6721,    Adjusted R-squared:  0.6709 \nF-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
@@ -274,7 +274,7 @@
     "href": "04-lm-categories.html#residuals",
     "title": "5  Linear models with categories",
     "section": "5.5 Residuals",
-    "text": "5.5 Residuals\n\nLinear models vs t tests\nHow is what we’ve just done different from a t-test? Or is it?\n\nadelies = dplyr::filter(penguins, species==\"Adelie\")\ngentoos = dplyr::filter(penguins, species==\"Gentoo\")\n\nt.test(adelies$body_mass, gentoos$body_mass)\n\n\n    Welch Two Sample t-test\n\ndata:  adelies$body_mass and gentoos$body_mass\nt = -23.386, df = 249.64, p-value &lt; 2.2e-16\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n -1491.183 -1259.525\nsample estimates:\nmean of x mean of y \n 3700.662  5076.016 \n\n\nBoth a t-test and the linear models we’ve discussed so far are based on a normal distribution. However, the t-test uses a t distribution. The t-distribution incorporates uncertainty in our estimate of the standard deviation of a normal distribution. The more data we have, the closer the t-distribution approximates a normal distribution.\nNote that we can compare the output of our t.test above and the summary of the corresponding linear model and the t-value for species is the same!",
+    "text": "5.5 Residuals\n\nLinear models vs t-tests\nHow is what we’ve just done different from a t-test? Or is it?\n\nadelies = dplyr::filter(penguins, species==\"Adelie\")\ngentoos = dplyr::filter(penguins, species==\"Gentoo\")\n\nt.test(adelies$body_mass, gentoos$body_mass)\n\n\n    Welch Two Sample t-test\n\ndata:  adelies$body_mass and gentoos$body_mass\nt = -23.386, df = 249.64, p-value &lt; 2.2e-16\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n -1491.183 -1259.525\nsample estimates:\nmean of x mean of y \n 3700.662  5076.016 \n\n\nBoth a t-test and the linear models we’ve discussed so far are based on a normal distribution. However, the t-test uses a t distribution. The t-distribution incorporates uncertainty in our estimate of the standard deviation of a normal distribution. The more data we have, the closer the t-distribution approximates a normal distribution.\nNote that we can compare the output of our t.test above and the summary of the corresponding linear model and the t-value for species is the same!",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
@@ -294,7 +294,7 @@
     "href": "04-lm-categories.html#building-a-model-with-more-than-two-categories-with-lm",
     "title": "5  Linear models with categories",
     "section": "5.7 Building a model with more than two categories with lm()",
-    "text": "5.7 Building a model with more than two categories with lm()\n\nmodel1 &lt;- lm(body_mass ~ species - 1, data = penguins)\nmodel1\n\n\nCall:\nlm(formula = body_mass ~ species - 1, data = penguins)\n\nCoefficients:\n   speciesAdelie  speciesChinstrap     speciesGentoo  \n            3701              3733              5076",
+    "text": "5.7 Building a model with more than two categories with lm()\n\nmodel1 &lt;- lm(body_mass ~ species, data = penguins)\nmodel1\n\n\nCall:\nlm(formula = body_mass ~ species, data = penguins)\n\nCoefficients:\n     (Intercept)  speciesChinstrap     speciesGentoo  \n         3700.66             32.43           1375.35  \n\nsummary(model1)\n\n\nCall:\nlm(formula = body_mass ~ species, data = penguins)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1126.02  -333.09   -33.09   316.91  1223.98 \n\nCoefficients:\n                 Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)       3700.66      37.62   98.37   &lt;2e-16 ***\nspeciesChinstrap    32.43      67.51    0.48    0.631    \nspeciesGentoo     1375.35      56.15   24.50   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 462.3 on 339 degrees of freedom\n  (2 observations deleted due to missingness)\nMultiple R-squared:  0.6697,    Adjusted R-squared:  0.6677 \nF-statistic: 343.6 on 2 and 339 DF,  p-value: &lt; 2.2e-16",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
@@ -305,6 +305,16 @@
     "title": "5  Linear models with categories",
     "section": "5.8 A note on the reference categories.",
     "text": "5.8 A note on the reference categories.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
+    ]
+  },
+  {
+    "objectID": "04-lm-categories.html#anova",
+    "href": "04-lm-categories.html#anova",
+    "title": "5  Linear models with categories",
+    "section": "5.9 ANOVA",
+    "text": "5.9 ANOVA\nThere may be times where we have multiple category values but instead of knowing the effect of each category value on the outcome, we just want to know if individuals from different species have different body masses in general. For example, if we had 100s of penguin species, we might care less about the effect of each species than how much species matter in general. This latter value would be easier to interpret.\nAnswering this question requires an ANOVA, which stands for “Analysis of Variance” Formally, we are asking if individuals from different categories are drawn from the same distribution (our null hypothesis) or different distributions (our alternative hypothesis).\nThe ANOVA also solves some other problems with multiple category linear models. The model above compares Gentoo and Chinstrap penguins with Adelie penguins but it doesn’t compare Gentoo and Chinstrap with each other. Making that comparison requires rearranging the order of the model.\n\n5.9.1 Fitting an ANOVA with in R\n\n#install.packages('car')\nlibrary(car)\n\nLoading required package: carData\n\n\n\nAttaching package: 'car'\n\n\nThe following object is masked from 'package:dplyr':\n\n    recode\n\n\nThe following object is masked from 'package:purrr':\n\n    some\n\nAnova(model1)\n\nAnova Table (Type II tests)\n\nResponse: body_mass\n             Sum Sq  Df F value    Pr(&gt;F)    \nspecies   146864214   2  343.63 &lt; 2.2e-16 ***\nResiduals  72443483 339                      \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\n5.9.2 Pairwise comparisons\nNow, to determine if there is a difference between any pair of categories, like Chinstrap and Gentoo, we can do a post-hoc pairwise comparison. Post-hoc tells us that we are doing these tests after we reject the null hypothesis that all of these categories have the same distribution.\nIf we want to look at all possible comparisons, this is called doing unplanned comparisons\n\n#install.packages(\"emmeans\")\nlibrary(emmeans)\n\nWelcome to emmeans.\nCaution: You lose important information if you filter this package's results.\nSee '? untidy'\n\nout.emmeans &lt;- emmeans(model1, specs = \"species\")\npairs(out.emmeans)\n\n contrast           estimate   SE  df t.ratio p.value\n Adelie - Chinstrap    -32.4 67.5 339  -0.480  0.8807\n Adelie - Gentoo     -1375.4 56.1 339 -24.495  &lt;.0001\n Chinstrap - Gentoo  -1342.9 69.9 339 -19.224  &lt;.0001\n\nP value adjustment: tukey method for comparing a family of 3 estimates \n\n\n\n\n5.9.3 Tukey-Kramer method\nAn alternative method EXPLAIN THE DIFFERENCES\n\naov(model1) |&gt; ## this code is the same as running aov(body_mass~species, data=penguins)\n  TukeyHSD()\n\n  Tukey multiple comparisons of means\n    95% family-wise confidence level\n\nFit: aov(formula = model1)\n\n$species\n                       diff       lwr       upr     p adj\nChinstrap-Adelie   32.42598 -126.5002  191.3522 0.8806666\nGentoo-Adelie    1375.35401 1243.1786 1507.5294 0.0000000\nGentoo-Chinstrap 1342.92802 1178.4810 1507.3750 0.0000000\n\n\n\n\n5.9.4 Assumptions of an ANOVA",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
@@ -434,7 +444,17 @@
     "href": "06-lm-multiplepredictors.html#the-general-linear-model",
     "title": "7  Linear models with multiple predictors",
     "section": "7.6 The General Linear Model",
-    "text": "7.6 The General Linear Model\nFor the last few classes, we have been building up to a General Linear Model (not to be confused with a Generalized Linear Model!).\n\n7.6.1 Assumptions of the general linear model\nThere are a few major assumptions of general linear models.\n\nThe predictor \\(x_1\\) is linearly related to the response variable \\(y_1\\).\nThe errors (residuals), \\(e_i\\), are independent and identically distributed\nThe errors, \\(e_i\\), have a constant variance \\(\\sigma^2\\)\nIf performing inference, the errors, \\(e_i\\), are normally distributed\n\nHowever, if your data doesn’t seem to meet these assumptions, you have options.\n\nYou can transform your data\nYou can pick a new model\nYou can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point\n\nWhatever you decide to do, be transparent in your paper!\n\nGeneral vs Generalized linear models\nThese are often confused!",
+    "text": "7.6 The General Linear Model\nFor the last few classes, we have been building up to a General Linear Model (not to be confused with a Generalized Linear Model!).\n\n7.6.1 Assumptions of the general linear model\nThere are a few major assumptions of general linear models.\n\nThe predictor \\(x_1\\) is linearly related to the response variable \\(y_1\\).\nThe errors (residuals), \\(e_i\\), are independent and identically distributed\nThe errors, \\(e_i\\), have a constant variance \\(\\sigma^2\\)\nIf performing inference, the errors, \\(e_i\\), are normally distributed\n\nHowever, if your data doesn’t seem to meet these assumptions, you have options.\n\nYou can transform your data\nYou can pick a new model\nYou can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point\n\nWhatever you decide to do, be transparent in your paper!",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
+    "objectID": "06-lm-multiplepredictors.html#matrix-notation",
+    "href": "06-lm-multiplepredictors.html#matrix-notation",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.7 Matrix notation",
+    "text": "7.7 Matrix notation\nIt might be helpful for some of you to see a linear model written out in matrix notation. The equation of three matrices below describes a linear model.\n\\[\\begin{equation}\n\\begin{pmatrix}\n    1 & x_{1,1} & x_{2,1} & \\dots  & x_{k,1} \\\\\n    1 & x_{1,2} & x_{2,2} & \\dots  & x_{k,2} \\\\\n    \\vdots & \\vdots & \\vdots & \\ddots & \\vdots \\\\\n    1 & x_{1,n} & x_{2,n} & \\dots  & x_{k,n}\n\\end{pmatrix}\n\\cdot\n\\begin{pmatrix}\n    b_0 \\\\\n    b_{1}\\\\\n    b_{2}\\\\\n    \\vdots  \\\\\n     b_{k}\n\\end{pmatrix}\n=\n\\begin{pmatrix}\n    \\hat{Y_1} \\\\\n    \\hat{Y_2}\\\\\n    \\vdots  \\\\\n    \\hat{Y_n}\n\\end{pmatrix}\n\\end{equation}\\]\nThe leftmost matrix is a design matrix where each row corresponds to an individual \\(i\\) and each column corresponds to an explanatory variable. A cell in the \\(i^{th}\\) row and \\(j^{th}\\) column corresponds to individual \\(i\\)’s value for the \\(j^{th}\\) explanatory variable. The first row corresponds to the intercept so all individuals have a value of 1.\nThe middle matrix is a list of the estimated effect sizes for each corresponding explanatory variable.\nThe dot product of these two matrices gives us the predicted value for the response variable for each individual.\n\nGeneral vs Generalized linear models\nThese are often confused!",
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
     ]
@@ -497,46 +517,6 @@
     "text": "10.2 Motivating example",
     "crumbs": [
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#general-vs-generalized-linear-models",
-    "href": "06-lm-multiplepredictors.html#general-vs-generalized-linear-models",
-    "title": "7  Linear models with multiple predictors",
-    "section": "7.8 General vs Generalized linear models",
-    "text": "7.8 General vs Generalized linear models\nThese are often confused!",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
-    ]
-  },
-  {
-    "objectID": "06-lm-multiplepredictors.html#matrix-notation",
-    "href": "06-lm-multiplepredictors.html#matrix-notation",
-    "title": "7  Linear models with multiple predictors",
-    "section": "7.7 Matrix notation",
-    "text": "7.7 Matrix notation\nIt might be helpful for some of you to see a linear model written out in matrix notation. The equation of three matrices below describes a linear model.\n\\[\\begin{equation}\n\\begin{pmatrix}\n    1 & x_{1,1} & x_{2,1} & \\dots  & x_{k,1} \\\\\n    1 & x_{1,2} & x_{2,2} & \\dots  & x_{k,2} \\\\\n    \\vdots & \\vdots & \\vdots & \\ddots & \\vdots \\\\\n    1 & x_{1,n} & x_{2,n} & \\dots  & x_{k,n}\n\\end{pmatrix}\n\\cdot\n\\begin{pmatrix}\n    b_0 \\\\\n    b_{1}\\\\\n    b_{2}\\\\\n    \\vdots  \\\\\n     b_{k}\n\\end{pmatrix}\n=\n\\begin{pmatrix}\n    \\hat{Y_1} \\\\\n    \\hat{Y_2}\\\\\n    \\vdots  \\\\\n    \\hat{Y_n}\n\\end{pmatrix}\n\\end{equation}\\]\nThe leftmost matrix is a design matrix where each row corresponds to an individual \\(i\\) and each column corresponds to an explanatory variable. A cell in the \\(i^{th}\\) row and \\(j^{th}\\) column corresponds to individual \\(i\\)’s value for the \\(j^{th}\\) explanatory variable. The first row corresponds to the intercept so all individuals have a value of 1.\nThe middle matrix is a list of the estimated effect sizes for each corresponding explanatory variable.\nThe dot product of these two matrices gives us the predicted value for the response variable for each individual.\n\nGeneral vs Generalized linear models\nThese are often confused!",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
-    ]
-  },
-  {
-    "objectID": "04-lm-categories.html#fitting-a-model-with-lm",
-    "href": "04-lm-categories.html#fitting-a-model-with-lm",
-    "title": "5  Linear models with categories",
-    "section": "5.4 Fitting a model with lm()",
-    "text": "5.4 Fitting a model with lm()\n\n## first filter out chinstraps and anything with missing data\npenguins2 &lt;- penguins                                             |&gt;\n  filter(!is.na(body_mass) , !is.na(species), species != \"Chinstrap\") |&gt; \n  droplevels()\n\nmodel1 &lt;- lm(body_mass ~ species, data=penguins2)\nsummary(model1)\n\n\nCall:\nlm(formula = body_mass ~ species, data = penguins2)\n\nResiduals:\n     Min       1Q   Median       3Q      Max \n-1126.02  -369.50   -26.02   343.00  1223.98 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)    3700.66      39.02   94.83   &lt;2e-16 ***\nspeciesGentoo  1375.35      58.24   23.61   &lt;2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 479.5 on 272 degrees of freedom\nMultiple R-squared:  0.6721,    Adjusted R-squared:  0.6709 \nF-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16",
-    "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
-    ]
-  },
-  {
-    "objectID": "04-lm-categories.html#anova",
-    "href": "04-lm-categories.html#anova",
-    "title": "5  Linear models with categories",
-    "section": "5.9 ANOVA",
-    "text": "5.9 ANOVA\nThere may be times where we have multiple category values but instead of knowing the effect of each category value on the outcome, we just want to know if individuals from different species have different body masses in general. For example, if we had 100s of penguin species, we might care less about the effect of each species than how much species matter in general. This latter value would be easier to interpret.\nAnswering this question requires an ANOVA, which stands for “Analysis of Variance” Formally, we are asking if individuals from different categories are drawn from the same distribution (our null hypothesis) or different distributions (our alternative hypothesis).\n\n5.9.1 Fitting an ANOVA with in R\n\n#install.packages('car')\nlibrary(car)\n\nLoading required package: carData\n\n\n\nAttaching package: 'car'\n\n\nThe following object is masked from 'package:dplyr':\n\n    recode\n\n\nThe following object is masked from 'package:purrr':\n\n    some\n\nAnova(model1)\n\nAnova Table (Type II tests)\n\nResponse: body_mass\n              Sum Sq  Df F value    Pr(&gt;F)    \nspecies   6184785267   3  9647.3 &lt; 2.2e-16 ***\nResiduals   72443483 339                      \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1",
-    "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories</span>"
     ]
   }
 ]
