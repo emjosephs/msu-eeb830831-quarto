@@ -1,5 +1,5 @@
 ---
-title: "Linear models with categories"
+title: "Linear models with categories and ANOVA"
 format: html
 editor: source
 ---
@@ -141,14 +141,14 @@ The ANOVA also solves some other problems with multiple category linear models. 
 ANOVAs work by estimating the amount of variation within groups and among groups.
 The null hypothesis suggests that individuals from different groups will be no more different from each other than individuals from the same group.
 If this is true, then the variance among groups should equal the variance within groups.
-ANOVAs test this claim using a F statistic which calculates the ratio of these two values. 
 
-$$ F = \frac{\text{Variance among groups}}{\text{Variance between groups}}$$
-While different terms are used across texts, here we will call the variance among groups is called the **group mean square** or $\text{MS}_{\text{groups}}$ and it is calculated as $\text{MS}_{\text{groups}} =  \frac{\text{SS}_{\text{groups}}}{df_{\text{groups}}}$. $\text{SS}_{\text{error}} =  \Sigma_{i} n_{i}(\hat{Y_i} - \bar{Y})^{2}$ where $\hat{Y_i}$ is the mean of the $i^{th}$ group, $n_i$ is the number of individuals in the group, and $\bar{Y}$ is the mean of the entire sample. 
+We need ways to measure this variance. We'll start by describing the *sum of squares groups*. $\text{SS}_{\text{group}} =  \Sigma_{i} n_{i}(\hat{Y_i} - \bar{Y})^{2}$ where $\hat{Y_i}$ is the mean of the $i^{th}$ group, $n_i$ is the number of individuals in the group, and $\bar{Y}$ is the mean of the entire sample. The differences between the model mean and the mean of the whole sample are shown in panel b below.
 
-The variance within groups will be called the **error means square** or $\text{MS}_{\text{error}}$ and is calculated as $\text{MS}_{\text{error}}  = \frac{\text{SS}_{\text{error}}}{df_{\text{error}}}$ where $\text{SS}_{\text{error}}$ is the *sum of squares error* and calculated as $\text{SS}_{\text{error}} = \Sigma_{i}\Sigma{j}(Y_{ij} - \bar{Y_i})^2$ where $Y_{ij}$ is the value for each individual $j$ in group $i$.
+The corresponding value within groups is$\text{SS}_{\text{error}}$m the *sum of squares error*. It is calculated as $\text{SS}_{\text{error}} = \Sigma_{i}\Sigma{j}(Y_{ij} - \bar{Y_i})^2$ where $Y_{ij}$ is the value for each individual $j$ in group $i$. The differences between each individual and the group means are shown in panel c below.
 
-```{r, fig.cap = "Partitioning deviations in an ANOVA. **A** Shows the difference between each observation, $Y_i$, and the grand mean, ${\\overline{Y}}$. This is the basis for calculating $MS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the grand mean, ${\\overline{Y}}$. This is the basis for calculating $MS_{model}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $MS_{error}$.", fig.height=2.3, fig.width=7.6, echo=FALSE, warning=FALSE}
+Together, the error mean square and the group mean square sum to the total mean square which tells us the deviations between each individual and the group mean (panel c below).
+
+```{r, fig.cap = "Partitioning deviations in an ANOVA. **A** Shows the difference between each observation, $Y_i$, and the grand mean, ${\\overline{Y}}$. This is the basis for calculating $SS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the grand mean, ${\\overline{Y}}$. This is the basis for calculating $SS_{group}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $SS_{error}$.", fig.height=2.3, fig.width=7.6, echo=FALSE, warning=FALSE}
 a <- ggplot(mutate(penguins, id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) , 
             aes(x = id, y = body_mass, color = species))+
   geom_point(alpha = .5)+
@@ -167,7 +167,7 @@ b<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass, na.rm=
                color = "black", alpha = .5)+
     geom_line(aes(y = .fitted), alpha  = 2)+ 
     theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())+ 
-  labs(title = "Model deviation             +")+
+  labs(title = "Groups deviation             +")+
   scale_color_manual(values = c("blue", "orange", "red"))
 
 c<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) ,
@@ -178,7 +178,7 @@ c<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass, na.rm=
                color = "black", alpha = .5)+
     geom_line(aes(y = .fitted), alpha  = 2)+ 
     theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())+ 
-  labs(title = "Error (residual) deviation")+
+  labs(title = "Error deviation")+
   scale_color_manual(values = c("blue", "orange", "red"))
 
 plot_grid(plot_grid(a + theme(legend.position = "none"),
@@ -189,13 +189,70 @@ plot_grid(plot_grid(a + theme(legend.position = "none"),
 ```
 
 
+### Significance with an F statistic
+
+So remember that if there is no difference in means between groups, the variance within groups will be the same as the variance between groups. 
+
+ANOVAs test this claim using a F statistic which calculates the ratio of these two values. 
+
+
+$$ F = \frac{\text{Variance among groups}}{\text{Variance within groups}}$$
+
+While different terms are used across texts, here we will call the variance among groups is called the **group mean square** or $\text{MS}_{\text{groups}}$ and it is calculated as $\text{MS}_{\text{groups}} =  \frac{\text{SS}_{\text{groups}}}{df_{\text{groups}}}$. In this case $df_{\text{groups}$ = $n_{\text{groups}} - 1$.
+
+The variance within groups will be called the **error mean square** or $\text{MS}_{\text{error}}$ and is calculated as $\text{MS}_{\text{error}}  = \frac{\text{SS}_{\text{error}}}{df_{\text{error}}}$. Here, $df_{\text{error}}= n- n_{\text{groups}}$.
+
+$$ F = \frac{\text{MS}_{\text{model}}}{\text{MS}_{\text{error}}}$$
+
+Using our penguin data we can calculate the sum of squares values
+```{r}
+penguins2 <- filter(penguins, !is.na(body_mass)) #remove nas for body mass
+
+sstable <- augment(model2) |> ## give us the means of each group in the .fitted row
+     mutate(sample_mean  = mean(body_mass)) |> # calculate the total mean
+            summarise(n_groups = n_distinct(species),
+                      n=n(),
+        SS_total = sum((body_mass-sample_mean)^2), #total ss from body mass minus sample mean
+        SS_groups=sum((.fitted-sample_mean)^2), #model ss from group means minus total mean
+        SS_error = sum((body_mass-.fitted)^2), # error ss from body mass minus the group means
+)
+ 
+sstable
+ 
+```
+
+Next we can calculate the mean square values
+```{r}
+ftable <- sstable |>
+  mutate(
+    df_groups = n_groups-1,
+    df_error = n - n_groups,
+    ms_groups = SS_groups/df_groups,
+    ms_error = SS_error/df_error,
+    F_value = ms_groups/ms_error
+  )
+
+ftable
+```
+
+We can then use an F-test to test the hypothesis that F is different from 1.
+
+```{r}
+pf(q = ftable$F_value, df1 = ftable$df_groups, df2 = ftable$df_error, lower.tail = FALSE)
+```
+
 ### Fitting an ANOVA with in R
+
+Instead of calculating everything by hand, we can use R to fit an ANOVA with the following code:
+
 ```{r}
 #install.packages('car')
 library(car)
 
-Anova(model1)
+Anova(model2)
 ```
+
+Note that our calculations match the Anova function!
 
 ### Pairwise comparisons
 
