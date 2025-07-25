@@ -1,0 +1,86 @@
+---
+title: "Lab 4 -- ANOVA"
+format: html
+editor: visual
+---
+
+This is a lab to practice ANOVA
+
+We will be simulating data to use in this model.
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
+library(emmeans)
+library(car)
+```
+
+TEXT ABOUT MOTIVATING QUESTION GOES HERE
+
+$$ \text{Fitness} \sim \beta_0 + e_i$$ $$e_i \sim N(0, \sigma^2)$$
+
+We will start by simulating data under this model using a normal distribution and 3 categories. 
+
+```{r}
+
+n.1 <- 30
+n.2 <- 30
+n.3 <- 30
+mean.1 <- 30
+mean.2 <- 50
+mean.3 <- 55
+sd.1 <- 10
+
+set.seed(5)
+
+#sample fitnesses based on parameters above (the round function gives us integers)
+group1 <- round(
+  rnorm(n=n.1, mean=mean.1, sd=sd.1))
+group2 <- round(
+  rnorm(n=n.2, mean=mean.2, sd=sd.1))
+group3 <- round(
+  rnorm(n=n.3, mean=mean.3, sd=sd.1))
+
+## but data together in a dataframe
+simData <- data.frame(resp = c(group1, group2, group3), 
+		    pop=c(rep('1', n.1), rep('2', n.2),rep('3',n.3)))
+
+#look at it
+plot(jitter(rep(c(0, .5,1), c(n.1, n.2,n.3))), simData$resp, bty="n", xlim=c(-.5,1.5),
+     xlab = "", ylab = "resp", xaxt="n")
+axis(1, at=c(0,.5,1), lab = c('1','2','3'))
+
+```
+
+Make a linear model with lm()
+
+```{r}
+model1 <- lm(resp~pop, data=simData)
+model1
+
+
+```
+
+Do an ANOVA by hand!
+
+
+Do an ANOVA with lm()
+
+```{r}
+Anova(model1)
+
+
+```
+
+
+Do all pairwise comparisons
+
+```{r}
+em1 <- emmeans(model1, specs="pop")
+pairs(em1)
+
+```
+
+Interpret!
