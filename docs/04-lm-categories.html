@@ -248,19 +248,22 @@ window.Quarto = {
   <ul>
   <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">5.1</span> What are we doing here?</a></li>
   <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">5.2</span> Motivating example</a></li>
-  <li><a href="#estimating-conditional-means" id="toc-estimating-conditional-means" class="nav-link" data-scroll-target="#estimating-conditional-means"><span class="header-section-number">5.3</span> Estimating conditional means</a></li>
-  <li><a href="#fitting-a-model-with-lm" id="toc-fitting-a-model-with-lm" class="nav-link" data-scroll-target="#fitting-a-model-with-lm"><span class="header-section-number">5.4</span> Fitting a model with lm()</a></li>
-  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">5.5</span> Residuals</a></li>
-  <li><a href="#more-than-two-categories" id="toc-more-than-two-categories" class="nav-link" data-scroll-target="#more-than-two-categories"><span class="header-section-number">5.6</span> More than two categories</a></li>
-  <li><a href="#building-a-model-with-more-than-two-categories-with-lm" id="toc-building-a-model-with-more-than-two-categories-with-lm" class="nav-link" data-scroll-target="#building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">5.7</span> Building a model with more than two categories with lm()</a></li>
-  <li><a href="#a-note-on-the-reference-categories." id="toc-a-note-on-the-reference-categories." class="nav-link" data-scroll-target="#a-note-on-the-reference-categories."><span class="header-section-number">5.8</span> A note on the reference categories.</a></li>
-  <li><a href="#anova" id="toc-anova" class="nav-link" data-scroll-target="#anova"><span class="header-section-number">5.9</span> ANOVA</a>
+  <li><a href="#linear-models-with-categories" id="toc-linear-models-with-categories" class="nav-link" data-scroll-target="#linear-models-with-categories"><span class="header-section-number">5.3</span> Linear models with categories</a>
   <ul class="collapse">
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">5.9.1</span> </a></li>
-  <li><a href="#significance-with-an-f-statistic" id="toc-significance-with-an-f-statistic" class="nav-link" data-scroll-target="#significance-with-an-f-statistic"><span class="header-section-number">5.9.2</span> Significance with an F statistic</a></li>
-  <li><a href="#fitting-an-anova-with-in-r" id="toc-fitting-an-anova-with-in-r" class="nav-link" data-scroll-target="#fitting-an-anova-with-in-r"><span class="header-section-number">5.9.3</span> Fitting an ANOVA with in R</a></li>
-  <li><a href="#pairwise-comparisons" id="toc-pairwise-comparisons" class="nav-link" data-scroll-target="#pairwise-comparisons"><span class="header-section-number">5.9.4</span> Pairwise comparisons</a></li>
-  <li><a href="#assumptions-of-an-anova" id="toc-assumptions-of-an-anova" class="nav-link" data-scroll-target="#assumptions-of-an-anova"><span class="header-section-number">5.9.5</span> Assumptions of an ANOVA</a></li>
+  <li><a href="#estimating-conditional-means" id="toc-estimating-conditional-means" class="nav-link" data-scroll-target="#estimating-conditional-means"><span class="header-section-number">5.3.1</span> Estimating conditional means</a></li>
+  <li><a href="#fitting-a-model-with-lm" id="toc-fitting-a-model-with-lm" class="nav-link" data-scroll-target="#fitting-a-model-with-lm"><span class="header-section-number">5.3.2</span> Fitting a model with lm()</a></li>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">5.3.3</span> Residuals</a></li>
+  <li><a href="#more-than-two-categories" id="toc-more-than-two-categories" class="nav-link" data-scroll-target="#more-than-two-categories"><span class="header-section-number">5.3.4</span> More than two categories</a></li>
+  <li><a href="#building-a-model-with-more-than-two-categories-with-lm" id="toc-building-a-model-with-more-than-two-categories-with-lm" class="nav-link" data-scroll-target="#building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">5.3.5</span> Building a model with more than two categories with lm()</a></li>
+  <li><a href="#a-note-on-the-reference-categories." id="toc-a-note-on-the-reference-categories." class="nav-link" data-scroll-target="#a-note-on-the-reference-categories."><span class="header-section-number">5.3.6</span> A note on the reference categories.</a></li>
+  </ul></li>
+  <li><a href="#anova" id="toc-anova" class="nav-link" data-scroll-target="#anova"><span class="header-section-number">5.4</span> ANOVA</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">5.4.1</span> </a></li>
+  <li><a href="#significance-with-an-f-statistic" id="toc-significance-with-an-f-statistic" class="nav-link" data-scroll-target="#significance-with-an-f-statistic"><span class="header-section-number">5.4.2</span> Significance with an F statistic</a></li>
+  <li><a href="#fitting-an-anova-with-in-r" id="toc-fitting-an-anova-with-in-r" class="nav-link" data-scroll-target="#fitting-an-anova-with-in-r"><span class="header-section-number">5.4.3</span> Fitting an ANOVA with in R</a></li>
+  <li><a href="#pairwise-comparisons" id="toc-pairwise-comparisons" class="nav-link" data-scroll-target="#pairwise-comparisons"><span class="header-section-number">5.4.4</span> Pairwise comparisons</a></li>
+  <li><a href="#assumptions-of-an-anova" id="toc-assumptions-of-an-anova" class="nav-link" data-scroll-target="#assumptions-of-an-anova"><span class="header-section-number">5.4.5</span> Assumptions of an ANOVA</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -309,8 +312,11 @@ window.Quarto = {
 </div>
 <p>It definitely looks like something is different between these different species. But can we use linear models to confidently say so?</p>
 </section>
-<section id="estimating-conditional-means" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="estimating-conditional-means"><span class="header-section-number">5.3</span> Estimating conditional means</h2>
+<section id="linear-models-with-categories" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="linear-models-with-categories"><span class="header-section-number">5.3</span> Linear models with categories</h2>
+<p>Let’s walk through how to use a linear model to estimate the differences between categories</p>
+<section id="estimating-conditional-means" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="estimating-conditional-means"><span class="header-section-number">5.3.1</span> Estimating conditional means</h3>
 <p>We want to start by estimating the mean body mass of each species of penguin. The code below does this</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>penguins                                             <span class="sc">|&gt;</span></span>
@@ -338,8 +344,8 @@ window.Quarto = {
 <p>We could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo. <span class="math display">\[ \text{Mass}_{i|\text{Adelie}} = b_0 + e_i\]</span> <span class="math display">\[ \text{Mass}_{i|\text{Gentoo}} = b_0 + b_1 + e_i\]</span></p>
 <p>We can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin (<span class="math inline">\(b_0\)</span>) is 3701 and since the mean mass of a Gentoo penguin is 5076, <span class="math inline">\(b_1 =\)</span> 1375$.</p>
 </section>
-<section id="fitting-a-model-with-lm" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="fitting-a-model-with-lm"><span class="header-section-number">5.4</span> Fitting a model with lm()</h2>
+<section id="fitting-a-model-with-lm" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="fitting-a-model-with-lm"><span class="header-section-number">5.3.2</span> Fitting a model with lm()</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## first filter out chinstraps and anything with missing data</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins                                             <span class="sc">|&gt;</span></span>
@@ -370,8 +376,8 @@ F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-<section id="residuals" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="residuals"><span class="header-section-number">5.5</span> Residuals</h2>
+<section id="residuals" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="residuals"><span class="header-section-number">5.3.3</span> Residuals</h3>
 <div class="fyi">
 <p><strong>Linear models vs t-tests</strong></p>
 <p>How is what we’ve just done different from a t-test? Or is it?</p>
@@ -398,8 +404,8 @@ mean of x mean of y
 <p>Note that we can compare the output of our t.test above and the summary of the corresponding linear model and the t-value for species is the same!</p>
 </div>
 </section>
-<section id="more-than-two-categories" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="more-than-two-categories"><span class="header-section-number">5.6</span> More than two categories</h2>
+<section id="more-than-two-categories" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="more-than-two-categories"><span class="header-section-number">5.3.4</span> More than two categories</h3>
 <p>What if we want to look at all three species? We can use the same modelling approach as before.</p>
 <p><span class="math display">\[\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i +b_2 \times \text{Chinstrap} + e_i \]</span></p>
 <ul>
@@ -411,8 +417,8 @@ mean of x mean of y
 <li><span class="math inline">\(e_i\)</span> is the residual</li>
 </ul>
 </section>
-<section id="building-a-model-with-more-than-two-categories-with-lm" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">5.7</span> Building a model with more than two categories with lm()</h2>
+<section id="building-a-model-with-more-than-two-categories-with-lm" class="level3" data-number="5.3.5">
+<h3 data-number="5.3.5" class="anchored" data-anchor-id="building-a-model-with-more-than-two-categories-with-lm"><span class="header-section-number">5.3.5</span> Building a model with more than two categories with lm()</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> species, <span class="at">data =</span> penguins)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>model2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -450,16 +456,37 @@ F-statistic: 343.6 on 2 and 339 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-<section id="a-note-on-the-reference-categories." class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="a-note-on-the-reference-categories."><span class="header-section-number">5.8</span> A note on the reference categories.</h2>
+<section id="a-note-on-the-reference-categories." class="level3" data-number="5.3.6">
+<h3 data-number="5.3.6" class="anchored" data-anchor-id="a-note-on-the-reference-categories."><span class="header-section-number">5.3.6</span> A note on the reference categories.</h3>
+<p>Our model will look slightly different depending on which reference category we use. In the previous model, our reference category was Gentoo since it is the mean body mass of Gentoo penguins that is equal to the intercept. We can change the reference category.</p>
+<p>The code below runs a new model that uses the relevel() function to set the reference as Chinstrap.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span><span class="fu">relevel</span>(species, <span class="at">ref=</span><span class="st">"Chinstrap"</span>), <span class="at">data=</span>penguins)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>model3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ relevel(species, ref = "Chinstrap"), 
+    data = penguins)
+
+Coefficients:
+                              (Intercept)  
+                                  3733.09  
+relevel(species, ref = "Chinstrap")Adelie  
+                                   -32.43  
+relevel(species, ref = "Chinstrap")Gentoo  
+                                  1342.93  </code></pre>
+</div>
+</div>
 </section>
-<section id="anova" class="level2" data-number="5.9">
-<h2 data-number="5.9" class="anchored" data-anchor-id="anova"><span class="header-section-number">5.9</span> ANOVA</h2>
+</section>
+<section id="anova" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="anova"><span class="header-section-number">5.4</span> ANOVA</h2>
 <p>There may be times where we have multiple category values but instead of knowing the effect of each category value on the outcome, we just want to know if individuals from different species have different body masses in general. For example, if we had 100s of penguin species, we might care less about the effect of each species than how much species matter in general. This latter value would be easier to interpret.</p>
 <p>Answering this question requires an ANOVA, which stands for “Analysis of Variance” Formally, we are asking if individuals from different groups are drawn from the same distribution (our null hypothesis) or different distributions (our alternative hypothesis).</p>
 <p>The ANOVA also solves some other problems with multiple category linear models. The model above compares Gentoo and Chinstrap penguins with Adelie penguins but it doesn’t compare Gentoo and Chinstrap with each other. Making that comparison requires rearranging the order of the model.</p>
-<section id="section" class="level3" data-number="5.9.1">
-<h3 data-number="5.9.1" class="anchored" data-anchor-id="section"><span class="header-section-number">5.9.1</span> </h3>
+<section id="section" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="section"><span class="header-section-number">5.4.1</span> </h3>
 <p>ANOVAs work by estimating the amount of variation within groups and among groups. The null hypothesis suggests that individuals from different groups will be no more different from each other than individuals from the same group. If this is true, then the variance among groups should equal the variance within groups.</p>
 <p>We need ways to measure this variance. We’ll start by describing the <em>sum of squares groups</em>. <span class="math inline">\(\text{SS}_{\text{group}} =  \Sigma_{i} n_{i}(\hat{Y_i} - \bar{Y})^{2}\)</span> where <span class="math inline">\(\hat{Y_i}\)</span> is the mean of the <span class="math inline">\(i^{th}\)</span> group, <span class="math inline">\(n_i\)</span> is the number of individuals in the group, and <span class="math inline">\(\bar{Y}\)</span> is the mean of the entire sample. The differences between the model mean and the mean of the whole sample are shown in panel b below.</p>
 <p>The corresponding value within groups is<span class="math inline">\(\text{SS}_{\text{error}}\)</span>m the <em>sum of squares error</em>. It is calculated as <span class="math inline">\(\text{SS}_{\text{error}} = \Sigma_{i}\Sigma{j}(Y_{ij} - \bar{Y_i})^2\)</span> where <span class="math inline">\(Y_{ij}\)</span> is the value for each individual <span class="math inline">\(j\)</span> in group <span class="math inline">\(i\)</span>. The differences between each individual and the group means are shown in panel c below.</p>
@@ -468,35 +495,35 @@ F-statistic: 343.6 on 2 and 339 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="04-lm-categories_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="729"></p>
+<p><img src="04-lm-categories_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="729"></p>
 <figcaption>Partitioning deviations in an ANOVA. <strong>A</strong> Shows the difference between each observation, <span class="math inline">\(Y_i\)</span>, and the grand mean, <span class="math inline">\({\overline{Y}}\)</span>. This is the basis for calculating <span class="math inline">\(SS_{total}\)</span>. <strong>B</strong> Shows the difference between each predicted value <span class="math inline">\(\widehat{Y_i}\)</span> and the grand mean, <span class="math inline">\({\overline{Y}}\)</span>. This is the basis for calculating <span class="math inline">\(SS_{group}\)</span>. <strong>C</strong> Shows the difference between each observation, <span class="math inline">\(Y_i\)</span>, and its predicted value <span class="math inline">\(\widehat{Y_i}\)</span>. This is the basis for calculating <span class="math inline">\(SS_{error}\)</span>.</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="significance-with-an-f-statistic" class="level3" data-number="5.9.2">
-<h3 data-number="5.9.2" class="anchored" data-anchor-id="significance-with-an-f-statistic"><span class="header-section-number">5.9.2</span> Significance with an F statistic</h3>
+<section id="significance-with-an-f-statistic" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="significance-with-an-f-statistic"><span class="header-section-number">5.4.2</span> Significance with an F statistic</h3>
 <p>So remember that if there is no difference in means between groups, the variance within groups will be the same as the variance between groups.</p>
 <p>ANOVAs test this claim using a F statistic which calculates the ratio of these two values.</p>
 <p><span class="math display">\[ F = \frac{\text{Variance among groups}}{\text{Variance within groups}}\]</span></p>
-<p>While different terms are used across texts, here we will call the variance among groups is called the <strong>group mean square</strong> or <span class="math inline">\(\text{MS}_{\text{groups}}\)</span> and it is calculated as <span class="math inline">\(\text{MS}_{\text{groups}} =  \frac{\text{SS}_{\text{groups}}}{df_{\text{groups}}}\)</span>. In this case <span class="math inline">\(df_{\text{groups}\)</span> = <span class="math inline">\(n_{\text{groups}} - 1\)</span>.</p>
+<p>While different terms are used across texts, here we will call the variance among groups is called the <strong>group mean square</strong> or <span class="math inline">\(\text{MS}_{\text{groups}}\)</span> and it is calculated as <span class="math inline">\(\text{MS}_{\text{groups}} =  \frac{\text{SS}_{\text{groups}}}{df_{\text{groups}}}\)</span>. In this case <span class="math inline">\(df_{\text{groups} = n_{\text{groups}} - 1\)</span>.</p>
 <p>The variance within groups will be called the <strong>error mean square</strong> or <span class="math inline">\(\text{MS}_{\text{error}}\)</span> and is calculated as <span class="math inline">\(\text{MS}_{\text{error}}  = \frac{\text{SS}_{\text{error}}}{df_{\text{error}}}\)</span>. Here, <span class="math inline">\(df_{\text{error}}= n- n_{\text{groups}}\)</span>.</p>
-<p><span class="math display">\[ F = \frac{\text{MS}_{\text{model}}}{\text{MS}_{\text{error}}}\]</span></p>
+<p><span class="math display">\[ F = \frac{\text{MS}_{\text{groups}}}{\text{MS}_{\text{error}}}\]</span></p>
 <p>Using our penguin data we can calculate the sum of squares values</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, <span class="sc">!</span><span class="fu">is.na</span>(body_mass)) <span class="co">#remove nas for body mass</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sstable <span class="ot">&lt;-</span> <span class="fu">augment</span>(model2) <span class="sc">|&gt;</span> <span class="do">## give us the means of each group in the .fitted row</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>     <span class="fu">mutate</span>(<span class="at">sample_mean  =</span> <span class="fu">mean</span>(body_mass)) <span class="sc">|&gt;</span> <span class="co"># calculate the total mean</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">summarise</span>(<span class="at">n_groups =</span> <span class="fu">n_distinct</span>(species),</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">n=</span><span class="fu">n</span>(),</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">SS_total =</span> <span class="fu">sum</span>((body_mass<span class="sc">-</span>sample_mean)<span class="sc">^</span><span class="dv">2</span>), <span class="co">#total ss from body mass minus sample mean</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">SS_groups=</span><span class="fu">sum</span>((.fitted<span class="sc">-</span>sample_mean)<span class="sc">^</span><span class="dv">2</span>), <span class="co">#model ss from group means minus total mean</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">SS_error =</span> <span class="fu">sum</span>((body_mass<span class="sc">-</span>.fitted)<span class="sc">^</span><span class="dv">2</span>), <span class="co"># error ss from body mass minus the group means</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>sstable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, <span class="sc">!</span><span class="fu">is.na</span>(body_mass)) <span class="co">#remove nas for body mass</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sstable <span class="ot">&lt;-</span> <span class="fu">augment</span>(model2) <span class="sc">|&gt;</span> <span class="do">## give us the means of each group in the .fitted row</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>     <span class="fu">mutate</span>(<span class="at">sample_mean  =</span> <span class="fu">mean</span>(body_mass)) <span class="sc">|&gt;</span> <span class="co"># calculate the total mean</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">summarise</span>(<span class="at">n_groups =</span> <span class="fu">n_distinct</span>(species),</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">n=</span><span class="fu">n</span>(),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">SS_total =</span> <span class="fu">sum</span>((body_mass<span class="sc">-</span>sample_mean)<span class="sc">^</span><span class="dv">2</span>), <span class="co">#total ss from body mass minus sample mean</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">SS_groups=</span><span class="fu">sum</span>((.fitted<span class="sc">-</span>sample_mean)<span class="sc">^</span><span class="dv">2</span>), <span class="co">#model ss from group means minus total mean</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">SS_error =</span> <span class="fu">sum</span>((body_mass<span class="sc">-</span>.fitted)<span class="sc">^</span><span class="dv">2</span>), <span class="co"># error ss from body mass minus the group means</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>sstable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 5
   n_groups     n   SS_total  SS_groups  SS_error
@@ -506,16 +533,16 @@ F-statistic: 343.6 on 2 and 339 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>Next we can calculate the mean square values</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ftable <span class="ot">&lt;-</span> sstable <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">df_groups =</span> n_groups<span class="dv">-1</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">df_error =</span> n <span class="sc">-</span> n_groups,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">ms_groups =</span> SS_groups<span class="sc">/</span>df_groups,</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ms_error =</span> SS_error<span class="sc">/</span>df_error,</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">F_value =</span> ms_groups<span class="sc">/</span>ms_error</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>ftable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ftable <span class="ot">&lt;-</span> sstable <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">df_groups =</span> n_groups<span class="dv">-1</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">df_error =</span> n <span class="sc">-</span> n_groups,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">ms_groups =</span> SS_groups<span class="sc">/</span>df_groups,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ms_error =</span> SS_error<span class="sc">/</span>df_error,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">F_value =</span> ms_groups<span class="sc">/</span>ms_error</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>ftable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 10
   n_groups     n   SS_total  SS_groups  SS_error df_groups df_error ms_groups
@@ -526,18 +553,18 @@ F-statistic: 343.6 on 2 and 339 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>We can then use an F-test to test the hypothesis that F is different from 1.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pf</span>(<span class="at">q =</span> ftable<span class="sc">$</span>F_value, <span class="at">df1 =</span> ftable<span class="sc">$</span>df_groups, <span class="at">df2 =</span> ftable<span class="sc">$</span>df_error, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pf</span>(<span class="at">q =</span> ftable<span class="sc">$</span>F_value, <span class="at">df1 =</span> ftable<span class="sc">$</span>df_groups, <span class="at">df2 =</span> ftable<span class="sc">$</span>df_error, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.892368e-82</code></pre>
 </div>
 </div>
 </section>
-<section id="fitting-an-anova-with-in-r" class="level3" data-number="5.9.3">
-<h3 data-number="5.9.3" class="anchored" data-anchor-id="fitting-an-anova-with-in-r"><span class="header-section-number">5.9.3</span> Fitting an ANOVA with in R</h3>
+<section id="fitting-an-anova-with-in-r" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="fitting-an-anova-with-in-r"><span class="header-section-number">5.4.3</span> Fitting an ANOVA with in R</h3>
 <p>Instead of calculating everything by hand, we can use R to fit an ANOVA with the following code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('car')</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('car')</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: carData</code></pre>
 </div>
@@ -555,7 +582,7 @@ Attaching package: 'car'</code></pre>
 
     some</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type II tests)
 
@@ -569,16 +596,16 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>Note that our calculations match the Anova function!</p>
 </section>
-<section id="pairwise-comparisons" class="level3" data-number="5.9.4">
-<h3 data-number="5.9.4" class="anchored" data-anchor-id="pairwise-comparisons"><span class="header-section-number">5.9.4</span> Pairwise comparisons</h3>
+<section id="pairwise-comparisons" class="level3" data-number="5.4.4">
+<h3 data-number="5.4.4" class="anchored" data-anchor-id="pairwise-comparisons"><span class="header-section-number">5.4.4</span> Pairwise comparisons</h3>
 <p>Now, to determine if there is a difference between any pair of categories, like Chinstrap and Gentoo, we can do a post-hoc pairwise comparison. <strong>Post-hoc</strong> tells us that we are doing these tests after we reject the null hypothesis that all of these categories have the same distribution.</p>
 <p>If we want to look at all possible comparisons, this is called doing <strong>unplanned comparisons</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("emmeans")</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>out.emmeans <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(model2, <span class="at">specs =</span> <span class="st">"species"</span>)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(out.emmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("emmeans")</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>out.emmeans <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(model2, <span class="at">specs =</span> <span class="st">"species"</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(out.emmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> contrast           estimate   SE  df t.ratio p.value
  Adelie - Chinstrap    -32.4 67.5 339  -0.480  0.8807
@@ -589,8 +616,8 @@ P value adjustment: tukey method for comparing a family of 3 estimates </code></
 </div>
 </div>
 </section>
-<section id="assumptions-of-an-anova" class="level3" data-number="5.9.5">
-<h3 data-number="5.9.5" class="anchored" data-anchor-id="assumptions-of-an-anova"><span class="header-section-number">5.9.5</span> Assumptions of an ANOVA</h3>
+<section id="assumptions-of-an-anova" class="level3" data-number="5.4.5">
+<h3 data-number="5.4.5" class="anchored" data-anchor-id="assumptions-of-an-anova"><span class="header-section-number">5.4.5</span> Assumptions of an ANOVA</h3>
 
 
 </section>

@@ -65,15 +65,38 @@ model1
 
 Do an ANOVA by hand!
 
+```{r}
+library(broom)
+
+## Calculate SS_groups
+SS_groups <- sum((augment(model1)$.fitted - mean(simData$resp))^2)
+
+## Calculate MS_groups
+MS_groups <- SS_groups/(3-1)
+
+## Calculate SS_error
+SS_error <- sum((augment(model1)$.resid)^2)
+##SS_error <- sum((augment(model1)$resp - augment(model1)$.fitted)^2) THIS ALSO WORKS
+
+## Calculate MS_error
+MS_error <- SS_error/(90-3)
+
+## Calculate F
+myF = MS_groups/MS_error
+
+## Do the F test
+pf(q=myF, df1 = 2, df2 = 87, lower.tail=F)
+
+```
+
 
 Do an ANOVA with lm()
 
 ```{r}
 Anova(model1)
-
-
 ```
 
+Check that your results match.
 
 Do all pairwise comparisons
 

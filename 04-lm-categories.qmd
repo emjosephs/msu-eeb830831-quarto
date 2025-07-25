@@ -138,7 +138,7 @@ The code below runs a new model that uses the relevel() function to set the refe
 
 ```{r}
 model3 <- lm(body_mass ~relevel(species, ref="Chinstrap"), data=penguins)
-model3)
+model3
 ```
 
 ## ANOVA
@@ -172,7 +172,7 @@ a <- ggplot(mutate(penguins, id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) ,
                color = "black", alpha = .5)+
   theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())+ 
   labs(title = "Total deviation               = ")+
-  scale_color_manual(values = c("blue", "orange", "red"))
+  scale_color_manual(values = palette()[c(1:3)])
 
 b<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) ,
           aes(x = id, y = body_mass, color = species))+
@@ -183,7 +183,7 @@ b<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass, na.rm=
     geom_line(aes(y = .fitted), alpha  = 2)+ 
     theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())+ 
   labs(title = "Groups deviation             +")+
-  scale_color_manual(values = c("blue", "orange", "red"))
+  scale_color_manual(values = palette()[c(1:3)])
 
 c<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) ,
           aes(x = id, y = body_mass, color = species))+
@@ -194,7 +194,7 @@ c<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass, na.rm=
     geom_line(aes(y = .fitted), alpha  = 2)+ 
     theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x = element_blank())+ 
   labs(title = "Error deviation")+
-  scale_color_manual(values = c("blue", "orange", "red"))
+  scale_color_manual(values = palette()[c(1:3)])
 
 plot_grid(plot_grid(a + theme(legend.position = "none"),
           b + theme(legend.position = "none"),
@@ -213,11 +213,11 @@ ANOVAs test this claim using a F statistic which calculates the ratio of these t
 
 $$ F = \frac{\text{Variance among groups}}{\text{Variance within groups}}$$
 
-While different terms are used across texts, here we will call the variance among groups is called the **group mean square** or $\text{MS}_{\text{groups}}$ and it is calculated as $\text{MS}_{\text{groups}} =  \frac{\text{SS}_{\text{groups}}}{df_{\text{groups}}}$. In this case $df_{\text{groups}$ = $n_{\text{groups}} - 1$.
+While different terms are used across texts, here we will call the variance among groups is called the **group mean square** or $\text{MS}_{\text{groups}}$ and it is calculated as $\text{MS}_{\text{groups}} =  \frac{\text{SS}_{\text{groups}}}{df_{\text{groups}}}$. In this case $df_{\text{groups} = n_{\text{groups}} - 1$.
 
 The variance within groups will be called the **error mean square** or $\text{MS}_{\text{error}}$ and is calculated as $\text{MS}_{\text{error}}  = \frac{\text{SS}_{\text{error}}}{df_{\text{error}}}$. Here, $df_{\text{error}}= n- n_{\text{groups}}$.
 
-$$ F = \frac{\text{MS}_{\text{model}}}{\text{MS}_{\text{error}}}$$
+$$ F = \frac{\text{MS}_{\text{groups}}}{\text{MS}_{\text{error}}}$$
 
 Using our penguin data we can calculate the sum of squares values
 ```{r}
