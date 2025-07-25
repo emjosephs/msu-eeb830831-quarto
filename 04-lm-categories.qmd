@@ -23,6 +23,8 @@ We previously discussed linear models and learned to build a very simple linear 
 
 In this section we'll expand our linear model to incorporate differences between categories.
 
+We'll also cover ANOVA, which lets us determine how much variation is explained by a category.
+
 ## Motivating example
 
 You may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let's look more closely by making a plot of the body masses by color.
@@ -260,7 +262,7 @@ pf(q = ftable$F_value, df1 = ftable$df_groups, df2 = ftable$df_error, lower.tail
 
 Instead of calculating everything by hand, we can use R to fit an ANOVA with the following code:
 
-```{r}
+```{r, message=FALSE}
 #install.packages('car')
 library(car)
 
@@ -275,7 +277,7 @@ Now, to determine if there is a difference between any pair of categories, like 
 
 If we want to look at all possible comparisons, this is called doing **unplanned comparisons**
 
-```{r}
+```{r, message=FALSE}
 #install.packages("emmeans")
 library(emmeans)
 
@@ -284,3 +286,17 @@ pairs(out.emmeans)
 ```
 
 ### Assumptions of an ANOVA
+
+1. Equal variance within groups
+The ANOVA null hypothesis is that variance within groups is the same as variance between groups, so having different amounts of variance within different groups will break the null hypothesis.
+
+A general rule of thumb is that as long as the variances of each group are within a factor of five of each other, you can use an ANOVA.
+
+2. Normally distributed residuals
+
+This assumption is similar to what we have in a linear model. Fortunately, ANOVAs are pretty robust to this assumption
+
+## Review questions
+
+
+

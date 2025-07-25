@@ -265,6 +265,7 @@ window.Quarto = {
   <li><a href="#pairwise-comparisons" id="toc-pairwise-comparisons" class="nav-link" data-scroll-target="#pairwise-comparisons"><span class="header-section-number">5.4.4</span> Pairwise comparisons</a></li>
   <li><a href="#assumptions-of-an-anova" id="toc-assumptions-of-an-anova" class="nav-link" data-scroll-target="#assumptions-of-an-anova"><span class="header-section-number">5.4.5</span> Assumptions of an ANOVA</a></li>
   </ul></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">5.5</span> Review questions</a></li>
   </ul>
 </nav>
     </div>
@@ -294,6 +295,7 @@ window.Quarto = {
 <h2 data-number="5.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">5.1</span> What are we doing here?</h2>
 <p>We previously discussed linear models and learned to build a very simple linear model to estimate the mean. We also learned how to calculate residuals, which in this case were the differences between each datapoint and the mean.</p>
 <p>In this section we’ll expand our linear model to incorporate differences between categories.</p>
+<p>We’ll also cover ANOVA, which lets us determine how much variation is explained by a category.</p>
 </section>
 <section id="motivating-example" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">5.2</span> Motivating example</h2>
@@ -564,25 +566,9 @@ relevel(species, ref = "Chinstrap")Gentoo
 <p>Instead of calculating everything by hand, we can use R to fit an ANOVA with the following code:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('car')</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: carData</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'car'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:dplyr':
-
-    recode</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:purrr':
-
-    some</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type II tests)
 
@@ -601,11 +587,11 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Now, to determine if there is a difference between any pair of categories, like Chinstrap and Gentoo, we can do a post-hoc pairwise comparison. <strong>Post-hoc</strong> tells us that we are doing these tests after we reject the null hypothesis that all of these categories have the same distribution.</p>
 <p>If we want to look at all possible comparisons, this is called doing <strong>unplanned comparisons</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("emmeans")</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>out.emmeans <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(model2, <span class="at">specs =</span> <span class="st">"species"</span>)</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(out.emmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("emmeans")</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>out.emmeans <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(model2, <span class="at">specs =</span> <span class="st">"species"</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(out.emmeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> contrast           estimate   SE  df t.ratio p.value
  Adelie - Chinstrap    -32.4 67.5 339  -0.480  0.8807
@@ -618,9 +604,20 @@ P value adjustment: tukey method for comparing a family of 3 estimates </code></
 </section>
 <section id="assumptions-of-an-anova" class="level3" data-number="5.4.5">
 <h3 data-number="5.4.5" class="anchored" data-anchor-id="assumptions-of-an-anova"><span class="header-section-number">5.4.5</span> Assumptions of an ANOVA</h3>
-
-
+<ol type="1">
+<li>Equal variance within groups The ANOVA null hypothesis is that variance within groups is the same as variance between groups, so having different amounts of variance within different groups will break the null hypothesis.</li>
+</ol>
+<p>A general rule of thumb is that as long as the variances of each group are within a factor of five of each other, you can use an ANOVA.</p>
+<ol start="2" type="1">
+<li>Normally distributed residuals</li>
+</ol>
+<p>This assumption is similar to what we have in a linear model. Fortunately, ANOVAs are pretty robust to this assumption</p>
 </section>
+</section>
+<section id="review-questions" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">5.5</span> Review questions</h2>
+
+
 </section>
 
 </main> <!-- /main -->
