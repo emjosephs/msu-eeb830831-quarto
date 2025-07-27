@@ -298,5 +298,29 @@ This assumption is similar to what we have in a linear model. Fortunately, ANOVA
 
 ## Review questions
 
+Maize pollen can provide food for *Anopheles arabiensis*, a vector of malaria. Imagine that you are interested in whether maize cultivation levels affect malaria levels. You have data from Kebede et al. 2005 on maize cultivation level and rates of malaria from multiple locations in Ethiopia.
+
+Here is a plot of the data below
+
+```{r, echo=F, eval=T}
+mm <- read.csv('~/Documents/msu-eeb830831-quarto/data/malaria_v_maize.csv')
+
+mm$yield = factor(mm$maize_yield, levels=c('Low','Medium','High'))
+
+ggplot(data = mm, aes(x = yield, y = incidence_rate_per_ten_thousand)) + 
+  geom_jitter(height = 0, width = .2, size = 2, alpha = .35, show.legend = FALSE)+
+ # geom_boxplot(fill = 'gray') + 
+  theme_bw(base_size = 18) + 
+  labs(x = 'maize yield', y = 'malaria rate')
+
+```
+
+1. Write out an equation for a linear model testing for the effects of each yield category on malaria rates. Define each variable in the model (all the $b$ values)
+
+2. What if you were interested in whether yield in general affected malaria rate? Would you use a linear model or an ANOVA? Why?
+
+3. Does it look like this data matches the assumptions of an ANOVA? If not, why not?
+
+
 
 

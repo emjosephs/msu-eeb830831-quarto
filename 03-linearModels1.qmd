@@ -10,6 +10,8 @@ editor: source
 
 library(tidyverse)
 library('DT')
+library(LaCroixColoR)
+palette(lacroix_palette("Mango", type = "discrete"))
 ```
 
 ## What are we doing here?
@@ -335,21 +337,58 @@ model1Residuals <- model1$residuals
  
 ```
 
-## Calculating the $SS_{residual}$ 
+## Calculating the $\text{SS}_{\text{residual}}$
 
-TODO explain why if we're doing this 
+We can quantify how well our model fits the data using the residuals, in particular by calculating the sum of squared residuals ($\text{SS}_{\text{residual}}$)
 ```{r}
 library(broom)
-model1       |>
- augment()                |>
- mutate(sq_resid=.resid^2)|>
- summarise(SS=sum(sq_resid))
+ss_resid <-model1       |> 
+ augment()                |> #use augment to calculate residuals
+ mutate(sq_resid=.resid^2)|> # use mutate to calculate squared residuals
+ summarise(SS=sum(sq_resid)) #use summarise to sum the residuals
 
+ss_resid
 ```
 
 
-## The mean minimizes $SS_{residual}$
+## The mean minimizes $\text{SS}_{\text{residual}}$
 
+We know how to calculate the mean of our data. But, imagine that we didn't and we wanted to figure out a way to 'best' summarize our data. One way to do this is to find a measure that minimizes the distance between our observed data and the predictions made by the model, which means minimizing the residuals. In practice, this means minimizing $\text{SS}_{\text{residual}}$
+
+Above, we calculated $\text{SS}_{\text{residual}}$ for a mean of 4202. The following code calculates $\text{SS}_{\text{residual}}$ for a model with a mean of 5000.
+
+```{r}
+ss_resid2 <- model1 |>
+  augment() |>
+mutate(sq_resid2 = (5000-body_mass)^2) |> #calculate new residuals based on a "mean " of 5000
+summarise(SS2 = sum(sq_resid2))
+
+ss_resid2
+
+ss_resid2 > ss_resid
+```
+
+So the sum of squares for residuals from 5000 is much larger than the sum of squares for residuals from 4202, the mean.
+
+The plot below shows potential means on the x axis and $\text{SS}_{\text{residual}}$ on the Y axis
+
+```{r, echo=F}
+calcSS <- function(x, m){
+  m |>
+  augment() |>
+mutate(sq_resid2 = (x-body_mass)^2) |> 
+summarise(SS2 = sum(sq_resid2))
+}
+
+myX = seq(2000,6000, length.out=100)
+mySS <- sapply(myX, function(x){
+  calcSS(x,model1)
+})
+
+plot(myX, mySS, bty="n", xlab = "mean", ylab = "SS_resid")
+abline(v = 4202, lwd=2, lty=2, col=palette())
+
+```
 
 ## Practice problems
 

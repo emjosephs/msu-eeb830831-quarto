@@ -275,8 +275,8 @@ window.Quarto = {
   <li><a href="#using-rs-lm-function" id="toc-using-rs-lm-function" class="nav-link" data-scroll-target="#using-rs-lm-function"><span class="header-section-number">4.6</span> Using R’s lm() function</a></li>
   <li><a href="#more-on-residuals" id="toc-more-on-residuals" class="nav-link" data-scroll-target="#more-on-residuals"><span class="header-section-number">4.7</span> More on residuals</a></li>
   <li><a href="#calculating-residuals" id="toc-calculating-residuals" class="nav-link" data-scroll-target="#calculating-residuals"><span class="header-section-number">4.8</span> Calculating residuals</a></li>
-  <li><a href="#calculating-the-ss_residual" id="toc-calculating-the-ss_residual" class="nav-link" data-scroll-target="#calculating-the-ss_residual"><span class="header-section-number">4.9</span> Calculating the <span class="math inline">\(SS_{residual}\)</span></a></li>
-  <li><a href="#the-mean-minimizes-ss_residual" id="toc-the-mean-minimizes-ss_residual" class="nav-link" data-scroll-target="#the-mean-minimizes-ss_residual"><span class="header-section-number">4.10</span> The mean minimizes <span class="math inline">\(SS_{residual}\)</span></a></li>
+  <li><a href="#calculating-the-textss_textresidual" id="toc-calculating-the-textss_textresidual" class="nav-link" data-scroll-target="#calculating-the-textss_textresidual"><span class="header-section-number">4.9</span> Calculating the <span class="math inline">\(\text{SS}_{\text{residual}}\)</span></a></li>
+  <li><a href="#the-mean-minimizes-textss_textresidual" id="toc-the-mean-minimizes-textss_textresidual" class="nav-link" data-scroll-target="#the-mean-minimizes-textss_textresidual"><span class="header-section-number">4.10</span> The mean minimizes <span class="math inline">\(\text{SS}_{\text{residual}}\)</span></a></li>
   <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">4.11</span> Practice problems</a></li>
   </ul>
 </nav>
@@ -587,15 +587,17 @@ Residual standard error: 802 on 341 degrees of freedom
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model1Residuals <span class="ot">&lt;-</span> model1<span class="sc">$</span>residuals </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="calculating-the-ss_residual" class="level2" data-number="4.9">
-<h2 data-number="4.9" class="anchored" data-anchor-id="calculating-the-ss_residual"><span class="header-section-number">4.9</span> Calculating the <span class="math inline">\(SS_{residual}\)</span></h2>
-<p>TODO explain why if we’re doing this</p>
+<section id="calculating-the-textss_textresidual" class="level2" data-number="4.9">
+<h2 data-number="4.9" class="anchored" data-anchor-id="calculating-the-textss_textresidual"><span class="header-section-number">4.9</span> Calculating the <span class="math inline">\(\text{SS}_{\text{residual}}\)</span></h2>
+<p>We can quantify how well our model fits the data using the residuals, in particular by calculating the sum of squared residuals (<span class="math inline">\(\text{SS}_{\text{residual}}\)</span>)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>model1       <span class="sc">|&gt;</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">augment</span>()                <span class="sc">|&gt;</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="at">sq_resid=</span>.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">|&gt;</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">SS=</span><span class="fu">sum</span>(sq_resid))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>ss_resid <span class="ot">&lt;-</span>model1       <span class="sc">|&gt;</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">augment</span>()                <span class="sc">|&gt;</span> <span class="co">#use augment to calculate residuals</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">mutate</span>(<span class="at">sq_resid=</span>.resid<span class="sc">^</span><span class="dv">2</span>)<span class="sc">|&gt;</span> <span class="co"># use mutate to calculate squared residuals</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">SS=</span><span class="fu">sum</span>(sq_resid)) <span class="co">#use summarise to sum the residuals</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>ss_resid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
           SS
@@ -604,8 +606,40 @@ Residual standard error: 802 on 341 degrees of freedom
 </div>
 </div>
 </section>
-<section id="the-mean-minimizes-ss_residual" class="level2" data-number="4.10">
-<h2 data-number="4.10" class="anchored" data-anchor-id="the-mean-minimizes-ss_residual"><span class="header-section-number">4.10</span> The mean minimizes <span class="math inline">\(SS_{residual}\)</span></h2>
+<section id="the-mean-minimizes-textss_textresidual" class="level2" data-number="4.10">
+<h2 data-number="4.10" class="anchored" data-anchor-id="the-mean-minimizes-textss_textresidual"><span class="header-section-number">4.10</span> The mean minimizes <span class="math inline">\(\text{SS}_{\text{residual}}\)</span></h2>
+<p>We know how to calculate the mean of our data. But, imagine that we didn’t and we wanted to figure out a way to ‘best’ summarize our data. One way to do this is to find a measure that minimizes the distance between our observed data and the predictions made by the model, which means minimizing the residuals. In practice, this means minimizing <span class="math inline">\(\text{SS}_{\text{residual}}\)</span></p>
+<p>Above, we calculated <span class="math inline">\(\text{SS}_{\text{residual}}\)</span> for a mean of 4202. The following code calculates <span class="math inline">\(\text{SS}_{\text{residual}}\)</span> for a model with a mean of 5000.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ss_resid2 <span class="ot">&lt;-</span> model1 <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>() <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">sq_resid2 =</span> (<span class="dv">5000</span><span class="sc">-</span>body_mass)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="co">#calculate new residuals based on a "mean " of 5000</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(<span class="at">SS2 =</span> <span class="fu">sum</span>(sq_resid2))</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>ss_resid2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+        SS2
+      &lt;dbl&gt;
+1 437228750</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>ss_resid2 <span class="sc">&gt;</span> ss_resid</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      SS2
+[1,] TRUE</code></pre>
+</div>
+</div>
+<p>So the sum of squares for residuals from 5000 is much larger than the sum of squares for residuals from 4202, the mean.</p>
+<p>The plot below shows potential means on the x axis and <span class="math inline">\(\text{SS}_{\text{residual}}\)</span> on the Y axis</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-linearModels1_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="practice-problems" class="level2" data-number="4.11">
 <h2 data-number="4.11" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">4.11</span> Practice problems</h2>

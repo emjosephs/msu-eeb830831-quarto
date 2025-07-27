@@ -284,7 +284,7 @@
     "href": "04-lm-categories.html#review-questions",
     "title": "5  Linear models with categories and ANOVA",
     "section": "5.5 Review questions",
-    "text": "5.5 Review questions",
+    "text": "5.5 Review questions\nMaize pollen can provide food for Anopheles arabiensis, a vector of malaria. Imagine that you are interested in whether maize cultivation levels affect malaria levels. You have data from Kebede et al. 2005 on maize cultivation level and rates of malaria from multiple locations in Ethiopia.\nHere is a plot of the data below\n\n\n\n\n\n\n\n\n\n\nWrite out an equation for a linear model testing for the effects of each yield category on malaria rates. Define each variable in the model (all the \\(b\\) values)\nWhat if you were interested in whether yield in general affected malaria rate? Would you use a linear model or an ANOVA? Why?\nDoes it look like this data matches the assumptions of an ANOVA? If not, why not?",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with categories and ANOVA</span>"
     ]
@@ -487,6 +487,36 @@
     "text": "10.2 Motivating example",
     "crumbs": [
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#calculating-the-ss_textresidual",
+    "href": "03-linearModels1.html#calculating-the-ss_textresidual",
+    "title": "4  Intro to Linear Models",
+    "section": "4.9 Calculating the \\(SS_{\\text{residual}}\\)",
+    "text": "4.9 Calculating the \\(SS_{\\text{residual}}\\)\nWe can quantify how well our model fits the data using the residuals, in particular by calculating the Sum of Squares of the residuals (\\(SS_{\\text{residual}}\\))\n\nlibrary(broom)\nmodel1       |&gt;\n augment()                |&gt;\n mutate(sq_resid=.resid^2)|&gt;\n summarise(SS=sum(sq_resid))\n\n# A tibble: 1 × 1\n          SS\n       &lt;dbl&gt;\n1 219307697.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#calculating-the-textss_textresidual",
+    "href": "03-linearModels1.html#calculating-the-textss_textresidual",
+    "title": "4  Intro to Linear Models",
+    "section": "4.9 Calculating the \\(\\text{SS}_{\\text{residual}}\\)",
+    "text": "4.9 Calculating the \\(\\text{SS}_{\\text{residual}}\\)\nWe can quantify how well our model fits the data using the residuals, in particular by calculating the sum of squared residuals (\\(\\text{SS}_{\\text{residual}}\\))\n\nlibrary(broom)\nss_resid &lt;-model1       |&gt; \n augment()                |&gt; #use augment to calculate residuals\n mutate(sq_resid=.resid^2)|&gt; # use mutate to calculate squared residuals\n summarise(SS=sum(sq_resid)) #use summarise to sum the residuals\n\nss_resid\n\n# A tibble: 1 × 1\n          SS\n       &lt;dbl&gt;\n1 219307697.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intro to Linear Models</span>"
+    ]
+  },
+  {
+    "objectID": "03-linearModels1.html#the-mean-minimizes-textss_textresidual",
+    "href": "03-linearModels1.html#the-mean-minimizes-textss_textresidual",
+    "title": "4  Intro to Linear Models",
+    "section": "4.10 The mean minimizes \\(\\text{SS}_{\\text{residual}}\\)",
+    "text": "4.10 The mean minimizes \\(\\text{SS}_{\\text{residual}}\\)\nWe know how to calculate the mean of our data. But, imagine that we didn’t and we wanted to figure out a way to ‘best’ summarize our data. One way to do this is to find a measure that minimizes the distance between our observed data and the predictions made by the model, which means minimizing the residuals. In practice, this means minimizing \\(\\text{SS}_{\\text{residual}}\\)\nAbove, we calculated \\(\\text{SS}_{\\text{residual}}\\) for a mean of 4202. The following code calculates \\(\\text{SS}_{\\text{residual}}\\) for a model with a mean of 5000.\n\nss_resid2 &lt;- model1 |&gt;\n  augment() |&gt;\nmutate(sq_resid2 = (5000-body_mass)^2) |&gt; #calculate new residuals based on a \"mean \" of 5000\nsummarise(SS2 = sum(sq_resid2))\n\nss_resid2\n\n# A tibble: 1 × 1\n        SS2\n      &lt;dbl&gt;\n1 437228750\n\nss_resid2 &gt; ss_resid\n\n      SS2\n[1,] TRUE\n\n\nSo the sum of squares for residuals from 5000 is much larger than the sum of squares for residuals from 4202, the mean.\nThe plot below shows potential means on the x axis and \\(\\text{SS}_{\\text{residual}}\\) on the Y axis",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Intro to Linear Models</span>"
     ]
   }
 ]
