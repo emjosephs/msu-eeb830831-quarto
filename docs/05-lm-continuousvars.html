@@ -258,9 +258,9 @@ window.Quarto = {
   <li><a href="#likelihood-and-linear-models" id="toc-likelihood-and-linear-models" class="nav-link" data-scroll-target="#likelihood-and-linear-models"><span class="header-section-number">6.6</span> Likelihood and linear models</a></li>
   <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">6.7</span> Fitting with lm()</a>
   <ul class="collapse">
-  <li><a href="#fitting-with-glmmtmb" id="toc-fitting-with-glmmtmb" class="nav-link" data-scroll-target="#fitting-with-glmmtmb"><span class="header-section-number">6.7.1</span> Fitting with glmmTMB()</a></li>
-  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.7.2</span> Residuals</a></li>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.7.1</span> Residuals</a></li>
   </ul></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6.8</span> Review questions</a></li>
   </ul>
 </nav>
     </div>
@@ -345,7 +345,7 @@ F-statistic: 143.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 </section>
 <section id="linear-models-with-continuous-predictors" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="linear-models-with-continuous-predictors"><span class="header-section-number">6.4</span> Linear models with continuous predictors</h2>
-<p>Instead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable. This model is called <strong>linear regression</strong> and it has two components: the <strong>determenistic function</strong> and the <strong>stochastic function</strong></p>
+<p>Instead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable. This model is called <strong>linear regression</strong> and it has two components: the <strong>deterministic function</strong> and the <strong>stochastic function</strong></p>
 <section id="the-deterministic-function" class="level3" data-number="6.4.1">
 <h3 data-number="6.4.1" class="anchored" data-anchor-id="the-deterministic-function"><span class="header-section-number">6.4.1</span> The deterministic function</h3>
 <p>The deterministic function describes how the explanatory variables relate to the conditional mean of the response variable. In this case, since this is a linear model, we are modelling the response variable as a line:</p>
@@ -362,8 +362,18 @@ F-statistic: 143.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 </section>
 <section id="estimating-parameters" class="level2" data-number="6.5">
 <h2 data-number="6.5" class="anchored" data-anchor-id="estimating-parameters"><span class="header-section-number">6.5</span> Estimating parameters</h2>
+<p>Here is some math for estimating these parameters.</p>
+<p>First, we start with the <em>covariance</em> between our response variable <span class="math inline">\(y\)</span> and our explanatory variable <span class="math inline">\(x\)</span>. The covariance tells us about how much <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> jointly deviate from their means – a high covariance means that an individual with a high value of <span class="math inline">\(x\)</span> likely also has a high value of <span class="math inline">\(y\)</span> while a low covariance tells us that an individual with a high value of <span class="math inline">\(x\)</span> could have any value of <span class="math inline">\(y\)</span>.</p>
+<p>We write the covariance of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> as <span class="math inline">\(\text{cov}_{x,y}\)</span> and calculate it using the following equation:</p>
+<p><span class="math display">\[ \text{cov}_{x,y} = \frac{1}{n-1} \sum(x_i - \bar{x})\times(y_i-\bar{y})\]</span></p>
+<p>where <span class="math inline">\(n\)</span> is the number of individuals, <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are the values for the <span class="math inline">\(i^{th}\)</span> individual, and <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(\bar{y}\)</span> are the mean values of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>.</p>
+<p>Notice that for a covariance, which variable is the explanatory variable and which is the response variable doesn’t matter – you could switch <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> and the equation would remain the same.</p>
+<p>Covariance is related to a correlation (<span class="math inline">\(r_{x,y}\)</span>), which tells us how reliably <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> covary by standardizing the covariance by how much <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> themselves vary, quantified using the standard deviations of <span class="math inline">\(x\)</span> (<span class="math inline">\(s_x\)</span>) and <span class="math inline">\(y\)</span> (<span class="math inline">\(s_y\)</span>.</p>
+<p><span class="math display">\[ r_{x,y} = \frac{cov_{x,y}}{s_{x} \times s_{y}}\]</span></p>
+<p>Again, the order of variables doesn’t matter. <span class="math inline">\(r_{x,y} = r_{y,x}\)</span></p>
+<p>In contrast, linear regression distinguishes between the response and explanatory variables because, here, the goal is to build a model that reduces residuals.</p>
+<p>However, the equation for calculating the slope of the linear regression line (<span class="math inline">\(b_1\)</span>) looks somewhat similar to the correlation but this time we only standardize by <span class="math inline">\(s_x\)</span>.</p>
 <p><span class="math display">\[b_1 = \frac{cov_{x,y}}{s^2_x}  =  \frac{\frac{1}{(n-1)}\sum(x_i-\bar{x})(y_i-\bar{y})}{\frac{1}{(n-1)}\sum(x_i-\bar{x})^2}=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}\]</span></p>
-<p>(only include this if we do variance and covariance somewhere)</p>
 </section>
 <section id="likelihood-and-linear-models" class="level2" data-number="6.6">
 <h2 data-number="6.6" class="anchored" data-anchor-id="likelihood-and-linear-models"><span class="header-section-number">6.6</span> Likelihood and linear models</h2>
@@ -409,12 +419,9 @@ Coefficients:
 </div>
 </div>
 </div>
-<section id="fitting-with-glmmtmb" class="level3" data-number="6.7.1">
-<h3 data-number="6.7.1" class="anchored" data-anchor-id="fitting-with-glmmtmb"><span class="header-section-number">6.7.1</span> Fitting with glmmTMB()</h3>
-</section>
-<section id="residuals" class="level3" data-number="6.7.2">
-<h3 data-number="6.7.2" class="anchored" data-anchor-id="residuals"><span class="header-section-number">6.7.2</span> Residuals</h3>
-<p>It can be a bit confusing to think about the distribution of residuals in these types of models. Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.</p>
+<section id="residuals" class="level3" data-number="6.7.1">
+<h3 data-number="6.7.1" class="anchored" data-anchor-id="residuals"><span class="header-section-number">6.7.1</span> Residuals</h3>
+<p>Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.</p>
 <p>Let’s look at the residuals from this model</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
@@ -439,9 +446,12 @@ Coefficients:
 </div>
 </div>
 </div>
-
-
 </section>
+</section>
+<section id="review-questions" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6.8</span> Review questions</h2>
+
+
 </section>
 
 </main> <!-- /main -->

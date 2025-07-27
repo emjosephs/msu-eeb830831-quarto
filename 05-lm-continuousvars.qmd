@@ -61,7 +61,7 @@ NOTE IS THIS A GOOD APPROACH I DON'T KNOW
 
 ## Linear models with continuous predictors
 
-Instead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable. This model is called **linear regression** and it has two components: the **determenistic function** and the **stochastic function**
+Instead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable. This model is called **linear regression** and it has two components: the **deterministic function** and the **stochastic function**
 
 ### The deterministic function
 
@@ -82,13 +82,31 @@ We can combine the deterministic and stochastic functions into one model:
 
 $$y_i = \hat{y}_i + N(b_0 + b_1 \times x_i, \sigma^2)$$
 
-
-
 ## Estimating parameters
 
-$$b_1 = \frac{cov_{x,y}}{s^2_x}  =  \frac{\frac{1}{(n-1)}\sum(x_i-\bar{x})(y_i-\bar{y})}{\frac{1}{(n-1)}\sum(x_i-\bar{x})^2}=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}$$ 
+Here is some math for estimating these parameters.
 
-(only include this if we do variance and covariance somewhere)
+First, we start with the *covariance* between our response variable $y$ and our explanatory variable $x$. The covariance tells us about how much $x$ and $y$ jointly deviate from their means -- a high covariance means that an individual with a high value of $x$ likely also has a high value of $y$ while a low covariance tells us that an individual with a high value of $x$ could have any value of $y$.
+
+We write the covariance of $x$ and $y$ as $\text{cov}_{x,y}$ and calculate it using the following equation:
+
+$$ \text{cov}_{x,y} = \frac{1}{n-1} \sum(x_i - \bar{x})\times(y_i-\bar{y})$$
+
+where $n$ is the number of individuals, $x_i$ and $y_i$ are the values for the $i^{th}$ individual, and $\bar{x}$ and $\bar{y}$ are the mean values of $x$ and $y$. 
+
+Notice that for a covariance, which variable is the explanatory variable and which is the response variable doesn't matter -- you could switch $x$ and $y$ and the equation would remain the same.
+
+Covariance is related to a correlation ($r_{x,y}$), which tells us how reliably $x$ and $y$ covary by standardizing the covariance by how much $x$ and $y$ themselves vary, quantified using the standard deviations of $x$ ($s_x$) and $y$ ($s_y$. 
+
+$$ r_{x,y} = \frac{cov_{x,y}}{s_{x} \times s_{y}}$$
+
+Again, the order of variables doesn't matter. $r_{x,y} = r_{y,x}$
+
+In contrast, linear regression distinguishes between the response and explanatory variables because, here, the goal is to build a model that reduces residuals.
+
+However, the equation for calculating the slope of the linear regression line ($b_1$) looks somewhat similar to the correlation but this time we only standardize by $s_x$.
+
+$$b_1 = \frac{cov_{x,y}}{s^2_x}  =  \frac{\frac{1}{(n-1)}\sum(x_i-\bar{x})(y_i-\bar{y})}{\frac{1}{(n-1)}\sum(x_i-\bar{x})^2}=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}$$ 
 
 ## Likelihood and linear models
 
@@ -129,11 +147,10 @@ abline(model1, col=palette()[3], lwd=2)
 
 ```
 
-### Fitting with glmmTMB()
 
 ### Residuals
 
-It can be a bit confusing to think about the distribution of residuals in these types of models. Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.
+Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.
 
 Let's look at the residuals from this model
 ```{r}
@@ -188,6 +205,7 @@ lines(seq(2000,7000,length.out=100),
 ```
 
 
+## Review questions
 
 ```{r, echo=F, eval=F}
 ## some noodling to convince myself of stuff

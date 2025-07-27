@@ -112,15 +112,19 @@ Remember that the standard error is the standard deviation divided by the square
 
 We can combine the equation for a linear model with the equation describing the distribution of the variables and get
 
-$$y_i = \hat{y}_i + N(0, \sigma^2)$$
+$$y_i = b_0 + N(0, \sigma^2)$$
 
 and this simplifies to
 
-$$ y_i \sim N(\hat{y}_i, \sigma^2)$$
+$$ y_i \sim N(b_0, \sigma^2)$$
 
 For our penguin example
 
 $$ \text{penguin body mass} \sim N(\text{mean body mass}, \sigma^2)$$
+
+Note that a linear model has two components: a deterministic component and a stochastic component. The deterministic component tells us about how the explanatory variable relates to the model prediction for the response variable. The stochastic component tells us about how the residuals are distributed.
+
+In this case, the deterministic equation tells us that the predicted value of body mass is mean body mass ($\hat{y} = b_0$) and the stochastic equation tells us that the residuals are normally distributed ($e_i \sim N(0,\sigma^2$)
 
 ### The likelihood of one data point given specific parameters
 
@@ -151,7 +155,7 @@ dnorm(myPenguin$body_mass, mean=4600, sd=40)
 Given that our penguin weighs 4650 grams, it is more likely to observe this data if the underlying model has a mean closer to 4650. 
 
 
-## Calculating the likelihood of many datapoints
+### Calculating the likelihood of many datapoints
 
 We will get better parameter estimates if we have more data -- this is a basic fact of statistics. But, how do we calculate a likelihood of many data points?
 
@@ -253,7 +257,7 @@ $$\text{penguin body mass} = 4201.75 + e_i$$
 
 
 
-## More on residuals
+## Residuals
 
 The residual ($e_i$) for each individual penguin tells us how much that penguin's mass differs from the population mean.
 
@@ -273,7 +277,8 @@ $e_i = 4201.75-3750 = 451.75$
 
 Below I plot all the body mass data. Each point is a penguin. You can hover over the points to see the body mass of each penguin and the residual.
 
-```{r, eval=F}
+```{r, eval=T}
+library(plotly)
 #| code-fold: true
 #| message: false
 #| warning: false
@@ -281,8 +286,7 @@ Below I plot all the body mass data. Each point is a penguin. You can hover over
 #| fig-cap: "An interactive plot showing the mean body size of a penguin. Each point represents an individual penguin, and the dashed red line shows the sample mean across all penguins. Hovering over a point reveals its residual — the difference between the observed value and the mean."
 #| fig-alt: "Interactive scatterplot of observed mean body mass of penguins. Points are plotted by index along the x-axis, with body mass on the y-axis. A horizontal dashed red line marks the sample mean. When hovering over a point, the residual (difference between the point’s value and the mean) is displayed."
 #| cap-location: margin
-library(plotly)
-prop_hybrid_plot <- penguins                          |>
+resid_plot <- penguins                          |>
   filter(!is.na(body_mass))                         |>
   mutate(i = 1:n(),
          e_i = body_mass - mean(body_mass),
@@ -297,10 +301,10 @@ prop_hybrid_plot <- penguins                          |>
   labs(y = "Body Mass", title ="This plot is interactive!! Hover over a point to see its residual")+
   theme(legend.position = "none")
 
-ggplotly(prop_hybrid_plot)
+ggplotly(resid_plot)
 ```
 
-## Calculating residuals
+### Calculating residuals
 
 You can look at residuals and model predictions using the augment() function in the broom package. 
 The code below uses augment() to make a table where each row has a penguin's body mass, the expectation 
@@ -337,7 +341,7 @@ model1Residuals <- model1$residuals
  
 ```
 
-## Calculating the $\text{SS}_{\text{residual}}$
+### Calculating the $\text{SS}_{\text{residual}}$
 
 We can quantify how well our model fits the data using the residuals, in particular by calculating the sum of squared residuals ($\text{SS}_{\text{residual}}$)
 ```{r}
@@ -351,7 +355,7 @@ ss_resid
 ```
 
 
-## The mean minimizes $\text{SS}_{\text{residual}}$
+### The mean minimizes $\text{SS}_{\text{residual}}$
 
 We know how to calculate the mean of our data. But, imagine that we didn't and we wanted to figure out a way to 'best' summarize our data. One way to do this is to find a measure that minimizes the distance between our observed data and the predictions made by the model, which means minimizing the residuals. In practice, this means minimizing $\text{SS}_{\text{residual}}$
 
@@ -392,36 +396,52 @@ abline(v = 4202, lwd=2, lty=2, col=palette())
 
 ## Practice problems
 
-1. Continuing with the penguin data, we will look at a different variable: bill length. a) write out a linear model of bill length with one paramater for the mean.
+1. Continuing with the penguin data, we will look at a different variable: bill length. 
+
+Here is an equation for a linear model:
+
+$$ \text{Bill length}_i = b_0 + e_i\ $$
+
+1. Describe what $b_0$ and $e_i$ represent.
 
 
-b) calculate mean bill length
-```{r, echo=F, eval=F}
-mean(penguins2$bill_len)
+Here is a different way of writing the linear model
+
+$$ \text{Bill length}_i \sim N(b_0, \sigma^2) $$
+
+2. Which part of the above equation is the deterministic part of the model? Which part is the stochastic part of the model?
+
+
+3. 
+
+```{r, echo=F}
+model3 <- lm(bill_len~1, data=penguins)
+plot(1:344, penguins$bill_len, bty="n", col = 'gray', xlab = "penguin number", ylab = "bill length", pch=20)
+abline(model3, col=palette()[3], lty=2,lwd=2)
+points(186, penguins$bill_len[186], col=palette()[3], pch=17, cex=2)
+points(100, penguins$bill_len[100], col=palette()[3], pch=15, cex=2)
+points(250, penguins$bill_len[250], col=palette()[3], pch=8, cex=2, lwd=2)
 
 ```
 
-c) calculate the likelihood of your data given the mean from part b and a $\sigma^2$ of 5. 
-```{r, echo=F, eval=F}
-prod(dnorm(penguins2$bill_len, mean=43.92, sd=5, log=F))
+The plot above shows the data from our model. Each point represents a penguin and three penguins are highlighted in dark blue by either a square, triangle, or star. Which penguin has the largest residual?
 
+4. Which of the following pieces of code calculates the log likelihood of the model above?
+a. 
+```{r, eval=F}
+sum(dnorm(penguins$bill_len, mean=44, sd=5, log=T))
+```
+b.
+```{r, eval=F}
+prod(dnorm(penguins$bill_len, mean=44, sd=5))
+```
+c.
+```{r, eval=F}
+prod(dnorm(penguins$body_mass, mean=44, sd=5))
+```
+d.
+```{r, eval=F}
+sum(dnorm(penguins$bill_len, mean=500, sd=5, log=T))
 ```
 
-d) calculate the log likelihood of your data given the mean from part b
-```{r, echo=F, eval=F}
 
-sum(dnorm(penguins2$bill_len, mean=43.92, sd=5, log=T))
-```
-
-e) calculate the log likelihood for a grid of means of 100 values ranging from 20 to 60. Make a plot showing these values.
-
-```{r, echo=F, eval=F}
-myGrid = seq(20,60, length.out=100)
-
-myLogLikes <- sapply(myGrid,function(m)
-  {sum(dnorm(penguins2$bill_len,mean=m,sd=5,log=TRUE))}) 
-
-plot(myGrid, myLogLikes, ylab = "log likelihood", xlab = "mean bill length")
-```
-
-f) describe in words what the plot below is showing you about your data on bill length
