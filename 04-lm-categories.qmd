@@ -96,6 +96,7 @@ The residuals of this model will be the difference between each data point and t
 #| code-fold: true
 #| message: false
 #| warning: false
+#| echo: false
 #| label: fig-plotly
 #| fig-cap: "An interactive plot showing the mean body size of a penguin. Each point represents an individual penguin, and the dashed red line shows model predicted means. Hovering over a point reveals its residual — the difference between the observed value and the mean."
 #| fig-alt: "Interactive scatterplot of observed mean body mass of penguins. Points are plotted by index along the x-axis, with predicted body mass on the y-axis. A horizontal dashed red line marks the sample mean. When hovering over a point, the residual (difference between the point’s value and the mean) is displayed."
@@ -196,7 +197,7 @@ The corresponding value within groups is$\text{SS}_{\text{error}}$m the *sum of 
 
 Together, the error mean square and the group mean square sum to the total mean square which tells us the deviations between each individual and the group mean (panel c below).
 
-```{r, fig.cap = "Partitioning deviations in an ANOVA. **A** Shows the difference between each observation, $Y_i$, and the grand mean, ${\\overline{Y}}$. This is the basis for calculating $SS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the grand mean, ${\\overline{Y}}$. This is the basis for calculating $SS_{group}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $SS_{error}$.", fig.height=2.3, fig.width=7.6, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE,fig.cap = "Partitioning deviations in an ANOVA. **A** Shows the difference between each observation, $Y_i$, and the grand mean, ${\\overline{Y}}$. This is the basis for calculating $SS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the grand mean, ${\\overline{Y}}$. This is the basis for calculating $SS_{group}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $SS_{error}$.", fig.height=2.3, fig.width=7.6}
 a <- ggplot(mutate(penguins, id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) , 
             aes(x = id, y = body_mass, color = species))+
   geom_point(alpha = .5)+
@@ -246,7 +247,7 @@ ANOVAs test this claim using a F statistic which calculates the ratio of these t
 
 $$ F = \frac{\text{Variance among groups}}{\text{Variance within groups}}$$
 
-While different terms are used across texts, here we will call the variance among groups is called the **group mean square** or $\text{MS}_{\text{groups}}$ and it is calculated as $\text{MS}_{\text{groups}} =  \frac{\text{SS}_{\text{groups}}}{df_{\text{groups}}}$. In this case $df_{\text{groups} = n_{\text{groups}} - 1$.
+While different terms are used across texts, here we will call the variance among groups is called the **group mean square** or $\text{MS}_{\text{groups}}$ and it is calculated as $\text{MS}_{\text{groups}} =  \frac{\text{SS}_{\text{groups}}}{df_{\text{groups}}}$. In this case $df_{\text{groups}} = n_{\text{groups}} - 1$.
 
 The variance within groups will be called the **error mean square** or $\text{MS}_{\text{error}}$ and is calculated as $\text{MS}_{\text{error}}  = \frac{\text{SS}_{\text{error}}}{df_{\text{error}}}$. Here, $df_{\text{error}}= n- n_{\text{groups}}$.
 
