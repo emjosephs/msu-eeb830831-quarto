@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -259,8 +259,13 @@ window.Quarto = {
   <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">6.4.2</span> Fitting with lm()</a></li>
   </ul></li>
   <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.5</span> Residuals</a></li>
-  <li><a href="#linear-regression-as-an-anova" id="toc-linear-regression-as-an-anova" class="nav-link" data-scroll-target="#linear-regression-as-an-anova"><span class="header-section-number">6.6</span> Linear regression as an ANOVA</a></li>
-  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6.7</span> Review questions</a></li>
+  <li><a href="#assessing-significance" id="toc-assessing-significance" class="nav-link" data-scroll-target="#assessing-significance"><span class="header-section-number">6.6</span> Assessing significance</a>
+  <ul class="collapse">
+  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">6.6.1</span> Confidence intervals</a></li>
+  <li><a href="#prediction-intervals" id="toc-prediction-intervals" class="nav-link" data-scroll-target="#prediction-intervals"><span class="header-section-number">6.6.2</span> Prediction intervals</a></li>
+  </ul></li>
+  <li><a href="#linear-regression-as-an-anova" id="toc-linear-regression-as-an-anova" class="nav-link" data-scroll-target="#linear-regression-as-an-anova"><span class="header-section-number">6.7</span> Linear regression as an ANOVA</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6.8</span> Review questions</a></li>
   </ul>
 </nav>
     </div>
@@ -423,8 +428,17 @@ Coefficients:
 </div>
 </div>
 </section>
-<section id="linear-regression-as-an-anova" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="linear-regression-as-an-anova"><span class="header-section-number">6.6</span> Linear regression as an ANOVA</h2>
+<section id="assessing-significance" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="assessing-significance"><span class="header-section-number">6.6</span> Assessing significance</h2>
+<section id="confidence-intervals" class="level3" data-number="6.6.1">
+<h3 data-number="6.6.1" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">6.6.1</span> Confidence intervals</h3>
+</section>
+<section id="prediction-intervals" class="level3" data-number="6.6.2">
+<h3 data-number="6.6.2" class="anchored" data-anchor-id="prediction-intervals"><span class="header-section-number">6.6.2</span> Prediction intervals</h3>
+</section>
+</section>
+<section id="linear-regression-as-an-anova" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="linear-regression-as-an-anova"><span class="header-section-number">6.7</span> Linear regression as an ANOVA</h2>
 <p>We can partition variation in our regression the same way we did in ANOVA. The concepts are similar but the math is slightly different.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -436,9 +450,12 @@ Coefficients:
 </div>
 </div>
 </div>
+<p>As before, we can calculate the total sum of squares (<span class="math inline">\(SS_{total}\)</span>, panel A) as the sum of the squared differences between the model and the mean (<span class="math inline">\(SS_{model}\)</span>, panel B) and the squared differences between each individual and the model (<span class="math inline">\(SS_{residual}\)</span>). Better fitting models will have higher <span class="math inline">\(SS_{model}\)</span> relative to <span class="math inline">\(SS_{residual}\)</span>.</p>
+<p>We calculate all of these values as follows: <span class="math display">\[SS_{total} = \sum{(y_i - \bar{y})^2}\]</span> <span class="math display">\[SS_{model} = \sum{(\hat{y_i} - \bar{y})^2}\]</span> <span class="math display">\[SS_{residual} = \sum{(y_i - \bar{y})^2} \]</span> <span class="math display">\[MS_{model} = SS_{model}/df_{model}\]</span> <span class="math display">\[MS_{residual} =  SS_{residual}/df_{residual}\]</span> <span class="math display">\[df_{model} = 1 \]</span> <span class="math display">\[df_{residual} = n-2\]</span></p>
+<p>where <span class="math inline">\(\bar{y}\)</span> is the mean response variable for the whole sample and <span class="math inline">\(\hat{y_i}\)</span> is the model predicted value for individual <span class="math inline">\(i\)</span> and there are <span class="math inline">\(n\)</span> individuals in the sample.</p>
 </section>
-<section id="review-questions" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6.7</span> Review questions</h2>
+<section id="review-questions" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6.8</span> Review questions</h2>
 
 
 </section>

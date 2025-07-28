@@ -216,6 +216,13 @@ lines(seq(2000,7000,length.out=100),
 
 ```
 
+## Assessing significance
+
+### Confidence intervals
+
+
+### Prediction intervals
+
 ## Linear regression as an ANOVA
 
 We can partition variation in our regression the same way we did in ANOVA. The concepts are similar but the math is slightly different.
@@ -257,8 +264,25 @@ plot_grid(plot_grid(a + theme(legend.position = "none"),
                       ncol = 1, rel_heights = c(1,.1))
 ```
 
+As before, we can calculate the total sum of squares ($SS_{total}$, panel A) as the sum of the squared differences between the model and the mean ($SS_{model}$, panel B) and the squared differences between each individual and the model ($SS_{residual}$). Better fitting models will have higher $SS_{model}$ relative to $SS_{residual}$.
 
+We calculate all of these values as follows:
+$$SS_{total} = \sum{(y_i - \bar{y})^2}$$
+$$SS_{model} = \sum{(\hat{y_i} - \bar{y})^2}$$
+$$SS_{residual} = \sum{(y_i - \bar{y})^2} $$
+$$MS_{model} = SS_{model}/df_{model}$$
+$$MS_{residual} =  SS_{residual}/df_{residual}$$
+$$df_{model} = 1 $$
+$$df_{residual} = n-2$$
 
+where $\bar{y}$ is the mean response variable for the whole sample and $\hat{y_i}$ is the model predicted value for individual $i$ and there are $n$ individuals in the sample.
+
+We can calculate these values by hand or get them from the anova function
+
+```{r, message=F, warning=F}
+library(car)
+
+```
 
 ## Review questions
 
