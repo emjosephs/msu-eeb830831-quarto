@@ -248,18 +248,17 @@ window.Quarto = {
   <ul>
   <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">6.1</span> What are we doing here?</a></li>
   <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">6.2</span> Motivating example</a></li>
-  <li><a href="#starting-with-categories" id="toc-starting-with-categories" class="nav-link" data-scroll-target="#starting-with-categories"><span class="header-section-number">6.3</span> Starting with categories</a></li>
-  <li><a href="#linear-models-with-continuous-predictors" id="toc-linear-models-with-continuous-predictors" class="nav-link" data-scroll-target="#linear-models-with-continuous-predictors"><span class="header-section-number">6.4</span> Linear models with continuous predictors</a>
+  <li><a href="#linear-models-with-continuous-predictors" id="toc-linear-models-with-continuous-predictors" class="nav-link" data-scroll-target="#linear-models-with-continuous-predictors"><span class="header-section-number">6.3</span> Linear models with continuous predictors</a>
   <ul class="collapse">
-  <li><a href="#the-deterministic-function" id="toc-the-deterministic-function" class="nav-link" data-scroll-target="#the-deterministic-function"><span class="header-section-number">6.4.1</span> The deterministic function</a></li>
-  <li><a href="#the-stochastic-function" id="toc-the-stochastic-function" class="nav-link" data-scroll-target="#the-stochastic-function"><span class="header-section-number">6.4.2</span> The stochastic function</a></li>
+  <li><a href="#the-deterministic-function" id="toc-the-deterministic-function" class="nav-link" data-scroll-target="#the-deterministic-function"><span class="header-section-number">6.3.1</span> The deterministic function</a></li>
+  <li><a href="#the-stochastic-function" id="toc-the-stochastic-function" class="nav-link" data-scroll-target="#the-stochastic-function"><span class="header-section-number">6.3.2</span> The stochastic function</a></li>
   </ul></li>
-  <li><a href="#estimating-parameters" id="toc-estimating-parameters" class="nav-link" data-scroll-target="#estimating-parameters"><span class="header-section-number">6.5</span> Estimating parameters</a></li>
-  <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">6.6</span> Fitting with lm()</a>
+  <li><a href="#estimating-parameters-of-the-determinstic-function" id="toc-estimating-parameters-of-the-determinstic-function" class="nav-link" data-scroll-target="#estimating-parameters-of-the-determinstic-function"><span class="header-section-number">6.4</span> Estimating parameters of the determinstic function</a></li>
+  <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">6.5</span> Fitting with lm()</a>
   <ul class="collapse">
-  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.6.1</span> Residuals</a></li>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.5.1</span> Residuals</a></li>
   </ul></li>
-  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6.7</span> Review questions</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6.6</span> Review questions</a></li>
   </ul>
 </nav>
     </div>
@@ -305,62 +304,25 @@ window.Quarto = {
 </div>
 <p>We can plot out the data and see that there is potentially a relationship between bill length and body mass. But, imagine we have a biological reason for wanting to model body mass as a function of bill length. How would we do that?</p>
 </section>
-<section id="starting-with-categories" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="starting-with-categories"><span class="header-section-number">6.3</span> Starting with categories</h2>
-<p>In the last section we learned about testing for differences between categorical predictor variables. We could start there to think about how to approach this challenge. Specifically, imagine we divide our penguins in half and compare body mass between the half with longer bills and the half with shorter bills.</p>
-<p>We’ll start by making a categorical variable, “long”, that is true if a penguin’s bill length is greater than the median bill length and otherwise false.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> <span class="fu">mutate</span>(penguins2, <span class="at">long =</span> bill_len<span class="sc">&gt;</span><span class="fu">median</span>(bill_len))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Next, we will see if long bill length predicts mass, using a categorical model:</p>
-<p><span class="math display">\[\text{Mass}_i = b_0 + b_1 \times \text{Long}_i + e_i \]</span> Now, let’s fit this model with lm()</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> long, <span class="at">data =</span> penguins2)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = body_mass ~ long, data = penguins2)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--1937.87  -487.87   -14.25   512.13  1662.13 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  3765.64      51.51   73.11   &lt;2e-16 ***
-longTRUE      872.22      72.85   11.97   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 673.6 on 340 degrees of freedom
-Multiple R-squared:  0.2966,    Adjusted R-squared:  0.2945 
-F-statistic: 143.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-<p>We get a pretty strong signal that the long-billed penguins are larger than small-billed penguins since <span class="math inline">\(b_1\)</span> is estimated to be 872.22, which is the difference in means between long-billed and short-billed penguins.</p>
-<p>You are likely shaking your head at this model, since we are losing a lot of information about our data by collapsing what we have into two means. In fact, doing this type of collapsing of continuous data into categorical data is often a really bad idea for multiple reasons.</p>
-<p>NOTE IS THIS A GOOD APPROACH I DON’T KNOW</p>
-</section>
-<section id="linear-models-with-continuous-predictors" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="linear-models-with-continuous-predictors"><span class="header-section-number">6.4</span> Linear models with continuous predictors</h2>
+<section id="linear-models-with-continuous-predictors" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="linear-models-with-continuous-predictors"><span class="header-section-number">6.3</span> Linear models with continuous predictors</h2>
 <p>Instead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable. This model is called <strong>linear regression</strong> and it has two components: the <strong>deterministic function</strong> and the <strong>stochastic function</strong></p>
-<section id="the-deterministic-function" class="level3" data-number="6.4.1">
-<h3 data-number="6.4.1" class="anchored" data-anchor-id="the-deterministic-function"><span class="header-section-number">6.4.1</span> The deterministic function</h3>
+<section id="the-deterministic-function" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="the-deterministic-function"><span class="header-section-number">6.3.1</span> The deterministic function</h3>
 <p>The deterministic function describes how the explanatory variables relate to the conditional mean of the response variable. In this case, since this is a linear model, we are modelling the response variable as a line:</p>
 <p><span class="math display">\[\hat{y}_i = b_0 + b_1 \times x_i\]</span> As before, <span class="math inline">\(y_i\)</span> is the conditional mean of the response variable for an individual with value <span class="math inline">\(x_i\)</span>, <span class="math inline">\(b_0\)</span> is the intercept or the conditional mean of an individual with a value of <span class="math inline">\(x_i = 0\)</span> (although this value will not be meaningful if it lies far outside the range of the data).</p>
 <p>However, we can think of <span class="math inline">\(b_1\)</span> now as the slope of the relationship between the predictor and response variable. This means that for every increase of 1 unit in <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span> increases by <span class="math inline">\(b_1\)</span>.</p>
 </section>
-<section id="the-stochastic-function" class="level3" data-number="6.4.2">
-<h3 data-number="6.4.2" class="anchored" data-anchor-id="the-stochastic-function"><span class="header-section-number">6.4.2</span> The stochastic function</h3>
+<section id="the-stochastic-function" class="level3" data-number="6.3.2">
+<h3 data-number="6.3.2" class="anchored" data-anchor-id="the-stochastic-function"><span class="header-section-number">6.3.2</span> The stochastic function</h3>
 <p>The <strong>stochastic function</strong> explains how the residuals are distributed around the conditional means predicted by the deterministic function. Since we are working with regular linear models, we will assume that the residuals are normally distributed.</p>
 <p><span class="math display">\[ e_i \sim N(0, \sigma^2)\]</span></p>
 <p>We can combine the deterministic and stochastic functions into one model:</p>
 <p><span class="math display">\[y_i = \hat{y}_i + N(b_0 + b_1 \times x_i, \sigma^2)\]</span></p>
 </section>
 </section>
-<section id="estimating-parameters" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="estimating-parameters"><span class="header-section-number">6.5</span> Estimating parameters</h2>
+<section id="estimating-parameters-of-the-determinstic-function" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="estimating-parameters-of-the-determinstic-function"><span class="header-section-number">6.4</span> Estimating parameters of the determinstic function</h2>
 <p>Here is some math for estimating these parameters.</p>
 <p>First, we start with the <em>covariance</em> between our response variable <span class="math inline">\(y\)</span> and our explanatory variable <span class="math inline">\(x\)</span>. The covariance tells us about how much <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> jointly deviate from their means – a high covariance means that an individual with a high value of <span class="math inline">\(x\)</span> likely also has a high value of <span class="math inline">\(y\)</span> while a low covariance tells us that an individual with a high value of <span class="math inline">\(x\)</span> could have any value of <span class="math inline">\(y\)</span>.</p>
 <p>We write the covariance of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> as <span class="math inline">\(\text{cov}_{x,y}\)</span> and calculate it using the following equation:</p>
@@ -374,13 +336,13 @@ F-statistic: 143.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>However, the equation for calculating the slope of the linear regression line (<span class="math inline">\(b_1\)</span>) looks somewhat similar to the correlation but this time we only standardize by <span class="math inline">\(s_x\)</span>.</p>
 <p><span class="math display">\[b_1 = \frac{cov_{x,y}}{s^2_x}  =  \frac{\frac{1}{(n-1)}\sum(x_i-\bar{x})(y_i-\bar{y})}{\frac{1}{(n-1)}\sum(x_i-\bar{x})^2}=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}\]</span></p>
 </section>
-<section id="fitting-with-lm" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">6.6</span> Fitting with lm()</h2>
+<section id="fitting-with-lm" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">6.5</span> Fitting with lm()</h2>
 <p>Let’s try applying a linear model to our penguin data. We’ll use the lm() function in R.</p>
 <p><span class="math display">\[\text{Body mass}_i = b_0 + b_1 \times \text{Bill length}_i \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>penguins2)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>penguins2)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -396,7 +358,7 @@ Coefficients:
 <p>We can interpret this as for every mm of bill length increase, body mass increases by 87 grams.</p>
 <p>We can also estimate <span class="math inline">\(\sigma^2\)</span>, the variance of the residuals.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sigma</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sigma</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 645.4333</code></pre>
 </div>
@@ -405,29 +367,29 @@ Coefficients:
 <p><span class="math display">\[ \text{Body mass}_i \sim N(362.31 + 87.42 \times \text{Bill length}_i, 645.43) \]</span></p>
 <p>We can also plot the predictions from this model over the raw data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">1</span>])</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model1, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">3</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">1</span>])</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model1, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">3</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<section id="residuals" class="level3" data-number="6.6.1">
-<h3 data-number="6.6.1" class="anchored" data-anchor-id="residuals"><span class="header-section-number">6.6.1</span> Residuals</h3>
+<section id="residuals" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="residuals"><span class="header-section-number">6.5.1</span> Residuals</h3>
 <p>Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.</p>
 <p>Let’s look at the residuals from this model</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>myResiduals <span class="ot">&lt;-</span> <span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass, .fitted, .resid)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(myResiduals<span class="sc">$</span>.resid, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"residuals"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>myResiduals <span class="ot">&lt;-</span> <span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass, .fitted, .resid)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(myResiduals<span class="sc">$</span>.resid, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"residuals"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -437,15 +399,15 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
 </section>
-<section id="review-questions" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6.7</span> Review questions</h2>
+<section id="review-questions" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6.6</span> Review questions</h2>
 
 
 </section>
