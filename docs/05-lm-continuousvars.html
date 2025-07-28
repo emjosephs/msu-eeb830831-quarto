@@ -255,12 +255,11 @@ window.Quarto = {
   <li><a href="#the-stochastic-function" id="toc-the-stochastic-function" class="nav-link" data-scroll-target="#the-stochastic-function"><span class="header-section-number">6.4.2</span> The stochastic function</a></li>
   </ul></li>
   <li><a href="#estimating-parameters" id="toc-estimating-parameters" class="nav-link" data-scroll-target="#estimating-parameters"><span class="header-section-number">6.5</span> Estimating parameters</a></li>
-  <li><a href="#likelihood-and-linear-models" id="toc-likelihood-and-linear-models" class="nav-link" data-scroll-target="#likelihood-and-linear-models"><span class="header-section-number">6.6</span> Likelihood and linear models</a></li>
-  <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">6.7</span> Fitting with lm()</a>
+  <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">6.6</span> Fitting with lm()</a>
   <ul class="collapse">
-  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.7.1</span> Residuals</a></li>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.6.1</span> Residuals</a></li>
   </ul></li>
-  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6.8</span> Review questions</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6.7</span> Review questions</a></li>
   </ul>
 </nav>
     </div>
@@ -375,11 +374,8 @@ F-statistic: 143.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>However, the equation for calculating the slope of the linear regression line (<span class="math inline">\(b_1\)</span>) looks somewhat similar to the correlation but this time we only standardize by <span class="math inline">\(s_x\)</span>.</p>
 <p><span class="math display">\[b_1 = \frac{cov_{x,y}}{s^2_x}  =  \frac{\frac{1}{(n-1)}\sum(x_i-\bar{x})(y_i-\bar{y})}{\frac{1}{(n-1)}\sum(x_i-\bar{x})^2}=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}\]</span></p>
 </section>
-<section id="likelihood-and-linear-models" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="likelihood-and-linear-models"><span class="header-section-number">6.6</span> Likelihood and linear models</h2>
-</section>
-<section id="fitting-with-lm" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">6.7</span> Fitting with lm()</h2>
+<section id="fitting-with-lm" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">6.6</span> Fitting with lm()</h2>
 <p>Let’s try applying a linear model to our penguin data. We’ll use the lm() function in R.</p>
 <p><span class="math display">\[\text{Body mass}_i = b_0 + b_1 \times \text{Bill length}_i \]</span></p>
 <div class="cell">
@@ -419,8 +415,8 @@ Coefficients:
 </div>
 </div>
 </div>
-<section id="residuals" class="level3" data-number="6.7.1">
-<h3 data-number="6.7.1" class="anchored" data-anchor-id="residuals"><span class="header-section-number">6.7.1</span> Residuals</h3>
+<section id="residuals" class="level3" data-number="6.6.1">
+<h3 data-number="6.6.1" class="anchored" data-anchor-id="residuals"><span class="header-section-number">6.6.1</span> Residuals</h3>
 <p>Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.</p>
 <p>Let’s look at the residuals from this model</p>
 <div class="cell">
@@ -448,8 +444,8 @@ Coefficients:
 </div>
 </section>
 </section>
-<section id="review-questions" class="level2" data-number="6.8">
-<h2 data-number="6.8" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6.8</span> Review questions</h2>
+<section id="review-questions" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6.7</span> Review questions</h2>
 
 
 </section>

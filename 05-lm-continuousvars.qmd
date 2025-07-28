@@ -108,8 +108,6 @@ However, the equation for calculating the slope of the linear regression line ($
 
 $$b_1 = \frac{cov_{x,y}}{s^2_x}  =  \frac{\frac{1}{(n-1)}\sum(x_i-\bar{x})(y_i-\bar{y})}{\frac{1}{(n-1)}\sum(x_i-\bar{x})^2}=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}$$ 
 
-## Likelihood and linear models
-
 ## Fitting with lm()
 
 Let's try applying a linear model to our penguin data. We'll use the lm() function in R.
