@@ -91,7 +91,7 @@ summary(model1)
 
 The residuals of this model will be the difference between each data point and the conditional means estimated by the model.
 
-```{r, echo=F, label="fig-plotly",message=F, warning=F, cap.location=margin, fig.cap="An interactive plot showing the mean body size of a penguin. Each point represents an individual penguin, and the dashed red line shows model predicted means. Hovering over a point reveals its residual — the difference between the observed value and the mean.", fig.alt="Interactive scatterplot of observed mean body mass of penguins. Points are plotted by index along the x-axis, with predicted body mass on the y-axis. A horizontal dashed red line marks the sample mean. When hovering over a point, the residual (difference between the point’s value and the mean) is displayed."}
+```{r, echo=F, label="fig-plotly",message=F, warning=F, cap.location=margin, fig.cap="An interactive plot showing the mean body size of a penguin. Each point represents an individual penguin, and the dashed red line shows model predicted means. Hovering over a point reveals its residual — the difference between the observed value and the mean.", fig.alt="Interactive scatterplot of observed mean body mass of penguins. Points are plotted by index along the x-axis, with predicted body mass on the y-axis. A horizontal dashed lines mark the conditional means for each category. When hovering over a point, the residual (difference between the point’s value and the mean) is displayed."}
 
 resid_plot <- penguins2                          |>
   mutate(i = 1:n(),

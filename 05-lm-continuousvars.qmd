@@ -30,35 +30,6 @@ plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab 
 
 We can plot out the data and see that there is potentially a relationship between bill length and body mass. But, imagine we have a biological reason for wanting to model body mass as a function of bill length. How would we do that?
 
-## Starting with categories
-
-In the last section we learned about testing for differences between categorical predictor variables. 
-We could start there to think about how to approach this challenge.
-Specifically, imagine we divide our penguins in half and compare body mass between the half with longer bills and the half with shorter bills.
-
-We'll start by making a categorical variable, "long", that is true if a penguin's bill length is greater than the median bill length and otherwise false.
-```{r}
-penguins2 <- mutate(penguins2, long = bill_len>median(bill_len))
-
-```
-
-Next, we will see if long bill length predicts mass, using a categorical model:
-
-$$\text{Mass}_i = b_0 + b_1 \times \text{Long}_i + e_i $$
-Now, let's fit this model with lm()
-
-```{r}
-model1 <- lm(body_mass ~ long, data = penguins2)
-summary(model1)
-```
-
-We get a pretty strong signal that the long-billed penguins are larger than small-billed penguins since $b_1$ is estimated to be 872.22, which is the difference in means between long-billed and short-billed penguins.
-
-You are likely shaking your head at this model, since we are losing a lot of information about our data by collapsing what we have into two means. In fact, doing this type of collapsing of continuous data into categorical data is often a really bad idea for multiple reasons.
-
-NOTE IS THIS A GOOD APPROACH I DON'T KNOW
-
-
 ## Linear models with continuous predictors
 
 Instead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable. This model is called **linear regression** and it has two components: the **deterministic function** and the **stochastic function**
@@ -82,7 +53,7 @@ We can combine the deterministic and stochastic functions into one model:
 
 $$y_i = \hat{y}_i + N(b_0 + b_1 \times x_i, \sigma^2)$$
 
-## Estimating parameters
+## Estimating parameters of the determinstic function
 
 Here is some math for estimating these parameters.
 
