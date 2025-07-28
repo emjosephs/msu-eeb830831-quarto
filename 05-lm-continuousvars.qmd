@@ -12,6 +12,7 @@ library(tidyverse)
 library('DT')
 library(LaCroixColoR)
 palette(lacroix_palette("Mango", type = "discrete"))
+library(broom)
 ```
 
 ## What are we doing here?
@@ -219,14 +220,16 @@ lines(seq(2000,7000,length.out=100),
 
 We can partition variation in our regression the same way we did in ANOVA. The concepts are similar but the math is slightly different.
 
-```{r varpartregresion, fig.cap = "An ANOVA framework for a linear regression. **A** Shows the difference between each observation, $Y_i$, and the  mean, $\\overline{Y}$. This is the basis for calculating $MS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the mean, $\\overline{Y}$. This is the basis for calculating $MS_{model}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $MS_{error}$.", fig.height=2.3, fig.width=7.6, echo=FALSE}
+```{r varpartregresion, fig.cap = "An ANOVA framework for a linear regression. **A** Shows the difference between each observation, $Y_i$, and the  mean, $\\overline{Y}$. This is the basis for calculating $MS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the mean, $\\overline{Y}$. This is the basis for calculating $MS_{model}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $MS_{error}$.", fig.height=2.3, fig.width=7.6, echo=FALSE, warning=F, message=F}
+library(cowplot)
 a <- ggplot(mutate(penguins2, mean_mass = mean(body_mass)) , 
             aes(x = bill_len, y = body_mass))+
   geom_point(alpha = .5)+
   geom_hline(aes(yintercept = mean_mass))+
   geom_segment(aes(xend = bill_len, yend = mean_mass), 
                color = "black", alpha = .5)+
-  labs(title = "Total deviation               = ")
+  theme_classic()+ 
+  labs(title = "Total deviation               =")
 
 b<-ggplot(mutate(augment(model1), mean_mass = mean(body_mass)) ,
           aes(x = bill_len, y = body_mass))+
@@ -234,15 +237,17 @@ b<-ggplot(mutate(augment(model1), mean_mass = mean(body_mass)) ,
   geom_hline(aes(yintercept = mean_mass))+
   geom_segment(aes( xend = bill_len,y = .fitted,  yend = mean_mass ), 
                color = "black", alpha = .5)+
-  geom_line(aes(y = .fitted), alpha  = 2, color = "blue")+ 
+  geom_line(aes(y = .fitted), alpha  = 2, color = palette()[2])+
+ theme_classic()+ 
   labs(title = "Model deviation             +")
 
-c<-ggplot(augment(snake_lm) ,
-          aes(x = meal_size, y = body_temp))+
+c<-ggplot(augment(model1) ,
+          aes(x = bill_len, y = body_mass))+
   geom_point(alpha = .5)+
-  geom_segment(aes( xend = meal_size,  yend = .fitted), 
+  geom_segment(aes( xend = bill_len,  yend = .fitted), 
                color = "black", alpha = .5)+
-    geom_line(aes(y = .fitted), alpha  = 2, color = "blue")+ 
+    geom_line(aes(y = .fitted), alpha  = 2, color = palette()[2])+ 
+  theme_classic()+ 
   labs(title = "Error (residual) deviation")
 
 plot_grid(plot_grid(a + theme(legend.position = "none"),
