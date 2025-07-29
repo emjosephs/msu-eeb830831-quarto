@@ -236,6 +236,29 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Applying linear models with GWAS</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Labs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lab3.1-simpleLinearModels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 2 – Simple Linear Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lab4.1-ANOVA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 4 – ANOVA</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -431,7 +454,7 @@ Coefficients:
 </section>
 <section id="assessing-significance" class="level2" data-number="6.6">
 <h2 data-number="6.6" class="anchored" data-anchor-id="assessing-significance"><span class="header-section-number">6.6</span> Assessing significance</h2>
-<p>We have different tools for quantifying how confident we can be in the predictions made by a regression. They vary based on what type of prediction they are making</p>
+<p>We have different tools for quantifying how confident we can be in the predictions made by a regression. They vary based on what type of prediction they are making. We won’t work through the math here but it is useful to know what is actually being predicted by these tools.</p>
 <section id="confidence-intervals" class="level3" data-number="6.6.1">
 <h3 data-number="6.6.1" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">6.6.1</span> Confidence intervals</h3>
 <p>Confidence intervals relate to predicting the mean value of the response variable <span class="math inline">\(y\)</span> for individuals with a specific value of the explanatory variable <span class="math inline">\(x\)</span>. When we calculate <em>95% confidence intervals</em> we are bracketing the true regression line 95% of the time.</p>

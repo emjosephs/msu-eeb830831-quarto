@@ -18,6 +18,12 @@ book:
     - 07-lm-interactions.qmd
     - 08-multipletesting.qmd
     - 09-GWAS.qmd
+    - part: "Labs"
+      chapters:
+        - lab3.1-simpleLinearModels.qmd
+        - lab4.1-ANOVA.qmd
+
+
 
 #bibliography: references.bib
 
