@@ -218,10 +218,25 @@ lines(seq(2000,7000,length.out=100),
 
 ## Assessing significance
 
+We have different tools for quantifying how confident we can be in the predictions made by a regression.
+They vary based on what type of prediction they are making
+
 ### Confidence intervals
 
+Confidence intervals relate to predicting the mean value of the response variable $y$ for individuals with a specific value of the explanatory variable $x$. When we calculate *95% confidence intervals* we are bracketing the true regression line 95% of the time.
 
 ### Prediction intervals
+
+Prediction intervals give us an estimate of our confidence in predicting a value for the response variable $y$ for *one* individual with a specific value of the explanatory variable $x$.
+When we generate *95% prediction intervals* we are bracketing 95% of potential individuals.
+
+Prediction intervals will be much wider than confidence intervals because they include more variation.
+
+### Extrapolation
+
+*Extrapolation* is the prediction of $y$ outside the measured interval of $x$. It's generally a bad idea because we have no way of knowing the relationship between $x$ and $y$ outside of what we've observed.
+
+ ![](figs/extrapolating.png){fig-alt="A carton from xkcd showing a plot with time on the x axis and number of husbands on the y axis with values for 0 and 1 and a line extrapolating. The title reads 'my hobby: extrapolating' and one person tells another person dressed as a bride 'As you can see, by late next month you'll have over four dozen husbands. Better get a bulk rate on a wedding cake'"}
 
 ## Linear regression as an ANOVA
 

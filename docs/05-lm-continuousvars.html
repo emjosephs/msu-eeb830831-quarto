@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -263,6 +263,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">6.6.1</span> Confidence intervals</a></li>
   <li><a href="#prediction-intervals" id="toc-prediction-intervals" class="nav-link" data-scroll-target="#prediction-intervals"><span class="header-section-number">6.6.2</span> Prediction intervals</a></li>
+  <li><a href="#extrapolation" id="toc-extrapolation" class="nav-link" data-scroll-target="#extrapolation"><span class="header-section-number">6.6.3</span> Extrapolation</a></li>
   </ul></li>
   <li><a href="#linear-regression-as-an-anova" id="toc-linear-regression-as-an-anova" class="nav-link" data-scroll-target="#linear-regression-as-an-anova"><span class="header-section-number">6.7</span> Linear regression as an ANOVA</a></li>
   <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6.8</span> Review questions</a></li>
@@ -430,11 +431,20 @@ Coefficients:
 </section>
 <section id="assessing-significance" class="level2" data-number="6.6">
 <h2 data-number="6.6" class="anchored" data-anchor-id="assessing-significance"><span class="header-section-number">6.6</span> Assessing significance</h2>
+<p>We have different tools for quantifying how confident we can be in the predictions made by a regression. They vary based on what type of prediction they are making</p>
 <section id="confidence-intervals" class="level3" data-number="6.6.1">
 <h3 data-number="6.6.1" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">6.6.1</span> Confidence intervals</h3>
+<p>Confidence intervals relate to predicting the mean value of the response variable <span class="math inline">\(y\)</span> for individuals with a specific value of the explanatory variable <span class="math inline">\(x\)</span>. When we calculate <em>95% confidence intervals</em> we are bracketing the true regression line 95% of the time.</p>
 </section>
 <section id="prediction-intervals" class="level3" data-number="6.6.2">
 <h3 data-number="6.6.2" class="anchored" data-anchor-id="prediction-intervals"><span class="header-section-number">6.6.2</span> Prediction intervals</h3>
+<p>Prediction intervals give us an estimate of our confidence in predicting a value for the response variable <span class="math inline">\(y\)</span> for <em>one</em> individual with a specific value of the explanatory variable <span class="math inline">\(x\)</span>. When we generate <em>95% prediction intervals</em> we are bracketing 95% of potential individuals.</p>
+<p>Prediction intervals will be much wider than confidence intervals because they include more variation.</p>
+</section>
+<section id="extrapolation" class="level3" data-number="6.6.3">
+<h3 data-number="6.6.3" class="anchored" data-anchor-id="extrapolation"><span class="header-section-number">6.6.3</span> Extrapolation</h3>
+<p><em>Extrapolation</em> is the prediction of <span class="math inline">\(y\)</span> outside the measured interval of <span class="math inline">\(x\)</span>. It’s generally a bad idea because we have no way of knowing the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> outside of what we’ve observed.</p>
+<p><img src="figs/extrapolating.png" class="img-fluid" alt="A carton from xkcd showing a plot with time on the x axis and number of husbands on the y axis with values for 0 and 1 and a line extrapolating. The title reads 'my hobby: extrapolating' and one person tells another person dressed as a bride 'As you can see, by late next month you'll have over four dozen husbands. Better get a bulk rate on a wedding cake'"></p>
 </section>
 </section>
 <section id="linear-regression-as-an-anova" class="level2" data-number="6.7">
@@ -453,6 +463,10 @@ Coefficients:
 <p>As before, we can calculate the total sum of squares (<span class="math inline">\(SS_{total}\)</span>, panel A) as the sum of the squared differences between the model and the mean (<span class="math inline">\(SS_{model}\)</span>, panel B) and the squared differences between each individual and the model (<span class="math inline">\(SS_{residual}\)</span>). Better fitting models will have higher <span class="math inline">\(SS_{model}\)</span> relative to <span class="math inline">\(SS_{residual}\)</span>.</p>
 <p>We calculate all of these values as follows: <span class="math display">\[SS_{total} = \sum{(y_i - \bar{y})^2}\]</span> <span class="math display">\[SS_{model} = \sum{(\hat{y_i} - \bar{y})^2}\]</span> <span class="math display">\[SS_{residual} = \sum{(y_i - \bar{y})^2} \]</span> <span class="math display">\[MS_{model} = SS_{model}/df_{model}\]</span> <span class="math display">\[MS_{residual} =  SS_{residual}/df_{residual}\]</span> <span class="math display">\[df_{model} = 1 \]</span> <span class="math display">\[df_{residual} = n-2\]</span></p>
 <p>where <span class="math inline">\(\bar{y}\)</span> is the mean response variable for the whole sample and <span class="math inline">\(\hat{y_i}\)</span> is the model predicted value for individual <span class="math inline">\(i\)</span> and there are <span class="math inline">\(n\)</span> individuals in the sample.</p>
+<p>We can calculate these values by hand or get them from the anova function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="review-questions" class="level2" data-number="6.8">
 <h2 data-number="6.8" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6.8</span> Review questions</h2>

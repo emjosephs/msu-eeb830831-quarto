@@ -300,11 +300,21 @@
     ]
   },
   {
+    "objectID": "05-lm-continuousvars.html#assessing-significance",
+    "href": "05-lm-continuousvars.html#assessing-significance",
+    "title": "6  Linear models with continuous variables",
+    "section": "6.6 Assessing significance",
+    "text": "6.6 Assessing significance\nWe have different tools for quantifying how confident we can be in the predictions made by a regression. They vary based on what type of prediction they are making\n\n6.6.1 Confidence intervals\nConfidence intervals relate to predicting the mean value of the response variable \\(y\\) for individuals with a specific value of the explanatory variable \\(x\\). When we calculate 95% confidence intervals we are bracketing the true regression line 95% of the time.\n\n\n6.6.2 Prediction intervals\nPrediction intervals give us an estimate of our confidence in predicting a value for the response variable \\(y\\) for one individual with a specific value of the explanatory variable \\(x\\). When we generate 95% prediction intervals we are bracketing 95% of potential individuals.\nPrediction intervals will be much wider than confidence intervals because they include more variation.\n\n\n6.6.3 Extrapolation\nExtrapolation is the prediction of \\(y\\) outside the measured interval of \\(x\\). It’s generally a bad idea because we have no way of knowing the relationship between \\(x\\) and \\(y\\) outside of what we’ve observed.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
+    ]
+  },
+  {
     "objectID": "05-lm-continuousvars.html#linear-regression-as-an-anova",
     "href": "05-lm-continuousvars.html#linear-regression-as-an-anova",
     "title": "6  Linear models with continuous variables",
     "section": "6.7 Linear regression as an ANOVA",
-    "text": "6.7 Linear regression as an ANOVA\nWe can partition variation in our regression the same way we did in ANOVA. The concepts are similar but the math is slightly different.\n\n\n\n\n\nAn ANOVA framework for a linear regression. A Shows the difference between each observation, \\(Y_i\\), and the mean, \\(\\overline{Y}\\). This is the basis for calculating \\(MS_{total}\\). B Shows the difference between each predicted value \\(\\widehat{Y_i}\\) and the mean, \\(\\overline{Y}\\). This is the basis for calculating \\(MS_{model}\\). C Shows the difference between each observation, \\(Y_i\\), and its predicted value \\(\\widehat{Y_i}\\). This is the basis for calculating \\(MS_{error}\\).\n\n\n\n\nAs before, we can calculate the total sum of squares (\\(SS_{total}\\), panel A) as the sum of the squared differences between the model and the mean (\\(SS_{model}\\), panel B) and the squared differences between each individual and the model (\\(SS_{residual}\\)). Better fitting models will have higher \\(SS_{model}\\) relative to \\(SS_{residual}\\).\nWe calculate all of these values as follows: \\[SS_{total} = \\sum{(y_i - \\bar{y})^2}\\] \\[SS_{model} = \\sum{(\\hat{y_i} - \\bar{y})^2}\\] \\[SS_{residual} = \\sum{(y_i - \\bar{y})^2} \\] \\[MS_{model} = SS_{model}/df_{model}\\] \\[MS_{residual} =  SS_{residual}/df_{residual}\\] \\[df_{model} = 1 \\] \\[df_{residual} = n-2\\]\nwhere \\(\\bar{y}\\) is the mean response variable for the whole sample and \\(\\hat{y_i}\\) is the model predicted value for individual \\(i\\) and there are \\(n\\) individuals in the sample.",
+    "text": "6.7 Linear regression as an ANOVA\nWe can partition variation in our regression the same way we did in ANOVA. The concepts are similar but the math is slightly different.\n\n\n\n\n\nAn ANOVA framework for a linear regression. A Shows the difference between each observation, \\(Y_i\\), and the mean, \\(\\overline{Y}\\). This is the basis for calculating \\(MS_{total}\\). B Shows the difference between each predicted value \\(\\widehat{Y_i}\\) and the mean, \\(\\overline{Y}\\). This is the basis for calculating \\(MS_{model}\\). C Shows the difference between each observation, \\(Y_i\\), and its predicted value \\(\\widehat{Y_i}\\). This is the basis for calculating \\(MS_{error}\\).\n\n\n\n\nAs before, we can calculate the total sum of squares (\\(SS_{total}\\), panel A) as the sum of the squared differences between the model and the mean (\\(SS_{model}\\), panel B) and the squared differences between each individual and the model (\\(SS_{residual}\\)). Better fitting models will have higher \\(SS_{model}\\) relative to \\(SS_{residual}\\).\nWe calculate all of these values as follows: \\[SS_{total} = \\sum{(y_i - \\bar{y})^2}\\] \\[SS_{model} = \\sum{(\\hat{y_i} - \\bar{y})^2}\\] \\[SS_{residual} = \\sum{(y_i - \\bar{y})^2} \\] \\[MS_{model} = SS_{model}/df_{model}\\] \\[MS_{residual} =  SS_{residual}/df_{residual}\\] \\[df_{model} = 1 \\] \\[df_{residual} = n-2\\]\nwhere \\(\\bar{y}\\) is the mean response variable for the whole sample and \\(\\hat{y_i}\\) is the model predicted value for individual \\(i\\) and there are \\(n\\) individuals in the sample.\nWe can calculate these values by hand or get them from the anova function\n\nlibrary(car)",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
     ]
@@ -447,16 +457,6 @@
     "text": "10.2 Motivating example",
     "crumbs": [
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
-    ]
-  },
-  {
-    "objectID": "05-lm-continuousvars.html#assessing-significance",
-    "href": "05-lm-continuousvars.html#assessing-significance",
-    "title": "6  Linear models with continuous variables",
-    "section": "6.6 Assessing significance",
-    "text": "6.6 Assessing significance\n\n6.6.1 Confidence intervals\n\n\n6.6.2 Prediction intervals",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
     ]
   }
 ]
