@@ -219,7 +219,8 @@ lines(seq(2000,7000,length.out=100),
 ## Assessing significance
 
 We have different tools for quantifying how confident we can be in the predictions made by a regression.
-They vary based on what type of prediction they are making
+They vary based on what type of prediction they are making.
+We won't work through the math here but it is useful to know what is actually being predicted by these tools.
 
 ### Confidence intervals
 
