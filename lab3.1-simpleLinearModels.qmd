@@ -1,7 +1,7 @@
 ---
-title: "Lab 2 -- Simple Linear Models"
+title: "Lab 3 -- Simple Linear Models"
 format: html
-editor: visual
+editor: source
 ---
 
 This is a lab to practice simple linear models with means and categories.
@@ -68,7 +68,7 @@ model1
 sigma(model1)
 ```
 
-Now let's simulate new data for two categories of plants, with 30 plants each. We will have a population of C. fasciculata from Florida and a population of C. fasciculata from Illinois.
+Now let's simulate new data for two categories of plants, with 30 plants each. We will have a population of *C. fasciculata* from Florida and a population of *C. fasciculata* from Illinois.
 
 The code below does the simulation
 

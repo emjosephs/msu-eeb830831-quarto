@@ -21,9 +21,7 @@ library(car)
 
 Trout lilys (*Erythronium americanum*) have two distinct anther color morphs: yellow or red. The ecological consequences of anther color are unknown. Ripley and colleagues were interested in whether anther color affected pollinator preference. They went to a population of red-anthered flowers and counted the number of pollinator visits to local red flowers, and red and yellow flowers from a population 19km away. They chose these categories to disentangle the effects of color from the effects of novelty.
 
-(scenario is from Ripley et al. 2025 https://doi.org/10.17912/micropub.biology.001286)
-
-$$ \text{Fitness} \sim \beta_0 + e_i$$ $$e_i \sim N(0, \sigma^2)$$
+(scenario is from https://doi.org/10.17912/micropub.biology.001286)
 
 We will start by simulating data under this model using a normal distribution and 3 categories: local red (1), distant red  (2), and distant yellow (3). They had 30 flowers of each type.
 

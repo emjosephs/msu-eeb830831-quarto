@@ -102,35 +102,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="assets/sticky-notes.css">
 </head>
@@ -247,7 +218,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./lab3.1-simpleLinearModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 2 – Simple Linear Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 3 – Simple Linear Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -292,8 +263,7 @@ window.Quarto = {
 <p>You will be simulating data to use in this model.</p>
 <p><img src="figs/anthercolorlabeled.jpg" class="img-fluid" alt="An image of a trout lily with yellow anthers and an image of a trout lily with red anthers"></p>
 <p>Trout lilys (<em>Erythronium americanum</em>) have two distinct anther color morphs: yellow or red. The ecological consequences of anther color are unknown. Ripley and colleagues were interested in whether anther color affected pollinator preference. They went to a population of red-anthered flowers and counted the number of pollinator visits to local red flowers, and red and yellow flowers from a population 19km away. They chose these categories to disentangle the effects of color from the effects of novelty.</p>
-<p>(scenario is from Ripley et al.&nbsp;2025 https://doi.org/10.17912/micropub.biology.001286)</p>
-<p><span class="math display">\[ \text{Fitness} \sim \beta_0 + e_i\]</span> <span class="math display">\[e_i \sim N(0, \sigma^2)\]</span></p>
+<p>(scenario is from https://doi.org/10.17912/micropub.biology.001286)</p>
 <p>We will start by simulating data under this model using a normal distribution and 3 categories: local red (1), distant red (2), and distant yellow (3). They had 30 flowers of each type.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="dv">30</span></span>
@@ -837,8 +807,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./lab3.1-simpleLinearModels.html" class="pagination-link" aria-label="Lab 2 -- Simple Linear Models">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 2 – Simple Linear Models</span></span>
+      <a href="./lab3.1-simpleLinearModels.html" class="pagination-link" aria-label="Lab 3 -- Simple Linear Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 3 – Simple Linear Models</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
