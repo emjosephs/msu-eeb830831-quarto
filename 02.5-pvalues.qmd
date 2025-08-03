@@ -13,16 +13,23 @@ library(tidyverse)
 
 ## What are we doing here?
 
-In this chapter, we'll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.
-
 
 
 ## Motivating question
-Someone hands us a coin and we flip it 100 times and get 46 heads. 
 
-Is the coin fair? (probability of heads = 50%)
+## The population vs the sample
 
-What is the _most likely_ probability of flipping heads for this coin?
+## Measuring variance
+
+### Standard error
+
+## Hypothesis testing
+
+## Likelihood ratio tests
+
+Likelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.
+
+The difference in log likelihoods ($D$) will follow a $\chi ^2$ distribution with degrees of freedom equal to the number of parameters tested.
 
 
 ## Degrees of freedom

@@ -134,7 +134,7 @@
     "href": "02.5-pvalues.html",
     "title": "3  P values",
     "section": "",
-    "text": "3.1 What are we doing here?\nIn this chapter, we’ll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.",
+    "text": "3.1 What are we doing here?",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -144,7 +144,7 @@
     "href": "02.5-pvalues.html#motivating-question",
     "title": "3  P values",
     "section": "3.2 Motivating question",
-    "text": "3.2 Motivating question\nSomeone hands us a coin and we flip it 100 times and get 46 heads.\nIs the coin fair? (probability of heads = 50%)\nWhat is the most likely probability of flipping heads for this coin?",
+    "text": "3.2 Motivating question",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -153,8 +153,8 @@
     "objectID": "02.5-pvalues.html#degrees-of-freedom",
     "href": "02.5-pvalues.html#degrees-of-freedom",
     "title": "3  P values",
-    "section": "3.3 Degrees of freedom",
-    "text": "3.3 Degrees of freedom",
+    "section": "3.7 Degrees of freedom",
+    "text": "3.7 Degrees of freedom",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -509,6 +509,46 @@
     "crumbs": [
       "Labs",
       "<span class='chapter-number'>12</span>  <span class='chapter-title'>Lab 4 -- ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "02.5-pvalues.html#the-population-vs-the-sample",
+    "href": "02.5-pvalues.html#the-population-vs-the-sample",
+    "title": "3  P values",
+    "section": "3.3 The population vs the sample",
+    "text": "3.3 The population vs the sample",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "02.5-pvalues.html#measuring-variance",
+    "href": "02.5-pvalues.html#measuring-variance",
+    "title": "3  P values",
+    "section": "3.4 Measuring variance",
+    "text": "3.4 Measuring variance\n\n3.4.1 Standard error",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "02.5-pvalues.html#hypothesis-testing",
+    "href": "02.5-pvalues.html#hypothesis-testing",
+    "title": "3  P values",
+    "section": "3.5 Hypothesis testing",
+    "text": "3.5 Hypothesis testing",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "02.5-pvalues.html#likelihood-ratio-tests",
+    "href": "02.5-pvalues.html#likelihood-ratio-tests",
+    "title": "3  P values",
+    "section": "3.6 Likelihood ratio tests",
+    "text": "3.6 Likelihood ratio tests\nLikelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.\nThe difference in log likelihoods (\\(D\\)) will follow a \\(\\chi ^2\\) distribution",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
     ]
   }
 ]

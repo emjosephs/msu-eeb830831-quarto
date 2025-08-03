@@ -133,3 +133,6 @@ Calculating the probability of some possible outcome makes sense... But calculat
 
 But, that's not really what we're doing - We're calculating the probability of the observed data as a draw from some distribution, _given_ the values of the parameters of that distribution. Our goal is to use these probabilities to estimate the distribution parameters.
 
+## Log likeliood
+
+(move stuff from the linear model chapter here)
