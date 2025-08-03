@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -40,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -202,6 +236,29 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Applying linear models with GWAS</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Labs</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lab3.1-simpleLinearModels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 3 – Simple Linear Models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lab4.1-ANOVA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 4 – ANOVA</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -216,6 +273,12 @@ window.Quarto = {
   <li><a href="#motivating-question" id="toc-motivating-question" class="nav-link" data-scroll-target="#motivating-question"><span class="header-section-number">2.2</span> Motivating question</a></li>
   <li><a href="#likelihood" id="toc-likelihood" class="nav-link" data-scroll-target="#likelihood"><span class="header-section-number">2.3</span> Likelihood</a></li>
   <li><a href="#parametric-statistics" id="toc-parametric-statistics" class="nav-link" data-scroll-target="#parametric-statistics"><span class="header-section-number">2.4</span> Parametric statistics</a></li>
+  <li><a href="#a-coin-flip-example" id="toc-a-coin-flip-example" class="nav-link" data-scroll-target="#a-coin-flip-example"><span class="header-section-number">2.5</span> A coin flip example</a>
+  <ul class="collapse">
+  <li><a href="#calculating-likelihood-with-math" id="toc-calculating-likelihood-with-math" class="nav-link" data-scroll-target="#calculating-likelihood-with-math"><span class="header-section-number">2.5.1</span> Calculating likelihood with math</a></li>
+  </ul></li>
+  <li><a href="#maximum-likelihood" id="toc-maximum-likelihood" class="nav-link" data-scroll-target="#maximum-likelihood"><span class="header-section-number">2.6</span> Maximum likelihood</a></li>
+  <li><a href="#now-hang-on" id="toc-now-hang-on" class="nav-link" data-scroll-target="#now-hang-on"><span class="header-section-number">2.7</span> Now hang on…</a></li>
   </ul>
 </nav>
     </div>
@@ -243,35 +306,94 @@ window.Quarto = {
 
 <section id="what-are-we-doing-here" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">2.1</span> What are we doing here?</h2>
-<p>In this chapter, we’ll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.</p>
-</section>
-<section id="motivating-question" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="motivating-question"><span class="header-section-number">2.2</span> Motivating question</h2>
 <p>Someone hands us a coin and we flip it 100 times and get 46 heads.</p>
 <p>Is the coin fair? (probability of heads = 50%)</p>
 <p>What is the <em>most likely</em> probability of flipping heads for this coin?</p>
 </section>
+<section id="motivating-question" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="motivating-question"><span class="header-section-number">2.2</span> Motivating question</h2>
+</section>
 <section id="likelihood" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="likelihood"><span class="header-section-number">2.3</span> Likelihood</h2>
 <p>The <strong>likelihood</strong> of the data is the probability of the data as a function of some unknown parameters.</p>
-<p>Likelihood is probability…in reverse!</p>
-<p>In probability, we think about some stochastic process, and figure out ways to calculate the probability of possible outcomes</p>
-<p>For example: given that the coin is fair, what’s the probability of getting 46 heads out of 100 flips?</p>
-<p>In calculating probabilities, we consider a single parameter value and describe the probabilities of all possible outcomes of a process parameterized by that value.</p>
-<p>In statistics, we start with some observed outcomes, and try to figure out the underlying process.</p>
-<p>For example: given some flip data, can we figure out the fairness of the coin?</p>
-<p>In calculating likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.</p>
-<p>In formulating the problem this way, we are treating the observed data (<span class="math inline">\(k=46\)</span>) as a <em>known</em>, and treating <span class="math inline">\(p\)</span> as an unknown <strong><em>parameter</em></strong> of the model.</p>
+<p>How is this different from the probability we’ve been talking about? In probability, we think about some stochastic process, and figure out ways to calculate the probability of possible outcomes. For example: given that the coin is fair, what’s the probability of getting 46 heads out of 100 flips? When we calculate probabilities, we consider a single parameter value and describe the probabilities of all possible outcomes of a process that is parameterized by that value.</p>
+<p>In contrast, in statistics, we start with some observed outcomes, and try to figure out the underlying process. For example: given some flip data, can we figure out the fairness of the coin? When we calculate likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.</p>
+<p>In formulating the problem this way, we are treating the observed data (<span class="math inline">\(k=46\)</span>) as a <em>known</em>, and treating <span class="math inline">\(p\)</span> as an <em>unknown</em> <strong>parameter</strong> of the model.</p>
 </section>
 <section id="parametric-statistics" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="parametric-statistics"><span class="header-section-number">2.4</span> Parametric statistics</h2>
-<p>We can use likelihood in a framework of parametric statistics.</p>
-<p>In parametric inference, we treat observed data as draws from an underlying process or <strong><em>population</em></strong>, and we try to learn about that population from our sample.</p>
-<p>A <strong><em>statistical parameter</em></strong> is a value that tells you something about a <strong><em>population</em></strong>, like the <em>true</em> mean height of students in our class, or the <em>true</em> frequency of a genetic variant in a species.</p>
-<p>BUT, we rarely get to know the truth!</p>
-<p>(we would know the truth if we censused everyone in a population, or repeated a random process an infinite number of times)</p>
-<p>Instead, we can take <em>samples</em> to try to learn about –<br>
-or <strong><em>estimate</em></strong> – parameters.</p>
+<p>We can use likelihood in a framework of <strong>parametric statistics</strong>. In parametric statistics, we treat observed data as draws from an underlying process or <strong>population</strong>, and we try to learn about that population from our sample.</p>
+<p>A <strong>statistical parameter</strong> is a value that tells you something about a , like the <em>true</em> mean height of students in our class, or the <em>true</em> frequency of a genetic variant in a species.</p>
+<p>BUT, we rarely get to know the truth! (we would know the truth if we censused everyone in a population, or repeated a random process an infinite number of times). Instead, we can take <em>samples</em> to try to learn about –<br>
+or <strong>estimate</strong> – parameters.</p>
+</section>
+<section id="a-coin-flip-example" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="a-coin-flip-example"><span class="header-section-number">2.5</span> A coin flip example</h2>
+<p>Imagine that we flip a coin 100 times and get 46 heads.</p>
+<p>We know that we can model coin flipping using a Binomial distribution where <span class="math inline">\(x\)</span> is the number of heads, <span class="math inline">\(n\)</span> is the number of flips, and <span class="math inline">\(p\)</span> is the probability of heads:</p>
+<p><span class="math display">\[ x \sim B(n,p)\]</span></p>
+<p>For this particular case:</p>
+<p><span class="math display">\[ 46 \sim B(100,p=??) \]</span></p>
+<p>We can flip this around and write the probability of our data as the conditional probablity of observing 46 heads out of 100 flips given a specific <span class="math inline">\(p\)</span>.</p>
+<p><span class="math display">\[ P(\text{observation}) = P(x=46 \mid p, n=100)\]</span></p>
+<section id="calculating-likelihood-with-math" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="calculating-likelihood-with-math"><span class="header-section-number">2.5.1</span> Calculating likelihood with math</h3>
+<p>We can use R to calculate these probabilities. In particular, the dbinom() function lets us calculate the probability of observing a particular number of successes given a specific <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span>. Below is code to calculate the probability of getting 46 heads if the coin is fair (<span class="math inline">\(p=0.5\)</span>). Note the syntax of ‘size’ for <span class="math inline">\(n\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="at">x=</span><span class="dv">46</span>, <span class="at">p=</span><span class="fl">0.5</span>, <span class="at">size=</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0579584</code></pre>
+</div>
+</div>
+<p>This code gives us the likelihood of the data for one value of <span class="math inline">\(p\)</span>. But what if we want to calculate it for a range of potential <span class="math inline">\(p\)</span>s? Turns out we can give dbinom() a vector of <span class="math inline">\(p\)</span> and it will return a vector of probabilities.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pvector <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">length.out=</span><span class="dv">101</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  probabilities <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x=</span><span class="dv">46</span>,<span class="at">size=</span><span class="dv">100</span>,<span class="at">p=</span>pvector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Instead of printing the list of values, let’s make a plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pvector,probabilities, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.1</span>), <span class="at">xlab=</span><span class="st">"probability of heads (p)"</span>,<span class="at">ylab=</span><span class="st">"p(data)"</span>, <span class="at">pch=</span><span class="dv">20</span>,<span class="at">col=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02-likelihood_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>What we’ve just is called a <strong>grid search</strong>. It is one strategy to identify the parameter that gives you the highest probability of observing your data (aka likelihood). Looking at the plot above, what <span class="math inline">\(p\)</span> seems to give the highest likelihood?</p>
+<p>We can calculate this directly with the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pvector[<span class="fu">which.max</span>(probabilities)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.46</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="maximum-likelihood" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="maximum-likelihood"><span class="header-section-number">2.6</span> Maximum likelihood</h2>
+<p><strong>Maximum likelihood inference</strong> is a method for estimating the values of the parameters of a statistical model that maximize the likelihood of the observed data.</p>
+<p>The <strong>maximum likelihood estimate</strong> (MLE) is the parameter value (or, if there are multiple parameters, the vector of parameter values) that maximize the likelihood of the data. The MLE is our best guess at the true value of the unknown population (or process) parameter.</p>
+<p>Above we used a grid search to identify the MLE. However, grid searches can get unwieldy. Luckily, R has built-in functions to identify the MLE more efficiently. See the code below</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function to estimate the p(k=46|n=100,p) for a given p</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    l.binom <span class="ot">&lt;-</span> <span class="cf">function</span>(p){</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        binom.prob <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x=</span><span class="dv">46</span>,<span class="at">size=</span><span class="dv">100</span>,<span class="at">prob=</span>p)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(binom.prob)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use optimize() to get the mle</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    mle <span class="ot">&lt;-</span> <span class="fu">optimize</span>(<span class="at">f =</span> l.binom,<span class="at">lower=</span><span class="dv">0</span>,<span class="at">upper=</span><span class="dv">1</span>,<span class="at">maximum=</span><span class="cn">TRUE</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    mle<span class="sc">$</span>maximum</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4600159</code></pre>
+</div>
+</div>
+</section>
+<section id="now-hang-on" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="now-hang-on"><span class="header-section-number">2.7</span> Now hang on…</h2>
+<p>Calculating the probability of some possible outcome makes sense… But calculating the probability of something that has <em>already happened</em> seems <strong>bananas</strong>!</p>
+<p>But, that’s not really what we’re doing - We’re calculating the probability of the observed data as a draw from some distribution, <em>given</em> the values of the parameters of that distribution. Our goal is to use these probabilities to estimate the distribution parameters.</p>
 
 
 </section>

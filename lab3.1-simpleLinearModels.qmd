@@ -1,13 +1,12 @@
 ---
-title: "Lab 2 -- Simple Linear Models"
+title: "Lab 3 -- Simple Linear Models"
 format: html
-editor: visual
+editor: source
 ---
 
 This is a lab to practice simple linear models with means and categories.
 
 We will be simulating data to use in this model.
-
 
 ```{r}
 #| label: load-packages
@@ -16,29 +15,24 @@ library(tidyverse)
 palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
 ```
 
-
 Pretend that you're interested in studying selection on Partridge Peas (*Chamaecrista fasciculata*). You estimate fitness (fruit count) for 200 genotypes in a common garden and want to use a linear model to estimate the mean fitness.
- 
-$$ \text{Fitness} \sim \beta_0 + e_i$$
-$$e_i \sim N(0, \sigma^2)$$
- 
- 
-We will start by simulating data under this model using a normal distribution. Use the following parameters:
-$\beta_0$ = 55 and $\sigma$=5
+
+$$ \text{Fitness} \sim \beta_0 + e_i$$ $$e_i \sim N(0, \sigma^2)$$
+
+We will start by simulating data under this model using a normal distribution. Use the following parameters: $\beta_0$ = 55 and $\sigma$=5
 
 ```{r}
 set.seed(20)
 myData = rnorm(n=200, mean=55, sd=5)
 
 ```
- 
+
 Make a histogram visualizing your data
 
 ```{r}
 hist(myData, col=palette()[6], border="white", main="", xlab = "fitness")
 ```
- 
- 
+
 Estimate the mean of the population using a maximum likelihood approach with a grid search. Your grid should go from 35 to 75 and have 200 points. For all calculations, set $\sigma = 5$.
 
 ```{r}
@@ -51,8 +45,7 @@ plot(myGrid, myLogLikes, ylab = "log likelihood", xlab = "mean fitness", bty="n"
 myMaxLikelihood = myGrid[which(myLogLikes == max(myLogLikes))]
 myMaxLikelihood
 ```
- 
- 
+
 Try doing the opposite -- keep the mean as 55 and try a grid search of $\sigma$ with 200 values of sigma.
 
 ```{r}
@@ -75,11 +68,9 @@ model1
 sigma(model1)
 ```
 
-
-Now let's simulate new data for two categories of plants, with 30 plants each. We will have a population of C. fasciculata from Florida and a population of C. fasciculata from Illinois. 
+Now let's simulate new data for two categories of plants, with 30 plants each. We will have a population of *C. fasciculata* from Florida and a population of *C. fasciculata* from Illinois.
 
 The code below does the simulation
-
 
 ```{r}
 n.1 <- 30
@@ -138,6 +129,7 @@ summary(out.means)
 What's different between these two models?
 
 Try looking at the output of these commands:
+
 ```{r}
 model.matrix(out.effects)
 model.matrix(out.means)
@@ -148,7 +140,7 @@ out.means$coefficients
 
 Which formulation makes the most sense to you?
 
-# Residual Diagnostics 
+# Residual Diagnostics
 
 ```{r}
 # Extract residuals.

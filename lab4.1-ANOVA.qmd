@@ -1,12 +1,12 @@
 ---
 title: "Lab 4 -- ANOVA"
 format: html
-editor: visual
+editor: source
 ---
 
-This is a lab to practice ANOVA
+This is a lab to practice categorical linear models and ANOVA
 
-We will be simulating data to use in this model.
+You will be simulating data to use in this model.
 
 ```{r}
 #| label: load-packages
@@ -17,21 +17,23 @@ library(emmeans)
 library(car)
 ```
 
-TEXT ABOUT MOTIVATING QUESTION GOES HERE
+![](figs/anthercolorlabeled.jpg){fig-alt="An image of a trout lily with yellow anthers and an image of a trout lily with red anthers"}
 
-$$ \text{Fitness} \sim \beta_0 + e_i$$ $$e_i \sim N(0, \sigma^2)$$
+Trout lilys (*Erythronium americanum*) have two distinct anther color morphs: yellow or red. The ecological consequences of anther color are unknown. Ripley and colleagues were interested in whether anther color affected pollinator preference. They went to a population of red-anthered flowers and counted the number of pollinator visits to local red flowers, and red and yellow flowers from a population 19km away. They chose these categories to disentangle the effects of color from the effects of novelty.
 
-We will start by simulating data under this model using a normal distribution and 3 categories. 
+(scenario is from https://doi.org/10.17912/micropub.biology.001286)
+
+We will start by simulating data under this model using a normal distribution and 3 categories: local red (1), distant red  (2), and distant yellow (3). They had 30 flowers of each type.
 
 ```{r}
 
 n.1 <- 30
 n.2 <- 30
 n.3 <- 30
-mean.1 <- 30
-mean.2 <- 50
-mean.3 <- 55
-sd.1 <- 10
+mean.1 <- 29
+mean.2 <- 42
+mean.3 <- 46
+sd.1 <- 6
 
 set.seed(5)
 
@@ -49,8 +51,8 @@ simData <- data.frame(resp = c(group1, group2, group3),
 
 #look at it
 plot(jitter(rep(c(0, .5,1), c(n.1, n.2,n.3))), simData$resp, bty="n", xlim=c(-.5,1.5),
-     xlab = "", ylab = "resp", xaxt="n")
-axis(1, at=c(0,.5,1), lab = c('1','2','3'))
+     xlab = "", ylab = "number of visits", xaxt="n")
+axis(1, at=c(0,.5,1), lab = c('red local','red distant','yellow distant'))
 
 ```
 
@@ -58,12 +60,13 @@ Make a linear model with lm()
 
 ```{r}
 model1 <- lm(resp~pop, data=simData)
-model1
-
-
+summary(model1)
 ```
 
-Do an ANOVA by hand!
+Q1. How do you interpret the output of the linear model? What do the results tell you about pollinator behavior?
+
+
+Next, we'll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation
 
 ```{r}
 library(broom)
@@ -89,16 +92,15 @@ pf(q=myF, df1 = 2, df2 = 87, lower.tail=F)
 
 ```
 
-
-Do an ANOVA with lm()
+Now we'll do an ANOVA with lm()
 
 ```{r}
 Anova(model1)
 ```
 
-Check that your results match.
+Q2: Do you results match?
 
-Do all pairwise comparisons
+Now we will use the ANOVA to compare pollinator visits between all pairs of categories.
 
 ```{r}
 em1 <- emmeans(model1, specs="pop")
@@ -106,4 +108,10 @@ pairs(em1)
 
 ```
 
-Interpret!
+Q3: Interpret the results of the analysis above? What matters most for determining pollinator visits?
+
+
+Q4: Ripley et al. discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the code above to simulate data for an additional category with a mean of 2 visits per flower.
+
+
+Q5: Rerun the linear model, ANOVA (with the anova() function), and emmeans on this new data. Interpret the outputs.

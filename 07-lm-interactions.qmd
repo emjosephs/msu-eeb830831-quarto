@@ -16,9 +16,7 @@ palette(lacroix_palette("Mango", type = "discrete"))
 
 ## What are we doing here?
 
-We previously discussed linear models and learned to build a very simple linear model to estimate the mean. We also learned how to calculate residuals, which in this case were the differences between each datapoint and the mean.
+We previously fit linear models with multiple explanatory variables. 
 
-In this section we'll expand our linear model to incorporate differences between categories.
-
-## Motivating example
+### Motivating example
 

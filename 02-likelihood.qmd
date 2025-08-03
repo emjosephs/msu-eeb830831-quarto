@@ -13,62 +13,123 @@ library(tidyverse)
 
 ## What are we doing here?
 
-In this chapter, we'll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.
-
-
-
-## Motivating question
 Someone hands us a coin and we flip it 100 times and get 46 heads. 
 
 Is the coin fair? (probability of heads = 50%)
 
 What is the _most likely_ probability of flipping heads for this coin?
 
+
+## Motivating question
+
+
+
 ## Likelihood
 
-The **likelihood** of the data is the probability of the 
-data as a function of some unknown parameters.
+The **likelihood** of the data is the probability of the data as a function of some unknown parameters.
 
-Likelihood is probability...in reverse!
-
-In probability, we think about some stochastic process, 
-and figure out ways to calculate the probability of possible outcomes
- 
-For example: given that the coin is fair, what's the probability of getting 46 heads out of 100 flips?
-
-In calculating probabilities, we consider a single parameter value 
+How is this different from the probability we've been talking about? In probability, we think about some stochastic process, 
+and figure out ways to calculate the probability of possible outcomes.
+For example: given that the coin is fair, what's the probability of getting 46 heads out of 100 flips? When we calculate probabilities, we consider a single parameter value 
 and describe the probabilities of all possible outcomes of a 
-process parameterized by that value.
+process that is parameterized by that value.
  		
-In statistics, we start with some observed outcomes, 
- and try to figure out the underlying process.
- 
- For example: given some flip data, can we figure out the fairness of the coin?
- 
-In calculating likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.
+In contrast, in statistics, we start with some observed outcomes, and try to figure out the underlying process. For example: given some flip data, can we figure out the fairness of the coin?
+When we calculate likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.
 
 In formulating the problem this way, 
-we are treating the observed data ($k=46$) as a _known_, 
-and treating $p$ as an unknown **_parameter_** of the model.
+we are treating the observed data ($k=46$) as a *known*, 
+and treating $p$ as an *unknown* **parameter** of the model.
 
 ## Parametric statistics
 
-We can use likelihood in a framework of parametric statistics.
+We can use likelihood in a framework of **parametric statistics**.
+In parametric statistics, we treat observed data as draws from 
+an underlying process or **population**, and we try to learn about that population from our sample.
 
-In parametric inference, 
-we treat observed data as draws from 
-an underlying process or **_population_**, 
-and we try to learn about that population from our sample.
+A **statistical parameter** is a value that tells you something 
+about a , like the _true_ mean height of students in our class, or the _true_ frequency of a genetic variant in a species.
 
-A **_statistical parameter_** is a value that tells you something 
-about a **_population_**, like the _true_ mean height of students in our class, 
-or the _true_ frequency of a genetic variant in a species.
+BUT, we rarely get to know the truth! (we would know the truth if we censused everyone in a population,  or repeated a random process an infinite number of times). Instead, we can take _samples_ to try to learn about --  
+or **estimate** -- parameters.
 
-BUT, we rarely get to know the truth!
+## A coin flip example
 
-(we would know the truth if we censused everyone in a population, 
-or repeated a random process an infinite number of times) 
+Imagine that we flip a coin 100 times and get 46 heads.
+```{r, echo=FALSE}
+n.heads <- 46
+```
 
-Instead, we can take _samples_ to try to learn about --  
-or **_estimate_** -- parameters.  
+We know that we can model coin flipping using a Binomial distribution where $x$ is the number of heads, $n$ is the number of flips, and $p$ is the probability of heads:
+
+$$ x \sim B(n,p)$$
+
+For this particular case:
+
+$$ 46 \sim B(100,p=??) $$
+
+We can flip this around and write the probability of our data as the conditional probablity of observing 46 heads out of 100 flips given a specific $p$.
+
+$$ P(\text{observation}) = P(x=46 \mid p, n=100)$$
+
+### Calculating likelihood with math
+
+We can use R to calculate these probabilities. In particular, the dbinom() function lets us calculate the probability of observing a particular number of successes given a specific $n$ and $p$. Below is code to calculate the probability of getting 46 heads if the coin is fair ($p=0.5$). Note the syntax of 'size' for $n$.
+
+```{r}
+dbinom(x=46, p=0.5, size=100)
+
+```
+
+This code gives us the likelihood of the data for one value of $p$. But what if we want to calculate it for a range of potential $p$s? Turns out we can give dbinom() a vector of $p$ and it will return a vector of probabilities. 
+
+```{r}
+pvector = seq(0,1,length.out=101)
+  probabilities <- dbinom(x=46,size=100,p=pvector)
+```
+
+Instead of printing the list of values, let's make a plot.
+
+```{r}
+plot(pvector,probabilities, xlim=c(0,1),ylim=c(0,0.1), xlab="probability of heads (p)",ylab="p(data)", pch=20,col=2)
+```
+
+What we've just is called a **grid search**. It is one strategy to identify the parameter that gives you the highest probability of observing your data (aka likelihood). Looking at the plot above, what $p$ seems to give the highest likelihood? 
+
+We can calculate this directly with the following code:
+```{r}
+pvector[which.max(probabilities)]
+
+```
+
+## Maximum likelihood
+
+**Maximum likelihood inference** is a method for estimating the values 
+of the parameters of a statistical model that maximize the likelihood 
+of the observed data.
+
+The **maximum likelihood estimate** (MLE) is the parameter value
+(or, if there are multiple parameters, the vector of parameter values) 
+that maximize the likelihood of the data. The MLE is our best guess at the true value of the unknown  population (or process) parameter.
+
+Above we used a grid search to identify the MLE. However, grid searches can get unwieldy. Luckily, R has built-in functions to identify the MLE more efficiently. See the code below
+
+
+```{r,echo=T}
+# function to estimate the p(k=46|n=100,p) for a given p
+	l.binom <- function(p){
+		binom.prob <- dbinom(x=46,size=100,prob=p)
+		return(binom.prob)
+	}
+# use optimize() to get the mle
+	mle <- optimize(f = l.binom,lower=0,upper=1,maximum=TRUE)
+	mle$maximum
+```
+
+
+## Now hang on... 
+
+Calculating the probability of some possible outcome makes sense... But calculating the probability of something that has _already happened_ seems **bananas**!
+
+But, that's not really what we're doing - We're calculating the probability of the observed data as a draw from some distribution, _given_ the values of the parameters of that distribution. Our goal is to use these probabilities to estimate the distribution parameters.
 
