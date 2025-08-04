@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; P values – EEB 830/831</title>
+<title>8&nbsp; Multiple testing issues (and opportunities) – EEB 830/831</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./03-linearModels1.html" rel="next">
-<link href="./likelihood.html" rel="prev">
+<link href="./GWAS.html" rel="next">
+<link href="./lm-multiplepredictors.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,35 +69,6 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="assets/sticky-notes.css">
 </head>
@@ -111,7 +82,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02.5-pvalues.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">P values</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./multipletesting.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multiple testing issues (and opportunities)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -156,50 +127,44 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02.5-pvalues.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">P values</span></span></a>
+  <a href="./linearModels1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-linearModels1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  <a href="./lm-categories.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear models with categories and ANOVA</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-lm-categories.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Linear models with categories and ANOVA</span></span></a>
+  <a href="./lm-continousvars.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Linear models with continuous variables</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-lm-continuousvars.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear models with continuous variables</span></span></a>
+  <a href="./pvalues.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">P values</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-lm-multiplepredictors.html" class="sidebar-item-text sidebar-link">
+  <a href="./lm-multiplepredictors.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Linear models with multiple predictors</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-lm-interactions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Linear models and interactions</span></span></a>
+  <a href="./multipletesting.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multiple testing issues (and opportunities)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-multipletesting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multiple testing issues (and opportunities)</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./09-GWAS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Applying linear models with GWAS</span></span></a>
+  <a href="./GWAS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Applying linear models with GWAS</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -214,13 +179,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./lab3.1-simpleLinearModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 3 – Simple Linear Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Lab 3 – Simple Linear Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./lab4.1-ANOVA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 4 – ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 4 – ANOVA</span></span></a>
   </div>
 </li>
       </ul>
@@ -235,16 +200,8 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">3.1</span> What are we doing here?</a></li>
-  <li><a href="#motivating-question" id="toc-motivating-question" class="nav-link" data-scroll-target="#motivating-question"><span class="header-section-number">3.2</span> Motivating question</a></li>
-  <li><a href="#the-population-vs-the-sample" id="toc-the-population-vs-the-sample" class="nav-link" data-scroll-target="#the-population-vs-the-sample"><span class="header-section-number">3.3</span> The population vs the sample</a></li>
-  <li><a href="#measuring-variance" id="toc-measuring-variance" class="nav-link" data-scroll-target="#measuring-variance"><span class="header-section-number">3.4</span> Measuring variance</a>
-  <ul class="collapse">
-  <li><a href="#standard-error" id="toc-standard-error" class="nav-link" data-scroll-target="#standard-error"><span class="header-section-number">3.4.1</span> Standard error</a></li>
-  </ul></li>
-  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">3.5</span> Hypothesis testing</a></li>
-  <li><a href="#likelihood-ratio-tests" id="toc-likelihood-ratio-tests" class="nav-link" data-scroll-target="#likelihood-ratio-tests"><span class="header-section-number">3.6</span> Likelihood ratio tests</a></li>
-  <li><a href="#degrees-of-freedom" id="toc-degrees-of-freedom" class="nav-link" data-scroll-target="#degrees-of-freedom"><span class="header-section-number">3.7</span> Degrees of freedom</a></li>
+  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</a></li>
+  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">8.2</span> Motivating example</a></li>
   </ul>
 </nav>
     </div>
@@ -253,7 +210,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">P values</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multiple testing issues (and opportunities)</span></h1>
 </div>
 
 
@@ -270,32 +227,12 @@ window.Quarto = {
 </header>
 
 
-<section id="what-are-we-doing-here" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">3.1</span> What are we doing here?</h2>
-<p>I don’t think I can teach p values until after I teach models so this needs to go later somewhere.</p>
+<section id="what-are-we-doing-here" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</h2>
 </section>
-<section id="motivating-question" class="level2" data-number="3.2">
-<h2 data-number="3.2" class="anchored" data-anchor-id="motivating-question"><span class="header-section-number">3.2</span> Motivating question</h2>
-</section>
-<section id="the-population-vs-the-sample" class="level2" data-number="3.3">
-<h2 data-number="3.3" class="anchored" data-anchor-id="the-population-vs-the-sample"><span class="header-section-number">3.3</span> The population vs the sample</h2>
-</section>
-<section id="measuring-variance" class="level2" data-number="3.4">
-<h2 data-number="3.4" class="anchored" data-anchor-id="measuring-variance"><span class="header-section-number">3.4</span> Measuring variance</h2>
-<section id="standard-error" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="standard-error"><span class="header-section-number">3.4.1</span> Standard error</h3>
-</section>
-</section>
-<section id="hypothesis-testing" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">3.5</span> Hypothesis testing</h2>
-</section>
-<section id="likelihood-ratio-tests" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="likelihood-ratio-tests"><span class="header-section-number">3.6</span> Likelihood ratio tests</h2>
-<p>Likelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.</p>
-<p>The difference in log likelihoods (<span class="math inline">\(D\)</span>) will follow a <span class="math inline">\(\chi ^2\)</span> distribution with degrees of freedom equal to the number of parameters tested.</p>
-</section>
-<section id="degrees-of-freedom" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">3.7</span> Degrees of freedom</h2>
+<section id="motivating-example" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">8.2</span> Motivating example</h2>
+<p>You may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.</p>
 
 
 </section>
@@ -720,13 +657,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./likelihood.html" class="pagination-link" aria-label="Hypothesis testing and likelihood">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Hypothesis testing and likelihood</span></span>
+      <a href="./lm-multiplepredictors.html" class="pagination-link" aria-label="Linear models with multiple predictors">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Linear models with multiple predictors</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./03-linearModels1.html" class="pagination-link" aria-label="Intro to Linear Models">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./GWAS.html" class="pagination-link" aria-label="Applying linear models with GWAS">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Applying linear models with GWAS</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

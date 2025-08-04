@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; Linear models with continuous variables – EEB 830/831</title>
+<title>5&nbsp; Linear models with continuous variables – EEB 830/831</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./06-lm-multiplepredictors.html" rel="next">
-<link href="./04-lm-categories.html" rel="prev">
+<link href="./pvalues.html" rel="next">
+<link href="./lm-categories.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -145,7 +145,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-lm-continuousvars.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear models with continuous variables</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lm-continousvars.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Linear models with continuous variables</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -190,50 +190,44 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02.5-pvalues.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">P values</span></span></a>
+  <a href="./linearModels1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-linearModels1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Intro to Linear Models</span></span></a>
+  <a href="./lm-categories.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear models with categories and ANOVA</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-lm-categories.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Linear models with categories and ANOVA</span></span></a>
+  <a href="./lm-continousvars.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Linear models with continuous variables</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-lm-continuousvars.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear models with continuous variables</span></span></a>
+  <a href="./pvalues.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">P values</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-lm-multiplepredictors.html" class="sidebar-item-text sidebar-link">
+  <a href="./lm-multiplepredictors.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Linear models with multiple predictors</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-lm-interactions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Linear models and interactions</span></span></a>
+  <a href="./multipletesting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multiple testing issues (and opportunities)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-multipletesting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Multiple testing issues (and opportunities)</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./09-GWAS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Applying linear models with GWAS</span></span></a>
+  <a href="./GWAS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Applying linear models with GWAS</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -248,13 +242,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./lab3.1-simpleLinearModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 3 – Simple Linear Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Lab 3 – Simple Linear Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./lab4.1-ANOVA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 4 – ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 4 – ANOVA</span></span></a>
   </div>
 </li>
       </ul>
@@ -269,27 +263,27 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">6.1</span> What are we doing here?</a></li>
-  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">6.2</span> Motivating example</a></li>
-  <li><a href="#linear-models-with-continuous-predictors" id="toc-linear-models-with-continuous-predictors" class="nav-link" data-scroll-target="#linear-models-with-continuous-predictors"><span class="header-section-number">6.3</span> Linear models with continuous predictors</a>
+  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">5.1</span> What are we doing here?</a></li>
+  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">5.2</span> Motivating example</a></li>
+  <li><a href="#linear-models-with-continuous-predictors" id="toc-linear-models-with-continuous-predictors" class="nav-link" data-scroll-target="#linear-models-with-continuous-predictors"><span class="header-section-number">5.3</span> Linear models with continuous predictors</a>
   <ul class="collapse">
-  <li><a href="#the-deterministic-function" id="toc-the-deterministic-function" class="nav-link" data-scroll-target="#the-deterministic-function"><span class="header-section-number">6.3.1</span> The deterministic function</a></li>
-  <li><a href="#the-stochastic-function" id="toc-the-stochastic-function" class="nav-link" data-scroll-target="#the-stochastic-function"><span class="header-section-number">6.3.2</span> The stochastic function</a></li>
+  <li><a href="#the-deterministic-function" id="toc-the-deterministic-function" class="nav-link" data-scroll-target="#the-deterministic-function"><span class="header-section-number">5.3.1</span> The deterministic function</a></li>
+  <li><a href="#the-stochastic-function" id="toc-the-stochastic-function" class="nav-link" data-scroll-target="#the-stochastic-function"><span class="header-section-number">5.3.2</span> The stochastic function</a></li>
   </ul></li>
-  <li><a href="#estimating-parameters-of-the-determinstic-function" id="toc-estimating-parameters-of-the-determinstic-function" class="nav-link" data-scroll-target="#estimating-parameters-of-the-determinstic-function"><span class="header-section-number">6.4</span> Estimating parameters of the determinstic function</a>
+  <li><a href="#estimating-parameters-of-the-determinstic-function" id="toc-estimating-parameters-of-the-determinstic-function" class="nav-link" data-scroll-target="#estimating-parameters-of-the-determinstic-function"><span class="header-section-number">5.4</span> Estimating parameters of the determinstic function</a>
   <ul class="collapse">
-  <li><a href="#some-notes-on-intuition" id="toc-some-notes-on-intuition" class="nav-link" data-scroll-target="#some-notes-on-intuition"><span class="header-section-number">6.4.1</span> Some notes on intuition</a></li>
-  <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">6.4.2</span> Fitting with lm()</a></li>
+  <li><a href="#some-notes-on-intuition" id="toc-some-notes-on-intuition" class="nav-link" data-scroll-target="#some-notes-on-intuition"><span class="header-section-number">5.4.1</span> Some notes on intuition</a></li>
+  <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">5.4.2</span> Fitting with lm()</a></li>
   </ul></li>
-  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">6.5</span> Residuals</a></li>
-  <li><a href="#assessing-significance" id="toc-assessing-significance" class="nav-link" data-scroll-target="#assessing-significance"><span class="header-section-number">6.6</span> Assessing significance</a>
+  <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">5.5</span> Residuals</a></li>
+  <li><a href="#assessing-significance" id="toc-assessing-significance" class="nav-link" data-scroll-target="#assessing-significance"><span class="header-section-number">5.6</span> Assessing significance</a>
   <ul class="collapse">
-  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">6.6.1</span> Confidence intervals</a></li>
-  <li><a href="#prediction-intervals" id="toc-prediction-intervals" class="nav-link" data-scroll-target="#prediction-intervals"><span class="header-section-number">6.6.2</span> Prediction intervals</a></li>
-  <li><a href="#extrapolation" id="toc-extrapolation" class="nav-link" data-scroll-target="#extrapolation"><span class="header-section-number">6.6.3</span> Extrapolation</a></li>
+  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">5.6.1</span> Confidence intervals</a></li>
+  <li><a href="#prediction-intervals" id="toc-prediction-intervals" class="nav-link" data-scroll-target="#prediction-intervals"><span class="header-section-number">5.6.2</span> Prediction intervals</a></li>
+  <li><a href="#extrapolation" id="toc-extrapolation" class="nav-link" data-scroll-target="#extrapolation"><span class="header-section-number">5.6.3</span> Extrapolation</a></li>
   </ul></li>
-  <li><a href="#linear-regression-as-an-anova" id="toc-linear-regression-as-an-anova" class="nav-link" data-scroll-target="#linear-regression-as-an-anova"><span class="header-section-number">6.7</span> Linear regression as an ANOVA</a></li>
-  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6.8</span> Review questions</a></li>
+  <li><a href="#linear-regression-as-an-anova" id="toc-linear-regression-as-an-anova" class="nav-link" data-scroll-target="#linear-regression-as-an-anova"><span class="header-section-number">5.7</span> Linear regression as an ANOVA</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">5.8</span> Review questions</a></li>
   </ul>
 </nav>
     </div>
@@ -298,7 +292,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Linear models with continuous variables</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Linear models with continuous variables</span></h1>
 </div>
 
 
@@ -315,12 +309,12 @@ window.Quarto = {
 </header>
 
 
-<section id="what-are-we-doing-here" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">6.1</span> What are we doing here?</h2>
+<section id="what-are-we-doing-here" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">5.1</span> What are we doing here?</h2>
 <p>Many of the variables you are interested are continuous, not categorical. In this section we’ll extend our linear models to incorporate continuous predictor variables.</p>
 </section>
-<section id="motivating-example" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">6.2</span> Motivating example</h2>
+<section id="motivating-example" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">5.2</span> Motivating example</h2>
 <p>Continuing with the penguin example data, imagine that we are interested in understanding how bill length determines body mass – do penguins with longer bills also have larger bodies?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(bill_len)) <span class="do">##filter out ones with NAs</span></span>
@@ -328,32 +322,32 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>We can plot out the data and see that there is potentially a relationship between bill length and body mass. But, imagine we have a biological reason for wanting to model body mass as a function of bill length. How would we do that?</p>
 </section>
-<section id="linear-models-with-continuous-predictors" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="linear-models-with-continuous-predictors"><span class="header-section-number">6.3</span> Linear models with continuous predictors</h2>
+<section id="linear-models-with-continuous-predictors" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="linear-models-with-continuous-predictors"><span class="header-section-number">5.3</span> Linear models with continuous predictors</h2>
 <p>Instead of letting the mean of the model vary between categories, we now build our model with the mean as a linear function of the predictor variable. This model is called <strong>linear regression</strong> and it has two components: the <strong>deterministic function</strong> and the <strong>stochastic function</strong></p>
-<section id="the-deterministic-function" class="level3" data-number="6.3.1">
-<h3 data-number="6.3.1" class="anchored" data-anchor-id="the-deterministic-function"><span class="header-section-number">6.3.1</span> The deterministic function</h3>
+<section id="the-deterministic-function" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="the-deterministic-function"><span class="header-section-number">5.3.1</span> The deterministic function</h3>
 <p>The deterministic function describes how the explanatory variables relate to the conditional mean of the response variable. In this case, since this is a linear model, we are modelling the response variable as a line:</p>
 <p><span class="math display">\[\hat{y}_i = b_0 + b_1 \times x_i\]</span> As before, <span class="math inline">\(y_i\)</span> is the conditional mean of the response variable for an individual with value <span class="math inline">\(x_i\)</span>, <span class="math inline">\(b_0\)</span> is the intercept or the conditional mean of an individual with a value of <span class="math inline">\(x_i = 0\)</span> (although this value will not be meaningful if it lies far outside the range of the data).</p>
 <p>However, we can think of <span class="math inline">\(b_1\)</span> now as the slope of the relationship between the predictor and response variable. This means that for every increase of 1 unit in <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span> increases by <span class="math inline">\(b_1\)</span>.</p>
 </section>
-<section id="the-stochastic-function" class="level3" data-number="6.3.2">
-<h3 data-number="6.3.2" class="anchored" data-anchor-id="the-stochastic-function"><span class="header-section-number">6.3.2</span> The stochastic function</h3>
+<section id="the-stochastic-function" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="the-stochastic-function"><span class="header-section-number">5.3.2</span> The stochastic function</h3>
 <p>The <strong>stochastic function</strong> explains how the residuals are distributed around the conditional means predicted by the deterministic function. Since we are working with regular linear models, we will assume that the residuals are normally distributed.</p>
 <p><span class="math display">\[ e_i \sim N(0, \sigma^2)\]</span></p>
 <p>We can combine the deterministic and stochastic functions into one model:</p>
 <p><span class="math display">\[y_i = \hat{y}_i + N(b_0 + b_1 \times x_i, \sigma^2)\]</span></p>
 </section>
 </section>
-<section id="estimating-parameters-of-the-determinstic-function" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="estimating-parameters-of-the-determinstic-function"><span class="header-section-number">6.4</span> Estimating parameters of the determinstic function</h2>
+<section id="estimating-parameters-of-the-determinstic-function" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="estimating-parameters-of-the-determinstic-function"><span class="header-section-number">5.4</span> Estimating parameters of the determinstic function</h2>
 <p>Here is some math for estimating these parameters.</p>
 <p>First, we start with the <em>covariance</em> between our response variable <span class="math inline">\(y\)</span> and our explanatory variable <span class="math inline">\(x\)</span>. The covariance tells us about how much <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> jointly deviate from their means – a high covariance means that an individual with a high value of <span class="math inline">\(x\)</span> likely also has a high value of <span class="math inline">\(y\)</span> while a low covariance tells us that an individual with a high value of <span class="math inline">\(x\)</span> could have any value of <span class="math inline">\(y\)</span>.</p>
 <p>We write the covariance of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> as <span class="math inline">\(\text{cov}_{x,y}\)</span> and calculate it using the following equation:</p>
@@ -367,22 +361,22 @@ window.Quarto = {
 <p>However, the equation for calculating the slope of the linear regression line (<span class="math inline">\(b_1\)</span>) looks somewhat similar to the correlation but this time we only standardize by <span class="math inline">\(s_x\)</span>.</p>
 <p><span class="math display">\[b_1 = \frac{cov_{x,y}}{s^2_x}  =  \frac{\frac{1}{(n-1)}\sum(x_i-\bar{x})(y_i-\bar{y})}{\frac{1}{(n-1)}\sum(x_i-\bar{x})^2}=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}\]</span></p>
 <p>Note that <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are no longer interchangeable.</p>
-<section id="some-notes-on-intuition" class="level3" data-number="6.4.1">
-<h3 data-number="6.4.1" class="anchored" data-anchor-id="some-notes-on-intuition"><span class="header-section-number">6.4.1</span> Some notes on intuition</h3>
+<section id="some-notes-on-intuition" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="some-notes-on-intuition"><span class="header-section-number">5.4.1</span> Some notes on intuition</h3>
 <p>While the equations for correlation and for the regression coefficient are similar, it’s possible to have a large correlation and a small regression slope (and vice versa).</p>
 <p>In general, lots of variation within <span class="math inline">\(x\)</span> will increase <span class="math inline">\(s_x\)</span> and reduce the regression coefficient.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="fitting-with-lm" class="level3" data-number="6.4.2">
-<h3 data-number="6.4.2" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">6.4.2</span> Fitting with lm()</h3>
+<section id="fitting-with-lm" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">5.4.2</span> Fitting with lm()</h3>
 <p>Let’s try applying a linear model to our penguin data. We’ll use the lm() function in R.</p>
 <p><span class="math display">\[\text{Body mass}_i = b_0 + b_1 \times \text{Bill length}_i \]</span></p>
 <div class="cell">
@@ -417,15 +411,15 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
 </section>
-<section id="residuals" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="residuals"><span class="header-section-number">6.5</span> Residuals</h2>
+<section id="residuals" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="residuals"><span class="header-section-number">5.5</span> Residuals</h2>
 <p>Often we assume that the response data needs to be normally distributed to use a linear model. However, the real assumption of the model is not that the response data is normally distributed, but that the residuals are normally distributed.</p>
 <p>Let’s look at the residuals from this model</p>
 <div class="cell">
@@ -436,7 +430,7 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -446,38 +440,38 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="assessing-significance" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="assessing-significance"><span class="header-section-number">6.6</span> Assessing significance</h2>
+<section id="assessing-significance" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="assessing-significance"><span class="header-section-number">5.6</span> Assessing significance</h2>
 <p>We have different tools for quantifying how confident we can be in the predictions made by a regression. They vary based on what type of prediction they are making. We won’t work through the math here but it is useful to know what is actually being predicted by these tools.</p>
-<section id="confidence-intervals" class="level3" data-number="6.6.1">
-<h3 data-number="6.6.1" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">6.6.1</span> Confidence intervals</h3>
+<section id="confidence-intervals" class="level3" data-number="5.6.1">
+<h3 data-number="5.6.1" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">5.6.1</span> Confidence intervals</h3>
 <p>Confidence intervals relate to predicting the mean value of the response variable <span class="math inline">\(y\)</span> for individuals with a specific value of the explanatory variable <span class="math inline">\(x\)</span>. When we calculate <em>95% confidence intervals</em> we are bracketing the true regression line 95% of the time.</p>
 </section>
-<section id="prediction-intervals" class="level3" data-number="6.6.2">
-<h3 data-number="6.6.2" class="anchored" data-anchor-id="prediction-intervals"><span class="header-section-number">6.6.2</span> Prediction intervals</h3>
+<section id="prediction-intervals" class="level3" data-number="5.6.2">
+<h3 data-number="5.6.2" class="anchored" data-anchor-id="prediction-intervals"><span class="header-section-number">5.6.2</span> Prediction intervals</h3>
 <p>Prediction intervals give us an estimate of our confidence in predicting a value for the response variable <span class="math inline">\(y\)</span> for <em>one</em> individual with a specific value of the explanatory variable <span class="math inline">\(x\)</span>. When we generate <em>95% prediction intervals</em> we are bracketing 95% of potential individuals.</p>
 <p>Prediction intervals will be much wider than confidence intervals because they include more variation.</p>
 </section>
-<section id="extrapolation" class="level3" data-number="6.6.3">
-<h3 data-number="6.6.3" class="anchored" data-anchor-id="extrapolation"><span class="header-section-number">6.6.3</span> Extrapolation</h3>
+<section id="extrapolation" class="level3" data-number="5.6.3">
+<h3 data-number="5.6.3" class="anchored" data-anchor-id="extrapolation"><span class="header-section-number">5.6.3</span> Extrapolation</h3>
 <p><em>Extrapolation</em> is the prediction of <span class="math inline">\(y\)</span> outside the measured interval of <span class="math inline">\(x\)</span>. It’s generally a bad idea because we have no way of knowing the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> outside of what we’ve observed.</p>
 <p><img src="figs/extrapolating.png" class="img-fluid" alt="A carton from xkcd showing a plot with time on the x axis and number of husbands on the y axis with values for 0 and 1 and a line extrapolating. The title reads 'my hobby: extrapolating' and one person tells another person dressed as a bride 'As you can see, by late next month you'll have over four dozen husbands. Better get a bulk rate on a wedding cake'"></p>
 </section>
 </section>
-<section id="linear-regression-as-an-anova" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="linear-regression-as-an-anova"><span class="header-section-number">6.7</span> Linear regression as an ANOVA</h2>
+<section id="linear-regression-as-an-anova" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="linear-regression-as-an-anova"><span class="header-section-number">5.7</span> Linear regression as an ANOVA</h2>
 <p>We can partition variation in our regression the same way we did in ANOVA. The concepts are similar but the math is slightly different.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="05-lm-continuousvars_files/figure-html/varpartregresion-1.png" class="img-fluid figure-img" width="729"></p>
+<p><img src="lm-continousvars_files/figure-html/varpartregresion-1.png" class="img-fluid figure-img" width="729"></p>
 <figcaption>An ANOVA framework for a linear regression. <strong>A</strong> Shows the difference between each observation, <span class="math inline">\(Y_i\)</span>, and the mean, <span class="math inline">\(\overline{Y}\)</span>. This is the basis for calculating <span class="math inline">\(MS_{total}\)</span>. <strong>B</strong> Shows the difference between each predicted value <span class="math inline">\(\widehat{Y_i}\)</span> and the mean, <span class="math inline">\(\overline{Y}\)</span>. This is the basis for calculating <span class="math inline">\(MS_{model}\)</span>. <strong>C</strong> Shows the difference between each observation, <span class="math inline">\(Y_i\)</span>, and its predicted value <span class="math inline">\(\widehat{Y_i}\)</span>. This is the basis for calculating <span class="math inline">\(MS_{error}\)</span>.</figcaption>
 </figure>
 </div>
@@ -491,8 +485,8 @@ Coefficients:
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="review-questions" class="level2" data-number="6.8">
-<h2 data-number="6.8" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6.8</span> Review questions</h2>
+<section id="review-questions" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">5.8</span> Review questions</h2>
 
 
 </section>
@@ -917,13 +911,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./04-lm-categories.html" class="pagination-link" aria-label="Linear models with categories and ANOVA">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Linear models with categories and ANOVA</span></span>
+      <a href="./lm-categories.html" class="pagination-link" aria-label="Linear models with categories and ANOVA">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear models with categories and ANOVA</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./06-lm-multiplepredictors.html" class="pagination-link" aria-label="Linear models with multiple predictors">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Linear models with multiple predictors</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./pvalues.html" class="pagination-link" aria-label="P values">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">P values</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
