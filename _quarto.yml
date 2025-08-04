@@ -9,7 +9,7 @@ book:
   chapters:
     - index.qmd
     - 01-intro.qmd
-    - 02-likelihood.qmd
+    - likelihood.qmd
     - 02.5-pvalues.qmd
     - 03-linearModels1.qmd
     - 04-lm-categories.qmd

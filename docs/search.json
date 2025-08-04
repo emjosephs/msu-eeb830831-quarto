@@ -60,73 +60,83 @@
     ]
   },
   {
-    "objectID": "02-likelihood.html",
-    "href": "02-likelihood.html",
-    "title": "2  Chapter 2 – Likelihood",
+    "objectID": "likelihood.html",
+    "href": "likelihood.html",
+    "title": "2  Hypothesis testing and likelihood",
     "section": "",
     "text": "2.1 What are we doing here?\nSomeone hands us a coin and we flip it 100 times and get 46 heads.\nIs the coin fair? (probability of heads = 50%)\nWhat is the most likely probability of flipping heads for this coin?",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
     ]
   },
   {
-    "objectID": "02-likelihood.html#motivating-question",
-    "href": "02-likelihood.html#motivating-question",
-    "title": "2  Chapter 2 – Likelihood",
+    "objectID": "likelihood.html#motivating-question",
+    "href": "likelihood.html#motivating-question",
+    "title": "2  Hypothesis testing and likelihood",
     "section": "2.2 Motivating question",
     "text": "2.2 Motivating question",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
     ]
   },
   {
-    "objectID": "02-likelihood.html#likelihood",
-    "href": "02-likelihood.html#likelihood",
-    "title": "2  Chapter 2 – Likelihood",
+    "objectID": "likelihood.html#likelihood",
+    "href": "likelihood.html#likelihood",
+    "title": "2  Hypothesis testing and likelihood",
     "section": "2.3 Likelihood",
     "text": "2.3 Likelihood\nThe likelihood of the data is the probability of the data as a function of some unknown parameters.\nHow is this different from the probability we’ve been talking about? In probability, we think about some stochastic process, and figure out ways to calculate the probability of possible outcomes. For example: given that the coin is fair, what’s the probability of getting 46 heads out of 100 flips? When we calculate probabilities, we consider a single parameter value and describe the probabilities of all possible outcomes of a process that is parameterized by that value.\nIn contrast, in statistics, we start with some observed outcomes, and try to figure out the underlying process. For example: given some flip data, can we figure out the fairness of the coin? When we calculate likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.\nIn formulating the problem this way, we are treating the observed data (\\(k=46\\)) as a known, and treating \\(p\\) as an unknown parameter of the model.",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
     ]
   },
   {
-    "objectID": "02-likelihood.html#parametric-statistics",
-    "href": "02-likelihood.html#parametric-statistics",
-    "title": "2  Chapter 2 – Likelihood",
+    "objectID": "likelihood.html#parametric-statistics",
+    "href": "likelihood.html#parametric-statistics",
+    "title": "2  Hypothesis testing and likelihood",
     "section": "2.4 Parametric statistics",
     "text": "2.4 Parametric statistics\nWe can use likelihood in a framework of parametric statistics. In parametric statistics, we treat observed data as draws from an underlying process or population, and we try to learn about that population from our sample.\nA statistical parameter is a value that tells you something about a , like the true mean height of students in our class, or the true frequency of a genetic variant in a species.\nBUT, we rarely get to know the truth! (we would know the truth if we censused everyone in a population, or repeated a random process an infinite number of times). Instead, we can take samples to try to learn about –\nor estimate – parameters.",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
     ]
   },
   {
-    "objectID": "02-likelihood.html#a-coin-flip-example",
-    "href": "02-likelihood.html#a-coin-flip-example",
-    "title": "2  Chapter 2 – Likelihood",
+    "objectID": "likelihood.html#a-coin-flip-example",
+    "href": "likelihood.html#a-coin-flip-example",
+    "title": "2  Hypothesis testing and likelihood",
     "section": "2.5 A coin flip example",
     "text": "2.5 A coin flip example\nImagine that we flip a coin 100 times and get 46 heads.\nWe know that we can model coin flipping using a Binomial distribution where \\(x\\) is the number of heads, \\(n\\) is the number of flips, and \\(p\\) is the probability of heads:\n\\[ x \\sim B(n,p)\\]\nFor this particular case:\n\\[ 46 \\sim B(100,p=??) \\]\nWe can flip this around and write the probability of our data as the conditional probablity of observing 46 heads out of 100 flips given a specific \\(p\\).\n\\[ P(\\text{observation}) = P(x=46 \\mid p, n=100)\\]\n\n2.5.1 Calculating likelihood with math\nWe can use R to calculate these probabilities. In particular, the dbinom() function lets us calculate the probability of observing a particular number of successes given a specific \\(n\\) and \\(p\\). Below is code to calculate the probability of getting 46 heads if the coin is fair (\\(p=0.5\\)). Note the syntax of ‘size’ for \\(n\\).\n\ndbinom(x=46, p=0.5, size=100)\n\n[1] 0.0579584\n\n\nThis code gives us the likelihood of the data for one value of \\(p\\). But what if we want to calculate it for a range of potential \\(p\\)s? Turns out we can give dbinom() a vector of \\(p\\) and it will return a vector of probabilities.\n\npvector = seq(0,1,length.out=101)\n  probabilities &lt;- dbinom(x=46,size=100,p=pvector)\n\nInstead of printing the list of values, let’s make a plot.\n\nplot(pvector,probabilities, xlim=c(0,1),ylim=c(0,0.1), xlab=\"probability of heads (p)\",ylab=\"p(data)\", pch=20,col=2)\n\n\n\n\n\n\n\n\nWhat we’ve just is called a grid search. It is one strategy to identify the parameter that gives you the highest probability of observing your data (aka likelihood). Looking at the plot above, what \\(p\\) seems to give the highest likelihood?\nWe can calculate this directly with the following code:\n\npvector[which.max(probabilities)]\n\n[1] 0.46",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
     ]
   },
   {
-    "objectID": "02-likelihood.html#maximum-likelihood",
-    "href": "02-likelihood.html#maximum-likelihood",
-    "title": "2  Chapter 2 – Likelihood",
+    "objectID": "likelihood.html#maximum-likelihood",
+    "href": "likelihood.html#maximum-likelihood",
+    "title": "2  Hypothesis testing and likelihood",
     "section": "2.6 Maximum likelihood",
     "text": "2.6 Maximum likelihood\nMaximum likelihood inference is a method for estimating the values of the parameters of a statistical model that maximize the likelihood of the observed data.\nThe maximum likelihood estimate (MLE) is the parameter value (or, if there are multiple parameters, the vector of parameter values) that maximize the likelihood of the data. The MLE is our best guess at the true value of the unknown population (or process) parameter.\nAbove we used a grid search to identify the MLE. However, grid searches can get unwieldy. Luckily, R has built-in functions to identify the MLE more efficiently. See the code below\n\n# function to estimate the p(k=46|n=100,p) for a given p\n    l.binom &lt;- function(p){\n        binom.prob &lt;- dbinom(x=46,size=100,prob=p)\n        return(binom.prob)\n    }\n# use optimize() to get the mle\n    mle &lt;- optimize(f = l.binom,lower=0,upper=1,maximum=TRUE)\n    mle$maximum\n\n[1] 0.4600159",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
     ]
   },
   {
-    "objectID": "02-likelihood.html#now-hang-on",
-    "href": "02-likelihood.html#now-hang-on",
-    "title": "2  Chapter 2 – Likelihood",
+    "objectID": "likelihood.html#now-hang-on",
+    "href": "likelihood.html#now-hang-on",
+    "title": "2  Hypothesis testing and likelihood",
     "section": "2.7 Now hang on…",
     "text": "2.7 Now hang on…\nCalculating the probability of some possible outcome makes sense… But calculating the probability of something that has already happened seems bananas!\nBut, that’s not really what we’re doing - We’re calculating the probability of the observed data as a draw from some distribution, given the values of the parameters of that distribution. Our goal is to use these probabilities to estimate the distribution parameters.",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Chapter 2 -- Likelihood</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
+    ]
+  },
+  {
+    "objectID": "likelihood.html#log-likeliood",
+    "href": "likelihood.html#log-likeliood",
+    "title": "2  Hypothesis testing and likelihood",
+    "section": "2.8 Log likeliood",
+    "text": "2.8 Log likeliood\n(move stuff from the linear model chapter here)",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
     ]
   },
   {
@@ -134,7 +144,7 @@
     "href": "02.5-pvalues.html",
     "title": "3  P values",
     "section": "",
-    "text": "3.1 What are we doing here?\nIn this chapter, we’ll talk about the concept of likelihood and how we can use it to make statistical inferences from our data.",
+    "text": "3.1 What are we doing here?\nI don’t think I can teach p values until after I teach models so this needs to go later somewhere.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -144,7 +154,47 @@
     "href": "02.5-pvalues.html#motivating-question",
     "title": "3  P values",
     "section": "3.2 Motivating question",
-    "text": "3.2 Motivating question\nSomeone hands us a coin and we flip it 100 times and get 46 heads.\nIs the coin fair? (probability of heads = 50%)\nWhat is the most likely probability of flipping heads for this coin?",
+    "text": "3.2 Motivating question",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "02.5-pvalues.html#the-population-vs-the-sample",
+    "href": "02.5-pvalues.html#the-population-vs-the-sample",
+    "title": "3  P values",
+    "section": "3.3 The population vs the sample",
+    "text": "3.3 The population vs the sample",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "02.5-pvalues.html#measuring-variance",
+    "href": "02.5-pvalues.html#measuring-variance",
+    "title": "3  P values",
+    "section": "3.4 Measuring variance",
+    "text": "3.4 Measuring variance\n\n3.4.1 Standard error",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "02.5-pvalues.html#hypothesis-testing",
+    "href": "02.5-pvalues.html#hypothesis-testing",
+    "title": "3  P values",
+    "section": "3.5 Hypothesis testing",
+    "text": "3.5 Hypothesis testing",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "02.5-pvalues.html#likelihood-ratio-tests",
+    "href": "02.5-pvalues.html#likelihood-ratio-tests",
+    "title": "3  P values",
+    "section": "3.6 Likelihood ratio tests",
+    "text": "3.6 Likelihood ratio tests\nLikelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.\nThe difference in log likelihoods (\\(D\\)) will follow a \\(\\chi ^2\\) distribution with degrees of freedom equal to the number of parameters tested.",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -153,8 +203,8 @@
     "objectID": "02.5-pvalues.html#degrees-of-freedom",
     "href": "02.5-pvalues.html#degrees-of-freedom",
     "title": "3  P values",
-    "section": "3.3 Degrees of freedom",
-    "text": "3.3 Degrees of freedom",
+    "section": "3.7 Degrees of freedom",
+    "text": "3.7 Degrees of freedom",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -509,46 +559,6 @@
     "crumbs": [
       "Labs",
       "<span class='chapter-number'>12</span>  <span class='chapter-title'>Lab 4 -- ANOVA</span>"
-    ]
-  },
-  {
-    "objectID": "02.5-pvalues.html#the-population-vs-the-sample",
-    "href": "02.5-pvalues.html#the-population-vs-the-sample",
-    "title": "3  P values",
-    "section": "3.3 The population vs the sample",
-    "text": "3.3 The population vs the sample",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
-    ]
-  },
-  {
-    "objectID": "02.5-pvalues.html#measuring-variance",
-    "href": "02.5-pvalues.html#measuring-variance",
-    "title": "3  P values",
-    "section": "3.4 Measuring variance",
-    "text": "3.4 Measuring variance\n\n3.4.1 Standard error",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
-    ]
-  },
-  {
-    "objectID": "02.5-pvalues.html#hypothesis-testing",
-    "href": "02.5-pvalues.html#hypothesis-testing",
-    "title": "3  P values",
-    "section": "3.5 Hypothesis testing",
-    "text": "3.5 Hypothesis testing",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
-    ]
-  },
-  {
-    "objectID": "02.5-pvalues.html#likelihood-ratio-tests",
-    "href": "02.5-pvalues.html#likelihood-ratio-tests",
-    "title": "3  P values",
-    "section": "3.6 Likelihood ratio tests",
-    "text": "3.6 Likelihood ratio tests\nLikelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.\nThe difference in log likelihoods (\\(D\\)) will follow a \\(\\chi ^2\\) distribution",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>P values</span>"
     ]
   }
 ]
