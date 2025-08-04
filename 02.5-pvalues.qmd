@@ -13,7 +13,7 @@ library(tidyverse)
 
 ## What are we doing here?
 
-
+I don't think I can teach p values until after I teach models so this needs to go later somewhere.
 
 ## Motivating question
 
@@ -25,11 +25,14 @@ library(tidyverse)
 
 ## Hypothesis testing
 
+
 ## Likelihood ratio tests
 
 Likelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.
 
 The difference in log likelihoods ($D$) will follow a $\chi ^2$ distribution with degrees of freedom equal to the number of parameters tested.
+
+
 
 
 ## Degrees of freedom

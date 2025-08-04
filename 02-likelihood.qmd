@@ -1,5 +1,5 @@
 ---
-title: "Chapter 2 -- Likelihood"
+title: "Hypothesis testing and likelihood"
 format: html
 editor: source
 ---
@@ -21,7 +21,6 @@ What is the _most likely_ probability of flipping heads for this coin?
 
 
 ## Motivating question
-
 
 
 ## Likelihood
