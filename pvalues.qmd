@@ -13,18 +13,26 @@ library(tidyverse)
 
 ## What are we doing here?
 
-I don't think I can teach p values until after I teach models so this needs to go later somewhere.
 
 ## Motivating question
 
-## The population vs the sample
+## The population vs the sample recap
 
 ## Measuring variance
 
 ### Standard error
 
 ## Hypothesis testing
+Null hypothesis
 
+## P values from distributions
+### T distribution 
+
+### Degrees of freedom
+
+### Calculating a p value
+
+### F distribution
 
 ## Likelihood ratio tests
 
@@ -33,6 +41,3 @@ Likelihood ratio tests compare the likelihood of the best model given the data w
 The difference in log likelihoods ($D$) will follow a $\chi ^2$ distribution with degrees of freedom equal to the number of parameters tested.
 
 
-
-
-## Degrees of freedom
