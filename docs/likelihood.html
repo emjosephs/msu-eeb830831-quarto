@@ -273,7 +273,12 @@ window.Quarto = {
   </ul></li>
   <li><a href="#maximum-likelihood" id="toc-maximum-likelihood" class="nav-link" data-scroll-target="#maximum-likelihood"><span class="header-section-number">2.6</span> Maximum likelihood</a></li>
   <li><a href="#now-hang-on" id="toc-now-hang-on" class="nav-link" data-scroll-target="#now-hang-on"><span class="header-section-number">2.7</span> Now hang on…</a></li>
-  <li><a href="#log-likeliood" id="toc-log-likeliood" class="nav-link" data-scroll-target="#log-likeliood"><span class="header-section-number">2.8</span> Log likeliood</a></li>
+  <li><a href="#log-likelihood-for-lots-of-data-points" id="toc-log-likelihood-for-lots-of-data-points" class="nav-link" data-scroll-target="#log-likelihood-for-lots-of-data-points"><span class="header-section-number">2.8</span> Log likelihood for lots of data points</a>
+  <ul class="collapse">
+  <li><a href="#log-likelihood-solves-underflow-problems" id="toc-log-likelihood-solves-underflow-problems" class="nav-link" data-scroll-target="#log-likelihood-solves-underflow-problems"><span class="header-section-number">2.8.1</span> Log likelihood solves underflow problems</a></li>
+  </ul></li>
+  <li><a href="#law-of-large-numbers" id="toc-law-of-large-numbers" class="nav-link" data-scroll-target="#law-of-large-numbers"><span class="header-section-number">2.9</span> Law of large numbers</a></li>
+  <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">2.10</span> Practice problems</a></li>
   </ul>
 </nav>
     </div>
@@ -390,9 +395,155 @@ or <strong>estimate</strong> – parameters.</p>
 <p>Calculating the probability of some possible outcome makes sense… But calculating the probability of something that has <em>already happened</em> seems <strong>bananas</strong>!</p>
 <p>But, that’s not really what we’re doing - We’re calculating the probability of the observed data as a draw from some distribution, <em>given</em> the values of the parameters of that distribution. Our goal is to use these probabilities to estimate the distribution parameters.</p>
 </section>
-<section id="log-likeliood" class="level2" data-number="2.8">
-<h2 data-number="2.8" class="anchored" data-anchor-id="log-likeliood"><span class="header-section-number">2.8</span> Log likeliood</h2>
-<p>(move stuff from the linear model chapter here)</p>
+<section id="log-likelihood-for-lots-of-data-points" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="log-likelihood-for-lots-of-data-points"><span class="header-section-number">2.8</span> Log likelihood for lots of data points</h2>
+<p>Throughout this part of the course we’ll be focussing on data that is normally distributed so let’s look at a log likelihood in this context. We’ll start by simulating a bunch of data under the normal distribution with a mean of 10 and standard distribution of 3.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>myData <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="at">n=</span><span class="dv">500</span>, <span class="at">mean=</span><span class="dv">10</span>, <span class="at">sd=</span><span class="dv">3</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(myData, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">main=</span><span class="st">""</span>, <span class="at">breaks=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="likelihood_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can use what we just learned to calculate the likelihood of a specific datapoint given a set of parameters. The code before shows how to do that with the first datapoint and the parameters that we used to simulate the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>myData[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8.493423</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dnorm</span>(myData[<span class="dv">1</span>], <span class="at">mean=</span><span class="dv">10</span>, <span class="at">sd=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1172263</code></pre>
+</div>
+</div>
+<p>We can also calculate the MLE for this datapoint (we’ll focus on the mean and not the standard deviation here)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function to estimate the likelihood for a given mean</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    l.norm <span class="ot">&lt;-</span> <span class="cf">function</span>(u){</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        norm.prob <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(myData[<span class="dv">1</span>],<span class="at">mean=</span>u, <span class="at">sd=</span><span class="dv">3</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(norm.prob)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># use optimize() to get the mle using the range of the data</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    mle <span class="ot">&lt;-</span> <span class="fu">optimize</span>(<span class="at">f =</span> l.norm,<span class="at">lower=</span><span class="dv">0</span>,<span class="at">upper=</span><span class="dv">20</span>,<span class="at">maximum=</span><span class="cn">TRUE</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    mle<span class="sc">$</span>maximum</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 8.493409</code></pre>
+</div>
+</div>
+<p>Are you surprised that the MLE does not match the mean you used to calculate the data? You may already expect that using a single data point may not be very helpful in estimating the parameter of a distribution. We will get a better estimate using multiple data points. Let’s start with the first 2 data points.</p>
+<p>Remember that if you want to know the probability of observing two things, you can multiply the probability of observing the first thing times the probability of observing the second thing. And remember that likelihoods are just probabilities, so we get the likelihood of two data points by multiplying the likelihood of each data point together.</p>
+<p><span class="math display">\[ P(\text{2 observations}) = P(\text{observation 1}) \times P(\text{observation 2})\]</span></p>
+<p>The code below does just this (note the prod() function if you haven’t seen it before).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>myData[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  8.493423 10.394593</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(myData[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">mean=</span><span class="dv">10</span>, <span class="at">sd=</span><span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01545457</code></pre>
+</div>
+</div>
+<p>We can again use optimize to find the MLE although we will need to update the l.norm() function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function to estimate the likelihood for a given mean</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    l.norm <span class="ot">&lt;-</span> <span class="cf">function</span>(u){</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        norm.prob <span class="ot">&lt;-</span> <span class="fu">prod</span>(<span class="fu">dnorm</span>(myData[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],<span class="at">mean=</span>u, <span class="at">sd=</span><span class="dv">3</span>))</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(norm.prob)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    mle <span class="ot">&lt;-</span> <span class="fu">optimize</span>(<span class="at">f =</span> l.norm,<span class="at">lower=</span><span class="dv">0</span>,<span class="at">upper=</span><span class="dv">20</span>,<span class="at">maximum=</span><span class="cn">TRUE</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    mle<span class="sc">$</span>maximum</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9.443993</code></pre>
+</div>
+</div>
+<p>Now, what about the whole dataset? We should be able to to calculate the likelihood of each data point and multiply these likelihoods together to get the likelihood of seeing all this data.</p>
+<p>Wait, what’s going on? How are we getting a probability of 0?</p>
+<section id="log-likelihood-solves-underflow-problems" class="level3" data-number="2.8.1">
+<h3 data-number="2.8.1" class="anchored" data-anchor-id="log-likelihood-solves-underflow-problems"><span class="header-section-number">2.8.1</span> Log likelihood solves underflow problems</h3>
+<p><img src="figs/comp_on_fire.jpg" class="img-fluid"></p>
+<p>The product of small numbers are smaller numbers. Very very very small numbers cannot be represented in your computer’s memory. This problem is called underflow. We often deal with underflow by using logs. You may remember from your high school or undergrad math classes that</p>
+<p><span class="math display">\[\text{log}(A \times B \times C) = \text{log}(A) + \text{log}(B) + \text{log}(C)\]</span><br>
+and more generally:</p>
+<p><span class="math display">\[\text{log}\left(\prod\limits_{i=1}^n X_i \right) = \sum\limits_{i=1}^n \text{log}(X_i)\]</span> Additionally, the log is monotonic which means that</p>
+<p>If <span class="math inline">\(X &gt; Y\)</span> then <span class="math inline">\(\text{log}(X) &gt; \text{log}(Y)\)</span></p>
+<p>In practice, instead of multiplying likelihoods together to calculate the likelihood of observing a large data set, we can sum log likelihoods together.</p>
+<p>The code below calculates the log likelihood of all of the data we simulated. Note that we replace the prod() function with the sum() function and use the log=T option in the dnorm() function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">dnorm</span>(myData, <span class="at">mean=</span><span class="dv">10</span>, <span class="at">sd=</span><span class="dv">3</span>, <span class="at">log=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1261.091</code></pre>
+</div>
+</div>
+<p>We can now optimize this function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function to estimate the likelihood for a given mean</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    l.norm <span class="ot">&lt;-</span> <span class="cf">function</span>(u){</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>        norm.prob <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">dnorm</span>(myData,<span class="at">mean=</span>u, <span class="at">sd=</span><span class="dv">3</span>, <span class="at">log=</span>T))</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(norm.prob)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    mle <span class="ot">&lt;-</span> <span class="fu">optimize</span>(<span class="at">f =</span> l.norm,<span class="at">lower=</span><span class="dv">0</span>,<span class="at">upper=</span><span class="dv">20</span>,<span class="at">maximum=</span><span class="cn">TRUE</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    mle<span class="sc">$</span>maximum</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9.887178</code></pre>
+</div>
+</div>
+<p>This returns something pretty close to the value we used to simulate the data. Is it close enough that we trust that our simulation worked? That’s a question we’ll address in a future class.</p>
+</section>
+</section>
+<section id="law-of-large-numbers" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="law-of-large-numbers"><span class="header-section-number">2.9</span> Law of large numbers</h2>
+<p>The law of large numbers simply states that <strong>as the number of samples increases, the sample average converges on the population average</strong>. (Note that the law of large numbers is often written regarding the <em>expectation</em>, which is a mathematical way of specifying the population average)</p>
+<p>Intuitively, the law of large numbers explains why when we tried to calculate the sample mean above, we got a much better estimate of the mean used to simulate the data when we used more data than when we used just one or two data points.</p>
+<p>The following visualization might be helpful. Imagine that we sequentially sample from a normal distribution with a mean of 10 (as we did above) and with each sample, we calculate the mean and plot it below.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="likelihood_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see that for the first few samples we got a lower running mean but over time we end up close to the mean used to simulate the data. If we repeat this exercise a bunch of times we get the following plot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="dv">0</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,n),<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>),<span class="at">type=</span><span class="st">'n'</span>,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">xlab=</span><span class="st">"number of draws from a normal"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">ylab=</span><span class="st">"running mean"</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">draw.running.mean</span>(<span class="at">r =</span> <span class="dv">100</span>,<span class="at">n =</span> <span class="dv">100</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">10</span>,<span class="at">col=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="likelihood_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>While this may seem obvious, it is a fundamental principal across the sciences. For example, the law of large numbers explains why small populations have stronger genetic drift than larger populations – each generation, the gametes that survive are more likely to sample an allele frequency that matches the parental generation if there are many gametes. If there are few gametes surviving each generation, there will be more variation in the mean allele frequencies.</p>
+</section>
+<section id="practice-problems" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">2.10</span> Practice problems</h2>
+<ol type="1">
+<li>Someone tells you that the average height of a 4-year-old is 1 meter with a standard deviation of 5 centimeters. You want to know if this is accurate so you go to a daycare and measure the heights of 10 4-year-olds.</li>
+</ol>
+<p>Write, in math, the probability distribution you expect for 4-year-old height.</p>
+<ol start="2" type="1">
+<li><p>Use R to calculate the likelihood of observing a 4-year-old who is 110 cm tall if your information is accurate.</p></li>
+<li><p>What if the actual mean height of a 4-year-old is 115 cm? Now, what is the likelihood of observing a 110 cm tall 4-year-old?</p></li>
+<li><p>You measure a second kid and find that they are 105 cm tall. Use R to calculate the likelihood of observing both kids if the underlying mean is 1 meter. What about if the underlying mean height is 110 cm?</p></li>
+<li><p>You measure all the kids and get the following vector of heights: 112 89 112 102 126 114 111 112 112 114</p></li>
+</ol>
+<p>Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare)</p>
+<ol start="6" type="1">
+<li>Does it make sense to travel to another daycare to measure the height of another 10 kids to get a better estimate of height? How many kids would you want to measure to feel confident?</li>
+</ol>
 
 
 </section>

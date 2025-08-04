@@ -86,7 +86,7 @@ library("palmerpenguins")
 
 You can read more about all the variables available in the package
 
-```{r}
+```{r, eval=F}
 ?penguins
 ```
 
@@ -126,96 +126,19 @@ Note that a linear model has two components: a deterministic component and a sto
 
 In this case, the deterministic equation tells us that the predicted value of body mass is mean body mass ($\hat{y} = b_0$) and the stochastic equation tells us that the residuals are normally distributed ($e_i \sim N(0,\sigma^2$)
 
-### The likelihood of one data point given specific parameters
+## Using maximum likelihood to estimate parameters in a linear model
 
-We can use the dnorm() function in R to calculate the probability of observing a specific penguin body mass given known parameters.
-
-Let's pick a random penguin
-
-```{r}
-set.seed(14)
-myPenguin = penguins[sample(1:nrow(penguins), 1),]
-
-myPenguin
-```
-
-We can calculate the likelihood of our penguin's body mass if $\hat{y}_i = 4500$ and $\sigma^2$ = 40 with the following code:
-
-```{r}
-dnorm(myPenguin$body_mass, mean=4500, sd=40)
-```
-
-What happens if we change the parameters?
-
-
-```{r}
-dnorm(myPenguin$body_mass, mean=4600, sd=40)
-```
-
-Given that our penguin weighs 4650 grams, it is more likely to observe this data if the underlying model has a mean closer to 4650. 
-
-
-### Calculating the likelihood of many datapoints
-
-We will get better parameter estimates if we have more data -- this is a basic fact of statistics. But, how do we calculate a likelihood of many data points?
-
-Remember from our probability rules that if you want to know the probability of observing two things, you can multiply the probability of observing the first thing times the probability of observing the second thing. And remember that likelihoods are just probabilities
-
-So, if we wanted to calculate the likelihood of observing two penguin body masses for specific parameters, we calculate the likelihood of observing each penguin body mass and multiply those likelihoods together.
-
-```{r}
-myPenguins = penguins[sample(1:nrow(penguins), 2),]
-
-myPenguins
-
-dnorm(myPenguins$body_mass[1], mean=4600, sd=40)*dnorm(myPenguins$body_mass[2], mean=4600, sd=40)
-```
-
-Since the dnorm() function is vectorized, we can also write this as one line of code.
-```{r}
-prod(dnorm(myPenguins$body_mass, mean=4600, sd=40))
-
-```
-
-This new code formulation lets us calculate the likelihood for any length vector of observations. We can even calculate the likelihood of observing the entire penguin data set.
+Remember from our earlier lectures that we can use likelihood to estimate the parameters of a distribution. The code below calculates the log likelihood of observing our data on penguin body mass for specific parameters of the normal distribution.
 
 ```{r}
 penguins2 <- penguins |> filter(!is.na(body_mass)) ##filter out ones with NAs
-prod(dnorm(penguins2$body_mass, mean=4600, sd=40))
-```
-
-Wait, what's going on? How are we getting a probability of 0?
-
-### Log likelihood solves underflow problems
-
-![](figs/comp_on_fire.jpg)
-
-The product of small numbers are smaller numbers. Very very very small numbers cannot be represented in your computer's memory.
-This problem is called underflow.
-
-We often deal with underflow by using logs. You may remember from your high school or undergrad math classes that
-
-$$\text{log}(A \times B \times C) = \text{log}(A) + \text{log}(B) + \text{log}(C)$$
-\
-and more generally:
-
-$$\text{log}\left(\prod\limits_{i=1}^n X_i \right) = \sum\limits_{i=1}^n \text{log}(X_i)$$
-Additionally, the log is monotonic which means that
-
-If $X > Y$ then $\text{log}(X) > \text{log}(Y)$
-
-In practice, instead of multiplying likelihoods together to calculate the likelihood of observing a large dataset, we can
-sum log likelihoods together. 
-
-```{r}
-sum(dnorm(myPenguins$body_mass, mean=4600, sd=40, log=T))
+sum(dnorm(penguins2$body_mass, mean=4600, sd=40, log=T))
 
 ```
-
 
 ### Estimating paramaters with maximum likelihood using grid search.
 
-We aren't just interested in estimating the likelihood for one parameter -- instead we want to find the parameters that give us the highest likelihood of observing our data. One way to do this is with a grid search where we calculate the log likelihood for a grid of parameters and identify the parameter associated with the highest likelihood. We'll do this here for a grid of possible values of $\hat{y}_i$ (we won't mess with $\sigma^2$ here).
+As we learned in our lecture on likelihoods, we can use a grid search to find the MLE. We'll do this here for a grid of possible values of $\hat{y}_i$ (we won't mess with $\sigma^2$ here).
 
 ```{r}
 myGrid <- seq(2000,6000,length.out=100) #make the grid
@@ -330,7 +253,6 @@ library(DT)
 You could also generate residuals without any additional packages by using the following code
 
 ```{r}
-penguins2 <- penguins |> filter(!is.na(body_mass)) ##filter out ones with NAs
 model1Residuals <-  penguins2$body_mass - model1$fitted.values
 
 ```

@@ -98,7 +98,6 @@ What we've just is called a **grid search**. It is one strategy to identify the 
 We can calculate this directly with the following code:
 ```{r}
 pvector[which.max(probabilities)]
-
 ```
 
 ## Maximum likelihood
@@ -132,6 +131,161 @@ Calculating the probability of some possible outcome makes sense... But calculat
 
 But, that's not really what we're doing - We're calculating the probability of the observed data as a draw from some distribution, _given_ the values of the parameters of that distribution. Our goal is to use these probabilities to estimate the distribution parameters.
 
-## Log likeliood
+## Log likelihood for lots of data points
 
-(move stuff from the linear model chapter here)
+Throughout this part of the course we'll be focussing on data that is normally distributed so let's look at a log likelihood in this context. We'll start by simulating a bunch of data under the normal distribution with a mean of 10 and standard distribution of 3.
+
+```{r}
+set.seed(100)
+myData <- rnorm(n=500, mean=10, sd=3)
+hist(myData, border="white", main="", breaks=20)
+
+```
+
+We can use what we just learned to calculate the likelihood of a specific datapoint given a set of parameters. The code before shows how to do that with the first datapoint and the parameters that we used to simulate the data.
+
+```{r}
+myData[1]
+dnorm(myData[1], mean=10, sd=3)
+```
+
+We can also calculate the MLE for this datapoint (we'll focus on the mean and not the standard deviation here)
+
+```{r}
+# function to estimate the likelihood for a given mean
+	l.norm <- function(u){
+		norm.prob <- dnorm(myData[1],mean=u, sd=3)
+		return(norm.prob)
+	}
+# use optimize() to get the mle using the range of the data
+	mle <- optimize(f = l.norm,lower=0,upper=20,maximum=TRUE)
+	mle$maximum
+```
+
+Are you surprised that the MLE does not match the mean you used to calculate the data? You may already expect that using a single data point may not be very helpful in estimating the parameter of a distribution. We will get a better estimate using multiple data points. Let's start with the first 2 data points. 
+
+Remember that if you want to know the probability of observing two things, you can multiply the probability of observing the first thing times the probability of observing the second thing. And remember that likelihoods are just probabilities, so we get the likelihood of two data points by multiplying the likelihood of each data point together.
+
+$$ P(\text{2 observations}) = P(\text{observation 1}) \times P(\text{observation 2})$$
+
+The code below does just this (note the prod() function if you haven't seen it before).
+
+```{r}
+myData[1:2]
+
+prod(dnorm(myData[1:2], mean=10, sd=3))
+```
+
+We can again use optimize to find the MLE although we will need to update the l.norm() function.
+
+```{r}
+# function to estimate the likelihood for a given mean
+	l.norm <- function(u){
+		norm.prob <- prod(dnorm(myData[1:2],mean=u, sd=3))
+		return(norm.prob)
+	}
+	mle <- optimize(f = l.norm,lower=0,upper=20,maximum=TRUE)
+	mle$maximum
+```
+
+Now, what about the whole dataset? We should be able to to calculate the likelihood of each data point and multiply these likelihoods together to get the likelihood of seeing all this data.
+
+Wait, what's going on? How are we getting a probability of 0?
+
+### Log likelihood solves underflow problems
+
+![](figs/comp_on_fire.jpg)
+
+The product of small numbers are smaller numbers. Very very very small numbers cannot be represented in your computer's memory.
+This problem is called underflow.
+We often deal with underflow by using logs. You may remember from your high school or undergrad math classes that
+
+$$\text{log}(A \times B \times C) = \text{log}(A) + \text{log}(B) + \text{log}(C)$$
+\
+and more generally:
+
+$$\text{log}\left(\prod\limits_{i=1}^n X_i \right) = \sum\limits_{i=1}^n \text{log}(X_i)$$
+Additionally, the log is monotonic which means that
+
+If $X > Y$ then $\text{log}(X) > \text{log}(Y)$
+
+In practice, instead of multiplying likelihoods together to calculate the likelihood of observing a large data set, we can sum log likelihoods together. 
+
+The code below calculates the log likelihood of all of the data we simulated. Note that we replace the prod() function with the sum() function and use the log=T option in the dnorm() function.
+
+```{r}
+sum(dnorm(myData, mean=10, sd=3, log=T))
+
+```
+
+We can now optimize this function 
+```{r}
+# function to estimate the likelihood for a given mean
+	l.norm <- function(u){
+		norm.prob <- sum(dnorm(myData,mean=u, sd=3, log=T))
+		return(norm.prob)
+	}
+	mle <- optimize(f = l.norm,lower=0,upper=20,maximum=TRUE)
+	mle$maximum
+```
+
+This returns something pretty close to the value we used to simulate the data. Is it close enough that we trust that our simulation worked? That's a question we'll address in a future class.
+
+## Law of large numbers
+
+The law of large numbers simply states that **as the number of samples increases, the sample average converges on the population average**.
+(Note that the law of large numbers is often written regarding the *expectation*, which is a mathematical way of specifying the population average)
+
+Intuitively, the law of large numbers explains why when we tried to calculate the sample mean above, we got a much better estimate of the mean used to simulate the data when we used more data than when we used just one or two data points. 
+
+The following visualization might be helpful. Imagine that we sequentially sample from a normal distribution with a mean of 10 (as we did above) and with each sample, we calculate the mean and plot it below.
+
+```{r,echo=F,eval=T, cache=T}
+set.seed(100)
+	draw.running.mean <- function(r,n){
+		replicate(r,{
+			x1 <- rnorm(n,mean=10,sd=3)
+			x1.mean <- cumsum(x1)/(1:n)
+			lines(1:n,x1.mean,col=adjustcolor(1,0.2))
+		})
+		return(invisible(0))
+	}
+	n <- 1e2
+	plot(0,xlim=c(0,n),ylim=c(0,20),type='n',
+			xlab="number of draws from a normal",
+			ylab="running mean")
+		draw.running.mean(r = 1,n = 100)
+		abline(h=10,col=2)
+```
+
+We can see that for the first few samples we got a lower running mean but over time we end up close to the mean used to simulate the data. If we repeat this exercise a bunch of times we get the following plot:
+
+```{r}
+set.seed(100)
+	plot(0,xlim=c(0,n),ylim=c(0,20),type='n',
+			xlab="number of draws from a normal",
+			ylab="running mean")
+		draw.running.mean(r = 100,n = 100)
+		abline(h=10,col=2)
+	
+```
+
+While this may seem obvious, it is a fundamental principal across the sciences. For example, the law of large numbers explains why small populations have stronger genetic drift than larger populations -- each generation, the gametes that survive are more likely to sample an allele frequency that matches the parental generation if there are many gametes. If there are few gametes surviving each generation, there will be more variation in the mean allele frequencies.
+
+## Practice problems
+
+1. Someone tells you that the average height of a 4-year-old is 1 meter with a standard deviation of 5 centimeters. You want to know if this is accurate so you go to a daycare and measure the heights of 10 4-year-olds.
+
+Write, in math, the probability distribution you expect for 4-year-old height.
+
+2. Use R to calculate the likelihood of observing a 4-year-old who is 110 cm tall if your information is accurate.
+
+3. What if the actual mean height of a 4-year-old is 115 cm? Now, what is the likelihood of observing a 110 cm tall 4-year-old?
+
+4. You measure a second kid and find that they are 105 cm tall. Use R to calculate the likelihood of observing both kids if the underlying mean is 1 meter. What about if the underlying mean height is 110 cm?
+
+5. You measure all the kids and get the following vector of heights: 112  89 112 102 126 114 111 112 112 114
+
+Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare)
+
+6. Does it make sense to travel to another daycare to measure the height of another 10 kids to get a better estimate of height? How many kids would you want to measure to feel confident?
