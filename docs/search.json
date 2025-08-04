@@ -14,7 +14,7 @@
     "href": "01-intro.html",
     "title": "1  Chapter 1 – Introduction",
     "section": "",
-    "text": "1.1 Hi!\nHi! Welcome to the ebook for IBIO/PLB/ENT 830, the introductory statistics course in Michigan State University’s Ecology and Evolutionary Biology Graduate program.",
+    "text": "1.1 Hi!\nHi! Welcome to the ebook for the second half of IBIO/PLB/ENT 830, the introductory statistics course in Michigan State University’s Ecology and Evolutionary Biology Graduate program.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
     ]
@@ -374,7 +374,7 @@
     "href": "pvalues.html",
     "title": "6  P values",
     "section": "",
-    "text": "6.1 What are we doing here?\nI don’t think I can teach p values until after I teach models so this needs to go later somewhere.",
+    "text": "6.1 What are we doing here?",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -414,7 +414,7 @@
     "href": "pvalues.html#hypothesis-testing",
     "title": "6  P values",
     "section": "6.5 Hypothesis testing",
-    "text": "6.5 Hypothesis testing",
+    "text": "6.5 Hypothesis testing\nNull hypothesis",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -423,8 +423,8 @@
     "objectID": "pvalues.html#likelihood-ratio-tests",
     "href": "pvalues.html#likelihood-ratio-tests",
     "title": "6  P values",
-    "section": "6.6 Likelihood ratio tests",
-    "text": "6.6 Likelihood ratio tests\nLikelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.\nThe difference in log likelihoods (\\(D\\)) will follow a \\(\\chi ^2\\) distribution with degrees of freedom equal to the number of parameters tested.",
+    "section": "6.7 Likelihood ratio tests",
+    "text": "6.7 Likelihood ratio tests\nLikelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.\nThe difference in log likelihoods (\\(D\\)) will follow a \\(\\chi ^2\\) distribution with degrees of freedom equal to the number of parameters tested.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -569,6 +569,46 @@
     "crumbs": [
       "Labs",
       "<span class='chapter-number'>11</span>  <span class='chapter-title'>Lab 4 -- ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "01-intro.html#who-i-am",
+    "href": "01-intro.html#who-i-am",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "1.4 Who I am",
+    "text": "1.4 Who I am\nStuff about Emily goes here",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "01-intro.html#acknowledgements",
+    "href": "01-intro.html#acknowledgements",
+    "title": "1  Chapter 1 – Introduction",
+    "section": "1.6 Acknowledgements",
+    "text": "1.6 Acknowledgements\nYaniv Brandvain’s online statistics textbook inspired this project and he has answered so many of my statistical and logistical questions.\nThis course section was originally developed by Gideon Bradburd and I learned a ton from teaching it.\nDoc Edge and his cool statistics textbook have been big sources of statistical knowledge.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "pvalues.html#the-population-vs-the-sample-recap",
+    "href": "pvalues.html#the-population-vs-the-sample-recap",
+    "title": "6  P values",
+    "section": "6.3 The population vs the sample recap",
+    "text": "6.3 The population vs the sample recap",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "pvalues.html#p-values-from-distributions",
+    "href": "pvalues.html#p-values-from-distributions",
+    "title": "6  P values",
+    "section": "6.6 P values from distributions",
+    "text": "6.6 P values from distributions\n\n6.6.1 T distribution\n\n\n6.6.2 Degrees of freedom\n\n\n6.6.3 Calculating a p value\n\n\n6.6.4 F distribution",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
     ]
   }
 ]

@@ -14,9 +14,15 @@ library(tidyverse)
 ## What are we doing here?
 
 
-## Motivating question
+## Learning goals
+- Apply and interpret different ways to measure variation
+- Define a scientific hypothesis, determine appropriate null hypotheses.
+- Calculate and interpret p values for a linear model based on t and F distributions.
+- Calculate and interpet p values from likelihood ratio tests.
 
 ## The population vs the sample recap
+
+
 
 ## Measuring variance
 

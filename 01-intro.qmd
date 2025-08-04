@@ -13,7 +13,7 @@ library(tidyverse)
 
 ## Hi!
 
-Hi! Welcome to the ebook for IBIO/PLB/ENT 830, the introductory statistics course in Michigan State University's Ecology and Evolutionary Biology Graduate program.
+Hi! Welcome to the ebook for the second half of IBIO/PLB/ENT 830, the introductory statistics course in Michigan State University's Ecology and Evolutionary Biology Graduate program.
 
 ## Learning Goals
 
@@ -23,10 +23,21 @@ Course learning goals go here
 
 Throughout the course we'll be talking about the following themes...
 
-## Who we are
+## Who I am
 
-Stuff about the professors goes here
+Stuff about Emily goes here
 
 ## How this book works
 
 Stuff about logistics goes here.
+
+## Acknowledgements
+
+[Yaniv Brandvain](https://cbs.umn.edu/directory/yaniv-brandvain)'s online statistics textbook inspired this project and he has answered so many of my statistical and logistical questions.
+
+This course section was originally developed by [Gideon Bradburd](https://lsa.umich.edu/eeb/people/faculty/gideon-bradburd.html]) and I learned a ton from teaching it.
+
+[Doc Edge](https://edgepopgen.github.io/edgelab/) and his [cool statistics textbook](https://academic.oup.com/book/43993) have been big sources of statistical knowledge.
+
+
+

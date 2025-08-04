@@ -40,7 +40,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -231,14 +231,20 @@ window.Quarto = {
   <ul>
   <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">6.1</span> What are we doing here?</a></li>
   <li><a href="#motivating-question" id="toc-motivating-question" class="nav-link" data-scroll-target="#motivating-question"><span class="header-section-number">6.2</span> Motivating question</a></li>
-  <li><a href="#the-population-vs-the-sample" id="toc-the-population-vs-the-sample" class="nav-link" data-scroll-target="#the-population-vs-the-sample"><span class="header-section-number">6.3</span> The population vs the sample</a></li>
+  <li><a href="#the-population-vs-the-sample-recap" id="toc-the-population-vs-the-sample-recap" class="nav-link" data-scroll-target="#the-population-vs-the-sample-recap"><span class="header-section-number">6.3</span> The population vs the sample recap</a></li>
   <li><a href="#measuring-variance" id="toc-measuring-variance" class="nav-link" data-scroll-target="#measuring-variance"><span class="header-section-number">6.4</span> Measuring variance</a>
   <ul class="collapse">
   <li><a href="#standard-error" id="toc-standard-error" class="nav-link" data-scroll-target="#standard-error"><span class="header-section-number">6.4.1</span> Standard error</a></li>
   </ul></li>
   <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">6.5</span> Hypothesis testing</a></li>
-  <li><a href="#likelihood-ratio-tests" id="toc-likelihood-ratio-tests" class="nav-link" data-scroll-target="#likelihood-ratio-tests"><span class="header-section-number">6.6</span> Likelihood ratio tests</a></li>
-  <li><a href="#degrees-of-freedom" id="toc-degrees-of-freedom" class="nav-link" data-scroll-target="#degrees-of-freedom"><span class="header-section-number">6.7</span> Degrees of freedom</a></li>
+  <li><a href="#p-values-from-distributions" id="toc-p-values-from-distributions" class="nav-link" data-scroll-target="#p-values-from-distributions"><span class="header-section-number">6.6</span> P values from distributions</a>
+  <ul class="collapse">
+  <li><a href="#t-distribution" id="toc-t-distribution" class="nav-link" data-scroll-target="#t-distribution"><span class="header-section-number">6.6.1</span> T distribution</a></li>
+  <li><a href="#degrees-of-freedom" id="toc-degrees-of-freedom" class="nav-link" data-scroll-target="#degrees-of-freedom"><span class="header-section-number">6.6.2</span> Degrees of freedom</a></li>
+  <li><a href="#calculating-a-p-value" id="toc-calculating-a-p-value" class="nav-link" data-scroll-target="#calculating-a-p-value"><span class="header-section-number">6.6.3</span> Calculating a p value</a></li>
+  <li><a href="#f-distribution" id="toc-f-distribution" class="nav-link" data-scroll-target="#f-distribution"><span class="header-section-number">6.6.4</span> F distribution</a></li>
+  </ul></li>
+  <li><a href="#likelihood-ratio-tests" id="toc-likelihood-ratio-tests" class="nav-link" data-scroll-target="#likelihood-ratio-tests"><span class="header-section-number">6.7</span> Likelihood ratio tests</a></li>
   </ul>
 </nav>
     </div>
@@ -266,13 +272,12 @@ window.Quarto = {
 
 <section id="what-are-we-doing-here" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">6.1</span> What are we doing here?</h2>
-<p>I don’t think I can teach p values until after I teach models so this needs to go later somewhere.</p>
 </section>
 <section id="motivating-question" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="motivating-question"><span class="header-section-number">6.2</span> Motivating question</h2>
 </section>
-<section id="the-population-vs-the-sample" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="the-population-vs-the-sample"><span class="header-section-number">6.3</span> The population vs the sample</h2>
+<section id="the-population-vs-the-sample-recap" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="the-population-vs-the-sample-recap"><span class="header-section-number">6.3</span> The population vs the sample recap</h2>
 </section>
 <section id="measuring-variance" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="measuring-variance"><span class="header-section-number">6.4</span> Measuring variance</h2>
@@ -282,14 +287,27 @@ window.Quarto = {
 </section>
 <section id="hypothesis-testing" class="level2" data-number="6.5">
 <h2 data-number="6.5" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">6.5</span> Hypothesis testing</h2>
+<p>Null hypothesis</p>
 </section>
-<section id="likelihood-ratio-tests" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="likelihood-ratio-tests"><span class="header-section-number">6.6</span> Likelihood ratio tests</h2>
+<section id="p-values-from-distributions" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="p-values-from-distributions"><span class="header-section-number">6.6</span> P values from distributions</h2>
+<section id="t-distribution" class="level3" data-number="6.6.1">
+<h3 data-number="6.6.1" class="anchored" data-anchor-id="t-distribution"><span class="header-section-number">6.6.1</span> T distribution</h3>
+</section>
+<section id="degrees-of-freedom" class="level3" data-number="6.6.2">
+<h3 data-number="6.6.2" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">6.6.2</span> Degrees of freedom</h3>
+</section>
+<section id="calculating-a-p-value" class="level3" data-number="6.6.3">
+<h3 data-number="6.6.3" class="anchored" data-anchor-id="calculating-a-p-value"><span class="header-section-number">6.6.3</span> Calculating a p value</h3>
+</section>
+<section id="f-distribution" class="level3" data-number="6.6.4">
+<h3 data-number="6.6.4" class="anchored" data-anchor-id="f-distribution"><span class="header-section-number">6.6.4</span> F distribution</h3>
+</section>
+</section>
+<section id="likelihood-ratio-tests" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="likelihood-ratio-tests"><span class="header-section-number">6.7</span> Likelihood ratio tests</h2>
 <p>Likelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.</p>
 <p>The difference in log likelihoods (<span class="math inline">\(D\)</span>) will follow a <span class="math inline">\(\chi ^2\)</span> distribution with degrees of freedom equal to the number of parameters tested.</p>
-</section>
-<section id="degrees-of-freedom" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">6.7</span> Degrees of freedom</h2>
 
 
 </section>
