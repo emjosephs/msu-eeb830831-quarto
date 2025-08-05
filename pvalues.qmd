@@ -32,19 +32,34 @@ There are various ways to measure variation in a data set.
 
 The **variance** is the expectation of the differences between individuals and the population mean. For a set of data points $X$ with mean $\mu$, $\text{Var}(X) = E[(X - \mu)^2]$
 
-The **standard deviation** is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as $\sigma$ compared to the variance, which is written as $\sigma^2$ so we can express the standard deviation kind of funnily as: $\sigma = sqrt{\sigma^2}$
+The **standard deviation** is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as $\sigma$ compared to the variance, which is written as $\sigma^2$ so we can express the standard deviation kind of funnily as: $\sigma = sqrt{\sigma^2}$. When we calculate the standard deviation of a sample, it is often refered to as $s$ to distinguish it from the true standard deviation of the population ($\sigma$). 
 
 ### Standard error
 
 To quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).
 
-The *standard error* is the standard deviation  adjusted for the sample size. So for a sample size of $n$, the standard error equals $\frac{\sigma}{\sqrt{n-1}}$
+The *standard error* is the standard deviation  adjusted for the sample size. So for a sample size of $n$ and a sample standard deviation of $s$, the standard error ($SE$) equals $\frac{s}{\sqrt{n-1}}$
 
 ## Hypothesis testing
-Null hypothesis
+Much of statistics uses a hypothesis testing framework whether we try to distinguish between two possibilities: a null hypothesis and an alternative hypothesis. 
 
-## P values from distributions
+Statistical hypotheses differ from the scientific hypotheses you may be more familiar with. Scientific hypotheses make claims about phenomena and the processes that cause them. For example, a scientific hypothesis might be "Plants from the desert are adapted to drought conditions" while a statistical hypothesis would be "The mean fitness of desert genotypes is higher than the mean fitness of grassland genotypes in dry conditions". Part of designing a good experiment is figuring out how to link statistical hypotheses to scientific hypotheses, and then do the experiments to test the statistical hypotheses.
+
+### Null hypothesis
+The **null hypothesis** is a claim about a population parameter that tells us what we expect if the process from a scientific hypothesis is not occurring. The null hypothesis should be something that would be interesting to reject. In the previous example, a null hypothesis would be that plants from different environments do not have different fitnesses in dry conditions. We often abbreviate the null hypothesis as $H_0$.
+
+A null hypothesis needs a corresponding **alternative hypothesis** ($H_A$). These alternative hypotheses are usually more biologically interesting. In our previous example, $H_A$ might be that "Desert genotypes have higher fitness than grassland genotypes in dry conditions". 
+
+Not all science relies upon a null and alternative hypothesis testing framework -- this is just one potential way to do statistics. Some scientists may be more interested in making specific parameter estimates, or in exploring which of many factors are important for a process. It's also often good scientific strategy to set up experiments where instead of rejecting a null hypothesis, your results will let you distinguish among multiple interesting potential hypotheses (making your results exciting no matter what happens).
+
+### Frameworks for rejecting the null hypothesis
+Now, how do we distinguish betwen the null hypothesis and alternative hypothesis? We often use a **test statistic**, which is calculated from the data, and compare it to a **null distribution** of our expectation for the test statistic under the hypothesis. Next we'll lay out some of the statistics and distributions that are commonly used.
+
 ### T distribution 
+
+So we have a null hypothesis and we have a sample mean. How do we test for whether our sample is expected under the null hypothesis?
+
+The **t distribution** tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis. 
 
 ### Degrees of freedom
 
