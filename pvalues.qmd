@@ -12,7 +12,7 @@ library(tidyverse)
 ```
 
 ## What are we doing here?
-
+For the last few weeks we've been building linear models to estimate population parameters. Now we'll discuss how to test for whether these estimates are **significant**. And, if you're wondering what we mean by significant, that's a good thing to wonder -- stay tuned.
 
 ## Learning goals
 - Apply and interpret different ways to measure variation
@@ -22,11 +22,23 @@ library(tidyverse)
 
 ## The population vs the sample recap
 
+The population we are studying has true values and parameters. However, without measuring every individual in the population, we will not get to know these true parameters. Instead, we sample the population and use statistics to make inferences about the population.
 
+The **sampling distribution** is the distribution of parameters we would get from sampling multiple times. It tells us about the amount of error generated from taking a sample. We need to know this to determine how much certainty we can get from the sample.
 
-## Measuring variance
+## Measuring variation
+
+There are various ways to measure variation in a data set.
+
+The **variance** is the expectation of the differences between individuals and the population mean. For a set of data points $X$ with mean $\mu$, $\text{Var}(X) = E[(X - \mu)^2]$
+
+The **standard deviation** is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as $\sigma$ compared to the variance, which is written as $\sigma^2$ so we can express the standard deviation kind of funnily as: $\sigma = sqrt{\sigma^2}$
 
 ### Standard error
+
+To quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).
+
+The *standard error* is the standard deviation  adjusted for the sample size. So for a sample size of $n$, the standard error equals $\frac{\sigma}{\sqrt{n-1}}$
 
 ## Hypothesis testing
 Null hypothesis

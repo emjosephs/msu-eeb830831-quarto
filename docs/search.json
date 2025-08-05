@@ -374,7 +374,7 @@
     "href": "pvalues.html",
     "title": "6  P values",
     "section": "",
-    "text": "6.1 What are we doing here?",
+    "text": "6.1 What are we doing here?\nFor the last few weeks we’ve been building linear models to estimate population parameters. Now we’ll discuss how to test for whether these estimates are significant. And, if you’re wondering what we mean by significant, that’s a good thing to wonder – stay tuned.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -596,7 +596,7 @@
     "href": "pvalues.html#the-population-vs-the-sample-recap",
     "title": "6  P values",
     "section": "6.3 The population vs the sample recap",
-    "text": "6.3 The population vs the sample recap",
+    "text": "6.3 The population vs the sample recap\nThe population we are studying has true values and parameters. However, without measuring every individual in the population, we will not get to know these true parameters. Instead, we sample the population and use statistics to make inferences about the population.\nThe sampling distribution is the distribution of parameters we would get from sampling multiple times. It tells us about the amount of error generated from taking a sample. We need to know this to determine how much certainty we can get from the sample.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -607,6 +607,26 @@
     "title": "6  P values",
     "section": "6.6 P values from distributions",
     "text": "6.6 P values from distributions\n\n6.6.1 T distribution\n\n\n6.6.2 Degrees of freedom\n\n\n6.6.3 Calculating a p value\n\n\n6.6.4 F distribution",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "pvalues.html#learning-goals",
+    "href": "pvalues.html#learning-goals",
+    "title": "6  P values",
+    "section": "6.2 Learning goals",
+    "text": "6.2 Learning goals\n\nApply and interpret different ways to measure variation\nDefine a scientific hypothesis, determine appropriate null hypotheses.\nCalculate and interpret p values for a linear model based on t and F distributions.\nCalculate and interpet p values from likelihood ratio tests.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "pvalues.html#measuring-variation",
+    "href": "pvalues.html#measuring-variation",
+    "title": "6  P values",
+    "section": "6.4 Measuring variation",
+    "text": "6.4 Measuring variation\nThere are various ways to measure variation in a data set.\nThe variance is the expectation of the differences between individuals and the population mean. For a set of data points \\(X\\) with mean \\(\\mu\\), \\(\\text{Var}(X) = E[(X - \\mu)^2]\\)\nThe standard deviation is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as \\(\\sigma\\) compared to the variance, which is written as \\(\\sigma^2\\) so we can express the standard deviation kind of funnily as: \\(\\sigma = sqrt{\\sigma^2}\\)\n\n6.4.1 Standard error\nTo quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).\nThe standard error is the standard deviation adjusted for the sample size. So for a sample size of \\(n\\), the standard error equals \\(\\frac{\\sigma}{\\sqrt{n-1}}\\)",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
     ]

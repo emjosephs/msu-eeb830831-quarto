@@ -25,7 +25,9 @@ Throughout the course we'll be talking about the following themes...
 
 ## Who I am
 
-Stuff about Emily goes here
+I'm an evolutionary geneticist. My lab mostly works on understanding how evolution has shaped quantitative trait variation, especially in the context of environmental variation and genome evolution. We use statistics to infer things about trait variation and genomic sequence variation, and the links between the two.
+
+I'm actually a second-generation statistics teacher -- my dad was a high school math teacher and taught statistics for years. 
 
 ## How this book works
 
