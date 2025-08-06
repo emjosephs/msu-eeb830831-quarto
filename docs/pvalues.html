@@ -40,7 +40,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -239,16 +239,13 @@ window.Quarto = {
   <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">6.5</span> Hypothesis testing</a>
   <ul class="collapse">
   <li><a href="#null-hypothesis" id="toc-null-hypothesis" class="nav-link" data-scroll-target="#null-hypothesis"><span class="header-section-number">6.5.1</span> Null hypothesis</a></li>
+  <li><a href="#frameworks-for-rejecting-the-null-hypothesis" id="toc-frameworks-for-rejecting-the-null-hypothesis" class="nav-link" data-scroll-target="#frameworks-for-rejecting-the-null-hypothesis"><span class="header-section-number">6.5.2</span> Frameworks for rejecting the null hypothesis</a></li>
+  <li><a href="#t-distribution" id="toc-t-distribution" class="nav-link" data-scroll-target="#t-distribution"><span class="header-section-number">6.5.3</span> T distribution</a></li>
+  <li><a href="#degrees-of-freedom" id="toc-degrees-of-freedom" class="nav-link" data-scroll-target="#degrees-of-freedom"><span class="header-section-number">6.5.4</span> Degrees of freedom</a></li>
+  <li><a href="#calculating-a-p-value" id="toc-calculating-a-p-value" class="nav-link" data-scroll-target="#calculating-a-p-value"><span class="header-section-number">6.5.5</span> Calculating a p value</a></li>
+  <li><a href="#f-distribution" id="toc-f-distribution" class="nav-link" data-scroll-target="#f-distribution"><span class="header-section-number">6.5.6</span> F distribution</a></li>
   </ul></li>
-  <li><a href="#p-values-from-distributions" id="toc-p-values-from-distributions" class="nav-link" data-scroll-target="#p-values-from-distributions"><span class="header-section-number">6.6</span> P values from distributions</a>
-  <ul class="collapse">
-  <li><a href="#the-z-distribution" id="toc-the-z-distribution" class="nav-link" data-scroll-target="#the-z-distribution"><span class="header-section-number">6.6.1</span> The Z distribution</a></li>
-  <li><a href="#t-distribution" id="toc-t-distribution" class="nav-link" data-scroll-target="#t-distribution"><span class="header-section-number">6.6.2</span> T distribution</a></li>
-  <li><a href="#degrees-of-freedom" id="toc-degrees-of-freedom" class="nav-link" data-scroll-target="#degrees-of-freedom"><span class="header-section-number">6.6.3</span> Degrees of freedom</a></li>
-  <li><a href="#calculating-a-p-value" id="toc-calculating-a-p-value" class="nav-link" data-scroll-target="#calculating-a-p-value"><span class="header-section-number">6.6.4</span> Calculating a p value</a></li>
-  <li><a href="#f-distribution" id="toc-f-distribution" class="nav-link" data-scroll-target="#f-distribution"><span class="header-section-number">6.6.5</span> F distribution</a></li>
-  </ul></li>
-  <li><a href="#likelihood-ratio-tests" id="toc-likelihood-ratio-tests" class="nav-link" data-scroll-target="#likelihood-ratio-tests"><span class="header-section-number">6.7</span> Likelihood ratio tests</a></li>
+  <li><a href="#likelihood-ratio-tests" id="toc-likelihood-ratio-tests" class="nav-link" data-scroll-target="#likelihood-ratio-tests"><span class="header-section-number">6.6</span> Likelihood ratio tests</a></li>
   </ul>
 </nav>
     </div>
@@ -309,31 +306,31 @@ window.Quarto = {
 <p>Statistical hypotheses differ from the scientific hypotheses you may be more familiar with. Scientific hypotheses make claims about phenomena and the processes that cause them. For example, a scientific hypothesis might be “Plants from the desert are adapted to drought conditions” while a statistical hypothesis would be “The mean fitness of desert genotypes is higher than the mean fitness of grassland genotypes in dry conditions”. Part of designing a good experiment is figuring out how to link statistical hypotheses to scientific hypotheses, and then do the experiments to test the statistical hypotheses.</p>
 <section id="null-hypothesis" class="level3" data-number="6.5.1">
 <h3 data-number="6.5.1" class="anchored" data-anchor-id="null-hypothesis"><span class="header-section-number">6.5.1</span> Null hypothesis</h3>
-<p>The <em>null hypothesis</em> is a claim about a population parameter that tells us what we expect if the process from a scientific hypothesis is not occuring. In the previous example, a null hypothesis would be that plants from different environments do not have different fitnesses in dry conditions. We often abbreviate the null hypothesis as <span class="math inline">\(H_0\)</span></p>
+<p>The <strong>null hypothesis</strong> is a claim about a population parameter that tells us what we expect if the process from a scientific hypothesis is not occurring. The null hypothesis should be something that would be interesting to reject. In the previous example, a null hypothesis would be that plants from different environments do not have different fitnesses in dry conditions. We often abbreviate the null hypothesis as <span class="math inline">\(H_0\)</span>.</p>
+<p>A null hypothesis needs a corresponding <strong>alternative hypothesis</strong> (<span class="math inline">\(H_A\)</span>). These alternative hypotheses are usually more biologically interesting. In our previous example, <span class="math inline">\(H_A\)</span> might be that “Desert genotypes have higher fitness than grassland genotypes in dry conditions”.</p>
+<p>Not all science relies upon a null and alternative hypothesis testing framework – this is just one potential way to do statistics. Some scientists may be more interested in making specific parameter estimates, or in exploring which of many factors are important for a process. It’s also often good scientific strategy to set up experiments where instead of rejecting a null hypothesis, your results will let you distinguish among multiple interesting potential hypotheses (making your results exciting no matter what happens).</p>
 </section>
+<section id="frameworks-for-rejecting-the-null-hypothesis" class="level3" data-number="6.5.2">
+<h3 data-number="6.5.2" class="anchored" data-anchor-id="frameworks-for-rejecting-the-null-hypothesis"><span class="header-section-number">6.5.2</span> Frameworks for rejecting the null hypothesis</h3>
+<p>Now, how do we distinguish betwen the null hypothesis and alternative hypothesis? We often use a <strong>test statistic</strong>, which is calculated from the data, and compare it to a <strong>null distribution</strong> of our expectation for the test statistic under the hypothesis. Next we’ll lay out some of the statistics and distributions that are commonly used.</p>
 </section>
-<section id="p-values-from-distributions" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="p-values-from-distributions"><span class="header-section-number">6.6</span> P values from distributions</h2>
-<section id="the-z-distribution" class="level3" data-number="6.6.1">
-<h3 data-number="6.6.1" class="anchored" data-anchor-id="the-z-distribution"><span class="header-section-number">6.6.1</span> The Z distribution</h3>
-</section>
-<section id="t-distribution" class="level3" data-number="6.6.2">
-<h3 data-number="6.6.2" class="anchored" data-anchor-id="t-distribution"><span class="header-section-number">6.6.2</span> T distribution</h3>
+<section id="t-distribution" class="level3" data-number="6.5.3">
+<h3 data-number="6.5.3" class="anchored" data-anchor-id="t-distribution"><span class="header-section-number">6.5.3</span> T distribution</h3>
 <p>So we have a null hypothesis and we have a sample mean. How do we test for whether our sample is expected under the null hypothesis?</p>
 <p>The <strong>t distribution</strong> tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis.</p>
 </section>
-<section id="degrees-of-freedom" class="level3" data-number="6.6.3">
-<h3 data-number="6.6.3" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">6.6.3</span> Degrees of freedom</h3>
+<section id="degrees-of-freedom" class="level3" data-number="6.5.4">
+<h3 data-number="6.5.4" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">6.5.4</span> Degrees of freedom</h3>
 </section>
-<section id="calculating-a-p-value" class="level3" data-number="6.6.4">
-<h3 data-number="6.6.4" class="anchored" data-anchor-id="calculating-a-p-value"><span class="header-section-number">6.6.4</span> Calculating a p value</h3>
+<section id="calculating-a-p-value" class="level3" data-number="6.5.5">
+<h3 data-number="6.5.5" class="anchored" data-anchor-id="calculating-a-p-value"><span class="header-section-number">6.5.5</span> Calculating a p value</h3>
 </section>
-<section id="f-distribution" class="level3" data-number="6.6.5">
-<h3 data-number="6.6.5" class="anchored" data-anchor-id="f-distribution"><span class="header-section-number">6.6.5</span> F distribution</h3>
+<section id="f-distribution" class="level3" data-number="6.5.6">
+<h3 data-number="6.5.6" class="anchored" data-anchor-id="f-distribution"><span class="header-section-number">6.5.6</span> F distribution</h3>
 </section>
 </section>
-<section id="likelihood-ratio-tests" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="likelihood-ratio-tests"><span class="header-section-number">6.7</span> Likelihood ratio tests</h2>
+<section id="likelihood-ratio-tests" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="likelihood-ratio-tests"><span class="header-section-number">6.6</span> Likelihood ratio tests</h2>
 <p>Likelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.</p>
 <p>The difference in log likelihoods (<span class="math inline">\(D\)</span>) will follow a <span class="math inline">\(\chi ^2\)</span> distribution with degrees of freedom equal to the number of parameters tested.</p>
 
