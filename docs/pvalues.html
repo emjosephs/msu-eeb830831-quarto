@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -274,6 +308,47 @@ window.Quarto = {
 <section id="what-are-we-doing-here" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">6.1</span> What are we doing here?</h2>
 <p>For the last few weeks we’ve been building linear models to estimate population parameters. Now we’ll discuss how to test for whether these estimates are <strong>significant</strong>. And, if you’re wondering what we mean by significant, that’s a good thing to wonder – stay tuned.</p>
+<p>As we work through this section we’ll return to our penguin data. We’ll start by thinking about how to tell if the difference in body mass between penguins of different species is significant.</p>
+<p>We previously used a linear model to estimate the conditional mean body mass of each species using the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## filter out chinstraps and anything with missing data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass) ,species <span class="sc">!=</span> <span class="st">"Chinstrap"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> species, <span class="at">data=</span>penguins2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ species, data = penguins2)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1126.02  -369.50   -26.02   343.00  1223.98 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    3700.66      39.02   94.83   &lt;2e-16 ***
+speciesGentoo  1375.35      58.24   23.61   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 479.5 on 272 degrees of freedom
+Multiple R-squared:  0.6721,    Adjusted R-squared:  0.6709 
+F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span>penguins2<span class="sc">$</span>species, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topleft'</span>,<span class="fu">levels</span>(penguins2<span class="sc">$</span>species),<span class="at">bty=</span><span class="st">"n"</span>, <span class="at">pch=</span><span class="dv">1</span>, <span class="at">pt.lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="fu">palette</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="pvalues_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="learning-goals" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="learning-goals"><span class="header-section-number">6.2</span> Learning goals</h2>
@@ -292,8 +367,28 @@ window.Quarto = {
 <section id="measuring-variation" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="measuring-variation"><span class="header-section-number">6.4</span> Measuring variation</h2>
 <p>There are various ways to measure variation in a data set.</p>
-<p>The <strong>variance</strong> is the expectation of the differences between individuals and the population mean. For a set of data points <span class="math inline">\(X\)</span> with mean <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\text{Var}(X) = E[(X - \mu)^2]\)</span></p>
+<p>The <strong>variance</strong> is the expectation of the differences between individuals and the population mean. For a set of data points <span class="math inline">\(X\)</span> with mean <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\text{Var}(X) = E[(X - \mu)^2]\)</span>. Practically we calculate this as <span class="math inline">\(\frac{\Sigma (X - \mu)^2}{n-1}\)</span></p>
 <p>The <strong>standard deviation</strong> is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as <span class="math inline">\(\sigma\)</span> compared to the variance, which is written as <span class="math inline">\(\sigma^2\)</span> so we can express the standard deviation kind of funnily as: <span class="math inline">\(\sigma = sqrt{\sigma^2}\)</span>. When we calculate the standard deviation of a sample, it is often refered to as <span class="math inline">\(s\)</span> to distinguish it from the true standard deviation of the population (<span class="math inline">\(\sigma\)</span>).</p>
+<p>The code below will calculate the variance and standard deviation of our Adelie penguin body masses.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>myN <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">count</span>() <span class="co">#get n</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span><span class="co">#filter only Adelies</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diffs =</span> (body_mass <span class="sc">-</span> <span class="fu">mean</span>(body_mass))<span class="sc">^</span><span class="dv">2</span>)  <span class="sc">|&gt;</span> <span class="co">#calculate sqaured difference between each penguin's body mass and mean body mass</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">var =</span> <span class="fu">sum</span>(diffs))<span class="sc">/</span>(myN<span class="dv">-1</span>) <span class="co">#get the expectation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       var
+1 210282.9</code></pre>
+</div>
+</div>
+<p>You can also use a built in R function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass) <span class="sc">|&gt;</span> <span class="fu">var</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          body_mass
+body_mass  210282.9</code></pre>
+</div>
+</div>
 <section id="standard-error" class="level3" data-number="6.4.1">
 <h3 data-number="6.4.1" class="anchored" data-anchor-id="standard-error"><span class="header-section-number">6.4.1</span> Standard error</h3>
 <p>To quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).</p>
@@ -324,6 +419,7 @@ window.Quarto = {
 </section>
 <section id="calculating-a-p-value" class="level3" data-number="6.5.5">
 <h3 data-number="6.5.5" class="anchored" data-anchor-id="calculating-a-p-value"><span class="header-section-number">6.5.5</span> Calculating a p value</h3>
+<p><span class="math inline">\(p values\)</span> tell us about the proportion of the null distribution that is more extreme than our observed test statistic. So in a one-tailed test, a p value of 0.01 tells us that 1% of the null distribution is more extreme than the observed data. We can translate this into telling us that we expect to see data like ours 1% of the time even if the null hypothesis is true.</p>
 </section>
 <section id="f-distribution" class="level3" data-number="6.5.6">
 <h3 data-number="6.5.6" class="anchored" data-anchor-id="f-distribution"><span class="header-section-number">6.5.6</span> F distribution</h3>
