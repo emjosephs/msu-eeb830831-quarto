@@ -368,20 +368,21 @@ F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2 data-number="6.4" class="anchored" data-anchor-id="measuring-variation"><span class="header-section-number">6.4</span> Measuring variation</h2>
 <p>There are various ways to measure variation in a data set.</p>
 <p>The <strong>variance</strong> is the expectation of the differences between individuals and the population mean. For a set of data points <span class="math inline">\(X\)</span> with mean <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\text{Var}(X) = E[(X - \mu)^2]\)</span>. Practically we calculate this as <span class="math inline">\(\frac{\Sigma (X - \mu)^2}{n-1}\)</span></p>
-<p>The <strong>standard deviation</strong> is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as <span class="math inline">\(\sigma\)</span> compared to the variance, which is written as <span class="math inline">\(\sigma^2\)</span> so we can express the standard deviation kind of funnily as: <span class="math inline">\(\sigma = sqrt{\sigma^2}\)</span>. When we calculate the standard deviation of a sample, it is often refered to as <span class="math inline">\(s\)</span> to distinguish it from the true standard deviation of the population (<span class="math inline">\(\sigma\)</span>).</p>
 <p>The code below will calculate the variance and standard deviation of our Adelie penguin body masses.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>myN <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">count</span>() <span class="co">#get n</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span><span class="co">#filter only Adelies</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>AdelieVar <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span><span class="co">#filter only Adelies</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diffs =</span> (body_mass <span class="sc">-</span> <span class="fu">mean</span>(body_mass))<span class="sc">^</span><span class="dv">2</span>)  <span class="sc">|&gt;</span> <span class="co">#calculate sqaured difference between each penguin's body mass and mean body mass</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">var =</span> <span class="fu">sum</span>(diffs))<span class="sc">/</span>(myN<span class="dv">-1</span>) <span class="co">#get the expectation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">var =</span> <span class="fu">sum</span>(diffs))<span class="sc">/</span>(myN<span class="dv">-1</span>) <span class="co">#get the expectation</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>AdelieVar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       var
 1 210282.9</code></pre>
 </div>
 </div>
-<p>You can also use a built in R function</p>
+<p>You can also use a built in R function var().</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass) <span class="sc">|&gt;</span> <span class="fu">var</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -389,10 +390,52 @@ F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 body_mass  210282.9</code></pre>
 </div>
 </div>
+<p>The <strong>standard deviation</strong> is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as <span class="math inline">\(\sigma\)</span> compared to the variance, which is written as <span class="math inline">\(\sigma^2\)</span> so we can express the standard deviation kind of funnily as: <span class="math inline">\(\sigma = sqrt{\sigma^2}\)</span>. When we calculate the standard deviation of a sample, it is often refered to as <span class="math inline">\(s\)</span> to distinguish it from the true standard deviation of the population (<span class="math inline">\(\sigma\)</span>).</p>
+<p>We can get the standard deviation by taking the square root of the variance we just calculated.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(AdelieVar<span class="sc">$</span>var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 458.5661</code></pre>
+</div>
+</div>
+<p>or by using the built in R function sd().</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>adelieMasses <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass) </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(adelieMasses<span class="sc">$</span>body_mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 458.5661</code></pre>
+</div>
+</div>
 <section id="standard-error" class="level3" data-number="6.4.1">
 <h3 data-number="6.4.1" class="anchored" data-anchor-id="standard-error"><span class="header-section-number">6.4.1</span> Standard error</h3>
 <p>To quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).</p>
-<p>The <em>standard error</em> is the standard deviation adjusted for the sample size. So for a sample size of <span class="math inline">\(n\)</span> and a sample standard deviation of <span class="math inline">\(s\)</span>, the standard error (<span class="math inline">\(SE\)</span>) equals <span class="math inline">\(\frac{s}{\sqrt{n-1}}\)</span></p>
+<p>The <em>standard error</em> is the standard deviation adjusted for the sample size. So for a sample size of <span class="math inline">\(n\)</span> and a sample standard deviation of <span class="math inline">\(s\)</span>, the standard error (<span class="math inline">\(SE\)</span>) equals <span class="math inline">\(\frac{s}{\sqrt{n-1}}\)</span>.</p>
+<p>Here is code cor calculating the standard error of our sample of Adelie penguins.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>adelieMasses <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass) </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(adelieMasses<span class="sc">$</span>body_mass)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="fu">nrow</span>(adelieMasses)<span class="sc">-</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 37.44177</code></pre>
+</div>
+</div>
+<p>And here is a plot of how the standard error scales with sample size (from increasingly large samples of penguins)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sampleAdelies <span class="ot">&lt;-</span> <span class="cf">function</span>(n){</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  mySample <span class="ot">=</span> <span class="fu">sample</span>(adelieMasses<span class="sc">$</span>body_mass, <span class="at">size=</span>n,<span class="at">replace=</span>F)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sd</span>(mySample)<span class="sc">/</span>(<span class="fu">sqrt</span>(n<span class="dv">-1</span>)))</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>myStderrors <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">150</span>, sampleAdelies)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">150</span>, myStderrors, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">xlab=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"standard error"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="pvalues_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="hypothesis-testing" class="level2" data-number="6.5">
@@ -413,6 +456,9 @@ body_mass  210282.9</code></pre>
 <h3 data-number="6.5.3" class="anchored" data-anchor-id="t-distribution"><span class="header-section-number">6.5.3</span> T distribution</h3>
 <p>So we have a null hypothesis and we have a sample mean. How do we test for whether our sample is expected under the null hypothesis?</p>
 <p>The <strong>t distribution</strong> tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis.</p>
+<p>We can use this distribution to calculate a <strong>t value</strong> describing the number of standard errors between our sample mean and the mean of the null distribution. We calculate this with the following equation:</p>
+<p><span class="math display">\[ t = \frac{\bar{x}-\mu_0}{SE_x}\]</span></p>
+<p>Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 5000g and want to test to see if our sample mean is consistent with the null hypothesis.</p>
 </section>
 <section id="degrees-of-freedom" class="level3" data-number="6.5.4">
 <h3 data-number="6.5.4" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">6.5.4</span> Degrees of freedom</h3>

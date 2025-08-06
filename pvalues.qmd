@@ -87,9 +87,28 @@ sd(adelieMasses$body_mass)
 
 To quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).
 
-The *standard error* is the standard deviation  adjusted for the sample size. So for a sample size of $n$ and a sample standard deviation of $s$, the standard error ($SE$) equals $\frac{s}{\sqrt{n-1}}$
+The *standard error* is the standard deviation  adjusted for the sample size. So for a sample size of $n$ and a sample standard deviation of $s$, the standard error ($SE$) equals $\frac{s}{\sqrt{n-1}}$.
 
+Here is code cor calculating the standard error of our sample of Adelie penguins.
 
+```{r}
+adelieMasses <- penguins2 |> filter(species=="Adelie") |> select(body_mass) 
+sdAdelies = sd(adelieMasses$body_mass)/(sqrt(nrow(adelieMasses)-1))
+sdAdelies
+```
+
+And here is a plot of how the standard error scales with sample size (from increasingly large samples of penguins)
+
+```{r}
+sampleAdelies <- function(n){
+  mySample = sample(adelieMasses$body_mass, size=n,replace=F)
+  return(sd(mySample)/(sqrt(n-1)))
+}
+
+myStderrors <- sapply(2:150, sampleAdelies)
+
+plot(2:150, myStderrors, col = palette()[2], bty="n", xlab="n", ylab = "standard error")
+```
 
 ## Hypothesis testing
 Much of statistics uses a hypothesis testing framework whether we try to distinguish between two possibilities: a null hypothesis and an alternative hypothesis. 
@@ -112,11 +131,38 @@ So we have a null hypothesis and we have a sample mean. How do we test for wheth
 
 The **t distribution** tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis. 
 
+We can use this distribution to calculate a **t value** describing the number of standard errors between our sample mean ($x_0$) and the mean of the null distribution ($\mu_0$). We calculate this with the following equation:
+
+$$ t = \frac{\bar{x}-\mu_0}{SE_x}$$
+
+Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 5000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate $t$
+using the following code:
+
+```{r}
+xbar = mean(adelieMasses$body_mass)
+mu0 = 5000
+
+myT = (xbar-mu0)/sdAdelies
+myT
+```
+
+This tells us that the mean body mass of our Adelie penguin sample is 34 standard errors below 5000g. This seems pretty different! But how different?
+
 ### Degrees of freedom
+
+First we need to figure out the *degrees of freedom* that help us interpret $t$. In this case, the degrees of freedom are equal to $n-1$ for a sample size of $n$. 
 
 ### Calculating a p value
 
 $p values$ tell us about the proportion of the null distribution that is more extreme than our observed test statistic. So in a one-tailed test, a p value of 0.01 tells us that 1\% of the null distribution is more extreme than the observed data. We can translate this into telling us that we expect to see data like ours 1\% of the time even if the null hypothesis is true.
+
+To calculate a p value for a t statistic, we can use the pt() function. The pt() function is analagous to pnorm() and other related functions.
+
+```{r}
+df = nrow(adelieMasses)-1
+p_val <- 2*pt(q = myT, df=df, lower.tail=T) 
+p_val
+```
 
 ### F distribution
 
