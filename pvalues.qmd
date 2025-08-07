@@ -14,6 +14,24 @@ library(tidyverse)
 ## What are we doing here?
 For the last few weeks we've been building linear models to estimate population parameters. Now we'll discuss how to test for whether these estimates are **significant**. And, if you're wondering what we mean by significant, that's a good thing to wonder -- stay tuned.
 
+As we work through this section we'll return to our penguin data. We'll start by thinking about how to tell if the difference in body mass between penguins of different species is significant.
+
+We previously used a linear model to estimate the conditional mean body mass of each species using the following code:
+
+```{r}
+## filter out chinstraps and anything with missing data
+penguins2 <- penguins |>
+  filter(!is.na(body_mass) ,species != "Chinstrap") |> 
+  droplevels()
+
+model1 <- lm(body_mass ~ species, data=penguins2)
+summary(model1)
+
+plot(penguins2$body_mass, bty="n", ylab = "body mass", 
+     col=penguins2$species, lwd=2)
+legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette())
+```
+
 ## Learning goals
 - Apply and interpret different ways to measure variation
 - Define a scientific hypothesis, determine appropriate null hypotheses.
@@ -30,15 +48,67 @@ The **sampling distribution** is the distribution of parameters we would get fro
 
 There are various ways to measure variation in a data set.
 
-The **variance** is the expectation of the differences between individuals and the population mean. For a set of data points $X$ with mean $\mu$, $\text{Var}(X) = E[(X - \mu)^2]$
+The **variance** is the expectation of the differences between individuals and the population mean. For a set of data points $X$ with mean $\mu$, $\text{Var}(X) = E[(X - \mu)^2]$. Practically we calculate this as $\frac{\Sigma (X - \mu)^2}{n-1}$
+
+The code below will calculate the variance and standard deviation of our Adelie penguin body masses.
+
+```{r}
+myN <- penguins2 |> filter(species=="Adelie") |> count() #get n
+
+AdelieVar <- penguins2 |> filter(species=="Adelie") |>#filter only Adelies
+  mutate(diffs = (body_mass - mean(body_mass))^2)  |> #calculate sqaured difference between each penguin's body mass and mean body mass
+  summarise(var = sum(diffs))/(myN-1) #get the expectation
+
+AdelieVar
+```
+
+You can also use a built in R function var().
+
+```{r}
+penguins2 |> filter(species=="Adelie") |> select(body_mass) |> var()
+```
 
 The **standard deviation** is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as $\sigma$ compared to the variance, which is written as $\sigma^2$ so we can express the standard deviation kind of funnily as: $\sigma = sqrt{\sigma^2}$. When we calculate the standard deviation of a sample, it is often refered to as $s$ to distinguish it from the true standard deviation of the population ($\sigma$). 
+
+We can get the standard deviation by taking the square root of the variance we just calculated.
+
+```{r}
+sqrt(AdelieVar$var)
+```
+
+or by using the built in R function sd().
+
+```{r}
+adelieMasses <- penguins2 |> filter(species=="Adelie") |> select(body_mass) 
+sd(adelieMasses$body_mass)
+```
 
 ### Standard error
 
 To quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).
 
-The *standard error* is the standard deviation  adjusted for the sample size. So for a sample size of $n$ and a sample standard deviation of $s$, the standard error ($SE$) equals $\frac{s}{\sqrt{n-1}}$
+The *standard error* is the standard deviation  adjusted for the sample size. So for a sample size of $n$ and a sample standard deviation of $s$, the standard error ($SE$) equals $\frac{s}{\sqrt{n-1}}$.
+
+Here is code cor calculating the standard error of our sample of Adelie penguins.
+
+```{r}
+adelieMasses <- penguins2 |> filter(species=="Adelie") |> select(body_mass) 
+sdAdelies = sd(adelieMasses$body_mass)/(sqrt(nrow(adelieMasses)-1))
+sdAdelies
+```
+
+And here is a plot of how the standard error scales with sample size (from increasingly large samples of penguins)
+
+```{r}
+sampleAdelies <- function(n){
+  mySample = sample(adelieMasses$body_mass, size=n,replace=F)
+  return(sd(mySample)/(sqrt(n-1)))
+}
+
+myStderrors <- sapply(2:150, sampleAdelies)
+
+plot(2:150, myStderrors, col = palette()[2], bty="n", xlab="n", ylab = "standard error")
+```
 
 ## Hypothesis testing
 Much of statistics uses a hypothesis testing framework whether we try to distinguish between two possibilities: a null hypothesis and an alternative hypothesis. 
@@ -52,7 +122,7 @@ A null hypothesis needs a corresponding **alternative hypothesis** ($H_A$). Thes
 
 Not all science relies upon a null and alternative hypothesis testing framework -- this is just one potential way to do statistics. Some scientists may be more interested in making specific parameter estimates, or in exploring which of many factors are important for a process. It's also often good scientific strategy to set up experiments where instead of rejecting a null hypothesis, your results will let you distinguish among multiple interesting potential hypotheses (making your results exciting no matter what happens).
 
-## Frameworks for rejecting the null hypothesis
+### Frameworks for rejecting the null hypothesis
 Now, how do we distinguish betwen the null hypothesis and alternative hypothesis? We often use a **test statistic**, which is calculated from the data, and compare it to a **null distribution** of our expectation for the test statistic under the hypothesis. Next we'll lay out some of the statistics and distributions that are commonly used.
 
 ### T distribution 
@@ -61,9 +131,38 @@ So we have a null hypothesis and we have a sample mean. How do we test for wheth
 
 The **t distribution** tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis. 
 
+We can use this distribution to calculate a **t value** describing the number of standard errors between our sample mean ($x_0$) and the mean of the null distribution ($\mu_0$). We calculate this with the following equation:
+
+$$ t = \frac{\bar{x}-\mu_0}{SE_x}$$
+
+Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 5000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate $t$
+using the following code:
+
+```{r}
+xbar = mean(adelieMasses$body_mass)
+mu0 = 5000
+
+myT = (xbar-mu0)/sdAdelies
+myT
+```
+
+This tells us that the mean body mass of our Adelie penguin sample is 34 standard errors below 5000g. This seems pretty different! But how different?
+
 ### Degrees of freedom
 
+First we need to figure out the *degrees of freedom* that help us interpret $t$. In this case, the degrees of freedom are equal to $n-1$ for a sample size of $n$. 
+
 ### Calculating a p value
+
+*p values* tell us about the proportion of the null distribution that is more extreme than our observed test statistic. So in a one-tailed test, a p value of 0.01 tells us that 1\% of the null distribution is more extreme than the observed data. We can translate this into telling us that we expect to see data like ours 1\% of the time even if the null hypothesis is true.
+
+To calculate a p value for a t statistic, we can use the pt() function. The pt() function is analagous to pnorm() and other related functions.
+
+```{r}
+df = nrow(adelieMasses)-1
+p_val <- 2*pt(q = myT, df=df, lower.tail=T) 
+p_val
+```
 
 ### F distribution
 
