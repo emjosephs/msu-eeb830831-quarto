@@ -90,6 +90,16 @@ You can read more about all the variables available in the package
 ?penguins
 ```
 
+```{r}
+#| echo: false
+#| column: margin
+#| fig-alt: "A cartoon of a penguin flying as other penguins watch on says 'we just haven't been flapping them hard enough"
+#| fig-cap: "A cartoon by Sam Gross" 
+library(knitr)
+include_graphics("figs/penguincartoon.png")
+```
+
+
 We'll start by thinking about body size. We want to model each penguin's body mass as the sum of a mean body mass and a residual.
 
 $$\text{penguin body mass} = \text{mean body mass} + e_i$$
