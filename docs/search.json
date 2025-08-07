@@ -414,7 +414,7 @@
     "href": "pvalues.html#measuring-variation",
     "title": "6  P values",
     "section": "6.4 Measuring variation",
-    "text": "6.4 Measuring variation\nThere are various ways to measure variation in a data set.\nThe variance is the expectation of the differences between individuals and the population mean. For a set of data points \\(X\\) with mean \\(\\mu\\), \\(\\text{Var}(X) = E[(X - \\mu)^2]\\). Practically we calculate this as \\(\\frac{\\Sigma (X - \\mu)^2}{n-1}\\)\nThe code below will calculate the variance and standard deviation of our Adelie penguin body masses.\n\nmyN &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt; count() #get n\n\nAdelieVar &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt;#filter only Adelies\n  mutate(diffs = (body_mass - mean(body_mass))^2)  |&gt; #calculate sqaured difference between each penguin's body mass and mean body mass\n  summarise(var = sum(diffs))/(myN-1) #get the expectation\n\nAdelieVar\n\n       var\n1 210282.9\n\n\nYou can also use a built in R function var().\n\npenguins2 |&gt; filter(species==\"Adelie\") |&gt; select(body_mass) |&gt; var()\n\n          body_mass\nbody_mass  210282.9\n\n\nThe standard deviation is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as \\(\\sigma\\) compared to the variance, which is written as \\(\\sigma^2\\) so we can express the standard deviation kind of funnily as: \\(\\sigma = sqrt{\\sigma^2}\\). When we calculate the standard deviation of a sample, it is often refered to as \\(s\\) to distinguish it from the true standard deviation of the population (\\(\\sigma\\)).\nWe can get the standard deviation by taking the square root of the variance we just calculated.\n\nsqrt(AdelieVar$var)\n\n[1] 458.5661\n\n\nor by using the built in R function sd().\n\nadelieMasses &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt; select(body_mass) \nsd(adelieMasses$body_mass)\n\n[1] 458.5661\n\n\n\n6.4.1 Standard error\nTo quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).\nThe standard error is the standard deviation adjusted for the sample size. So for a sample size of \\(n\\) and a sample standard deviation of \\(s\\), the standard error (\\(SE\\)) equals \\(\\frac{s}{\\sqrt{n-1}}\\).\nHere is code cor calculating the standard error of our sample of Adelie penguins.\n\nadelieMasses &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt; select(body_mass) \nsdAdelies = sd(adelieMasses$body_mass)/(sqrt(nrow(adelieMasses)-1))\nsdAdelies\n\n[1] 37.44177\n\n\nAnd here is a plot of how the standard error scales with sample size (from increasingly large samples of penguins)\n\nsampleAdelies &lt;- function(n){\n  mySample = sample(adelieMasses$body_mass, size=n,replace=F)\n  return(sd(mySample)/(sqrt(n-1)))\n}\n\nmyStderrors &lt;- sapply(2:150, sampleAdelies)\n\nplot(2:150, myStderrors, col = palette()[2], bty=\"n\", xlab=\"n\", ylab = \"standard error\")",
+    "text": "6.4 Measuring variation\nThere are various ways to measure variation in a data set.\nThe variance is the expectation of the differences between individuals and the population mean. For a set of data points \\(X\\) with mean \\(\\mu\\), \\(\\text{Var}(X) = E[(X - \\mu)^2]\\). Practically we calculate this as \\(\\frac{\\Sigma (X - \\mu)^2}{n-1}\\)\nThe code below will calculate the variance and standard deviation of our Adelie penguin body masses.\n\nmyN &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt; count() #get n\n\nAdelieVar &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt;#filter only Adelies\n  mutate(diffs = (body_mass - mean(body_mass))^2)  |&gt; #calculate sqaured difference between each penguin's body mass and mean body mass\n  summarise(var = sum(diffs))/(myN-1) #get the expectation\n\nAdelieVar\n\n       var\n1 210282.9\n\n\nYou can also use a built in R function var().\n\npenguins2 |&gt; filter(species==\"Adelie\") |&gt; select(body_mass) |&gt; var()\n\n          body_mass\nbody_mass  210282.9\n\n\nThe standard deviation is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as \\(\\sigma\\) compared to the variance, which is written as \\(\\sigma^2\\) so we can express the standard deviation kind of funnily as: \\(\\sigma = sqrt{\\sigma^2}\\). When we calculate the standard deviation of a sample, it is often refered to as \\(s\\) to distinguish it from the true standard deviation of the population (\\(\\sigma\\)).\nWe can get the standard deviation by taking the square root of the variance we just calculated.\n\nsqrt(AdelieVar$var)\n\n[1] 458.5661\n\n\nor by using the built in R function sd().\n\nadelieMasses &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt; select(body_mass) \nsd(adelieMasses$body_mass)\n\n[1] 458.5661\n\n\n\n6.4.1 Standard error\nTo quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).\nThe standard error is the standard deviation adjusted for the sample size. So for a sample size of \\(n\\) and a sample standard deviation of \\(s\\), the standard error (\\(SE\\)) equals \\(\\frac{s}{\\sqrt{n-1}}\\).\nHere is code cor calculating the standard error of our sample of Adelie penguins.\n\nadelieMasses &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt; select(body_mass) \nsdAdelies = sd(adelieMasses$body_mass)/(sqrt(nrow(adelieMasses)-1))\nsdAdelies\n\n[1] 37.44177\n\n\nAnd here is a plot of how the standard error scales with sample size (from increasingly large samples of penguins)\n\nset.seed(1000)\nsampleAdelies &lt;- function(n){\n  mySample = sample(adelieMasses$body_mass, size=n,replace=F)\n  return(sd(mySample)/(sqrt(n-1)))\n}\n\nmyStderrors &lt;- sapply(2:150, sampleAdelies)\n\nplot(2:150, myStderrors, col = palette()[2], bty=\"n\", xlab=\"n\", ylab = \"standard error\")",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -424,21 +424,27 @@
     "href": "pvalues.html#hypothesis-testing",
     "title": "6  P values",
     "section": "6.5 Hypothesis testing",
-<<<<<<< HEAD
-    "text": "6.5 Hypothesis testing\nMuch of statistics uses a hypothesis testing framework whether we try to distinguish between two possibilities: a null hypothesis and an alternative hypothesis.\nStatistical hypotheses differ from the scientific hypotheses you may be more familiar with. Scientific hypotheses make claims about phenomena and the processes that cause them. For example, a scientific hypothesis might be “Plants from the desert are adapted to drought conditions” while a statistical hypothesis would be “The mean fitness of desert genotypes is higher than the mean fitness of grassland genotypes in dry conditions”. Part of designing a good experiment is figuring out how to link statistical hypotheses to scientific hypotheses, and then do the experiments to test the statistical hypotheses.\n\n6.5.1 Null hypothesis\nThe null hypothesis is a claim about a population parameter that tells us what we expect if the process from a scientific hypothesis is not occurring. The null hypothesis should be something that would be interesting to reject. In the previous example, a null hypothesis would be that plants from different environments do not have different fitnesses in dry conditions. We often abbreviate the null hypothesis as \\(H_0\\).\nA null hypothesis needs a corresponding alternative hypothesis (\\(H_A\\)). These alternative hypotheses are usually more biologically interesting. In our previous example, \\(H_A\\) might be that “Desert genotypes have higher fitness than grassland genotypes in dry conditions”.\nNot all science relies upon a null and alternative hypothesis testing framework – this is just one potential way to do statistics. Some scientists may be more interested in making specific parameter estimates, or in exploring which of many factors are important for a process. It’s also often good scientific strategy to set up experiments where instead of rejecting a null hypothesis, your results will let you distinguish among multiple interesting potential hypotheses (making your results exciting no matter what happens).\n\n\n6.5.2 Frameworks for rejecting the null hypothesis\nNow, how do we distinguish betwen the null hypothesis and alternative hypothesis? We often use a test statistic, which is calculated from the data, and compare it to a null distribution of our expectation for the test statistic under the hypothesis. Next we’ll lay out some of the statistics and distributions that are commonly used.\n\n\n6.5.3 T distribution\nSo we have a null hypothesis and we have a sample mean. How do we test for whether our sample is expected under the null hypothesis?\nThe t distribution tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis.\nWe can use this distribution to calculate a t value describing the number of standard errors between our sample mean (\\(x_0\\)) and the mean of the null distribution (\\(\\mu_0\\)). We calculate this with the following equation:\n\\[ t = \\frac{\\bar{x}-\\mu_0}{SE_x}\\]\nReturning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 5000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate \\(t\\) using the following code:\n\nxbar = mean(adelieMasses$body_mass)\nmu0 = 5000\n\nmyT = (xbar-mu0)/sdAdelies\nmyT\n\n[1] -34.7029\n\n\nThis tells us that the mean body mass of our Adelie penguin sample is 34 standard errors below 5000g. This seems pretty different! But how different?\n\n\n6.5.4 Degrees of freedom\nFirst we need to figure out the degrees of freedom that help us interpret \\(t\\). In this case, the degrees of freedom are equal to \\(n-1\\) for a sample size of \\(n\\).\n\n\n6.5.5 Calculating a p value\n\\(p values\\) tell us about the proportion of the null distribution that is more extreme than our observed test statistic. So in a one-tailed test, a p value of 0.01 tells us that 1% of the null distribution is more extreme than the observed data. We can translate this into telling us that we expect to see data like ours 1% of the time even if the null hypothesis is true.\nTo calculate a p value for a t statistic, we can use the pt() function. The pt() function is analagous to pnorm() and other related functions.\n\ndf = nrow(adelieMasses)-1\np_val &lt;- 2*pt(q = myT, df=df, lower.tail=T) \np_val\n\n[1] 1.468086e-73\n\n\n\n\n6.5.6 F distribution",
-=======
     "text": "6.5 Hypothesis testing\nMuch of statistics uses a hypothesis testing framework whether we try to distinguish between two possibilities: a null hypothesis and an alternative hypothesis.\nStatistical hypotheses differ from the scientific hypotheses you may be more familiar with. Scientific hypotheses make claims about phenomena and the processes that cause them. For example, a scientific hypothesis might be “Plants from the desert are adapted to drought conditions” while a statistical hypothesis would be “The mean fitness of desert genotypes is higher than the mean fitness of grassland genotypes in dry conditions”. Part of designing a good experiment is figuring out how to link statistical hypotheses to scientific hypotheses, and then do the experiments to test the statistical hypotheses.\n\n6.5.1 Null hypothesis\nThe null hypothesis is a claim about a population parameter that tells us what we expect if the process from a scientific hypothesis is not occurring. The null hypothesis should be something that would be interesting to reject. In the previous example, a null hypothesis would be that plants from different environments do not have different fitnesses in dry conditions. We often abbreviate the null hypothesis as \\(H_0\\).\nA null hypothesis needs a corresponding alternative hypothesis (\\(H_A\\)). These alternative hypotheses are usually more biologically interesting. In our previous example, \\(H_A\\) might be that “Desert genotypes have higher fitness than grassland genotypes in dry conditions”.\nNot all science relies upon a null and alternative hypothesis testing framework – this is just one potential way to do statistics. Some scientists may be more interested in making specific parameter estimates, or in exploring which of many factors are important for a process. It’s also often good scientific strategy to set up experiments where instead of rejecting a null hypothesis, your results will let you distinguish among multiple interesting potential hypotheses (making your results exciting no matter what happens).\n\n\n6.5.2 Frameworks for rejecting the null hypothesis\nNow, how do we distinguish betwen the null hypothesis and alternative hypothesis? We often use a test statistic, which is calculated from the data, and compare it to a null distribution of our expectation for the test statistic under the hypothesis. Next we’ll lay out some of the statistics and distributions that are commonly used.\n\n\n6.5.3 T distribution\nSo we have a null hypothesis and we have a sample mean. How do we test for whether our sample is expected under the null hypothesis?\nThe t distribution tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis.\nWe can use this distribution to calculate a t value describing the number of standard errors between our sample mean (\\(x_0\\)) and the mean of the null distribution (\\(\\mu_0\\)). We calculate this with the following equation:\n\\[ t = \\frac{\\bar{x}-\\mu_0}{SE_x}\\]\nReturning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 4000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate \\(t\\) using the following code:\n\nxbar = mean(adelieMasses$body_mass)\nmu0 = 4000\n\nmyT = (xbar-mu0)/sdAdelies\nmyT\n\n[1] -7.994755\n\n\nThis tells us that the mean body mass of our Adelie penguin sample is 5.3 standard errors below 3500g. This kind of makes sense – we can see that if we add the mean mass of the Adelie penguins in the sample to the product of our t statistic and the standard error of the Adelie masses, we get 3500.\n\nmean(adelieMasses$body_mass)-myT*sdAdelies\n\n[1] 4000\n\n\nThis seems pretty different! But how different?\n\n\n6.5.4 Degrees of freedom\nFirst we need to figure out the degrees of freedom that help us interpret \\(t\\). In this case, the degrees of freedom are equal to \\(n-1\\) for a sample size of \\(n\\).\n\n\n6.5.5 Calculating a p value\np values tell us about the proportion of the null distribution that is more extreme than our observed test statistic. So in a one-tailed test, a p value of 0.01 tells us that 1% of the null distribution is more extreme than the observed data. We can translate this into telling us that we expect to see data like ours 1% of the time even if the null hypothesis is true.\nTo calculate a p value for a t statistic, we can use the pt() function. The pt() function is analagous to pnorm() and other related functions.\n\ndf = nrow(adelieMasses)-1\np_val &lt;- 2*pt(q = myT, df=df, lower.tail=T) \np_val\n\n[1] 3.218126e-13\n\n\nCongrats – you’ve just calculated a p value for a t test!\n\n\n6.5.6 Using R built in functions\nOf course, R has a built in function for doing this.\n\nmodel1&lt;-t.test(adelieMasses, mu=4000, alternative=\"two.sided\")\nmodel1$p.value\n\n[1] 2.765774e-13\n\n\nWe’ve gone through this very simple example to get a feel for where p values come from. You’ll get to try more realistic scenarios in the labs.",
->>>>>>> e616f718a27184f3e12f03afa7eb5b52ee664ddf
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
     ]
   },
   {
-    "objectID": "pvalues.html#likelihood-ratio-tests",
-    "href": "pvalues.html#likelihood-ratio-tests",
+    "objectID": "pvalues.html#other-ways-to-get-p-values",
+    "href": "pvalues.html#other-ways-to-get-p-values",
     "title": "6  P values",
-    "section": "6.7 Likelihood ratio tests",
-    "text": "6.7 Likelihood ratio tests\nLikelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.\nThe difference in log likelihoods (\\(D\\)) will follow a \\(\\chi ^2\\) distribution with degrees of freedom equal to the number of parameters tested.",
+    "section": "6.6 Other ways to get p values",
+    "text": "6.6 Other ways to get p values\n\n6.6.1 F distribution\n\n\n6.6.2 Likelihood ratio tests\nLikelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.\nThe difference in log likelihoods (\\(D\\)) will follow a \\(\\chi ^2\\) distribution with degrees of freedom equal to the number of parameters tested.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
+    ]
+  },
+  {
+    "objectID": "pvalues.html#review-questions",
+    "href": "pvalues.html#review-questions",
+    "title": "6  P values",
+    "section": "6.7 Review questions",
+    "text": "6.7 Review questions\nThe following code looks at variability in penguin bill length.\n\nmyN &lt;- nrow(penguins2)\n\nsumSquares &lt;- penguins2 |&gt; \n  mutate(diffs = (bill_len - mean(bill_len))^2)  |&gt; \n  summarise(sum(diffs))\n\nvalueA &lt;- sqrt(sumSquares[1,1]/(myN-1))\nvalueB &lt;- sumSquares[1,1]/(myN-1)\nvalueC &lt;- sqrt(sumSquares[1,1]/(myN-1))/sqrt(myN-1)\n\nMatch ‘valueA’,‘valueB’, and ‘valueC’ with the variance, standard deviation, and standard error.",
     "crumbs": [
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
     ]
@@ -574,98 +580,5 @@
       "Labs",
       "<span class='chapter-number'>11</span>  <span class='chapter-title'>Lab 4 -- ANOVA</span>"
     ]
-<<<<<<< HEAD
-=======
-  },
-  {
-    "objectID": "01-intro.html#who-i-am",
-    "href": "01-intro.html#who-i-am",
-    "title": "1  Chapter 1 – Introduction",
-    "section": "1.4 Who I am",
-    "text": "1.4 Who I am\nStuff about Emily goes here",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
-    ]
-  },
-  {
-    "objectID": "01-intro.html#acknowledgements",
-    "href": "01-intro.html#acknowledgements",
-    "title": "1  Chapter 1 – Introduction",
-    "section": "1.6 Acknowledgements",
-    "text": "1.6 Acknowledgements\nYaniv Brandvain’s online statistics textbook inspired this project and he has answered so many of my statistical and logistical questions.\nThis course section was originally developed by Gideon Bradburd and I learned a ton from teaching it.\nDoc Edge and his cool statistics textbook have been big sources of statistical knowledge.",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
-    ]
-  },
-  {
-    "objectID": "pvalues.html#the-population-vs-the-sample-recap",
-    "href": "pvalues.html#the-population-vs-the-sample-recap",
-    "title": "6  P values",
-    "section": "6.3 The population vs the sample recap",
-    "text": "6.3 The population vs the sample recap\nThe population we are studying has true values and parameters. However, without measuring every individual in the population, we will not get to know these true parameters. Instead, we sample the population and use statistics to make inferences about the population.\nThe sampling distribution is the distribution of parameters we would get from sampling multiple times. It tells us about the amount of error generated from taking a sample. We need to know this to determine how much certainty we can get from the sample.",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
-    ]
-  },
-  {
-    "objectID": "pvalues.html#p-values-from-distributions",
-    "href": "pvalues.html#p-values-from-distributions",
-    "title": "6  P values",
-    "section": "6.6 P values from distributions",
-    "text": "6.6 P values from distributions\n\n6.6.1 T distribution\n\n\n6.6.2 Degrees of freedom\n\n\n6.6.3 Calculating a p value\n\n\n6.6.4 F distribution",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
-    ]
-  },
-  {
-    "objectID": "pvalues.html#learning-goals",
-    "href": "pvalues.html#learning-goals",
-    "title": "6  P values",
-    "section": "6.2 Learning goals",
-    "text": "6.2 Learning goals\n\nApply and interpret different ways to measure variation\nDefine a scientific hypothesis, determine appropriate null hypotheses.\nCalculate and interpret p values for a linear model based on t and F distributions.\nCalculate and interpet p values from likelihood ratio tests.",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
-    ]
-  },
-  {
-    "objectID": "pvalues.html#measuring-variation",
-    "href": "pvalues.html#measuring-variation",
-    "title": "6  P values",
-    "section": "6.4 Measuring variation",
-    "text": "6.4 Measuring variation\nThere are various ways to measure variation in a data set.\nThe variance is the expectation of the differences between individuals and the population mean. For a set of data points \\(X\\) with mean \\(\\mu\\), \\(\\text{Var}(X) = E[(X - \\mu)^2]\\). Practically we calculate this as \\(\\frac{\\Sigma (X - \\mu)^2}{n-1}\\)\nThe code below will calculate the variance and standard deviation of our Adelie penguin body masses.\n\nmyN &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt; count() #get n\n\nAdelieVar &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt;#filter only Adelies\n  mutate(diffs = (body_mass - mean(body_mass))^2)  |&gt; #calculate sqaured difference between each penguin's body mass and mean body mass\n  summarise(var = sum(diffs))/(myN-1) #get the expectation\n\nAdelieVar\n\n       var\n1 210282.9\n\n\nYou can also use a built in R function var().\n\npenguins2 |&gt; filter(species==\"Adelie\") |&gt; select(body_mass) |&gt; var()\n\n          body_mass\nbody_mass  210282.9\n\n\nThe standard deviation is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as \\(\\sigma\\) compared to the variance, which is written as \\(\\sigma^2\\) so we can express the standard deviation kind of funnily as: \\(\\sigma = sqrt{\\sigma^2}\\). When we calculate the standard deviation of a sample, it is often refered to as \\(s\\) to distinguish it from the true standard deviation of the population (\\(\\sigma\\)).\nWe can get the standard deviation by taking the square root of the variance we just calculated.\n\nsqrt(AdelieVar$var)\n\n[1] 458.5661\n\n\nor by using the built in R function sd().\n\nadelieMasses &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt; select(body_mass) \nsd(adelieMasses$body_mass)\n\n[1] 458.5661\n\n\n\n6.4.1 Standard error\nTo quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).\nThe standard error is the standard deviation adjusted for the sample size. So for a sample size of \\(n\\) and a sample standard deviation of \\(s\\), the standard error (\\(SE\\)) equals \\(\\frac{s}{\\sqrt{n-1}}\\).\nHere is code cor calculating the standard error of our sample of Adelie penguins.\n\nadelieMasses &lt;- penguins2 |&gt; filter(species==\"Adelie\") |&gt; select(body_mass) \nsdAdelies = sd(adelieMasses$body_mass)/(sqrt(nrow(adelieMasses)-1))\nsdAdelies\n\n[1] 37.44177\n\n\nAnd here is a plot of how the standard error scales with sample size (from increasingly large samples of penguins)\n\nset.seed(1000)\nsampleAdelies &lt;- function(n){\n  mySample = sample(adelieMasses$body_mass, size=n,replace=F)\n  return(sd(mySample)/(sqrt(n-1)))\n}\n\nmyStderrors &lt;- sapply(2:150, sampleAdelies)\n\nplot(2:150, myStderrors, col = palette()[2], bty=\"n\", xlab=\"n\", ylab = \"standard error\")",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
-    ]
-  },
-  {
-    "objectID": "pvalues.html#frameworks-for-rejecting-the-null-hypothesis",
-    "href": "pvalues.html#frameworks-for-rejecting-the-null-hypothesis",
-    "title": "6  P values",
-    "section": "6.6 Frameworks for rejecting the null hypothesis",
-    "text": "6.6 Frameworks for rejecting the null hypothesis\nNow, how do we distinguish betwen the null hypothesis and alternative hypothesis? We often use a test statistic, which is calculated from the data, and compare it to a null distribution of our expectation for the test statistic under the hypothesis. Next we’ll lay out some of the statistics and distributions that are commonly used.\n\n6.6.1 T distribution\nSo we have a null hypothesis and we have a sample mean. How do we test for whether our sample is expected under the null hypothesis?\nThe t distribution tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis.\n\n\n6.6.2 Degrees of freedom\n\n\n6.6.3 Calculating a p value\n\n\n6.6.4 F distribution",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
-    ]
-  },
-  {
-    "objectID": "pvalues.html#other-ways-to-get-p-values",
-    "href": "pvalues.html#other-ways-to-get-p-values",
-    "title": "6  P values",
-    "section": "6.6 Other ways to get p values",
-    "text": "6.6 Other ways to get p values\n\n6.6.1 F distribution\n\n\n6.6.2 Likelihood ratio tests\nLikelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.\nThe difference in log likelihoods (\\(D\\)) will follow a \\(\\chi ^2\\) distribution with degrees of freedom equal to the number of parameters tested.",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
-    ]
-  },
-  {
-    "objectID": "pvalues.html#review-questions",
-    "href": "pvalues.html#review-questions",
-    "title": "6  P values",
-    "section": "6.7 Review questions",
-    "text": "6.7 Review questions\nThe following code looks at variability in penguin bill length.\n\nmyN &lt;- nrow(penguins2)\n\nsumSquares &lt;- penguins2 |&gt; \n  mutate(diffs = (bill_len - mean(bill_len))^2)  |&gt; \n  summarise(sum(diffs))\n\nvalueA &lt;- sqrt(sumSquares[1,1]/(myN-1))\nvalueB &lt;- sumSquares[1,1]/(myN-1)\nvalueC &lt;- sqrt(sumSquares[1,1]/(myN-1))/sqrt(myN-1)\n\nMatch ‘valueA’,‘valueB’, and ‘valueC’ with the variance, standard deviation, and standard error.",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>P values</span>"
-    ]
->>>>>>> e616f718a27184f3e12f03afa7eb5b52ee664ddf
   }
 ]

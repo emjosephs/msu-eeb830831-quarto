@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -485,27 +485,14 @@ body_mass  210282.9</code></pre>
 <p>The <strong>t distribution</strong> tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis.</p>
 <p>We can use this distribution to calculate a <strong>t value</strong> describing the number of standard errors between our sample mean (<span class="math inline">\(x_0\)</span>) and the mean of the null distribution (<span class="math inline">\(\mu_0\)</span>). We calculate this with the following equation:</p>
 <p><span class="math display">\[ t = \frac{\bar{x}-\mu_0}{SE_x}\]</span></p>
-<<<<<<< HEAD
-<p>Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 5000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate <span class="math inline">\(t\)</span> using the following code:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">=</span> <span class="fu">mean</span>(adelieMasses<span class="sc">$</span>body_mass)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mu0 <span class="ot">=</span> <span class="dv">5000</span></span>
-=======
 <p>Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 4000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate <span class="math inline">\(t\)</span> using the following code:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">=</span> <span class="fu">mean</span>(adelieMasses<span class="sc">$</span>body_mass)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mu0 <span class="ot">=</span> <span class="dv">4000</span></span>
->>>>>>> e616f718a27184f3e12f03afa7eb5b52ee664ddf
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>myT <span class="ot">=</span> (xbar<span class="sc">-</span>mu0)<span class="sc">/</span>sdAdelies</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>myT</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<<<<<<< HEAD
-<pre><code>[1] -34.7029</code></pre>
-</div>
-</div>
-<p>This tells us that the mean body mass of our Adelie penguin sample is 34 standard errors below 5000g. This seems pretty different! But how different?</p>
-=======
 <pre><code>[1] -7.994755</code></pre>
 </div>
 </div>
@@ -517,7 +504,6 @@ body_mass  210282.9</code></pre>
 </div>
 </div>
 <p>This seems pretty different! But how different?</p>
->>>>>>> e616f718a27184f3e12f03afa7eb5b52ee664ddf
 </section>
 <section id="degrees-of-freedom" class="level3" data-number="6.5.4">
 <h3 data-number="6.5.4" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">6.5.4</span> Degrees of freedom</h3>
@@ -525,18 +511,6 @@ body_mass  210282.9</code></pre>
 </section>
 <section id="calculating-a-p-value" class="level3" data-number="6.5.5">
 <h3 data-number="6.5.5" class="anchored" data-anchor-id="calculating-a-p-value"><span class="header-section-number">6.5.5</span> Calculating a p value</h3>
-<<<<<<< HEAD
-<p><span class="math inline">\(p values\)</span> tell us about the proportion of the null distribution that is more extreme than our observed test statistic. So in a one-tailed test, a p value of 0.01 tells us that 1% of the null distribution is more extreme than the observed data. We can translate this into telling us that we expect to see data like ours 1% of the time even if the null hypothesis is true.</p>
-<p>To calculate a p value for a t statistic, we can use the pt() function. The pt() function is analagous to pnorm() and other related functions.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">nrow</span>(adelieMasses)<span class="sc">-</span><span class="dv">1</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>p_val <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="at">q =</span> myT, <span class="at">df=</span>df, <span class="at">lower.tail=</span>T) </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>p_val</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 1.468086e-73</code></pre>
-</div>
-</div>
-=======
 <p><em>p values</em> tell us about the proportion of the null distribution that is more extreme than our observed test statistic. So in a one-tailed test, a p value of 0.01 tells us that 1% of the null distribution is more extreme than the observed data. We can translate this into telling us that we expect to see data like ours 1% of the time even if the null hypothesis is true.</p>
 <p>To calculate a p value for a t statistic, we can use the pt() function. The pt() function is analagous to pnorm() and other related functions.</p>
 <div class="cell">
@@ -548,7 +522,6 @@ body_mass  210282.9</code></pre>
 </div>
 </div>
 <p>Congrats – you’ve just calculated a p value for a t test!</p>
->>>>>>> e616f718a27184f3e12f03afa7eb5b52ee664ddf
 </section>
 <section id="using-r-built-in-functions" class="level3" data-number="6.5.6">
 <h3 data-number="6.5.6" class="anchored" data-anchor-id="using-r-built-in-functions"><span class="header-section-number">6.5.6</span> Using R built in functions</h3>
