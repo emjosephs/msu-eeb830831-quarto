@@ -100,6 +100,7 @@ sdAdelies
 And here is a plot of how the standard error scales with sample size (from increasingly large samples of penguins)
 
 ```{r}
+set.seed(1000)
 sampleAdelies <- function(n){
   mySample = sample(adelieMasses$body_mass, size=n,replace=F)
   return(sd(mySample)/(sqrt(n-1)))
@@ -135,18 +136,24 @@ We can use this distribution to calculate a **t value** describing the number of
 
 $$ t = \frac{\bar{x}-\mu_0}{SE_x}$$
 
-Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 5000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate $t$
+Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 4000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate $t$
 using the following code:
 
 ```{r}
 xbar = mean(adelieMasses$body_mass)
-mu0 = 5000
+mu0 = 4000
 
 myT = (xbar-mu0)/sdAdelies
 myT
 ```
 
-This tells us that the mean body mass of our Adelie penguin sample is 34 standard errors below 5000g. This seems pretty different! But how different?
+This tells us that the mean body mass of our Adelie penguin sample is 5.3 standard errors below 3500g. This kind of makes sense -- we can see that if we add the mean mass of the Adelie penguins in the sample to the product of our t statistic and the standard error of the Adelie masses, we get 3500.
+
+```{r}
+mean(adelieMasses$body_mass)-myT*sdAdelies
+```
+
+This seems pretty different! But how different?
 
 ### Degrees of freedom
 
@@ -164,12 +171,44 @@ p_val <- 2*pt(q = myT, df=df, lower.tail=T)
 p_val
 ```
 
+Congrats -- you've just calculated a p value for a t test!
+
+### Using R built in functions
+Of course, R has a built in function for doing this. 
+
+```{r}
+model1<-t.test(adelieMasses, mu=4000, alternative="two.sided")
+model1$p.value
+```
+
+We've gone through this very simple example to get a feel for where p values come from. You'll get to try more realistic scenarios in the labs.
+
+
+## Other ways to get p values
+
 ### F distribution
 
-## Likelihood ratio tests
+### Likelihood ratio tests
 
 Likelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.
 
 The difference in log likelihoods ($D$) will follow a $\chi ^2$ distribution with degrees of freedom equal to the number of parameters tested.
 
+## Review questions
+
+The following code looks at variability in penguin bill length. 
+
+```{r}
+myN <- nrow(penguins2)
+
+sumSquares <- penguins2 |> 
+  mutate(diffs = (bill_len - mean(bill_len))^2)  |> 
+  summarise(sum(diffs))
+
+valueA <- sqrt(sumSquares[1,1]/(myN-1))
+valueB <- sumSquares[1,1]/(myN-1)
+valueC <- sqrt(sumSquares[1,1]/(myN-1))/sqrt(myN-1)
+```
+
+Match 'valueA','valueB', and 'valueC' with the variance, standard deviation, and standard error.
 
