@@ -87,7 +87,7 @@ sd(adelieMasses$body_mass)
 
 To quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).
 
-The *standard error* is the standard deviation  adjusted for the sample size. So for a sample size of $n$ and a sample standard deviation of $s$, the standard error ($SE$) equals $\frac{s}{\sqrt{n-1}}$.
+The **standard error** is the standard deviation  adjusted for the sample size. So for a sample size of $n$ and a sample standard deviation of $s$, the standard error ($SE$) equals $\frac{s}{\sqrt{n-1}}$.
 
 Here is code cor calculating the standard error of our sample of Adelie penguins.
 

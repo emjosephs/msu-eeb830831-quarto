@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; P values – EEB 830/831</title>
+<title>6&nbsp; P values – EEB 830 pt 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -160,7 +160,27 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">EEB 830/831</a> 
+      <a href="./">EEB 830 pt 2</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/emjosephs/msu-eeb830831-quarto" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./EEB-830-pt-2.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./EEB-830-pt-2.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -281,7 +301,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#likelihood-ratio-tests" id="toc-likelihood-ratio-tests" class="nav-link" data-scroll-target="#likelihood-ratio-tests"><span class="header-section-number">6.6</span> Likelihood ratio tests</a></li>
   </ul>
-</nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/pvalues.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -409,11 +429,12 @@ body_mass  210282.9</code></pre>
 <section id="standard-error" class="level3" data-number="6.4.1">
 <h3 data-number="6.4.1" class="anchored" data-anchor-id="standard-error"><span class="header-section-number">6.4.1</span> Standard error</h3>
 <p>To quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).</p>
-<p>The <em>standard error</em> is the standard deviation adjusted for the sample size. So for a sample size of <span class="math inline">\(n\)</span> and a sample standard deviation of <span class="math inline">\(s\)</span>, the standard error (<span class="math inline">\(SE\)</span>) equals <span class="math inline">\(\frac{s}{\sqrt{n-1}}\)</span>.</p>
+<p>The <strong>standard error</strong> is the standard deviation adjusted for the sample size. So for a sample size of <span class="math inline">\(n\)</span> and a sample standard deviation of <span class="math inline">\(s\)</span>, the standard error (<span class="math inline">\(SE\)</span>) equals <span class="math inline">\(\frac{s}{\sqrt{n-1}}\)</span>.</p>
 <p>Here is code cor calculating the standard error of our sample of Adelie penguins.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>adelieMasses <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass) </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(adelieMasses<span class="sc">$</span>body_mass)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="fu">nrow</span>(adelieMasses)<span class="sc">-</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sdAdelies <span class="ot">=</span> <span class="fu">sd</span>(adelieMasses<span class="sc">$</span>body_mass)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="fu">nrow</span>(adelieMasses)<span class="sc">-</span><span class="dv">1</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sdAdelies</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 37.44177</code></pre>
 </div>
@@ -456,16 +477,37 @@ body_mass  210282.9</code></pre>
 <h3 data-number="6.5.3" class="anchored" data-anchor-id="t-distribution"><span class="header-section-number">6.5.3</span> T distribution</h3>
 <p>So we have a null hypothesis and we have a sample mean. How do we test for whether our sample is expected under the null hypothesis?</p>
 <p>The <strong>t distribution</strong> tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis.</p>
-<p>We can use this distribution to calculate a <strong>t value</strong> describing the number of standard errors between our sample mean and the mean of the null distribution. We calculate this with the following equation:</p>
+<p>We can use this distribution to calculate a <strong>t value</strong> describing the number of standard errors between our sample mean (<span class="math inline">\(x_0\)</span>) and the mean of the null distribution (<span class="math inline">\(\mu_0\)</span>). We calculate this with the following equation:</p>
 <p><span class="math display">\[ t = \frac{\bar{x}-\mu_0}{SE_x}\]</span></p>
-<p>Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 5000g and want to test to see if our sample mean is consistent with the null hypothesis.</p>
+<p>Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 5000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate <span class="math inline">\(t\)</span> using the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">=</span> <span class="fu">mean</span>(adelieMasses<span class="sc">$</span>body_mass)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mu0 <span class="ot">=</span> <span class="dv">5000</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>myT <span class="ot">=</span> (xbar<span class="sc">-</span>mu0)<span class="sc">/</span>sdAdelies</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>myT</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -34.7029</code></pre>
+</div>
+</div>
+<p>This tells us that the mean body mass of our Adelie penguin sample is 34 standard errors below 5000g. This seems pretty different! But how different?</p>
 </section>
 <section id="degrees-of-freedom" class="level3" data-number="6.5.4">
 <h3 data-number="6.5.4" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">6.5.4</span> Degrees of freedom</h3>
+<p>First we need to figure out the <em>degrees of freedom</em> that help us interpret <span class="math inline">\(t\)</span>. In this case, the degrees of freedom are equal to <span class="math inline">\(n-1\)</span> for a sample size of <span class="math inline">\(n\)</span>.</p>
 </section>
 <section id="calculating-a-p-value" class="level3" data-number="6.5.5">
 <h3 data-number="6.5.5" class="anchored" data-anchor-id="calculating-a-p-value"><span class="header-section-number">6.5.5</span> Calculating a p value</h3>
 <p><span class="math inline">\(p values\)</span> tell us about the proportion of the null distribution that is more extreme than our observed test statistic. So in a one-tailed test, a p value of 0.01 tells us that 1% of the null distribution is more extreme than the observed data. We can translate this into telling us that we expect to see data like ours 1% of the time even if the null hypothesis is true.</p>
+<p>To calculate a p value for a t statistic, we can use the pt() function. The pt() function is analagous to pnorm() and other related functions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="fu">nrow</span>(adelieMasses)<span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>p_val <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">pt</span>(<span class="at">q =</span> myT, <span class="at">df=</span>df, <span class="at">lower.tail=</span>T) </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>p_val</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.468086e-73</code></pre>
+</div>
+</div>
 </section>
 <section id="f-distribution" class="level3" data-number="6.5.6">
 <h3 data-number="6.5.6" class="anchored" data-anchor-id="f-distribution"><span class="header-section-number">6.5.6</span> F distribution</h3>
@@ -914,4 +956,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/pvalues.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>

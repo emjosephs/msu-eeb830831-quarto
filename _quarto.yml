@@ -3,9 +3,13 @@ project:
   output-dir: docs
 
 book:
-  title: "EEB 830/831"
+  title: "EEB 830 pt 2"
   author: "Emily Josephs"
   date: "3/12/2025"
+  search: true
+  downloads: [pdf, epub]
+  repo-url: https://github.com/emjosephs/msu-eeb830831-quarto
+  repo-actions: [edit]
   chapters:
     - index.qmd
     - 01-intro.qmd
