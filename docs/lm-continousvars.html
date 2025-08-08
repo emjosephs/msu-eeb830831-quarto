@@ -136,7 +136,7 @@ window.Quarto = {
 <link rel="stylesheet" href="assets/sticky-notes.css">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -308,7 +308,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lm-continousvars.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -333,7 +333,7 @@ window.Quarto = {
 <h2 data-number="5.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">5.1</span> What are we doing here?</h2>
 <p>Many of the variables you are interested are continuous, not categorical. In this section we’ll extend our linear models to incorporate continuous predictor variables.</p>
 </section>
-<section id="motivating-example" class="level2" data-number="5.2">
+<section id="motivating-example" class="level2 page-columns page-full" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">5.2</span> Motivating example</h2>
 <p>Continuing with the penguin example data, imagine that we are interested in understanding how bill length determines body mass – do penguins with longer bills also have larger bodies?</p>
 <div class="cell">
@@ -347,6 +347,16 @@ window.Quarto = {
 </div>
 </div>
 </div>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/hatpenguins.png" class="img-fluid figure-img" alt="A cartoon of two penguins wearing hats"></p>
+<figcaption>But do the penguins have hats? (Jeanette Warmuth, Public domain, via Wikimedia Commons)</figcaption>
+</figure>
+</div>
+</div></div></div>
 <p>We can plot out the data and see that there is potentially a relationship between bill length and body mass. But, imagine we have a biological reason for wanting to model body mass as a function of bill length. How would we do that?</p>
 </section>
 <section id="linear-models-with-continuous-predictors" class="level2" data-number="5.3">
@@ -366,7 +376,7 @@ window.Quarto = {
 <p><span class="math display">\[y_i = \hat{y}_i + N(b_0 + b_1 \times x_i, \sigma^2)\]</span></p>
 </section>
 </section>
-<section id="estimating-parameters-of-the-determinstic-function" class="level2" data-number="5.4">
+<section id="estimating-parameters-of-the-determinstic-function" class="level2 page-columns page-full" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="estimating-parameters-of-the-determinstic-function"><span class="header-section-number">5.4</span> Estimating parameters of the determinstic function</h2>
 <p>Here is some math for estimating these parameters.</p>
 <p>First, we start with the <em>covariance</em> between our response variable <span class="math inline">\(y\)</span> and our explanatory variable <span class="math inline">\(x\)</span>. The covariance tells us about how much <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> jointly deviate from their means – a high covariance means that an individual with a high value of <span class="math inline">\(x\)</span> likely also has a high value of <span class="math inline">\(y\)</span> while a low covariance tells us that an individual with a high value of <span class="math inline">\(x\)</span> could have any value of <span class="math inline">\(y\)</span>.</p>
@@ -389,13 +399,13 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="fitting-with-lm" class="level3" data-number="5.4.2">
+<section id="fitting-with-lm" class="level3 page-columns page-full" data-number="5.4.2">
 <h3 data-number="5.4.2" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">5.4.2</span> Fitting with lm()</h3>
 <p>Let’s try applying a linear model to our penguin data. We’ll use the lm() function in R.</p>
 <p><span class="math display">\[\text{Body mass}_i = b_0 + b_1 \times \text{Bill length}_i \]</span></p>
@@ -431,11 +441,21 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/19610701_Penguin_bowling_pins_at_inauguration_of_McMurdo_Station,_Antarctica,_bowling_alley.jpg" class="img-fluid figure-img" alt="A black and white photo of a group of penguins in a bowling alley, standing where the pins would be"></p>
+<figcaption>Don’t get any ideas (Bruce Raymond, United States Navy, credited photographer, Public domain, via Wikimedia Commons)</figcaption>
+</figure>
+</div>
+</div></div></div>
 </section>
 </section>
 <section id="residuals" class="level2" data-number="5.5">
@@ -450,7 +470,7 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -460,7 +480,7 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>

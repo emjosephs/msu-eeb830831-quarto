@@ -29,6 +29,16 @@ plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab 
 
 ```
 
+```{r}
+#| echo: false
+#| column: margin
+#| fig-alt: "A cartoon of two penguins wearing hats"
+#| fig-cap: "But do the penguins have hats? (Jeanette Warmuth, Public domain, via Wikimedia Commons)" 
+library(knitr)
+include_graphics("figs/hatpenguins.png")
+```
+
+
 We can plot out the data and see that there is potentially a relationship between bill length and body mass. But, imagine we have a biological reason for wanting to model body mass as a function of bill length. How would we do that?
 
 ## Linear models with continuous predictors
@@ -157,6 +167,16 @@ We can also plot the predictions from this model over the raw data.
 plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
 abline(model1, col=palette()[3], lwd=2)
 
+```
+
+
+```{r}
+#| echo: false
+#| column: margin
+#| fig-alt: "A black and white photo of a group of penguins in a bowling alley, standing where the pins would be"
+#| fig-cap: "Don't get any ideas (Bruce Raymond, United States Navy, credited photographer, Public domain, via Wikimedia Commons)" 
+library(knitr)
+include_graphics("figs/19610701_Penguin_bowling_pins_at_inauguration_of_McMurdo_Station,_Antarctica,_bowling_alley.jpg")
 ```
 
 

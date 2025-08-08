@@ -32,6 +32,16 @@ plot(penguins2$body_mass, bty="n", ylab = "body mass",
 legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette())
 ```
 
+
+```{r}
+#| echo: false
+#| column: margin
+#| fig-alt: "Two penguins on a rock"
+#| fig-cap: "Chinstrap Penguins -- Christopher Michel, CC BY 2.0 <https://creativecommons.org/licenses/by/2.0>, via Wikimedia Commons" 
+library(knitr)
+include_graphics("figs/Chinstrap-penguin.jpg")
+```
+
 ## Learning goals
 - Apply and interpret different ways to measure variation
 - Define a scientific hypothesis, determine appropriate null hypotheses.

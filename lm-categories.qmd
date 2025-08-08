@@ -46,6 +46,15 @@ Let's walk through how to use a linear model to estimate the differences between
 
 ### Estimating conditional means
 
+```{r}
+#| echo: false
+#| column: margin
+#| fig-alt: "Four penguins on a rock"
+#| fig-cap: "Adelie Penguins -- By cyfer13 - IMG_1815, CC BY 2.0, https://commons.wikimedia.org/w/index.php?curid=4048994" 
+library(knitr)
+include_graphics("figs/Adelie_Penguin2.jpg")
+```
+
 
 We want to start by estimating the mean body mass of each species of penguin. 
 The code below does this
