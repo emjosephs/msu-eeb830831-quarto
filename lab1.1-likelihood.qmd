@@ -1,0 +1,26 @@
+---
+title: "Lab 1 -- Simple Linear Models"
+format: html
+editor: source
+---
+
+This is a lab to practice simple linear models with means and categories.
+
+We will be simulating data to use in this model.
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
+```
+
+Biological scenario goes here
+
+
+```{r}
+set.seed(20)
+myData = rnorm(n=100, mean=2, sd=.5)
+
+
+```

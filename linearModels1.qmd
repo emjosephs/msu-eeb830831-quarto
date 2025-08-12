@@ -328,7 +328,7 @@ abline(v = 4202, lwd=2, lty=2, col=palette())
 
 ## Practice problems
 
-1. Continuing with the penguin data, we will look at a different variable: bill length. 
+Continuing with the penguin data, we will look at a different variable: bill length. 
 
 Here is an equation for a linear model:
 
@@ -344,7 +344,7 @@ $$ \text{Bill length}_i \sim N(b_0, \sigma^2) $$
 2. Which part of the above equation is the deterministic part of the model? Which part is the stochastic part of the model?
 
 
-3. 
+
 
 ```{r, echo=F}
 model3 <- lm(bill_len~1, data=penguins)
@@ -356,7 +356,7 @@ points(250, penguins$bill_len[250], col=palette()[3], pch=8, cex=2, lwd=2)
 
 ```
 
-The plot above shows the data from our model. Each point represents a penguin and three penguins are highlighted in dark blue by either a square, triangle, or star. Which penguin has the largest residual?
+3.The plot above shows the data from our model. Each point represents a penguin and three penguins are highlighted in dark blue by either a square, triangle, or star. Which penguin has the largest residual?
 
 4. Which of the following pieces of code calculates the log likelihood of the model above?
 a. 

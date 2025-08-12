@@ -74,7 +74,7 @@
     "href": "likelihood.html",
     "title": "2  Hypothesis testing and likelihood",
     "section": "",
-    "text": "2.1 What are we doing here?\nSomeone hands us a coin and we flip it 100 times and get 46 heads.\nIs the coin fair? (probability of heads = 50%)\nWhat is the most likely probability of flipping heads for this coin?",
+    "text": "2.1 What are we doing here?",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
     ]
@@ -84,7 +84,7 @@
     "href": "likelihood.html#motivating-question",
     "title": "2  Hypothesis testing and likelihood",
     "section": "2.2 Motivating question",
-    "text": "2.2 Motivating question",
+    "text": "2.2 Motivating question\nSomeone hands us a coin and we flip it 100 times and get 46 heads.\nIs the coin fair? (probability of heads = 50%)\nWhat is the most likely probability of flipping heads for this coin?",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
     ]
@@ -164,7 +164,7 @@
     "href": "likelihood.html#practice-problems",
     "title": "2  Hypothesis testing and likelihood",
     "section": "2.10 Practice problems",
-    "text": "2.10 Practice problems\n\nSomeone tells you that the average height of a 4-year-old is 1 meter with a standard deviation of 5 centimeters. You want to know if this is accurate so you go to a daycare and measure the heights of 10 4-year-olds.\n\nWrite, in math, the probability distribution you expect for 4-year-old height.\n\nUse R to calculate the likelihood of observing a 4-year-old who is 110 cm tall if your information is accurate.\nWhat if the actual mean height of a 4-year-old is 115 cm? Now, what is the likelihood of observing a 110 cm tall 4-year-old?\nYou measure a second kid and find that they are 105 cm tall. Use R to calculate the likelihood of observing both kids if the underlying mean is 1 meter. What about if the underlying mean height is 110 cm?\nYou measure all the kids and get the following vector of heights: 112 89 112 102 126 114 111 112 112 114\n\nUse a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare)\n\nDoes it make sense to travel to another daycare to measure the height of another 10 kids to get a better estimate of height? How many kids would you want to measure to feel confident?",
+    "text": "2.10 Practice problems\n\nSomeone tells you that the average height of a 4-year-old is 1 meter with a standard deviation of 5 centimeters. You want to know if this is accurate so you go to a daycare and measure the heights of 10 4-year-olds.Write, in math, the probability distribution you expect for 4-year-old height.\nUse R to calculate the likelihood of observing a 4-year-old who is 110 cm tall if your information is accurate.\nWhat if the actual mean height of a 4-year-old is 115 cm? Now, what is the likelihood of observing a 110 cm tall 4-year-old?\nYou measure a second kid and find that they are 105 cm tall. Use R to calculate the likelihood of observing both kids if the underlying mean is 1 meter. What about if the underlying mean height is 110 cm?\nYou measure all the kids and get the following vector of heights: 112 89 112 102 126 114 111 112 112 114. Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare)\nDoes it make sense to travel to another daycare to measure the height of another 10 kids to get a better estimate of height? How many kids would you want to measure to feel confident?",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Hypothesis testing and likelihood</span>"
     ]
@@ -244,7 +244,7 @@
     "href": "linearModels1.html#practice-problems",
     "title": "3  Intro to Linear Models",
     "section": "3.8 Practice problems",
-    "text": "3.8 Practice problems\n\nContinuing with the penguin data, we will look at a different variable: bill length.\n\nHere is an equation for a linear model:\n\\[ \\text{Bill length}_i = b_0 + e_i\\ \\]\n\nDescribe what \\(b_0\\) and \\(e_i\\) represent.\n\nHere is a different way of writing the linear model\n\\[ \\text{Bill length}_i \\sim N(b_0, \\sigma^2) \\]\n\nWhich part of the above equation is the deterministic part of the model? Which part is the stochastic part of the model?\n\n\n\n\n\n\n\n\n\n\n\nThe plot above shows the data from our model. Each point represents a penguin and three penguins are highlighted in dark blue by either a square, triangle, or star. Which penguin has the largest residual?\n\nWhich of the following pieces of code calculates the log likelihood of the model above?\n\n\n\n\n\nsum(dnorm(penguins$bill_len, mean=44, sd=5, log=T))\n\n\n\n\n\nprod(dnorm(penguins$bill_len, mean=44, sd=5))\n\n\n\n\n\nprod(dnorm(penguins$body_mass, mean=44, sd=5))\n\n\n\n\n\nsum(dnorm(penguins$bill_len, mean=500, sd=5, log=T))",
+    "text": "3.8 Practice problems\nContinuing with the penguin data, we will look at a different variable: bill length.\nHere is an equation for a linear model:\n\\[ \\text{Bill length}_i = b_0 + e_i\\ \\]\n\nDescribe what \\(b_0\\) and \\(e_i\\) represent.\n\nHere is a different way of writing the linear model\n\\[ \\text{Bill length}_i \\sim N(b_0, \\sigma^2) \\]\n\nWhich part of the above equation is the deterministic part of the model? Which part is the stochastic part of the model?\n\n\n\n\n\n\n\n\n\n\n\nThe plot above shows the data from our model. Each point represents a penguin and three penguins are highlighted in dark blue by either a square, triangle, or star. Which penguin has the largest residual?\n\nWhich of the following pieces of code calculates the log likelihood of the model above?\n\n\n\n\n\nsum(dnorm(penguins$bill_len, mean=44, sd=5, log=T))\n\n\n\n\n\nprod(dnorm(penguins$bill_len, mean=44, sd=5))\n\n\n\n\n\nprod(dnorm(penguins$body_mass, mean=44, sd=5))\n\n\n\n\n\nsum(dnorm(penguins$bill_len, mean=500, sd=5, log=T))",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Intro to Linear Models</span>"
     ]

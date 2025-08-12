@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -326,12 +326,12 @@ window.Quarto = {
 
 <section id="what-are-we-doing-here" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">2.1</span> What are we doing here?</h2>
-<p>Someone hands us a coin and we flip it 100 times and get 46 heads.</p>
-<p>Is the coin fair? (probability of heads = 50%)</p>
-<p>What is the <em>most likely</em> probability of flipping heads for this coin?</p>
 </section>
 <section id="motivating-question" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="motivating-question"><span class="header-section-number">2.2</span> Motivating question</h2>
+<p>Someone hands us a coin and we flip it 100 times and get 46 heads.</p>
+<p>Is the coin fair? (probability of heads = 50%)</p>
+<p>What is the <em>most likely</em> probability of flipping heads for this coin?</p>
 </section>
 <section id="likelihood" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="likelihood"><span class="header-section-number">2.3</span> Likelihood</h2>
@@ -551,18 +551,12 @@ and more generally:</p>
 <section id="practice-problems" class="level2" data-number="2.10">
 <h2 data-number="2.10" class="anchored" data-anchor-id="practice-problems"><span class="header-section-number">2.10</span> Practice problems</h2>
 <ol type="1">
-<li>Someone tells you that the average height of a 4-year-old is 1 meter with a standard deviation of 5 centimeters. You want to know if this is accurate so you go to a daycare and measure the heights of 10 4-year-olds.</li>
-</ol>
-<p>Write, in math, the probability distribution you expect for 4-year-old height.</p>
-<ol start="2" type="1">
+<li><p>Someone tells you that the average height of a 4-year-old is 1 meter with a standard deviation of 5 centimeters. You want to know if this is accurate so you go to a daycare and measure the heights of 10 4-year-olds.Write, in math, the probability distribution you expect for 4-year-old height.</p></li>
 <li><p>Use R to calculate the likelihood of observing a 4-year-old who is 110 cm tall if your information is accurate.</p></li>
 <li><p>What if the actual mean height of a 4-year-old is 115 cm? Now, what is the likelihood of observing a 110 cm tall 4-year-old?</p></li>
 <li><p>You measure a second kid and find that they are 105 cm tall. Use R to calculate the likelihood of observing both kids if the underlying mean is 1 meter. What about if the underlying mean height is 110 cm?</p></li>
-<li><p>You measure all the kids and get the following vector of heights: 112 89 112 102 126 114 111 112 112 114</p></li>
-</ol>
-<p>Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare)</p>
-<ol start="6" type="1">
-<li>Does it make sense to travel to another daycare to measure the height of another 10 kids to get a better estimate of height? How many kids would you want to measure to feel confident?</li>
+<li><p>You measure all the kids and get the following vector of heights: 112 89 112 102 126 114 111 112 112 114. Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare)</p></li>
+<li><p>Does it make sense to travel to another daycare to measure the height of another 10 kids to get a better estimate of height? How many kids would you want to measure to feel confident?</p></li>
 </ol>
 
 

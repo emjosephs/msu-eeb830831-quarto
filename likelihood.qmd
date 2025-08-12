@@ -13,14 +13,16 @@ library(tidyverse)
 
 ## What are we doing here?
 
+Welcome to statistics! You've already learned the basics of R, along with probability. You'll now be using your knowledge to make inferences about the world using data. Today we'll be covering likelihood, a flexible approach for linking data to parameters. 
+
+## Motivating question
+
 Someone hands us a coin and we flip it 100 times and get 46 heads. 
 
 Is the coin fair? (probability of heads = 50%)
 
 What is the _most likely_ probability of flipping heads for this coin?
 
-
-## Motivating question
 
 
 ## Likelihood
@@ -49,8 +51,7 @@ an underlying process or **population**, and we try to learn about that populati
 A **statistical parameter** is a value that tells you something 
 about a , like the _true_ mean height of students in our class, or the _true_ frequency of a genetic variant in a species.
 
-BUT, we rarely get to know the truth! (we would know the truth if we censused everyone in a population,  or repeated a random process an infinite number of times). Instead, we can take _samples_ to try to learn about --  
-or **estimate** -- parameters.
+BUT, we rarely get to know the truth! (we would know the truth if we censused everyone in a population,  or repeated a random process an infinite number of times). Instead, we can take _samples_ to try to learn about --  or **estimate** -- parameters.
 
 ## A coin flip example
 
@@ -71,7 +72,7 @@ We can flip this around and write the probability of our data as the conditional
 
 $$ P(\text{observation}) = P(x=46 \mid p, n=100)$$
 
-### Calculating likelihood with math
+### Calculating likelihood
 
 We can use R to calculate these probabilities. In particular, the dbinom() function lets us calculate the probability of observing a particular number of successes given a specific $n$ and $p$. Below is code to calculate the probability of getting 46 heads if the coin is fair ($p=0.5$). Note the syntax of 'size' for $n$.
 
@@ -274,9 +275,7 @@ While this may seem obvious, it is a fundamental principal across the sciences. 
 
 ## Practice problems
 
-1. Someone tells you that the average height of a 4-year-old is 1 meter with a standard deviation of 5 centimeters. You want to know if this is accurate so you go to a daycare and measure the heights of 10 4-year-olds.
-
-Write, in math, the probability distribution you expect for 4-year-old height.
+1. Someone tells you that the average height of a 4-year-old is 1 meter with a standard deviation of 5 centimeters. You want to know if this is accurate so you go to a daycare and measure the heights of 10 4-year-olds.Write, in math, the probability distribution you expect for 4-year-old height.
 
 2. Use R to calculate the likelihood of observing a 4-year-old who is 110 cm tall if your information is accurate.
 
@@ -284,8 +283,6 @@ Write, in math, the probability distribution you expect for 4-year-old height.
 
 4. You measure a second kid and find that they are 105 cm tall. Use R to calculate the likelihood of observing both kids if the underlying mean is 1 meter. What about if the underlying mean height is 110 cm?
 
-5. You measure all the kids and get the following vector of heights: 112  89 112 102 126 114 111 112 112 114
-
-Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare)
+5. You measure all the kids and get the following vector of heights: 112  89 112 102 126 114 111 112 112 114. Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare).
 
 6. Does it make sense to travel to another daycare to measure the height of another 10 kids to get a better estimate of height? How many kids would you want to measure to feel confident?
