@@ -1,5 +1,5 @@
 ---
-title: "Lab 4 -- ANOVA"
+title: "Lab 2 -- ANOVA"
 format: html
 editor: source
 ---

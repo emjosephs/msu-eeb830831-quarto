@@ -1,5 +1,5 @@
 ---
-title: "Lab 3 -- Simple Linear Models"
+title: "Lab 2 -- Simple Linear Models"
 format: html
 editor: source
 ---

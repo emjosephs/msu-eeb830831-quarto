@@ -74,11 +74,11 @@ means[which.max(mylikelihood)]
 plot(means, mylikelihood)  
 ```
 
-## Linear models
+## Part 2: Linear models
 
 6. Let's model this data with a very simple linear model. Write a model below that includes a response variable (preference) as a function of a mean and residual.
 
-7. Use lm() to fit this linear model. Does the mean found my lm() match your maximum likelihood estimate from problem 5?
+7. Use lm() to fit this linear model. Does the mean found my lm() match your maximum likelihood estimate from question 5?
 ```{r, echo=F, eval=F}
 model1 <- lm(koalaprefs~1)
 
