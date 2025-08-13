@@ -1,12 +1,11 @@
 ---
-title: "Lab 1 -- Simple Linear Models"
+title: "Lab 1 -- Likelihood"
 format: html
 editor: source
 ---
 
-This is a lab to practice simple linear models with means and categories.
+This is a lab to practice likelihood and simple mean-only linear models.
 
-We will be simulating data to use in this model.
 
 ```{r}
 #| label: load-packages
@@ -15,12 +14,79 @@ library(tidyverse)
 palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
 ```
 
-Biological scenario goes here
+## Koala bellows
 
+```{r, out.width = "400px"}
+#| echo: false
+#| fig-alt: "A picture of a koala"
+#| fig-cap: "A koala (photo by David Illif)" 
+library(knitr)
+include_graphics("figs/koala.jpg")
+```
+
+
+Koalas bellow to attract mates. Charlton et al. studied female response to male bellows by exposing females to loudspeakers playing a bellow from a large male on one side and a small male on the other. They counted the number of times that females looked at each loudspeaker and calculate the preference for large males as the times females looked at the speaker with the large male minus the times looked at the speaker with the small male. (see https://doi.org/10.1016/j.anbehav.2012.09.034 for more)
+
+
+Here is data from their paper:
 
 ```{r}
-set.seed(20)
-myData = rnorm(n=100, mean=2, sd=.5)
+koalaprefs = c(-2,2,6,9,13,2,5,7,2,-6,4,3,2,6,-6)
+koalanames = c("Sprite","Nivea","Miniata","Trace","Donatella","Snorkle","Theresa","Crumpet","Yulara","Kat","Crumble","Chassis","Eeyore","Violet","Paddle","mel")
+```
+
+## Part 1: Likelihood
+
+1. Take the sixth  koala in your simulated dataset. Her name is Snorkle. What is the likelihood of getting a the data corresponding with Snorkle if the mean preference is 0 and sd is 5?
+
+```{r, echo=F, eval=F}
+dnorm(koalaprefs[6],mean=0, sd=5)
+```
+
+2. The eight Koala is named Crumpet. Calculate the likelihood of getting the data for Crumpet and Snorkle if the mean preference is 0 and sd is 5.
+```{r, echo=F, eval=F}
+
+prod(dnorm(myData[c(6,8)],mean=0, sd=5))
+```
 
 
+3. Calculate the likelihood of all Koalas if the mean preference is 0 and sd is 5.
+```{r, echo=F, eval=F}
+
+prod(dnorm(koalaprefs,mean=0, sd=5))
+```
+
+4. Calculate the log likelihood of all 20 Koalas if the mean preference is 0 and sd is 5.
+```{r, echo=F, eval=F}
+sum(dnorm(myData,mean=0, sd=5, log=T))
+
+```
+
+5. Use a grid search to calculate the maximum likelihood estimate for the mean (assume the sd is 5). Make a plot of with mean on the x axis and likelihood values on the y axis. 
+```{r, echo=F, eval=F}
+means = seq(-10,12,b=0.1)
+  mylikelihood <- sapply(means, function(u){
+    sum(dnorm(koalaprefs,mean=u, sd=5, log=T))
+  })
+  
+means[which.max(mylikelihood)]
+
+plot(means, mylikelihood)  
+```
+
+## Linear models
+
+6. Let's model this data with a very simple linear model. Write a model below that includes a response variable (preference) as a function of a mean and residual.
+
+7. Use lm() to fit this linear model. Does the mean found my lm() match your maximum likelihood estimate from problem 5?
+```{r, echo=F, eval=F}
+model1 <- lm(koalaprefs~1)
+
+
+```
+
+
+8. Examine the residuals from your linear model. What is the name of the Koala with the largest residual?
+```{r, echo=F, eval=F}
+koalanames[which.max(abs(model1$residuals))]
 ```

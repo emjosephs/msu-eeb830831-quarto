@@ -261,14 +261,20 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./lab1.1-likelihood.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Lab 1 – Likelihood</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./lab3.1-simpleLinearModels.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Lab 3 – Simple Linear Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 3 – Simple Linear Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./lab4.1-ANOVA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 4 – ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 4 – ANOVA</span></span></a>
   </div>
 </li>
       </ul>
@@ -289,7 +295,7 @@ window.Quarto = {
   <li><a href="#parametric-statistics" id="toc-parametric-statistics" class="nav-link" data-scroll-target="#parametric-statistics"><span class="header-section-number">2.4</span> Parametric statistics</a></li>
   <li><a href="#a-coin-flip-example" id="toc-a-coin-flip-example" class="nav-link" data-scroll-target="#a-coin-flip-example"><span class="header-section-number">2.5</span> A coin flip example</a>
   <ul class="collapse">
-  <li><a href="#calculating-likelihood-with-math" id="toc-calculating-likelihood-with-math" class="nav-link" data-scroll-target="#calculating-likelihood-with-math"><span class="header-section-number">2.5.1</span> Calculating likelihood with math</a></li>
+  <li><a href="#calculating-likelihood" id="toc-calculating-likelihood" class="nav-link" data-scroll-target="#calculating-likelihood"><span class="header-section-number">2.5.1</span> Calculating likelihood</a></li>
   </ul></li>
   <li><a href="#maximum-likelihood" id="toc-maximum-likelihood" class="nav-link" data-scroll-target="#maximum-likelihood"><span class="header-section-number">2.6</span> Maximum likelihood</a></li>
   <li><a href="#now-hang-on" id="toc-now-hang-on" class="nav-link" data-scroll-target="#now-hang-on"><span class="header-section-number">2.7</span> Now hang on…</a></li>
@@ -326,6 +332,7 @@ window.Quarto = {
 
 <section id="what-are-we-doing-here" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">2.1</span> What are we doing here?</h2>
+<p>Welcome to statistics! You’ve already learned the basics of R, along with probability. You’ll now be using your knowledge to make inferences about the world using data. Today we’ll be covering likelihood, a flexible approach for linking data to parameters.</p>
 </section>
 <section id="motivating-question" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="motivating-question"><span class="header-section-number">2.2</span> Motivating question</h2>
@@ -344,8 +351,7 @@ window.Quarto = {
 <h2 data-number="2.4" class="anchored" data-anchor-id="parametric-statistics"><span class="header-section-number">2.4</span> Parametric statistics</h2>
 <p>We can use likelihood in a framework of <strong>parametric statistics</strong>. In parametric statistics, we treat observed data as draws from an underlying process or <strong>population</strong>, and we try to learn about that population from our sample.</p>
 <p>A <strong>statistical parameter</strong> is a value that tells you something about a , like the <em>true</em> mean height of students in our class, or the <em>true</em> frequency of a genetic variant in a species.</p>
-<p>BUT, we rarely get to know the truth! (we would know the truth if we censused everyone in a population, or repeated a random process an infinite number of times). Instead, we can take <em>samples</em> to try to learn about –<br>
-or <strong>estimate</strong> – parameters.</p>
+<p>BUT, we rarely get to know the truth! (we would know the truth if we censused everyone in a population, or repeated a random process an infinite number of times). Instead, we can take <em>samples</em> to try to learn about – or <strong>estimate</strong> – parameters.</p>
 </section>
 <section id="a-coin-flip-example" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="a-coin-flip-example"><span class="header-section-number">2.5</span> A coin flip example</h2>
@@ -356,8 +362,8 @@ or <strong>estimate</strong> – parameters.</p>
 <p><span class="math display">\[ 46 \sim B(100,p=??) \]</span></p>
 <p>We can flip this around and write the probability of our data as the conditional probablity of observing 46 heads out of 100 flips given a specific <span class="math inline">\(p\)</span>.</p>
 <p><span class="math display">\[ P(\text{observation}) = P(x=46 \mid p, n=100)\]</span></p>
-<section id="calculating-likelihood-with-math" class="level3" data-number="2.5.1">
-<h3 data-number="2.5.1" class="anchored" data-anchor-id="calculating-likelihood-with-math"><span class="header-section-number">2.5.1</span> Calculating likelihood with math</h3>
+<section id="calculating-likelihood" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="calculating-likelihood"><span class="header-section-number">2.5.1</span> Calculating likelihood</h3>
 <p>We can use R to calculate these probabilities. In particular, the dbinom() function lets us calculate the probability of observing a particular number of successes given a specific <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span>. Below is code to calculate the probability of getting 46 heads if the coin is fair (<span class="math inline">\(p=0.5\)</span>). Note the syntax of ‘size’ for <span class="math inline">\(n\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="at">x=</span><span class="dv">46</span>, <span class="at">p=</span><span class="fl">0.5</span>, <span class="at">size=</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -555,7 +561,7 @@ and more generally:</p>
 <li><p>Use R to calculate the likelihood of observing a 4-year-old who is 110 cm tall if your information is accurate.</p></li>
 <li><p>What if the actual mean height of a 4-year-old is 115 cm? Now, what is the likelihood of observing a 110 cm tall 4-year-old?</p></li>
 <li><p>You measure a second kid and find that they are 105 cm tall. Use R to calculate the likelihood of observing both kids if the underlying mean is 1 meter. What about if the underlying mean height is 110 cm?</p></li>
-<li><p>You measure all the kids and get the following vector of heights: 112 89 112 102 126 114 111 112 112 114. Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare)</p></li>
+<li><p>You measure all the kids and get the following vector of heights: 112 89 112 102 126 114 111 112 112 114. Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare).</p></li>
 <li><p>Does it make sense to travel to another daycare to measure the height of another 10 kids to get a better estimate of height? How many kids would you want to measure to feel confident?</p></li>
 </ol>
 

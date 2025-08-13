@@ -23,6 +23,7 @@ book:
     - GWAS.qmd
     - part: "Labs"
       chapters:
+        - lab1.1-likelihood.qmd
         - lab3.1-simpleLinearModels.qmd
         - lab4.1-ANOVA.qmd
 
