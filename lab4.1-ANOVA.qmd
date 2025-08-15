@@ -1,5 +1,5 @@
 ---
-title: "Lab 2 -- ANOVA"
+title: "Lab 2 -- Categorical Linear Models and ANOVA"
 format: html
 editor: source
 ---
@@ -23,7 +23,7 @@ Trout lilys (*Erythronium americanum*) have two distinct anther color morphs: ye
 
 (scenario is from https://doi.org/10.17912/micropub.biology.001286)
 
-We will start by simulating data under this model using a normal distribution and 3 categories: local red (1), distant red  (2), and distant yellow (3). They had 30 flowers of each type.
+We will start by simulating data under this model using a normal distribution and 3 categories: local red (1), distant red  (2), and distant yellow (3). There will be 30 flowers of each type. The code below shows how to simulate this data and combine it into a data frame that we can analyze.
 
 ```{r}
 
@@ -56,62 +56,55 @@ axis(1, at=c(0,.5,1), lab = c('red local','red distant','yellow distant'))
 
 ```
 
-Make a linear model with lm()
+**Q1: Make a linear model with lm().  How do you interpret the output of the linear model? What do the results tell you about pollinator behavior?**
 
 ```{r}
-model1 <- lm(resp~pop, data=simData)
-summary(model1)
+# code goes here
 ```
 
-Q1. How do you interpret the output of the linear model? What do the results tell you about pollinator behavior?
 
+Next, we'll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation. 
 
-Next, we'll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation
+**Q2L Edit the code below to conduct the ANOVA by hand. I've included some phrases in []s that you will need to replace with variable names or numbers**
 
-```{r}
+```{r, eval=F}
 library(broom)
 
 ## Calculate SS_groups
-SS_groups <- sum((augment(model1)$.fitted - mean(simData$resp))^2)
+SS_groups <- sum((augment([model])$.fitted - mean(simData$resp))^2) ##replace [model] with whatever you called your model from the previous question
 
 ## Calculate MS_groups
-MS_groups <- SS_groups/(3-1)
+MS_groups <- SS_groups/([degrees of freedom])
 
 ## Calculate SS_error
-SS_error <- sum((augment(model1)$.resid)^2)
+SS_error <- sum((augment([model])$.resid)^2)
 ##SS_error <- sum((augment(model1)$resp - augment(model1)$.fitted)^2) THIS ALSO WORKS
 
 ## Calculate MS_error
-MS_error <- SS_error/(90-3)
+MS_error <- SS_error/([degrees of freedom])
 
 ## Calculate F
 myF = MS_groups/MS_error
 
 ## Do the F test
-pf(q=myF, df1 = 2, df2 = 87, lower.tail=F)
+pf(q=myF, df1 = [degrees of freedom for MS_groups], df2 = [degrees of freedom for MS_error], lower.tail=F)
 
 ```
 
-Now we'll do an ANOVA with lm()
+**Q3: in the chunk below, write the code to do an ANOVA using lm(). Check to see if the p value matches the results from the ANOVA done by hand above**
 
 ```{r}
-Anova(model1)
+#code goes here
 ```
 
-Q2: Do you results match?
-
-Now we will use the ANOVA to compare pollinator visits between all pairs of categories.
+**Q4: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results -- what matters most for dtermining pollinator visits?**
 
 ```{r}
-em1 <- emmeans(model1, specs="pop")
-pairs(em1)
+#code goes here
 
 ```
 
-Q3: Interpret the results of the analysis above? What matters most for determining pollinator visits?
+**Q5: Ripley et al. discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the code above to simulate data for an additional category with a mean of 2 visits per flower.** 
 
 
-Q4: Ripley et al. discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the code above to simulate data for an additional category with a mean of 2 visits per flower.
-
-
-Q5: Rerun the linear model, ANOVA (with the anova() function), and emmeans on this new data. Interpret the outputs.
+**Q6: Rerun the linear model, ANOVA (with the anova() function), and emmeans on this new data. Interpret the outputs.**

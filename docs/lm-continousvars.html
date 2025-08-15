@@ -268,7 +268,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./lab4.1-ANOVA.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 2 – ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 2 – Categorical Linear Models and ANOVA</span></span></a>
   </div>
 </li>
       </ul>
@@ -296,14 +296,15 @@ window.Quarto = {
   <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">5.4.2</span> Fitting with lm()</a></li>
   </ul></li>
   <li><a href="#residuals" id="toc-residuals" class="nav-link" data-scroll-target="#residuals"><span class="header-section-number">5.5</span> Residuals</a></li>
-  <li><a href="#assessing-significance" id="toc-assessing-significance" class="nav-link" data-scroll-target="#assessing-significance"><span class="header-section-number">5.6</span> Assessing significance</a>
+  <li><a href="#a-note-on-history-regression-to-the-mean" id="toc-a-note-on-history-regression-to-the-mean" class="nav-link" data-scroll-target="#a-note-on-history-regression-to-the-mean"><span class="header-section-number">5.6</span> A note on history: regression to the mean</a></li>
+  <li><a href="#assessing-significance" id="toc-assessing-significance" class="nav-link" data-scroll-target="#assessing-significance"><span class="header-section-number">5.7</span> Assessing significance</a>
   <ul class="collapse">
-  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">5.6.1</span> Confidence intervals</a></li>
-  <li><a href="#prediction-intervals" id="toc-prediction-intervals" class="nav-link" data-scroll-target="#prediction-intervals"><span class="header-section-number">5.6.2</span> Prediction intervals</a></li>
-  <li><a href="#extrapolation" id="toc-extrapolation" class="nav-link" data-scroll-target="#extrapolation"><span class="header-section-number">5.6.3</span> Extrapolation</a></li>
+  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">5.7.1</span> Confidence intervals</a></li>
+  <li><a href="#prediction-intervals" id="toc-prediction-intervals" class="nav-link" data-scroll-target="#prediction-intervals"><span class="header-section-number">5.7.2</span> Prediction intervals</a></li>
+  <li><a href="#extrapolation" id="toc-extrapolation" class="nav-link" data-scroll-target="#extrapolation"><span class="header-section-number">5.7.3</span> Extrapolation</a></li>
   </ul></li>
-  <li><a href="#linear-regression-as-an-anova" id="toc-linear-regression-as-an-anova" class="nav-link" data-scroll-target="#linear-regression-as-an-anova"><span class="header-section-number">5.7</span> Linear regression as an ANOVA</a></li>
-  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">5.8</span> Review questions</a></li>
+  <li><a href="#linear-regression-as-an-anova" id="toc-linear-regression-as-an-anova" class="nav-link" data-scroll-target="#linear-regression-as-an-anova"><span class="header-section-number">5.8</span> Linear regression as an ANOVA</a></li>
+  <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">5.9</span> Review questions</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lm-continousvars.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
@@ -365,7 +366,7 @@ window.Quarto = {
 <section id="the-deterministic-function" class="level3" data-number="5.3.1">
 <h3 data-number="5.3.1" class="anchored" data-anchor-id="the-deterministic-function"><span class="header-section-number">5.3.1</span> The deterministic function</h3>
 <p>The deterministic function describes how the explanatory variables relate to the conditional mean of the response variable. In this case, since this is a linear model, we are modelling the response variable as a line:</p>
-<p><span class="math display">\[\hat{y}_i = b_0 + b_1 \times x_i\]</span> As before, <span class="math inline">\(y_i\)</span> is the conditional mean of the response variable for an individual with value <span class="math inline">\(x_i\)</span>, <span class="math inline">\(b_0\)</span> is the intercept or the conditional mean of an individual with a value of <span class="math inline">\(x_i = 0\)</span> (although this value will not be meaningful if it lies far outside the range of the data).</p>
+<p><span class="math display">\[\hat{y}_i = b_0 + b_1 \times x_i\]</span> As before, <span class="math inline">\(\hat{y_i}\)</span> is the conditional mean of the response variable for an individual with value <span class="math inline">\(x_i\)</span>, <span class="math inline">\(b_0\)</span> is the intercept or the conditional mean of an individual with a value of <span class="math inline">\(x_i = 0\)</span> (although this value will not be meaningful if it lies far outside the range of the data).</p>
 <p>However, we can think of <span class="math inline">\(b_1\)</span> now as the slope of the relationship between the predictor and response variable. This means that for every increase of 1 unit in <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span> increases by <span class="math inline">\(b_1\)</span>.</p>
 </section>
 <section id="the-stochastic-function" class="level3" data-number="5.3.2">
@@ -373,7 +374,9 @@ window.Quarto = {
 <p>The <strong>stochastic function</strong> explains how the residuals are distributed around the conditional means predicted by the deterministic function. Since we are working with regular linear models, we will assume that the residuals are normally distributed.</p>
 <p><span class="math display">\[ e_i \sim N(0, \sigma^2)\]</span></p>
 <p>We can combine the deterministic and stochastic functions into one model:</p>
-<p><span class="math display">\[y_i = \hat{y}_i + N(b_0 + b_1 \times x_i, \sigma^2)\]</span></p>
+<p><span class="math display">\[\hat{y_i} = b_0 + b_1 \times x_i + N(0,\sigma^2)\]</span></p>
+<p>or</p>
+<p><span class="math display">\[\hat{y_i} \sim N(b_0 + b_1 \times x_i, \sigma^2)\]</span></p>
 </section>
 </section>
 <section id="estimating-parameters-of-the-determinstic-function" class="level2 page-columns page-full" data-number="5.4">
@@ -486,26 +489,30 @@ Coefficients:
 </div>
 </div>
 </section>
-<section id="assessing-significance" class="level2" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="assessing-significance"><span class="header-section-number">5.6</span> Assessing significance</h2>
-<p>We have different tools for quantifying how confident we can be in the predictions made by a regression. They vary based on what type of prediction they are making. We won’t work through the math here but it is useful to know what is actually being predicted by these tools.</p>
-<section id="confidence-intervals" class="level3" data-number="5.6.1">
-<h3 data-number="5.6.1" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">5.6.1</span> Confidence intervals</h3>
-<p>Confidence intervals relate to predicting the mean value of the response variable <span class="math inline">\(y\)</span> for individuals with a specific value of the explanatory variable <span class="math inline">\(x\)</span>. When we calculate <em>95% confidence intervals</em> we are bracketing the true regression line 95% of the time.</p>
+<section id="a-note-on-history-regression-to-the-mean" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="a-note-on-history-regression-to-the-mean"><span class="header-section-number">5.6</span> A note on history: regression to the mean</h2>
+<p>Regression was initially developed by Francis Galton. Galton was interested in understanding heritability of traits: how much was an individual’s trait determined by the genetic material they inherited from their parents. Galton focussed on height because it was easy to measure (although his motivation was understanding the heritability of intelligence). MORE HERE LATER</p>
 </section>
-<section id="prediction-intervals" class="level3" data-number="5.6.2">
-<h3 data-number="5.6.2" class="anchored" data-anchor-id="prediction-intervals"><span class="header-section-number">5.6.2</span> Prediction intervals</h3>
-<p>Prediction intervals give us an estimate of our confidence in predicting a value for the response variable <span class="math inline">\(y\)</span> for <em>one</em> individual with a specific value of the explanatory variable <span class="math inline">\(x\)</span>. When we generate <em>95% prediction intervals</em> we are bracketing 95% of potential individuals.</p>
+<section id="assessing-significance" class="level2 page-columns page-full" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="assessing-significance"><span class="header-section-number">5.7</span> Assessing significance</h2>
+<p>We have different tools for quantifying how confident we can be in the predictions made by a regression. They vary based on what type of prediction they are making. We won’t work through the math here but it is useful to know what is actually being predicted by these tools.</p>
+<section id="confidence-intervals" class="level3 page-columns page-full" data-number="5.7.1">
+<h3 data-number="5.7.1" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">5.7.1</span> Confidence intervals</h3>
+<div class="page-columns page-full"><p>Confidence intervals relate to predicting the mean value of the response variable <span class="math inline">\(y\)</span> for individuals with a specific value of the explanatory variable <span class="math inline">\(x\)</span>. When we calculate <strong>95% confidence intervals</strong> we are bracketing the true regression line 95% of the time. Specifically, this means that if we repeated our sampling, analysis, and confidence interval generation many many times, we would find the true slope 95% of the time. </p><div class="no-row-height column-margin column-container"><span class="margin-aside">For more on the history of confidence intervals, see this <a href="https://kucharski.substack.com/p/to-understand-mathematical-concepts">nice blog post</a>, which includes the very relatable quote from Jerzy Neyman: “I simply cannot work, the crisis and the struggle for existence takes all my time and energy.”</span></div></div>
+</section>
+<section id="prediction-intervals" class="level3" data-number="5.7.2">
+<h3 data-number="5.7.2" class="anchored" data-anchor-id="prediction-intervals"><span class="header-section-number">5.7.2</span> Prediction intervals</h3>
+<p>Prediction intervals give us an estimate of our confidence in predicting a value for the response variable <span class="math inline">\(y\)</span> for <em>one</em> individual with a specific value of the explanatory variable <span class="math inline">\(x\)</span>. When we generate <strong>95% prediction intervals</strong> we are bracketing 95% of potential individuals.</p>
 <p>Prediction intervals will be much wider than confidence intervals because they include more variation.</p>
 </section>
-<section id="extrapolation" class="level3" data-number="5.6.3">
-<h3 data-number="5.6.3" class="anchored" data-anchor-id="extrapolation"><span class="header-section-number">5.6.3</span> Extrapolation</h3>
+<section id="extrapolation" class="level3" data-number="5.7.3">
+<h3 data-number="5.7.3" class="anchored" data-anchor-id="extrapolation"><span class="header-section-number">5.7.3</span> Extrapolation</h3>
 <p><em>Extrapolation</em> is the prediction of <span class="math inline">\(y\)</span> outside the measured interval of <span class="math inline">\(x\)</span>. It’s generally a bad idea because we have no way of knowing the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> outside of what we’ve observed.</p>
 <p><img src="figs/extrapolating.png" class="img-fluid" alt="A carton from xkcd showing a plot with time on the x axis and number of husbands on the y axis with values for 0 and 1 and a line extrapolating. The title reads 'my hobby: extrapolating' and one person tells another person dressed as a bride 'As you can see, by late next month you'll have over four dozen husbands. Better get a bulk rate on a wedding cake'"></p>
 </section>
 </section>
-<section id="linear-regression-as-an-anova" class="level2" data-number="5.7">
-<h2 data-number="5.7" class="anchored" data-anchor-id="linear-regression-as-an-anova"><span class="header-section-number">5.7</span> Linear regression as an ANOVA</h2>
+<section id="linear-regression-as-an-anova" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="linear-regression-as-an-anova"><span class="header-section-number">5.8</span> Linear regression as an ANOVA</h2>
 <p>We can partition variation in our regression the same way we did in ANOVA. The concepts are similar but the math is slightly different.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -522,11 +529,29 @@ Coefficients:
 <p>where <span class="math inline">\(\bar{y}\)</span> is the mean response variable for the whole sample and <span class="math inline">\(\hat{y_i}\)</span> is the model predicted value for individual <span class="math inline">\(i\)</span> and there are <span class="math inline">\(n\)</span> individuals in the sample.</p>
 <p>We can calculate these values by hand or get them from the anova function</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: body_mass
+           Df    Sum Sq  Mean Sq F value    Pr(&gt;F)    
+bill_len    1  77669072 77669072  186.44 &lt; 2.2e-16 ***
+Residuals 340 141638626   416584                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
 </div>
 </section>
-<section id="review-questions" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">5.8</span> Review questions</h2>
+<section id="review-questions" class="level2" data-number="5.9">
+<h2 data-number="5.9" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">5.9</span> Review questions</h2>
+<ol type="1">
+<li><p>Imagine you are a penguin researcher and you measure additional data on lifespan. You want to construct a linear model that models lifespan as a function of body mass. Write out the equation describing this model, and describe which parts of the equation correspond to the stochastic function vs the deterministic function.</p></li>
+<li><p>What are the key differences between covariance, correlation, and linear regression?</p></li>
+<li><p>What is the key assumption about the normal distribution made in a linear regression?</p></li>
+<li><p>Your friend shows you an analysis of some new data: they have conducted a regression and calculated a 95% confidence interval. They tell you “95% of my data points should fall in this confidence interval.” Do you agree with them? Why or why not?</p></li>
+</ol>
 
 
 </section>

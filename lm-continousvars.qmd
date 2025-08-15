@@ -2,6 +2,8 @@
 title: "Linear models with continuous variables"
 format: html
 editor: source
+reference-location: margin
+citation-location: margin
 ---
 
 ```{r}
@@ -50,7 +52,7 @@ Instead of letting the mean of the model vary between categories, we now build o
 The deterministic function describes how the explanatory variables relate to the conditional mean of the response variable. In this case, since this is a linear model, we are modelling the response variable as a line:
 
 $$\hat{y}_i = b_0 + b_1 \times x_i$$
-As before, $y_i$ is the conditional mean of the response variable for an individual with value $x_i$, $b_0$ is the intercept or the conditional mean of an individual with a value of $x_i = 0$ (although this value will not be meaningful if it lies far outside the range of the data). 
+As before, $\hat{y_i}$ is the conditional mean of the response variable for an individual with value $x_i$, $b_0$ is the intercept or the conditional mean of an individual with a value of $x_i = 0$ (although this value will not be meaningful if it lies far outside the range of the data). 
 
 However, we can think of $b_1$ now as the slope of the relationship between the predictor and response variable. This means that for every increase of 1 unit in $x$, $y$ increases by $b_1$.
 
@@ -62,7 +64,11 @@ $$ e_i \sim N(0, \sigma^2)$$
 
 We can combine the deterministic and stochastic functions into one model:
 
-$$y_i = \hat{y}_i + N(b_0 + b_1 \times x_i, \sigma^2)$$
+$$\hat{y_i} = b_0 + b_1 \times x_i + N(0,\sigma^2)$$
+
+or
+
+$$\hat{y_i} \sim N(b_0 + b_1 \times x_i, \sigma^2)$$
 
 ## Estimating parameters of the determinstic function
 
@@ -236,6 +242,11 @@ lines(seq(2000,7000,length.out=100),
 
 ```
 
+
+## A note on history: regression to the mean
+
+Regression was initially developed by Francis Galton. Galton was interested in understanding heritability of traits: how much was an individual's trait determined by the genetic material they inherited from their parents. Galton focussed on height because it was easy to measure (although his motivation was understanding the heritability of intelligence). MORE HERE LATER
+
 ## Assessing significance
 
 We have different tools for quantifying how confident we can be in the predictions made by a regression.
@@ -244,12 +255,12 @@ We won't work through the math here but it is useful to know what is actually be
 
 ### Confidence intervals
 
-Confidence intervals relate to predicting the mean value of the response variable $y$ for individuals with a specific value of the explanatory variable $x$. When we calculate *95% confidence intervals* we are bracketing the true regression line 95% of the time.
+Confidence intervals relate to predicting the mean value of the response variable $y$ for individuals with a specific value of the explanatory variable $x$. When we calculate **95% confidence intervals** we are bracketing the true regression line 95% of the time. Specifically, this means that if we repeated our sampling, analysis, and confidence interval generation many many times, we would find the true slope 95% of the time. [For more on the history of confidence intervals, see this [nice blog post](https://kucharski.substack.com/p/to-understand-mathematical-concepts), which includes the very relatable quote from Jerzy Neyman: "I simply cannot work, the crisis and the struggle for existence takes all my time and energy."]{.aside}
 
 ### Prediction intervals
 
 Prediction intervals give us an estimate of our confidence in predicting a value for the response variable $y$ for *one* individual with a specific value of the explanatory variable $x$.
-When we generate *95% prediction intervals* we are bracketing 95% of potential individuals.
+When we generate **95% prediction intervals** we are bracketing 95% of potential individuals.
 
 Prediction intervals will be much wider than confidence intervals because they include more variation.
 
@@ -318,21 +329,17 @@ We can calculate these values by hand or get them from the anova function
 ```{r, message=F, warning=F}
 library(car)
 
+anova(model1)
 ```
 
 ## Review questions
 
-```{r, echo=F, eval=F}
-## some noodling to convince myself of stuff
+1. Imagine you are a penguin researcher and you measure additional data on lifespan. You want to construct a linear model that models lifespan as a function of body mass. Write out the equation describing this model, and describe which parts of the equation correspond to the stochastic function vs the deterministic function.
 
-myExp = runif(500)*100
-myResp = myExp + rnorm(500, sd=10) 
+2. What are the key differences between covariance, correlation, and linear regression?
 
-plot(myExp, myResp)
+3. What is the key assumption about the normal distribution made in a linear regression?
 
-myModel <- lm(myResp ~ myExp)
+4. Your friend shows you an analysis of some new data: they have conducted a regression and calculated a 95% confidence interval. They tell you "95% of my data points should fall in this confidence interval." Do you agree with them? Why or why not?
 
-sigma(myModel)
-
-```
 
