@@ -54,7 +54,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -489,9 +509,20 @@ Coefficients:
 </div>
 </div>
 </section>
-<section id="a-note-on-history-regression-to-the-mean" class="level2" data-number="5.6">
+<section id="a-note-on-history-regression-to-the-mean" class="level2 page-columns page-full" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="a-note-on-history-regression-to-the-mean"><span class="header-section-number">5.6</span> A note on history: regression to the mean</h2>
-<p>Regression was initially developed by Francis Galton. Galton was interested in understanding heritability of traits: how much was an individual’s trait determined by the genetic material they inherited from their parents. Galton focussed on height because it was easy to measure (although his motivation was understanding the heritability of intelligence). MORE HERE LATER</p>
+<p>Regression was initially developed by Francis Galton. Galton was interested in understanding heritability of traits: how much was an individual’s trait determined by the genetic material they inherited from their parents. Galton focused on height because it was easy to measure. However, Galton’s main motivation was understanding the heritability of intelligence. He was a strong proponent of Eugenics and had a lot of gross ideas. See <span class="citation" data-cites="kennedy2024teaching">(<a href="#ref-kennedy2024teaching" role="doc-biblioref">Kennedy-Shaffer 2024</a>)</span> for more on this.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-kennedy2024teaching" class="csl-entry" role="listitem">
+Kennedy-Shaffer, Lee. 2024. <span>“Teaching the Difficult Past of Statistics to Improve the Future.”</span> <em>Journal of Statistics and Data Science Education</em> 32 (1): 108–19.
+</div></div><div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/regression-toward-the-mean1.png" class="img-fluid figure-img" style="width:50.0%" alt="A plot showing the distribution of heights of 1000 couples with plots below showing the distributions of offpsring heights for couples at different parts of the distribution. The title is 'Standard scheme of descent'"></p>
+<figcaption>A plot from Galton’s “Essays in eugenics” (1909) showing his conception of regression toward the mean</figcaption>
+</figure>
+</div>
+<p>Galton estimated heritability by calculating the slope of the relationship between the average height of two parents and their offspring. He was surprised to see that the very tallest parents tended to have offspring that were shorter than expected and the shortest parents had offspring that were taller than expected. He called this “regression towards the mean” and it is this phrase that lends it’s name to “linear regression” since it occurs in many contexts, not just the inheritance of traits. Galton thought that he had discovered a fundamental property of evolution that preserved a consistent amount of genetic variation across generations. Regression toward the mean has continued to be a confusing topic for many (including me!) so I want to walk through it in the hopes that it will help us better understand regression in general.</p>
+<p>However, regression to the mean is just the result of measurement error. We can imagine that every value in a data set is the sum of some true value and measurement error. In quantitative genetics, we think about this a lot – traits are the sum of a genetic component and an environmental component (or error). If we take the extremes of a distribution we will get individuals who have both extreme true values and extreme values of error. So in Galton’s first example, the tallest parents both had the tallest genetic component and the tallest environmental component (along with any other types of error). They transmit on their genetics but not their environment and other errors, so their offspring will generally be shorter.</p>
+<div class="page-columns page-full"><p>Another example that may be helpful is thinking about exam grades. Large undergrad classes often give multiple midterm exams with the goal of measuring how well students understand the course material. We could imagine that in the first midterm, the students with the very best grades are not only the ones with the best understanding of the material, but also the ones that happened to get the best night’s sleep, weren’t sick, aren’t distracted by a personal issue, etc. In the second midterm, these students may still understand the material but may not have the same environmental benefits and so, on average, the best students will seem to do slightly less well on the second midterm (and the worst students will appear to do slightly better). Any time you do a regression with two quantities that have measurement error, you will likely find regression to the mean. </p><div class="no-row-height column-margin column-container"><span class="margin-aside">For more on regression to the mean, <a href="https://quantitudepod.org/s5e14-regression-to-the-mean/">check out this podcast</a></span></div></div>
 </section>
 <section id="assessing-significance" class="level2 page-columns page-full" data-number="5.7">
 <h2 data-number="5.7" class="anchored" data-anchor-id="assessing-significance"><span class="header-section-number">5.7</span> Assessing significance</h2>
@@ -552,6 +583,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <li><p>What is the key assumption about the normal distribution made in a linear regression?</p></li>
 <li><p>Your friend shows you an analysis of some new data: they have conducted a regression and calculated a 95% confidence interval. They tell you “95% of my data points should fall in this confidence interval.” Do you agree with them? Why or why not?</p></li>
 </ol>
+
 
 
 </section>
