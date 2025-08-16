@@ -1,0 +1,39 @@
+---
+title: "Lab 3 -- Linear Regression"
+format: html
+editor: source
+---
+
+This is a lab to practice linear regressions and p values
+
+You will be simulating data to use in this model.
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
+library(emmeans)
+library(car)
+```
+
+![A diagram showing the accumulation of mutations between two individuals who share a common ancestor. The more time there is since these individual's most recent shared ancestor, the more time there is for mutations to accumulate between them. Figure is from [Graham Coop's population genetis notes](https://github.com/cooplab/popgen-notes/releases)](figs/Coal_two_lineages_muts.pdf){fig-alt="An upsidedown V with AGTTT at the top and, at the bottom, two sequences: ACTGT and AGGTT. Along the V, mutations are shown contributing to the differences between the bottom sequences"}
+
+
+Population genetic theory suggests that population size should predict the amount of neutral genetic variation present within species. In a large population, individuals will be more distantly related to each other than individuals in a small population will be. The more distantly related individuals are to each other, the more time there has been for neutral mutations to accumulate between them. Therefore, in large populations, there will be more neutral genetic variation present between individuals. Because of this process, we expect to see a relationship between population size and neutral genetic variation when we look across species.
+
+First we'll simulate data following this pattern.
+
+
+Use linear regression to test for a relationship between population size and pi.
+
+Calculate the p value and interpret.
+
+
+
+Now let's look at actual data.
+
+```{r}
+myData <- read.table('data/buffalo_combined_data.tsv')
+
+```
