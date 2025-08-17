@@ -13,8 +13,6 @@ You will be simulating data to use in this model.
 #| include: false
 library(tidyverse)
 palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
-library(emmeans)
-library(car)
 ```
 
 ![A diagram showing the accumulation of mutations between two individuals who share a common ancestor. The more time there is since these individual's most recent shared ancestor, the more time there is for mutations to accumulate between them. Figure is from [Graham Coop's population genetis notes](https://github.com/cooplab/popgen-notes/releases)](figs/Coal_two_lineages_muts.pdf){fig-alt="An upsidedown V with AGTTT at the top and, at the bottom, two sequences: ACTGT and AGGTT. Along the V, mutations are shown contributing to the differences between the bottom sequences"}
@@ -31,9 +29,29 @@ Calculate the p value and interpret.
 
 
 
-Now let's look at actual data.
+Now let's look at actual data. You can download this data from [Vince Buffalo's github](https://github.com/vsbuffalo/paradox_variation/blob/master/data/combined_data.tsv). Use the code below to read in the data.
 
 ```{r}
-myData <- read.table('data/buffalo_combined_data.tsv')
+
+myData <- read.table('data/buffalo_combined_data.tsv', sep="\t", header=T) #note the use of sep="\t" to parse the tab deliminated file
 
 ```
+
+Use lm() to do a linear model with diversity as the response variable and log10_popsize as the explanatory variable.
+
+```{r}
+model1 <- lm(diversity~log10_popsize,data=myData)
+
+summary(model1)
+
+ggplot(myData, aes(x=log10_popsize, y=diversity)) + geom_point() +
+theme_classic()+ 
+geom_smooth(method='lm', formula= y~x)
+
+```
+
+Interepret the effect size compared to expectations.
+
+Interpret the p value.
+
+Ask them to pick another two variables to compare (body size? genome size?)

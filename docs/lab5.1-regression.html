@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11&nbsp; Lab 2 – Categorical Linear Models and ANOVA – EEB 830 pt 2</title>
+<title>12&nbsp; Lab 3 – Linear Regression – EEB 830 pt 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./lab5.1-regression.html" rel="next">
-<link href="./lab1.1-likelihood.html" rel="prev">
+<link href="./lab4.1-ANOVA.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -116,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lab1.1-likelihood.html">Labs</a></li><li class="breadcrumb-item"><a href="./lab4.1-ANOVA.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 2 – Categorical Linear Models and ANOVA</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lab1.1-likelihood.html">Labs</a></li><li class="breadcrumb-item"><a href="./lab5.1-regression.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 3 – Linear Regression</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -238,13 +237,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab4.1-ANOVA.html" class="sidebar-item-text sidebar-link active">
+  <a href="./lab4.1-ANOVA.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 2 – Categorical Linear Models and ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab5.1-regression.html" class="sidebar-item-text sidebar-link">
+  <a href="./lab5.1-regression.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 3 – Linear Regression</span></span></a>
   </div>
 </li>
@@ -261,9 +260,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lab1.1-likelihood.html">Labs</a></li><li class="breadcrumb-item"><a href="./lab4.1-ANOVA.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 2 – Categorical Linear Models and ANOVA</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lab1.1-likelihood.html">Labs</a></li><li class="breadcrumb-item"><a href="./lab5.1-regression.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 3 – Linear Regression</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 2 – Categorical Linear Models and ANOVA</span></h1>
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 3 – Linear Regression</span></h1>
 </div>
 
 
@@ -280,85 +279,70 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This is a lab to practice categorical linear models and ANOVA</p>
+<p>This is a lab to practice linear regressions and p values</p>
 <p>You will be simulating data to use in this model.</p>
-<p><img src="figs/anthercolorlabeled.jpg" class="img-fluid" alt="An image of a trout lily with yellow anthers and an image of a trout lily with red anthers"></p>
-<p>Trout lilys (<em>Erythronium americanum</em>) have two distinct anther color morphs: yellow or red. The ecological consequences of anther color are unknown. Ripley and colleagues were interested in whether anther color affected pollinator preference. They went to a population of red-anthered flowers and counted the number of pollinator visits to local red flowers, and red and yellow flowers from a population 19km away. They chose these categories to disentangle the effects of color from the effects of novelty.</p>
-<p>(scenario is from https://doi.org/10.17912/micropub.biology.001286)</p>
-<p>We will start by simulating data under this model using a normal distribution and 3 categories: local red (1), distant red (2), and distant yellow (3). There will be 30 flowers of each type. The code below shows how to simulate this data and combine it into a data frame that we can analyze.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><embed src="figs/Coal_two_lineages_muts.pdf" class="img-fluid" alt="An upsidedown V with AGTTT at the top and, at the bottom, two sequences: ACTGT and AGGTT. Along the V, mutations are shown contributing to the differences between the bottom sequences"></p>
+<figcaption>A diagram showing the accumulation of mutations between two individuals who share a common ancestor. The more time there is since these individual’s most recent shared ancestor, the more time there is for mutations to accumulate between them. Figure is from <a href="https://github.com/cooplab/popgen-notes/releases">Graham Coop’s population genetis notes</a></figcaption>
+</figure>
+</div>
+<p>Population genetic theory suggests that population size should predict the amount of neutral genetic variation present within species. In a large population, individuals will be more distantly related to each other than individuals in a small population will be. The more distantly related individuals are to each other, the more time there has been for neutral mutations to accumulate between them. Therefore, in large populations, there will be more neutral genetic variation present between individuals. Because of this process, we expect to see a relationship between population size and neutral genetic variation when we look across species.</p>
+<p>First we’ll simulate data following this pattern.</p>
+<p>Use linear regression to test for a relationship between population size and pi.</p>
+<p>Calculate the p value and interpret.</p>
+<p>Now let’s look at actual data. You can download this data from <a href="https://github.com/vsbuffalo/paradox_variation/blob/master/data/combined_data.tsv">Vince Buffalo’s github</a>. Use the code below to read in the data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>n<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>mean<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="dv">29</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>mean<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="dv">42</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>mean<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="dv">46</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>sd<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#sample fitnesses based on parameters above (the round function gives us integers)</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>group1 <span class="ot">&lt;-</span> <span class="fu">round</span>(</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rnorm</span>(<span class="at">n=</span>n<span class="fl">.1</span>, <span class="at">mean=</span>mean<span class="fl">.1</span>, <span class="at">sd=</span>sd<span class="fl">.1</span>))</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>group2 <span class="ot">&lt;-</span> <span class="fu">round</span>(</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rnorm</span>(<span class="at">n=</span>n<span class="fl">.2</span>, <span class="at">mean=</span>mean<span class="fl">.2</span>, <span class="at">sd=</span>sd<span class="fl">.1</span>))</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>group3 <span class="ot">&lt;-</span> <span class="fu">round</span>(</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rnorm</span>(<span class="at">n=</span>n<span class="fl">.3</span>, <span class="at">mean=</span>mean<span class="fl">.3</span>, <span class="at">sd=</span>sd<span class="fl">.1</span>))</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="do">## but data together in a dataframe</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>simData <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">resp =</span> <span class="fu">c</span>(group1, group2, group3), </span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">pop=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">'1'</span>, n<span class="fl">.1</span>), <span class="fu">rep</span>(<span class="st">'2'</span>, n<span class="fl">.2</span>),<span class="fu">rep</span>(<span class="st">'3'</span>,n<span class="fl">.3</span>)))</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#look at it</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">jitter</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">0</span>, .<span class="dv">5</span>,<span class="dv">1</span>), <span class="fu">c</span>(n<span class="fl">.1</span>, n<span class="fl">.2</span>,n<span class="fl">.3</span>))), simData<span class="sc">$</span>resp, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">5</span>,<span class="fl">1.5</span>),</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">"number of visits"</span>, <span class="at">xaxt=</span><span class="st">"n"</span>)</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span><span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">5</span>,<span class="dv">1</span>), <span class="at">lab =</span> <span class="fu">c</span>(<span class="st">'red local'</span>,<span class="st">'red distant'</span>,<span class="st">'yellow distant'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>myData <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">'data/buffalo_combined_data.tsv'</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header=</span>T) <span class="co">#note the use of sep="\t" to parse the tab deliminated file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Use lm() to do a linear model with diversity as the response variable and log10_popsize as the explanatory variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(diversity<span class="sc">~</span>log10_popsize,<span class="at">data=</span>myData)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = diversity ~ log10_popsize, data = myData)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.020624 -0.007645 -0.003724  0.003685  0.070930 
+
+Coefficients:
+                Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   -0.0074459  0.0040895  -1.821   0.0704 .  
+log10_popsize  0.0020408  0.0003999   5.104 8.79e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.01285 on 171 degrees of freedom
+  (127 observations deleted due to missingness)
+Multiple R-squared:  0.1322,    Adjusted R-squared:  0.1271 
+F-statistic: 26.05 on 1 and 171 DF,  p-value: 8.795e-07</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(myData, <span class="fu">aes</span>(<span class="at">x=</span>log10_popsize, <span class="at">y=</span>diversity)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_classic</span>()<span class="sc">+</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>, <span class="at">formula=</span> y<span class="sc">~</span>x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 127 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 127 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lab4.1-ANOVA_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lab5.1-regression_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p><strong>Q1: Make a linear model with lm(). How do you interpret the output of the linear model? What do the results tell you about pollinator behavior?</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># code goes here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Next, we’ll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation.</p>
-<p><strong>Q2L Edit the code below to conduct the ANOVA by hand. I’ve included some phrases in []s that you will need to replace with variable names or numbers</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate SS_groups</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>SS_groups <span class="ot">&lt;-</span> <span class="fu">sum</span>((<span class="fu">augment</span>([model])<span class="sc">$</span>.fitted <span class="sc">-</span> <span class="fu">mean</span>(simData<span class="sc">$</span>resp))<span class="sc">^</span><span class="dv">2</span>) <span class="do">##replace [model] with whatever you called your model from the previous question</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate MS_groups</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>MS_groups <span class="ot">&lt;-</span> SS_groups<span class="sc">/</span>([degrees of freedom])</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate SS_error</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>SS_error <span class="ot">&lt;-</span> <span class="fu">sum</span>((<span class="fu">augment</span>([model])<span class="sc">$</span>.resid)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">##SS_error &lt;- sum((augment(model1)$resp - augment(model1)$.fitted)^2) THIS ALSO WORKS</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate MS_error</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>MS_error <span class="ot">&lt;-</span> SS_error<span class="sc">/</span>([degrees of freedom])</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate F</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>myF <span class="ot">=</span> MS_groups<span class="sc">/</span>MS_error</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="do">## Do the F test</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="fu">pf</span>(<span class="at">q=</span>myF, <span class="at">df1 =</span> [degrees of freedom <span class="cf">for</span> MS_groups], <span class="at">df2 =</span> [degrees of freedom <span class="cf">for</span> MS_error], <span class="at">lower.tail=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><strong>Q3: in the chunk below, write the code to do an ANOVA using lm(). Check to see if the p value matches the results from the ANOVA done by hand above</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#code goes here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><strong>Q4: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results – what matters most for dtermining pollinator visits?</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#code goes here</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><strong>Q5: Ripley et al.&nbsp;discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the code above to simulate data for an additional category with a mean of 2 visits per flower.</strong></p>
-<p><strong>Q6: Rerun the linear model, ANOVA (with the anova() function), and emmeans on this new data. Interpret the outputs.</strong></p>
+<p>Interepret the effect size compared to expectations.</p>
+<p>Interpret the p value.</p>
+<p>Ask them to pick another two variables to compare (body size? genome size?)</p>
 
 
 
@@ -782,14 +766,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./lab1.1-likelihood.html" class="pagination-link" aria-label="Lab 1 -- Likelihood">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Lab 1 – Likelihood</span></span>
+      <a href="./lab4.1-ANOVA.html" class="pagination-link" aria-label="Lab 2 -- Categorical Linear Models and ANOVA">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Lab 2 – Categorical Linear Models and ANOVA</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./lab5.1-regression.html" class="pagination-link" aria-label="Lab 3 -- Linear Regression">
-        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 3 – Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -797,4 +778,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lab4.1-ANOVA.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lab5.1-regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
