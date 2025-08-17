@@ -50,6 +50,10 @@ geom_smooth(method='lm', formula= y~x)
 
 ```
 
+Which species have the largest residuals?
+
+Interpret the residual plots.
+
 Interepret the effect size compared to expectations.
 
 Interpret the p value.
