@@ -6,12 +6,12 @@ editor: source
 
 This is a lab to practice linear regressions and p values
 
-You will be simulating data to use in this model.
 
 ```{r}
 #| label: load-packages
 #| include: false
 library(tidyverse)
+setwd('~/Documents/msu-eeb830831-quarto/')
 palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
 ```
 
@@ -20,16 +20,7 @@ palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
 
 Population genetic theory suggests that population size should predict the amount of neutral genetic variation present within species. In a large population, individuals will be more distantly related to each other than individuals in a small population will be. The more distantly related individuals are to each other, the more time there has been for neutral mutations to accumulate between them. Therefore, in large populations, there will be more neutral genetic variation present between individuals. Because of this process, we expect to see a relationship between population size and neutral genetic variation when we look across species.
 
-First we'll simulate data following this pattern.
-
-
-Use linear regression to test for a relationship between population size and pi.
-
-Calculate the p value and interpret.
-
-
-
-Now let's look at actual data. You can download this data from [Vince Buffalo's github](https://github.com/vsbuffalo/paradox_variation/blob/master/data/combined_data.tsv). Use the code below to read in the data.
+You can download this data from [Vince Buffalo's github](https://github.com/vsbuffalo/paradox_variation/blob/master/data/combined_data.tsv). Use the code below to read in the data.
 
 ```{r}
 
@@ -46,7 +37,7 @@ myData1 <- dplyr::filter(myData, !is.na(log10_popsize), !is.na(diversity))
 
 Use lm() to do a linear model with diversity as the response variable and log10_popsize as the explanatory variable.
 
-```{r, warnings=F,  message=F, eval=F, echo=F}
+```{r, eval=F, echo=F}
 model1 <- lm(diversity~log10_popsize,data=myData1)
 
 summary(model1)
@@ -59,7 +50,7 @@ geom_smooth(method='lm', formula= y~x)
 
 Which species has the largest residual? Briefly write, in words, what this large residual means.
 
-```{r, warnings=F,message,F, eval=F, echo=F}
+```{r,eval=F, echo=F}
 
 library(broom)
 myResids <- augment(model1) |> select(diversity, log10_popsize, .fitted, .resid)
@@ -77,7 +68,7 @@ theme_classic()+
 
 ```
 
-What is the pvalue? Stuff
+What is the pvalue? Walk through how it's calculated here.
 
 
 Pick two additional variables from the table that you are interested in. Run the regression and look at the residuals.
