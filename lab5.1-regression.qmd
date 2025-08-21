@@ -15,7 +15,7 @@ library(tidyverse)
 palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
 ```
 
-![A diagram showing the accumulation of mutations between two individuals who share a common ancestor. The more time there is since these individual's most recent shared ancestor, the more time there is for mutations to accumulate between them. Figure is from [Graham Coop's population genetis notes](https://github.com/cooplab/popgen-notes/releases)](figs/Coal_two_lineages_muts.pdf){fig-alt="An upsidedown V with AGTTT at the top and, at the bottom, two sequences: ACTGT and AGGTT. Along the V, mutations are shown contributing to the differences between the bottom sequences"}
+![A diagram showing the accumulation of mutations between two individuals who share a common ancestor. The more time there is since these individual's most recent shared ancestor, the more time there is for mutations to accumulate between them. Figure is from [Graham Coop's population genetics notes](https://github.com/cooplab/popgen-notes/releases)](figs/Coal_two_lineages_muts.pdf){fig-alt="An upsidedown V with AGTTT at the top and, at the bottom, two sequences: ACTGT and AGGTT. Along the V, mutations are shown contributing to the differences between the bottom sequences" height=200%}
 
 
 Population genetic theory suggests that population size should predict the amount of neutral genetic variation present within species. In a large population, individuals will be more distantly related to each other than individuals in a small population will be. The more distantly related individuals are to each other, the more time there has been for neutral mutations to accumulate between them. Therefore, in large populations, there will be more neutral genetic variation present between individuals. Because of this process, we expect to see a relationship between population size and neutral genetic variation when we look across species.
@@ -37,25 +37,48 @@ myData <- read.table('data/buffalo_combined_data.tsv', sep="\t", header=T) #note
 
 ```
 
+First, remove individuals that are missing data for diversity and log10_popsize
+
+```{r, echo=F, eval=F}
+myData1 <- dplyr::filter(myData, !is.na(log10_popsize), !is.na(diversity))
+
+```
+
 Use lm() to do a linear model with diversity as the response variable and log10_popsize as the explanatory variable.
 
-```{r}
-model1 <- lm(diversity~log10_popsize,data=myData)
+```{r, warnings=F,  message=F, eval=F, echo=F}
+model1 <- lm(diversity~log10_popsize,data=myData1)
 
 summary(model1)
 
-ggplot(myData, aes(x=log10_popsize, y=diversity)) + geom_point() +
-theme_classic()+ 
+ggplot(myData1, aes(x=log10_popsize, y=diversity)) + geom_point() +
+theme_classic() + 
 geom_smooth(method='lm', formula= y~x)
 
 ```
 
-Which species have the largest residuals?
+Which species has the largest residual? Briefly write, in words, what this large residual means.
 
-Interpret the residual plots.
+```{r, warnings=F,message,F, eval=F, echo=F}
 
-Interepret the effect size compared to expectations.
+library(broom)
+myResids <- augment(model1) |> select(diversity, log10_popsize, .fitted, .resid)
+myResids[which.max(abs(myResids$.resid)),]
 
-Interpret the p value.
+myData1[which.max(abs(myResids$.resid)),]$species
+```
 
-Ask them to pick another two variables to compare (body size? genome size?)
+Make and interpret a residual plot. Do you think the model is fitting well?
+
+```{r, eval=F, echo=F}
+ggplot(myResids, aes(x=log10_popsize, y=.resid)) + geom_point() +
+theme_classic()+
+  geom_hline(yintercept=0, linetype="dashed")
+
+```
+
+What is the pvalue? Stuff
+
+
+Pick two additional variables from the table that you are interested in. Run the regression and look at the residuals.
+
