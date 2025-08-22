@@ -280,7 +280,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This is a lab to practice linear regressions and p values</p>
-<p>You will be simulating data to use in this model.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><embed src="figs/Coal_two_lineages_muts.pdf" style="height:200.0%" alt="An upsidedown V with AGTTT at the top and, at the bottom, two sequences: ACTGT and AGGTT. Along the V, mutations are shown contributing to the differences between the bottom sequences"></p>
@@ -288,10 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 <p>Population genetic theory suggests that population size should predict the amount of neutral genetic variation present within species. In a large population, individuals will be more distantly related to each other than individuals in a small population will be. The more distantly related individuals are to each other, the more time there has been for neutral mutations to accumulate between them. Therefore, in large populations, there will be more neutral genetic variation present between individuals. Because of this process, we expect to see a relationship between population size and neutral genetic variation when we look across species.</p>
-<p>First we’ll simulate data following this pattern.</p>
-<p>Use linear regression to test for a relationship between population size and pi.</p>
-<p>Calculate the p value and interpret.</p>
-<p>Now let’s look at actual data. You can download this data from <a href="https://github.com/vsbuffalo/paradox_variation/blob/master/data/combined_data.tsv">Vince Buffalo’s github</a>. Use the code below to read in the data.</p>
+<p>You can download this data from <a href="https://github.com/vsbuffalo/paradox_variation/blob/master/data/combined_data.tsv">Vince Buffalo’s github</a>. Use the code below to read in the data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>myData <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">'data/buffalo_combined_data.tsv'</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header=</span>T) <span class="co">#note the use of sep="\t" to parse the tab deliminated file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -299,7 +295,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Use lm() to do a linear model with diversity as the response variable and log10_popsize as the explanatory variable.</p>
 <p>Which species has the largest residual? Briefly write, in words, what this large residual means.</p>
 <p>Make and interpret a residual plot. Do you think the model is fitting well?</p>
-<p>What is the pvalue? Stuff</p>
+<p>What is the pvalue? Walk through how it’s calculated here.</p>
 <p>Pick two additional variables from the table that you are interested in. Run the regression and look at the residuals.</p>
 
 

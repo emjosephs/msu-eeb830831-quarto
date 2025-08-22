@@ -136,7 +136,7 @@ Not all science relies upon a null and alternative hypothesis testing framework 
 ### Frameworks for rejecting the null hypothesis
 Now, how do we distinguish betwen the null hypothesis and alternative hypothesis? We often use a **test statistic**, which is calculated from the data, and compare it to a **null distribution** of our expectation for the test statistic under the hypothesis. Next we'll lay out some of the statistics and distributions that are commonly used.
 
-### T distribution 
+## T distribution 
 
 So we have a null hypothesis and we have a sample mean. How do we test for whether our sample is expected under the null hypothesis?
 
@@ -183,6 +183,56 @@ p_val
 
 Congrats -- you've just calculated a p value for a t test!
 
+### P values in linear regression
+
+You can use the same procedure to calculate the p values for the slope of a linear regression. Generally, our null expectation for a linear regression is that the slope of the regression line (or the effect size corresponding to our predictor variable) is zero. We can think of our null hypothesis being that there is no relationship between the predictor and the response variable so that the slope of the linear regression line is 0. Our alternative hypothesis is that there the predictor variable does predict the response variable, and the slope of the linear regression line is not equal to 0. 
+
+Instead of testing for a difference in sample means, we are now testing for a difference between the slope of the regression line and 0. Fortunately, this value, divided by its standard error, will follow a t distribution and we can use the same procedure as above to calculate a p value.
+
+Let's try an example, testing a model where the predictor variable is bill length and the response variable is body mass.
+
+```{r}
+penguins3 <- penguins |> filter(!is.na(body_mass)) #filter out NAs
+
+model2 <- lm(body_mass ~ bill_len, data=penguins3)
+model2
+```
+
+The effect size of bill length ($b$), which is the same as the slope of the regression line, is 87.42. But can we reject the null hypothesis that the slope is 0?
+
+First we calculate the standard error of the slope ($SE_b$). 
+
+$$ SE_b = \sqrt{\frac{\Sigma(Y_i-\hat{Y_i})^2}{\Sigma(X_i - \hat{X_i})^2}} \times \frac{1}{\sqrt{(n-2)}}$$
+
+This equation is kind of gnarly. Here.s how I interpret it. $\Sigma(Y_i-\hat{Y_i})^2$ is the variance of the response variable, and the square root of it is the standard deviation of that response variable. Similarly, $\Sigma(X_i-\hat{X_i})^2$ is the variance of the explanatory variable the the square root of it is the standard deviation of the response variable. By dividing these two values we get the standard deviation of the slope. Finally, to get the standard error, we divide the standard deviation by the square root of the degrees of freedom, which in this case is $n-2$ since have used up two degrees of freedom in the calculation of slope and intercept.
+
+```{r}
+varY <- penguins3 |> mutate(diffs = (body_mass - mean(body_mass))^2) |>
+  summarise(var=sum(diffs))
+varX <- penguins3 |> mutate(diffs = (bill_len - mean(bill_len))^2) |>
+  summarise(var=sum(diffs))
+dfb <- nrow(penguins3)-2
+SEb <- sqrt(varY/(varX*dfb))[[1]]
+
+```
+
+Now we can calculate t as the difference between our observed slope or effect size (b) and the mean of the null (0), divided by the standard error.
+
+$$ t = \frac{b-0}{SE_b}$$
+
+```{r}
+myT = model2$coefficients[2][[1]]/SEb
+myT
+```
+
+And then we calculate p from the t distribution.
+
+```{r}
+p_val <- 2*pt(q=myT, df=dfb, lower.tail=F)
+p_val
+
+```
+
 ### Using R built in functions
 Of course, R has a built in function for doing this. 
 
@@ -191,10 +241,14 @@ model1<-t.test(adelieMasses, mu=4000, alternative="two.sided")
 model1$p.value
 ```
 
-We've gone through this very simple example to get a feel for where p values come from. You'll get to try more realistic scenarios in the labs.
+We can also do this for a linear model
 
+```{r}
+summary(model2)
 
-## Other ways to get p values
+summary(model2)[[4]][2,4] ##
+```
+
 
 ### F distribution
 
@@ -203,6 +257,7 @@ We've gone through this very simple example to get a feel for where p values com
 Likelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.
 
 The difference in log likelihoods ($D$) will follow a $\chi ^2$ distribution with degrees of freedom equal to the number of parameters tested.
+
 
 ## Review questions
 
