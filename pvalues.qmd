@@ -58,7 +58,8 @@ The **sampling distribution** is the distribution of parameters we would get fro
 
 There are various ways to measure variation in a data set.
 
-The **variance** is the expectation of the differences between individuals and the population mean. For a set of data points $X$ with mean $\mu$, $\text{Var}(X) = E[(X - \mu)^2]$. Practically we calculate this as $\frac{\Sigma (X - \mu)^2}{n-1}$
+The **variance** is the expectation of the differences between individuals and the population mean. For a set of data points $X$ with mean $\mu$, $\text{Var}(X) = E[(X - \mu)^2]$. (Remember that the $E$, or 'expectation', is a fancy math way of describing the average). Practically we calculate this as $\frac{\Sigma (X - \mu)^2}{n-1}$ where $n$ is the number of individuals in the sample. 
+[Dividing by $n-1$ and not $n$ deals with bias that arises because the sample mean is calculated from the sample, so all the points in the sample mean are a bit closer to it than they are to the true mean.]{.aside}
 
 The code below will calculate the variance and standard deviation of our Adelie penguin body masses.
 
@@ -78,7 +79,7 @@ You can also use a built in R function var().
 penguins2 |> filter(species=="Adelie") |> select(body_mass) |> var()
 ```
 
-The **standard deviation** is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as $\sigma$ compared to the variance, which is written as $\sigma^2$ so we can express the standard deviation kind of funnily as: $\sigma = sqrt{\sigma^2}$. When we calculate the standard deviation of a sample, it is often refered to as $s$ to distinguish it from the true standard deviation of the population ($\sigma$). 
+The **standard deviation** is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as $\sigma$ compared to the variance, which is written as $\sigma^2$ so we can express the standard deviation kind of funnily as: $\sigma = \sqrt{\sigma^2}$. When we calculate the standard deviation of a sample, it is often refered to as $s$ to distinguish it from the true standard deviation of the population ($\sigma$). 
 
 We can get the standard deviation by taking the square root of the variance we just calculated.
 

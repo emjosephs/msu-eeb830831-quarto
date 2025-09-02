@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -385,7 +385,7 @@ F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="no-row-height column-margin column-container"><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figs/Chinstrap-penguin.jpg" class="img-fluid figure-img" alt="Two penguins on a rock"></p>
+<p><img src="figs/Chinstrap-penguin.jpg" class="img-fluid figure-img" alt="Two penguins on a rock" width="320"></p>
 <figcaption>Chinstrap Penguins – Christopher Michel, CC BY 2.0 <a href="https://creativecommons.org/licenses/by/2.0" class="uri">https://creativecommons.org/licenses/by/2.0</a>, via Wikimedia Commons</figcaption>
 </figure>
 </div>
@@ -405,10 +405,10 @@ F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>The population we are studying has true values and parameters. However, without measuring every individual in the population, we will not get to know these true parameters. Instead, we sample the population and use statistics to make inferences about the population.</p>
 <p>The <strong>sampling distribution</strong> is the distribution of parameters we would get from sampling multiple times. It tells us about the amount of error generated from taking a sample. We need to know this to determine how much certainty we can get from the sample.</p>
 </section>
-<section id="measuring-variation" class="level2" data-number="6.4">
+<section id="measuring-variation" class="level2 page-columns page-full" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="measuring-variation"><span class="header-section-number">6.4</span> Measuring variation</h2>
 <p>There are various ways to measure variation in a data set.</p>
-<p>The <strong>variance</strong> is the expectation of the differences between individuals and the population mean. For a set of data points <span class="math inline">\(X\)</span> with mean <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\text{Var}(X) = E[(X - \mu)^2]\)</span>. Practically we calculate this as <span class="math inline">\(\frac{\Sigma (X - \mu)^2}{n-1}\)</span></p>
+<div class="page-columns page-full"><p>The <strong>variance</strong> is the expectation of the differences between individuals and the population mean. For a set of data points <span class="math inline">\(X\)</span> with mean <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\text{Var}(X) = E[(X - \mu)^2]\)</span>. (Remember that the <span class="math inline">\(E\)</span>, or ‘expectation’, is a fancy math way of describing the average). Practically we calculate this as <span class="math inline">\(\frac{\Sigma (X - \mu)^2}{n-1}\)</span> where <span class="math inline">\(n\)</span> is the number of individuals in the sample. </p><div class="no-row-height column-margin column-container"><span class="margin-aside">Dividing by <span class="math inline">\(n-1\)</span> and not <span class="math inline">\(n\)</span> deals with bias that arises because the sample mean is calculated from the sample, so all the points in the sample mean are a bit closer to it than they are to the true mean.</span></div></div>
 <p>The code below will calculate the variance and standard deviation of our Adelie penguin body masses.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>myN <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">count</span>() <span class="co">#get n</span></span>
@@ -431,7 +431,7 @@ F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 body_mass  210282.9</code></pre>
 </div>
 </div>
-<p>The <strong>standard deviation</strong> is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as <span class="math inline">\(\sigma\)</span> compared to the variance, which is written as <span class="math inline">\(\sigma^2\)</span> so we can express the standard deviation kind of funnily as: <span class="math inline">\(\sigma = sqrt{\sigma^2}\)</span>. When we calculate the standard deviation of a sample, it is often refered to as <span class="math inline">\(s\)</span> to distinguish it from the true standard deviation of the population (<span class="math inline">\(\sigma\)</span>).</p>
+<p>The <strong>standard deviation</strong> is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as <span class="math inline">\(\sigma\)</span> compared to the variance, which is written as <span class="math inline">\(\sigma^2\)</span> so we can express the standard deviation kind of funnily as: <span class="math inline">\(\sigma = \sqrt{\sigma^2}\)</span>. When we calculate the standard deviation of a sample, it is often refered to as <span class="math inline">\(s\)</span> to distinguish it from the true standard deviation of the population (<span class="math inline">\(\sigma\)</span>).</p>
 <p>We can get the standard deviation by taking the square root of the variance we just calculated.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(AdelieVar<span class="sc">$</span>var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
