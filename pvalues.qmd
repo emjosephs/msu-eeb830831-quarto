@@ -209,6 +209,7 @@ This equation is kind of gnarly. Here.s how I interpret it. $\Sigma(Y_i-\hat{Y_i
 ```{r}
 varY <- penguins3 |> mutate(diffs = (body_mass - mean(body_mass))^2) |>
   summarise(var=sum(diffs))
+
 varX <- penguins3 |> mutate(diffs = (bill_len - mean(bill_len))^2) |>
   summarise(var=sum(diffs))
 dfb <- nrow(penguins3)-2
