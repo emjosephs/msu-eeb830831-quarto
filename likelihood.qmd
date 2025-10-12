@@ -191,6 +191,12 @@ We can again use optimize to find the MLE although we will need to update the l.
 
 Now, what about the whole dataset? We should be able to to calculate the likelihood of each data point and multiply these likelihoods together to get the likelihood of seeing all this data.
 
+```{r}
+#multiple likelihoods of each datapoint together
+prod(dnorm(myData, mean=10, sd=3))
+```
+
+
 Wait, what's going on? How are we getting a probability of 0?
 
 ### Log likelihood solves underflow problems
