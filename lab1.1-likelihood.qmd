@@ -32,7 +32,7 @@ Here is data from their paper:
 
 ```{r}
 koalaprefs = c(-2,2,6,9,13,2,5,7,2,-6,4,3,2,6,-6)
-koalanames = c("Sprite","Nivea","Miniata","Trace","Donatella","Snorkle","Theresa","Crumpet","Yulara","Kat","Crumble","Chassis","Eeyore","Violet","Paddle","mel")
+koalanames = c("Sprite","Nivea","Miniata","Trace","Donatella","Snorkle","Theresa","Crumpet","Yulara","Kat","Crumble","Chassis","Eeyore","Violet","Paddle")
 ```
 
 ## Part 1: Likelihood

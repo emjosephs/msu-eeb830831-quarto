@@ -489,6 +489,13 @@ window.Quarto = {
 </div>
 </div>
 <p>Now, what about the whole dataset? We should be able to to calculate the likelihood of each data point and multiply these likelihoods together to get the likelihood of seeing all this data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#multiple likelihoods of each datapoint together</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(myData, <span class="at">mean=</span><span class="dv">10</span>, <span class="at">sd=</span><span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
 <p>Wait, what’s going on? How are we getting a probability of 0?</p>
 <section id="log-likelihood-solves-underflow-problems" class="level3" data-number="2.8.1">
 <h3 data-number="2.8.1" class="anchored" data-anchor-id="log-likelihood-solves-underflow-problems"><span class="header-section-number">2.8.1</span> Log likelihood solves underflow problems</h3>
@@ -501,20 +508,20 @@ and more generally:</p>
 <p>In practice, instead of multiplying likelihoods together to calculate the likelihood of observing a large data set, we can sum log likelihoods together.</p>
 <p>The code below calculates the log likelihood of all of the data we simulated. Note that we replace the prod() function with the sum() function and use the log=T option in the dnorm() function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">dnorm</span>(myData, <span class="at">mean=</span><span class="dv">10</span>, <span class="at">sd=</span><span class="dv">3</span>, <span class="at">log=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">dnorm</span>(myData, <span class="at">mean=</span><span class="dv">10</span>, <span class="at">sd=</span><span class="dv">3</span>, <span class="at">log=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -1261.091</code></pre>
 </div>
 </div>
 <p>We can now optimize this function</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function to estimate the likelihood for a given mean</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    l.norm <span class="ot">&lt;-</span> <span class="cf">function</span>(u){</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>        norm.prob <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">dnorm</span>(myData,<span class="at">mean=</span>u, <span class="at">sd=</span><span class="dv">3</span>, <span class="at">log=</span>T))</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(norm.prob)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    mle <span class="ot">&lt;-</span> <span class="fu">optimize</span>(<span class="at">f =</span> l.norm,<span class="at">lower=</span><span class="dv">0</span>,<span class="at">upper=</span><span class="dv">20</span>,<span class="at">maximum=</span><span class="cn">TRUE</span>)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    mle<span class="sc">$</span>maximum</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function to estimate the likelihood for a given mean</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    l.norm <span class="ot">&lt;-</span> <span class="cf">function</span>(u){</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>        norm.prob <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">dnorm</span>(myData,<span class="at">mean=</span>u, <span class="at">sd=</span><span class="dv">3</span>, <span class="at">log=</span>T))</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">return</span>(norm.prob)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    mle <span class="ot">&lt;-</span> <span class="fu">optimize</span>(<span class="at">f =</span> l.norm,<span class="at">lower=</span><span class="dv">0</span>,<span class="at">upper=</span><span class="dv">20</span>,<span class="at">maximum=</span><span class="cn">TRUE</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    mle<span class="sc">$</span>maximum</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9.887178</code></pre>
 </div>
@@ -531,23 +538,23 @@ and more generally:</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="likelihood_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="likelihood_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>We can see that for the first few samples we got a lower running mean but over time we end up close to the mean used to simulate the data. If we repeat this exercise a bunch of times we get the following plot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="dv">0</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,n),<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>),<span class="at">type=</span><span class="st">'n'</span>,</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">xlab=</span><span class="st">"number of draws from a normal"</span>,</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">ylab=</span><span class="st">"running mean"</span>)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">draw.running.mean</span>(<span class="at">r =</span> <span class="dv">100</span>,<span class="at">n =</span> <span class="dv">100</span>)</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">10</span>,<span class="at">col=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="dv">0</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,n),<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>),<span class="at">type=</span><span class="st">'n'</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">xlab=</span><span class="st">"number of draws from a normal"</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">ylab=</span><span class="st">"running mean"</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">draw.running.mean</span>(<span class="at">r =</span> <span class="dv">100</span>,<span class="at">n =</span> <span class="dv">100</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">10</span>,<span class="at">col=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="likelihood_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="likelihood_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
