@@ -29,7 +29,6 @@ As biologists, we often want to understand if one thing causes another thing.
 * Do traits determine an organism's fitness? In other words, are traits under selection?
 * Does genotype at this locus determine phenotype?
 * Do the amount of resources shape community diversity?
-* **get Lauren et al to fill in some other questions**
 
 To answer these types questions, we need a way to carefully relate two variables together. We will refer throughout this course to two types of variables:
 
