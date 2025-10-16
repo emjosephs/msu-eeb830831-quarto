@@ -44,10 +44,10 @@ Linear models estimate the conditional mean of the $i^{th}$ observation of a con
 These models are "linear" because we estimate of the conditional mean ($\hat{Y}_i$) by adding up all components of the model. So, each explanatory variable $x_{j,i}$ is multiplied by its effect size $b_j$. It might help to look at an example model below:
 
 \begin{equation} 
-\hat{Y}_i = a + b_1  x_{1,i} + b_2 x_{2,i} + \dots{}
+\hat{Y}_i = b_0 + b_1  x_{1,i} + b_2 x_{2,i} + \dots{}
 \end{equation}
 
-In this example, $\hat{Y}_i$ is estimated as the sum of the "intercept" ($a$), its value for the first explanatory variable ($x_{1,i}$) times the effect of this variable ($b_1$), its value for the second explanatory variable ($x_{2,i}$) times the effect of this variable, $b_2$, and so on for all included explanatory variables.
+In this example, $\hat{Y}_i$ is estimated as the sum of the "intercept" ($b_0$), its value for the first explanatory variable ($x_{1,i}$) times the effect of this variable ($b_1$), its value for the second explanatory variable ($x_{2,i}$) times the effect of this variable, $b_2$, and so on for all included explanatory variables.
 
 In practice, fitting a linear model requires picking explanatory variables and then estimating the values of $a$, $b_1$, $b_2$, and so on that best predict the response variables. These estimates then tell us how the explanatory variables relate to the response variable.
 
@@ -114,7 +114,7 @@ $$ e_i \sim N(0, \sigma^2)$$
 where $\sigma^2$ is the variance of the residuals. The mean of the residuals is 0.
 
 :::fyi
-Remember that the standard error is the standard deviation divided by the square root of the sample size: $\sigma_{\bar{x}} = \frac{\sigma}{\sqrt{n}}$
+Remember that the standard deviation is the squsre root of the variance and the standard error is the standard deviation divided by the square root of the sample size: $\sigma_{\bar{x}} = \frac{\sigma}{\sqrt{n}}$
 
 :::
 
