@@ -56,13 +56,13 @@ prod(dnorm(myData[c(6,8)],mean=0, sd=5))
 prod(dnorm(koalaprefs,mean=0, sd=5))
 ```
 
-4. Calculate the log likelihood of all 20 Koalas if the mean preference is 0 and sd is 5.
+4. Calculate the log likelihood of all Koalas if the mean preference is 0 and sd is 5.
 ```{r, echo=F, eval=F}
 sum(dnorm(myData,mean=0, sd=5, log=T))
 
 ```
 
-5. Use a grid search to calculate the maximum likelihood estimate for the mean (assume the sd is 5). Make a plot of with mean on the x axis and likelihood values on the y axis. 
+5. Use a grid search to calculate the maximum likelihood estimate for the mean (assume the sd is 5, use a log likelihood). Make a plot of with mean on the x axis and likelihood values on the y axis. 
 ```{r, echo=F, eval=F}
 means = seq(-10,12,b=0.1)
   mylikelihood <- sapply(means, function(u){
@@ -76,7 +76,7 @@ plot(means, mylikelihood)
 
 ## Part 2: Linear models
 
-6. Let's model this data with a very simple linear model. Write a model below that includes a response variable (preference) as a function of a mean and residual.
+6. Let's model this data with a very simple linear model. Write an equation describing a model that includes a response variable (preference) as a function of a mean and residual.
 
 7. Use lm() to fit this linear model. Does the mean found my lm() match your maximum likelihood estimate from question 5?
 ```{r, echo=F, eval=F}

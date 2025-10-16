@@ -78,8 +78,8 @@ We will use the principals of likelihood to pick the parameters that best fit th
 
 Throughout this section we'll be using a dataset of penguin traits. This data should be already available in your version of R, but if it isn't, use the following code to install it.
 
-```{r, eval=F}
-install.packages("palmerpenguins")
+```{r, eval=T}
+#install.packages("palmerpenguins")
 library("palmerpenguins")
 ```
 
@@ -140,8 +140,8 @@ In this case, the deterministic equation tells us that the predicted value of bo
 Remember from our earlier lectures that we can use likelihood to estimate the parameters of a distribution. The code below calculates the log likelihood of observing our data on penguin body mass for specific parameters of the normal distribution.
 
 ```{r}
-penguins2 <- penguins |> filter(!is.na(body_mass)) ##filter out ones with NAs
-sum(dnorm(penguins2$body_mass, mean=4600, sd=40, log=T))
+penguins2 <- penguins |> filter(!is.na(body_mass_g)) ##filter out ones with NAs
+sum(dnorm(penguins2$body_mass_g, mean=4600, sd=40, log=T))
 
 ```
 
@@ -153,7 +153,7 @@ As we learned in our lecture on likelihoods, we can use a grid search to find th
 myGrid <- seq(2000,6000,length.out=100) #make the grid
 
 myLogLikes <- sapply(myGrid,function(m)
-  {sum(dnorm(penguins2$body_mass,mean=m,sd=40,log=TRUE))}) ## function to calculate the log likeliood for each value in the grid
+  {sum(dnorm(penguins2$body_mass_g,mean=m,sd=40,log=TRUE))}) ## function to calculate the log likeliood for each value in the grid
 
 myGrid[which.max(myLogLikes)] ## figure out the grid value that corresponds to the maximum likelihood
 
@@ -171,7 +171,7 @@ Below is code for linear model with the penguins data using R's lm() function.
 
 
 ```{r}
-model1 = lm(body_mass ~ 1, data = penguins)
+model1 = lm(body_mass_g ~ 1, data = penguins)
 model1
 ```
 
@@ -219,12 +219,12 @@ library(plotly)
 #| fig-alt: "Interactive scatterplot of observed mean body mass of penguins. Points are plotted by index along the x-axis, with body mass on the y-axis. A horizontal dashed red line marks the sample mean. When hovering over a point, the residual (difference between the point’s value and the mean) is displayed."
 #| cap-location: margin
 resid_plot <- penguins                          |>
-  filter(!is.na(body_mass))                         |>
+  filter(!is.na(body_mass_g))                         |>
   mutate(i = 1:n(),
-         e_i = body_mass - mean(body_mass),
+         e_i = body_mass_g - mean(body_mass_g),
          e_i = round(e_i, digits = 3),
-         y_hat_i = round(mean(body_mass),digits=3),
-         y_i = round(body_mass, digits = 3))                         |>
+         y_hat_i = round(mean(body_mass_g),digits=3),
+         y_i = round(body_mass_g, digits = 3))                         |>
   ggplot(aes(x = i, y = y_i, y_hat_i = y_hat_i, e_i = e_i))+
   geom_point(size = 4, alpha = .6)+
   scale_color_manual(values = c("black","darkgreen"))+
@@ -245,7 +245,7 @@ of body mass from the fitted model, and the residual.
 
 ```{r, eval=F}
 library(broom)
-augment(model1) |> select(body_mass, .fitted, .resid)
+augment(model1) |> select(body_mass_g, .fitted, .resid)
                           
 ```
 
@@ -254,7 +254,7 @@ library(broom)
 library(DT)
 
   augment(model1) |> 
-    select(body_mass, .fitted, .resid) |>
+    select(body_mass_g, .fitted, .resid) |>
     mutate_all(round, digits = 2)         |>
   datatable(options = list(pageLength = 5))
 
@@ -262,7 +262,7 @@ library(DT)
 You could also generate residuals without any additional packages by using the following code
 
 ```{r}
-model1Residuals <-  penguins2$body_mass - model1$fitted.values
+model1Residuals <-  penguins2$body_mass_g - model1$fitted.values
 
 ```
  or even more simply, the lm() output includes the residuals.
@@ -295,7 +295,7 @@ Above, we calculated $\text{SS}_{\text{residual}}$ for a mean of 4202. The follo
 ```{r}
 ss_resid2 <- model1 |>
   augment() |>
-mutate(sq_resid2 = (5000-body_mass)^2) |> #calculate new residuals based on a "mean " of 5000
+mutate(sq_resid2 = (5000-body_mass_g)^2) |> #calculate new residuals based on a "mean " of 5000
 summarise(SS2 = sum(sq_resid2))
 
 ss_resid2
@@ -311,7 +311,7 @@ The plot below shows potential means on the x axis and $\text{SS}_{\text{residua
 calcSS <- function(x, m){
   m |>
   augment() |>
-mutate(sq_resid2 = (x-body_mass)^2) |> 
+mutate(sq_resid2 = (x-body_mass_g)^2) |> 
 summarise(SS2 = sum(sq_resid2))
 }
 
@@ -346,12 +346,12 @@ $$ \text{Bill length}_i \sim N(b_0, \sigma^2) $$
 
 
 ```{r, echo=F}
-model3 <- lm(bill_len~1, data=penguins)
-plot(1:344, penguins$bill_len, bty="n", col = 'gray', xlab = "penguin number", ylab = "bill length", pch=20)
+model3 <- lm(bill_length_mm~1, data=penguins)
+plot(1:344, penguins$bill_length_mm, bty="n", col = 'gray', xlab = "penguin number", ylab = "bill length", pch=20)
 abline(model3, col=palette()[3], lty=2,lwd=2)
-points(186, penguins$bill_len[186], col=palette()[3], pch=17, cex=2)
-points(100, penguins$bill_len[100], col=palette()[3], pch=15, cex=2)
-points(250, penguins$bill_len[250], col=palette()[3], pch=8, cex=2, lwd=2)
+points(186, penguins$bill_length_mm[186], col=palette()[3], pch=17, cex=2)
+points(100, penguins$bill_length_mm[100], col=palette()[3], pch=15, cex=2)
+points(250, penguins$bill_length_mm[250], col=palette()[3], pch=8, cex=2, lwd=2)
 
 ```
 
@@ -360,19 +360,19 @@ points(250, penguins$bill_len[250], col=palette()[3], pch=8, cex=2, lwd=2)
 4. Which of the following pieces of code calculates the log likelihood of the model above?
 a. 
 ```{r, eval=F}
-sum(dnorm(penguins$bill_len, mean=44, sd=5, log=T))
+sum(dnorm(penguins$bill_length_mm, mean=44, sd=5, log=T))
 ```
 b.
 ```{r, eval=F}
-prod(dnorm(penguins$bill_len, mean=44, sd=5))
+prod(dnorm(penguins$bill_length_mm, mean=44, sd=5))
 ```
 c.
 ```{r, eval=F}
-prod(dnorm(penguins$body_mass, mean=44, sd=5))
+prod(dnorm(penguins$body_mass_g, mean=44, sd=5))
 ```
 d.
 ```{r, eval=F}
-sum(dnorm(penguins$bill_len, mean=500, sd=5, log=T))
+sum(dnorm(penguins$bill_length_mm, mean=500, sd=5, log=T))
 ```
 
 

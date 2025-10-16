@@ -16,6 +16,7 @@ library(emmeans)
 library(broom)
 library(cowplot)
 library(plotly)
+library('palmerpenguins')
 ```
 
 ## What are we doing here?
@@ -31,7 +32,7 @@ We'll also cover ANOVA, which lets us determine how much variation is explained 
 You may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let's look more closely by making a plot of the body masses by color.
 
 ```{r}
-plot(penguins$body_mass, bty="n", ylab = "body mass", 
+plot(penguins$body_mass_g, bty="n", ylab = "body mass", 
      col=penguins$species, lwd=2)
 legend('topleft',levels(penguins$species),bty="n", pch=1, pt.lwd=2, col=palette())
 
@@ -61,9 +62,9 @@ The code below does this
 
 ```{r}
 penguins                                             |>
-  filter(!is.na(body_mass) , !is.na(species)) |>  #remove NAs
+  filter(!is.na(body_mass_g) , !is.na(species)) |>  #remove NAs
   group_by(species)                             |>
-  summarise(mean_body_mass = mean(body_mass))
+  summarise(mean_body_mass_g = mean(body_mass_g))
 ```
 
 You may be wondering why I am referring to this as a conditional mean.
@@ -89,10 +90,10 @@ We can work through these equations to estimate the parameters of the model. The
 ```{r}
 ## first filter out chinstraps and anything with missing data
 penguins2 <- penguins                                             |>
-  filter(!is.na(body_mass) , !is.na(species), species != "Chinstrap") |> 
+  filter(!is.na(body_mass_g) , species != "Chinstrap") |> 
   droplevels()
 
-model1 <- lm(body_mass ~ species, data=penguins2)
+model1 <- lm(body_mass_g ~ species, data=penguins2)
 summary(model1)
 ```
 
@@ -104,17 +105,17 @@ The residuals of this model will be the difference between each data point and t
 
 resid_plot <- penguins2                          |>
   mutate(i = 1:n(),
-         e_i = body_mass - mean(body_mass),
+         e_i = body_mass_g - mean(body_mass_g),
          e_i = round(e_i, digits = 3),
-         y_hat_i = round(mean(body_mass),digits=3),
-         y_i = round(body_mass, digits = 3))                         |>
+         y_hat_i = round(mean(body_mass_g),digits=3),
+         y_i = round(body_mass_g, digits = 3))                         |>
   ggplot(aes(x = i, y = y_i, y_hat_i = y_hat_i, e_i = e_i, colour=species))+
   geom_point(size = 4, alpha = .6)+
   scale_color_manual(values = palette()[1:2])+
   geom_hline(data = penguins2    |> 
                group_by(species)|> 
-               summarise(body_mass = mean(body_mass)),
-             aes(yintercept = body_mass, colour=species), linetype = "dashed", linewidth = 2)+
+               summarise(body_mass_g = mean(body_mass_g)),
+             aes(yintercept = body_mass_g, colour=species), linetype = "dashed", linewidth = 2)+
   labs(y = "Body Mass", title ="This plot is interactive!! Hover over a point to see its residual")+
   theme(legend.position = "none")
 
@@ -130,7 +131,7 @@ How is what we've just done different from a t-test? Or is it?
 adelies = dplyr::filter(penguins, species=="Adelie")
 gentoos = dplyr::filter(penguins, species=="Gentoo")
 
-t.test(adelies$body_mass, gentoos$body_mass)
+t.test(adelies$body_mass_g, gentoos$body_mass_g)
 
 ```
 
@@ -158,7 +159,7 @@ $$\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i +b_2 \times \text{Chinstrap} 
 ### Building a model with more than two categories with lm()
 
 ```{r}
-model2 <- lm(body_mass ~ species, data = penguins)
+model2 <- lm(body_mass_g ~ species, data = penguins)
 model2
 summary(model2)
 ```
@@ -172,7 +173,7 @@ We can change the reference category.
 The code below runs a new model that uses the relevel() function to set the reference as Chinstrap.
 
 ```{r}
-model3 <- lm(body_mass ~relevel(species, ref="Chinstrap"), data=penguins)
+model3 <- lm(body_mass_g ~relevel(species, ref="Chinstrap"), data=penguins)
 model3
 ```
 
@@ -199,8 +200,8 @@ The corresponding value within groups is$\text{SS}_{\text{error}}$m the *sum of 
 Together, the error mean square and the group mean square sum to the total mean square which tells us the deviations between each individual and the group mean (panel c below).
 
 ```{r, echo=FALSE, warning=FALSE,fig.cap = "Partitioning deviations in an ANOVA. **A** Shows the difference between each observation, $Y_i$, and the grand mean, ${\\overline{Y}}$. This is the basis for calculating $SS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the grand mean, ${\\overline{Y}}$. This is the basis for calculating $SS_{group}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $SS_{error}$.", fig.height=2.3, fig.width=7.6}
-a <- ggplot(mutate(penguins, id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) , 
-            aes(x = id, y = body_mass, color = species))+
+a <- ggplot(mutate(penguins, id = 1:n(), mean_mass = mean(body_mass_g, na.rm=T)) , 
+            aes(x = id, y = body_mass_g, color = species))+
   geom_point(alpha = .5)+
   geom_hline(aes(yintercept = mean_mass))+
   geom_segment(aes( xend = id, yend = mean_mass ), 
@@ -209,8 +210,8 @@ a <- ggplot(mutate(penguins, id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) ,
   labs(title = "Total deviation               = ")+
   scale_color_manual(values = palette()[c(1:3)])
 
-b<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) ,
-          aes(x = id, y = body_mass, color = species))+
+b<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass_g, na.rm=T)) ,
+          aes(x = id, y = body_mass_g, color = species))+
   geom_point(alpha = .5)+
   geom_hline(aes(yintercept = mean_mass))+
   geom_segment(aes( xend = id,y = .fitted,  yend = mean_mass ), 
@@ -220,8 +221,8 @@ b<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass, na.rm=
   labs(title = "Groups deviation             +")+
   scale_color_manual(values = palette()[c(1:3)])
 
-c<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass, na.rm=T)) ,
-          aes(x = id, y = body_mass, color = species))+
+c<-ggplot(mutate(augment(model2), id = 1:n(), mean_mass = mean(body_mass_g, na.rm=T)) ,
+          aes(x = id, y = body_mass_g, color = species))+
   geom_point(alpha = .5)+
   geom_hline(aes(yintercept = mean_mass))+
   geom_segment(aes( xend = id,  yend = .fitted), 
@@ -256,15 +257,15 @@ $$ F = \frac{\text{MS}_{\text{groups}}}{\text{MS}_{\text{error}}}$$
 
 Using our penguin data we can calculate the sum of squares values
 ```{r}
-penguins2 <- filter(penguins, !is.na(body_mass)) #remove nas for body mass
+penguins2 <- filter(penguins, !is.na(body_mass_g)) #remove nas for body mass
 
 sstable <- augment(model2) |> ## give us the means of each group in the .fitted row
-     mutate(sample_mean  = mean(body_mass)) |> # calculate the total mean
+     mutate(sample_mean  = mean(body_mass_g)) |> # calculate the total mean
             summarise(n_groups = n_distinct(species),
                       n=n(),
-        SS_total = sum((body_mass-sample_mean)^2), #total ss from body mass minus sample mean
+        SS_total = sum((body_mass_g-sample_mean)^2), #total ss from body mass minus sample mean
         SS_groups=sum((.fitted-sample_mean)^2), #model ss from group means minus total mean
-        SS_error = sum((body_mass-.fitted)^2), # error ss from body mass minus the group means
+        SS_error = sum((body_mass_g-.fitted)^2), # error ss from body mass minus the group means
 )
  
 sstable
