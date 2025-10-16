@@ -1,0 +1,115 @@
+---
+title: "Lab 2 -- Simple Linear Models"
+author: "Em"
+date: "Oct 16 2025"
+output:
+  html_document
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+library(tidyverse)
+palette <- c( "#FF5300", "#9ED80B", "#172869", "#43B629", "#8F92A1", "#1BB6AF")
+library(emmeans)
+library(car)
+library(broom)
+```
+
+
+This is a lab to practice simple linear models with means and categories. You'll also get to practice working with an R markdown file. 
+
+Some tasks to get us started:
+1. Go to the header above and edit the date and author to reflect who you are and when you are working on this.
+2. Look at the packages included in the chunk above. Run the code in that chunk and install any packages that aren't yet installed. You also will want to make sure that the "rmarkdown" package is installed.
+
+Now we can get going with the lab.
+
+Trout lilys (*Erythronium americanum*) have two distinct anther color morphs: yellow or red. The ecological consequences of anther color are unknown. Ripley and colleagues were interested in whether anther color affected pollinator preference. They went to a population of red-anthered flowers and counted the number of pollinator visits to local red flowers, and red and yellow flowers from a population 19km away. They chose these categories to disentangle the effects of color from the effects of novelty.
+
+(scenario is from https://doi.org/10.17912/micropub.biology.001286)
+
+We will start by simulating data under this model using a normal distribution and 3 categories: local red (1), distant red  (2), and distant yellow (3). There will be 30 flowers of each type. The code below shows how to simulate this data and combine it into a data frame that we can analyze.
+
+
+```{r}
+
+n.1 <- 30
+n.2 <- 30
+n.3 <- 30
+mean.1 <- 29
+mean.2 <- 42
+mean.3 <- 46
+sd.1 <- 6
+
+set.seed(5)
+
+#sample fitnesses based on parameters above (the round function gives us integers)
+group1 <- round(
+  rnorm(n=n.1, mean=mean.1, sd=sd.1))
+group2 <- round(
+  rnorm(n=n.2, mean=mean.2, sd=sd.1))
+group3 <- round(
+  rnorm(n=n.3, mean=mean.3, sd=sd.1))
+
+## but data together in a dataframe
+simData <- data.frame(resp = c(group1, group2, group3), 
+		    pop=c(rep('1', n.1), rep('2', n.2),rep('3',n.3)))
+
+#look at it
+plot(jitter(rep(c(0, .5,1), c(n.1, n.2,n.3))), simData$resp, bty="n", xlim=c(-.5,1.5),
+     xlab = "", ylab = "number of visits", xaxt="n")
+axis(1, at=c(0,.5,1), lab = c('red local','red distant','yellow distant'))
+
+```
+
+**Q1: Make a linear model with lm() to assess whether flower category affects number of visits.  How do you interpret the output of the linear model? What do the results tell you about pollinator behavior?**
+
+```{r}
+# code goes here
+```
+
+
+Next, we'll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation. 
+
+**Q2L Edit the code below to conduct the ANOVA by hand. I've included some phrases in []s that you will need to replace with variable names or numbers**
+
+```{r, eval=F}
+## Calculate SS_groups
+SS_groups <- sum((augment([model])$.fitted - mean(simData$resp))^2) ##replace [model] with whatever you called your model from the previous question
+
+## Calculate MS_groups
+MS_groups <- SS_groups/([degrees of freedom])
+
+## Calculate SS_error
+SS_error <- sum((augment([model])$.resid)^2)
+##SS_error <- sum((augment(model1)$resp - augment(model1)$.fitted)^2) THIS ALSO WORKS
+
+## Calculate MS_error
+MS_error <- SS_error/([degrees of freedom])
+
+## Calculate F
+myF = MS_groups/MS_error
+
+## Do the F test
+pf(q=myF, df1 = [degrees of freedom for MS_groups], df2 = [degrees of freedom for MS_error], lower.tail=F)
+
+```
+
+**Q3: in the chunk below, write the code to do an ANOVA using lm(). Check to see if the p value matches the results from the ANOVA done by hand above**
+
+```{r}
+#code goes here
+```
+
+**Q4: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results -- what matters most for dtermining pollinator visits?**
+
+```{r}
+#code goes here
+
+```
+
+**Q5: Ripley et al. discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the code above to simulate data for an additional category with a mean of 2 visits per flower.** 
+
+
+**Q6: Rerun the linear model, ANOVA (with the anova() function), and emmeans on this new data. Interpret the outputs.**
