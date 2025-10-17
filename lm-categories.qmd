@@ -80,8 +80,8 @@ $$\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i + e_i $$
 * $e_i$ is the residual 
 
 We could rewrite the above equation as two equations that describe the mass of individuals conditional on whether they are Adelie or Gentoo.
-$$ \text{Mass}_{i|\text{Adelie}} = b_0 + e_i$$
-$$ \text{Mass}_{i|\text{Gentoo}} = b_0 + b_1 + e_i$$
+$$ \text{Mass}_{i|\text{Gentoo}} = b_0 + e_i$$
+$$ \text{Mass}_{i|\text{Adelie}} = b_0 + b_1 + e_i$$
 
 We can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin ($b_0$) is 3701 and since the mean mass of a Gentoo penguin is 5076, $b_1 = 1375$.
 
