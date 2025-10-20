@@ -72,7 +72,14 @@ axis(1, at=c(0,.5,1), lab = c('red local','red distant','yellow distant'))
 
 Next, we'll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation. 
 
-**Q2L Edit the code below to conduct the ANOVA by hand. I've included some phrases in []s that you will need to replace with variable names or numbers**
+**Q2: in the chunk below, write the code to do an ANOVA using lm(). Check to see if the p value matches the results from the ANOVA done by hand above**
+
+```{r}
+#code goes here
+```
+
+
+**Q2.1 Optional Challenge Question. Edit the code below to conduct the ANOVA by hand. I've included some phrases in []s that you will need to replace with variable names or numbers**
 
 ```{r, eval=F}
 ## Calculate SS_groups
@@ -96,20 +103,15 @@ pf(q=myF, df1 = [degrees of freedom for MS_groups], df2 = [degrees of freedom fo
 
 ```
 
-**Q3: in the chunk below, write the code to do an ANOVA using lm(). Check to see if the p value matches the results from the ANOVA done by hand above**
 
-```{r}
-#code goes here
-```
-
-**Q4: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results -- what matters most for dtermining pollinator visits?**
+**Q3: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results -- what matters most for dtermining pollinator visits?**
 
 ```{r}
 #code goes here
 
 ```
 
-**Q5: Ripley et al. discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the code above to simulate data for an additional category with a mean of 2 visits per flower.** 
+**Q4: Ripley et al. discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the code above to simulate data for an additional category with a mean of 2 visits per flower.** 
 
 
 **Q6: Rerun the linear model, ANOVA (with the anova() function), and emmeans on this new data. Interpret the outputs.**
