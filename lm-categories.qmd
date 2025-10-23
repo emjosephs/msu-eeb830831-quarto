@@ -195,7 +195,7 @@ If this is true, then the variance among groups should equal the variance within
 
 We need ways to measure this variance. We'll start by describing the *sum of squares groups*. $\text{SS}_{\text{group}} =  \Sigma_{i} n_{i}(\hat{Y_i} - \bar{Y})^{2}$ where $\hat{Y_i}$ is the mean of the $i^{th}$ group, $n_i$ is the number of individuals in the group, and $\bar{Y}$ is the mean of the entire sample. The differences between the model mean and the mean of the whole sample are shown in panel b below.
 
-The corresponding value within groups is$\text{SS}_{\text{error}}$m the *sum of squares error*. It is calculated as $\text{SS}_{\text{error}} = \Sigma_{i}\Sigma{j}(Y_{ij} - \bar{Y_i})^2$ where $Y_{ij}$ is the value for each individual $j$ in group $i$. The differences between each individual and the group means are shown in panel c below.
+The corresponding value within groups is $\text{SS}_{\text{error}}$ the *sum of squares error*. It is calculated as $\text{SS}_{\text{error}} = \Sigma_{i}\Sigma_{j}(Y_{ij} - \bar{Y_i})^2$ where $Y_{ij}$ is the value for each individual $j$ in group $i$. The differences between each individual and the group means are shown in panel c below.
 
 Together, the error mean square and the group mean square sum to the total mean square which tells us the deviations between each individual and the group mean (panel c below).
 
