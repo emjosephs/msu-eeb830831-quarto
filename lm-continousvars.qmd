@@ -65,11 +65,11 @@ $$ e_i \sim N(0, \sigma^2)$$
 
 We can combine the deterministic and stochastic functions into one model:
 
-$$\hat{y_i} = b_0 + b_1 \times x_i + N(0,\sigma^2)$$
+$$y_i = b_0 + b_1 \times x_i + N(0,\sigma^2)$$
 
 or
 
-$$\hat{y_i} \sim N(b_0 + b_1 \times x_i, \sigma^2)$$
+$$y_i \sim N(b_0 + b_1 \times x_i, \sigma^2)$$
 
 ## Estimating parameters of the determinstic function
 
