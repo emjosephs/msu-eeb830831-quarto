@@ -35,7 +35,7 @@ myData1 <- dplyr::filter(myData, !is.na(log10_popsize), !is.na(diversity))
 
 ```
 
-Use lm() to do a linear model with diversity as the response variable and log10_popsize as the explanatory variable.
+Use lm() to fit a linear model with diversity as the response variable and log10_popsize as the explanatory variable. Look at the output of the model wiht summary(). Make a plot of the data with explanatory variable on the x axis and response variable on the y axis and plot your model fit line on top of the data.
 
 ```{r, eval=F, echo=F}
 model1 <- lm(diversity~log10_popsize,data=myData1)
@@ -48,7 +48,8 @@ geom_smooth(method='lm', formula= y~x)
 
 ```
 
-Which species has the largest residual? Briefly write, in words, what this large residual means.
+Identify which species has the largest residual. Briefly write, in words, what this large residual means.
+
 
 ```{r,eval=F, echo=F}
 
@@ -59,7 +60,8 @@ myResids[which.max(abs(myResids$.resid)),]
 myData1[which.max(abs(myResids$.resid)),]$species
 ```
 
-Make and interpret a residual plot. Do you think the model is fitting well?
+Make a plot with the explanatory variable on the x axis and the residuals for each individual on the y axis. Does the residual distribution seem to match the assumptions of a general linear model?
+
 
 ```{r, eval=F, echo=F}
 ggplot(myResids, aes(x=log10_popsize, y=.resid)) + geom_point() +
@@ -68,8 +70,7 @@ theme_classic()+
 
 ```
 
-What is the pvalue? Walk through how it's calculated here.
+Go back to the output of summary() for the model? What was the p value associated with the estimation of the effect size of your explanatory variable? Briefly describe below what this p value tells us about the effect size. (Bonus question -- how does lm() calculate p values?)
 
-
-Pick two additional variables from the table that you are interested in. Run the regression and look at the residuals.
+Pick an additional variable from the table that think might affect log10_diversity. Repeat the steps above to construct a linear model estimating the effect of that variable on genetic diversity.
 

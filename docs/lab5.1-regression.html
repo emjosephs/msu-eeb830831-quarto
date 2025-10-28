@@ -292,11 +292,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>myData <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">'data/buffalo_combined_data.tsv'</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header=</span>T) <span class="co">#note the use of sep="\t" to parse the tab deliminated file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>First, remove individuals that are missing data for diversity and log10_popsize</p>
-<p>Use lm() to do a linear model with diversity as the response variable and log10_popsize as the explanatory variable.</p>
-<p>Which species has the largest residual? Briefly write, in words, what this large residual means.</p>
-<p>Make and interpret a residual plot. Do you think the model is fitting well?</p>
-<p>What is the pvalue? Walk through how it’s calculated here.</p>
-<p>Pick two additional variables from the table that you are interested in. Run the regression and look at the residuals.</p>
+<p>Use lm() to fit a linear model with diversity as the response variable and log10_popsize as the explanatory variable. Look at the output of the model wiht summary(). Make a plot of the data with explanatory variable on the x axis and response variable on the y axis and plot your model fit line on top of the data.</p>
+<p>Identify which species has the largest residual. Briefly write, in words, what this large residual means.</p>
+<p>Make a plot with the explanatory variable on the x axis and the residuals for each individual on the y axis. Does the residual distribution seem to match the assumptions of a general linear model?</p>
+<p>Go back to the output of summary() for the model? What was the p value associated with the estimation of the effect size of your explanatory variable? Briefly describe below what this p value tells us about the effect size. (Bonus question – how does lm() calculate p values?)</p>
+<p>Pick an additional variable from the table that think might affect log10_diversity. Repeat the steps above to construct a linear model estimating the effect of that variable on genetic diversity.</p>
 
 
 
