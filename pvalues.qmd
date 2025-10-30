@@ -168,7 +168,7 @@ This seems pretty different! But how different?
 
 ### Degrees of freedom
 
-First we need to figure out the *degrees of freedom* that help us interpret $t$. In this case, the degrees of freedom are equal to $n-1$ for a sample size of $n$. 
+First we need to figure out the **degrees of freedom** that help us interpret $t$. In this case, the degrees of freedom are equal to $n-1$ for a sample size of $n$. 
 
 ### Calculating a p value
 
@@ -252,15 +252,6 @@ summary(model2)[[4]][2,4] ##
 ```
 
 
-### F distribution
-
-### Likelihood ratio tests
-
-Likelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.
-
-The difference in log likelihoods ($D$) will follow a $\chi ^2$ distribution with degrees of freedom equal to the number of parameters tested.
-
-
 ## Review questions
 
 The following code looks at variability in penguin bill length. 
@@ -277,5 +268,8 @@ valueB <- sumSquares[1,1]/(myN-1)
 valueC <- sqrt(sumSquares[1,1]/(myN-1))/sqrt(myN-1)
 ```
 
-Match 'valueA','valueB', and 'valueC' with the variance, standard deviation, and standard error.
+1. Match 'valueA','valueB', and 'valueC' with the variance, standard deviation, and standard error.
 
+2. Imagine that you are interested in understanding if flipper length affects bill length in the penguin dataset. Describe a potential null hypothesis for this test.
+
+3. Use lm() to conduct a linear model for the scenario described above. Look at the p value that is outputted from lm() and describe, in words, what it tells us about the relationship between flipper length and bill length. 

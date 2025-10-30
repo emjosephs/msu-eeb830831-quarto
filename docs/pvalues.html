@@ -307,8 +307,6 @@ window.Quarto = {
   <li><a href="#calculating-a-p-value" id="toc-calculating-a-p-value" class="nav-link" data-scroll-target="#calculating-a-p-value"><span class="header-section-number">6.6.2</span> Calculating a p value</a></li>
   <li><a href="#p-values-in-linear-regression" id="toc-p-values-in-linear-regression" class="nav-link" data-scroll-target="#p-values-in-linear-regression"><span class="header-section-number">6.6.3</span> P values in linear regression</a></li>
   <li><a href="#using-r-built-in-functions" id="toc-using-r-built-in-functions" class="nav-link" data-scroll-target="#using-r-built-in-functions"><span class="header-section-number">6.6.4</span> Using R built in functions</a></li>
-  <li><a href="#f-distribution" id="toc-f-distribution" class="nav-link" data-scroll-target="#f-distribution"><span class="header-section-number">6.6.5</span> F distribution</a></li>
-  <li><a href="#likelihood-ratio-tests" id="toc-likelihood-ratio-tests" class="nav-link" data-scroll-target="#likelihood-ratio-tests"><span class="header-section-number">6.6.6</span> Likelihood ratio tests</a></li>
   </ul></li>
   <li><a href="#review-questions" id="toc-review-questions" class="nav-link" data-scroll-target="#review-questions"><span class="header-section-number">6.7</span> Review questions</a></li>
   </ul>
@@ -523,7 +521,7 @@ body_mass  210282.9</code></pre>
 <p>This seems pretty different! But how different?</p>
 <section id="degrees-of-freedom" class="level3" data-number="6.6.1">
 <h3 data-number="6.6.1" class="anchored" data-anchor-id="degrees-of-freedom"><span class="header-section-number">6.6.1</span> Degrees of freedom</h3>
-<p>First we need to figure out the <em>degrees of freedom</em> that help us interpret <span class="math inline">\(t\)</span>. In this case, the degrees of freedom are equal to <span class="math inline">\(n-1\)</span> for a sample size of <span class="math inline">\(n\)</span>.</p>
+<p>First we need to figure out the <strong>degrees of freedom</strong> that help us interpret <span class="math inline">\(t\)</span>. In this case, the degrees of freedom are equal to <span class="math inline">\(n-1\)</span> for a sample size of <span class="math inline">\(n\)</span>.</p>
 </section>
 <section id="calculating-a-p-value" class="level3" data-number="6.6.2">
 <h3 data-number="6.6.2" class="anchored" data-anchor-id="calculating-a-p-value"><span class="header-section-number">6.6.2</span> Calculating a p value</h3>
@@ -629,14 +627,6 @@ F-statistic: 186.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-<section id="f-distribution" class="level3" data-number="6.6.5">
-<h3 data-number="6.6.5" class="anchored" data-anchor-id="f-distribution"><span class="header-section-number">6.6.5</span> F distribution</h3>
-</section>
-<section id="likelihood-ratio-tests" class="level3" data-number="6.6.6">
-<h3 data-number="6.6.6" class="anchored" data-anchor-id="likelihood-ratio-tests"><span class="header-section-number">6.6.6</span> Likelihood ratio tests</h3>
-<p>Likelihood ratio tests compare the likelihood of the best model given the data with the likeliood of the model under the null hypothesis.</p>
-<p>The difference in log likelihoods (<span class="math inline">\(D\)</span>) will follow a <span class="math inline">\(\chi ^2\)</span> distribution with degrees of freedom equal to the number of parameters tested.</p>
-</section>
 </section>
 <section id="review-questions" class="level2" data-number="6.7">
 <h2 data-number="6.7" class="anchored" data-anchor-id="review-questions"><span class="header-section-number">6.7</span> Review questions</h2>
@@ -652,7 +642,11 @@ F-statistic: 186.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>valueB <span class="ot">&lt;-</span> sumSquares[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">/</span>(myN<span class="dv">-1</span>)</span>
 <span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>valueC <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(sumSquares[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">/</span>(myN<span class="dv">-1</span>))<span class="sc">/</span><span class="fu">sqrt</span>(myN<span class="dv">-1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Match ‘valueA’,‘valueB’, and ‘valueC’ with the variance, standard deviation, and standard error.</p>
+<ol type="1">
+<li><p>Match ‘valueA’,‘valueB’, and ‘valueC’ with the variance, standard deviation, and standard error.</p></li>
+<li><p>Imagine that you are interested in understanding if flipper length affects bill length in the penguin dataset. Describe a potential null hypothesis for this test.</p></li>
+<li><p>Use lm() to conduct a linear model for the scenario described above. Look at the p value that is outputted from lm() and describe, in words, what it tells us about the relationship between flipper length and bill length.</p></li>
+</ol>
 
 
 </section>
