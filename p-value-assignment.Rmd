@@ -1,0 +1,22 @@
+---
+title: "pvalue-assignment"
+output: html_document
+date: "2025-11-04"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Group members:
+
+
+1. Discuss the following questions for each paper. While each group member shares the information about their paper, another group member should type notes about this information into the markdown document.
+
+a) What are the main question and results of your paper.
+b) Did the paper use p values to support the results?
+c) What cut-offs (alpha values) were used? Were these explained or justified in the paper?
+d) Where there other statistical techniques used to support significance of the results?
+
+2. Collect all the p values used in the papers of every group member and make a histogram of them. Discuss this histogram, do you notice anything interesting?
+
