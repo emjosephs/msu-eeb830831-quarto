@@ -449,7 +449,7 @@ body_mass  210282.9</code></pre>
 <h3 data-number="6.4.1" class="anchored" data-anchor-id="standard-error"><span class="header-section-number">6.4.1</span> Standard error</h3>
 <p>To quantify the variance in the sampling distribution, we need to account for the size of the sample. We expect larger samples to have less variation (due to the law of large numbers!).</p>
 <p>The <strong>standard error</strong> is the standard deviation adjusted for the sample size. So for a sample size of <span class="math inline">\(n\)</span> and a sample standard deviation of <span class="math inline">\(s\)</span>, the standard error (<span class="math inline">\(SE\)</span>) equals <span class="math inline">\(\frac{s}{\sqrt{n-1}}\)</span>.</p>
-<p>Here is code cor calculating the standard error of our sample of Adelie penguins.</p>
+<p>Here is code for calculating the standard error of our sample of Adelie penguins.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>adelieMasses <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass) </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sdAdelies <span class="ot">=</span> <span class="fu">sd</span>(adelieMasses<span class="sc">$</span>body_mass)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="fu">nrow</span>(adelieMasses)<span class="sc">-</span><span class="dv">1</span>))</span>
@@ -498,7 +498,7 @@ body_mass  210282.9</code></pre>
 <h2 data-number="6.6" class="anchored" data-anchor-id="t-distribution"><span class="header-section-number">6.6</span> T distribution</h2>
 <p>So we have a null hypothesis and we have a sample mean. How do we test for whether our sample is expected under the null hypothesis?</p>
 <p>The <strong>t distribution</strong> tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis.</p>
-<p>We can use this distribution to calculate a <strong>t value</strong> describing the number of standard errors between our sample mean (<span class="math inline">\(x_0\)</span>) and the mean of the null distribution (<span class="math inline">\(\mu_0\)</span>). We calculate this with the following equation:</p>
+<p>We can use this distribution to calculate a <strong>t value</strong> describing the number of standard errors between our sample mean (<span class="math inline">\(\bar{x}\)</span>) and the mean of the null distribution (<span class="math inline">\(\mu_0\)</span>). We calculate this with the following equation:</p>
 <p><span class="math display">\[ t = \frac{\bar{x}-\mu_0}{SE_x}\]</span></p>
 <p>Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 4000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate <span class="math inline">\(t\)</span> using the following code:</p>
 <div class="cell">

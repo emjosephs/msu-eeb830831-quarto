@@ -100,7 +100,7 @@ To quantify the variance in the sampling distribution, we need to account for th
 
 The **standard error** is the standard deviation  adjusted for the sample size. So for a sample size of $n$ and a sample standard deviation of $s$, the standard error ($SE$) equals $\frac{s}{\sqrt{n-1}}$.
 
-Here is code cor calculating the standard error of our sample of Adelie penguins.
+Here is code for calculating the standard error of our sample of Adelie penguins.
 
 ```{r}
 adelieMasses <- penguins2 |> filter(species=="Adelie") |> select(body_mass) 
@@ -143,7 +143,7 @@ So we have a null hypothesis and we have a sample mean. How do we test for wheth
 
 The **t distribution** tells us about the distributions of sample means. We can use it to determine how likely it is that our sample mean falls into the distribution of sample means expected under the null hypothesis. 
 
-We can use this distribution to calculate a **t value** describing the number of standard errors between our sample mean ($x_0$) and the mean of the null distribution ($\mu_0$). We calculate this with the following equation:
+We can use this distribution to calculate a **t value** describing the number of standard errors between our sample mean ($\bar{x}$) and the mean of the null distribution ($\mu_0$). We calculate this with the following equation:
 
 $$ t = \frac{\bar{x}-\mu_0}{SE_x}$$
 

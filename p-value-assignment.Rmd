@@ -8,15 +8,41 @@ date: "2025-11-04"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Form groups of 3 (2-4 is ok).
+
 Group members:
 
 
 1. Discuss the following questions for each paper. While each group member shares the information about their paper, another group member should type notes about this information into the markdown document.
 
-a) What are the main question and results of your paper.
-b) Did the paper use p values to support the results?
-c) What cut-offs (alpha values) were used? Were these explained or justified in the paper?
-d) Where there other statistical techniques used to support significance of the results?
+a) What are the main question and results of your paper?
 
-2. Collect all the p values used in the papers of every group member and make a histogram of them. Discuss this histogram, do you notice anything interesting?
+b) Did the paper use p values to support the results?
+
+c) What specific cut-offs (alpha values) were used? Were these explained or justified in the paper?
+
+d) Were there other statistical techniques used to support significance of the results?
+
+2. Collect all the p values used in the papers of every group member and, for each p value, note whether the paper thought it was "significant".
+
+```{r}
+#code for making your dataframe of p values goes here
+
+```
+
+3. What proportion of reported p values across your papers was significant (as defined by each paper)? 
+
+```{r}
+#code goes here
+
+```
+
+4. Make a histogram of your p values. Discuss this histogram and the proportion from #3 and write some notes below about your discussion and what you find interesting. Do you think that this data matches the results you'd get if you did a bunch of random statistical tests? Why or why not? 
+
+```{r}
+#histogram goes here
+
+```
+
+5. What other questions do you have about p values?
 
