@@ -17,6 +17,49 @@ palette(lacroix_palette("Mango", type = "discrete"))
 
 ## What are we doing here?
 
+Now that we've learned the basics of how to build models with categorical and continuous variables, we can start to combine them. 
+
+But, before we start to build more complicated models, we should go over the assumptions of a linear model.
+
+## Linear model assumptions
+
+### Linearity
+We assume that we can model our response variable by adding up the values in the model equation. 
+
+### Homoschedasticity
+We assume that the variance of our residuals is the same across all of our data. If this is not true and the variance changes across residuals, then our data would be heteroschedastic. 
+
+```{r, echo=F}
+set.seed(127)
+x<-seq(1,200,1)
+err<-NULL
+for(i in c(1:200)) {
+	err[i]<-rnorm(1,0,i)
+	}
+y<-3.8*x+25+err;
+#Auxilliary regression
+naivelm<-lm(y~x)
+absresid<-abs(naivelm$residuals)
+auxreg<-lm(absresid~x+0)
+#no hsked
+errno<-NULL
+for(i in c(1:200)) {
+	errno[i]<-rnorm(1,0,15)
+	};
+yn<-3.8*x+25+errno;
+par(mfrow=c(2,1))
+plot(absresid~x,pch=20,main="Heteroskedastic Residuals",ylab="Absolute Value of Residuals")
+abline(coef=c(0,auxreg$coefficients),col=2)
+plot(abs(lm(yn~x)$residuals)~x,pch=20,main="Homoskedastic Residuals",ylab="Absolute Value of Residuals")
+abline(coef=c(lm(abs(lm(yn~x)$residuals)~x)$coefficients),col=2,lty=2);
+
+```
+
+### Independence of units
+We assume that the observations of data point are independent from each other.
+
+### Distribution 
+For general (not generalized) linear models, we assume that our residuals are drawn from a single normal distribution.
 
 ## Motivating example
 
@@ -35,6 +78,7 @@ legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette
 ```
 
 Examining the data, we can generate some hypotheses about how bill length and species relate to body mass.
+
 
 ## Building the model
 
