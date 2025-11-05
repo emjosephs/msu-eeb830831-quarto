@@ -290,15 +290,23 @@ window.Quarto = {
    
   <ul>
   <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">7.1</span> What are we doing here?</a></li>
-  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">7.2</span> Motivating example</a></li>
-  <li><a href="#building-the-model" id="toc-building-the-model" class="nav-link" data-scroll-target="#building-the-model"><span class="header-section-number">7.3</span> Building the model</a></li>
-  <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">7.4</span> Fitting with lm()</a></li>
-  <li><a href="#interactions" id="toc-interactions" class="nav-link" data-scroll-target="#interactions"><span class="header-section-number">7.5</span> Interactions</a></li>
-  <li><a href="#the-general-linear-model" id="toc-the-general-linear-model" class="nav-link" data-scroll-target="#the-general-linear-model"><span class="header-section-number">7.6</span> The General Linear Model</a>
+  <li><a href="#linear-model-assumptions" id="toc-linear-model-assumptions" class="nav-link" data-scroll-target="#linear-model-assumptions"><span class="header-section-number">7.2</span> Linear model assumptions</a>
   <ul class="collapse">
-  <li><a href="#assumptions-of-the-general-linear-model" id="toc-assumptions-of-the-general-linear-model" class="nav-link" data-scroll-target="#assumptions-of-the-general-linear-model"><span class="header-section-number">7.6.1</span> Assumptions of the general linear model</a></li>
+  <li><a href="#linearity" id="toc-linearity" class="nav-link" data-scroll-target="#linearity"><span class="header-section-number">7.2.1</span> Linearity</a></li>
+  <li><a href="#homoschedasticity" id="toc-homoschedasticity" class="nav-link" data-scroll-target="#homoschedasticity"><span class="header-section-number">7.2.2</span> Homoschedasticity</a></li>
+  <li><a href="#independence-of-units" id="toc-independence-of-units" class="nav-link" data-scroll-target="#independence-of-units"><span class="header-section-number">7.2.3</span> Independence of units</a></li>
+  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution"><span class="header-section-number">7.2.4</span> Distribution</a></li>
+  <li><a href="#looking-for-deviations-from-assumptions" id="toc-looking-for-deviations-from-assumptions" class="nav-link" data-scroll-target="#looking-for-deviations-from-assumptions"><span class="header-section-number">7.2.5</span> Looking for deviations from assumptions</a></li>
   </ul></li>
-  <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation"><span class="header-section-number">7.7</span> Matrix notation</a></li>
+  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">7.3</span> Motivating example</a></li>
+  <li><a href="#building-the-model" id="toc-building-the-model" class="nav-link" data-scroll-target="#building-the-model"><span class="header-section-number">7.4</span> Building the model</a></li>
+  <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">7.5</span> Fitting with lm()</a></li>
+  <li><a href="#interactions" id="toc-interactions" class="nav-link" data-scroll-target="#interactions"><span class="header-section-number">7.6</span> Interactions</a></li>
+  <li><a href="#the-general-linear-model" id="toc-the-general-linear-model" class="nav-link" data-scroll-target="#the-general-linear-model"><span class="header-section-number">7.7</span> The General Linear Model</a>
+  <ul class="collapse">
+  <li><a href="#assumptions-of-the-general-linear-model" id="toc-assumptions-of-the-general-linear-model" class="nav-link" data-scroll-target="#assumptions-of-the-general-linear-model"><span class="header-section-number">7.7.1</span> Assumptions of the general linear model</a></li>
+  </ul></li>
+  <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation"><span class="header-section-number">7.8</span> Matrix notation</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lm-multiplepredictors.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
@@ -326,9 +334,53 @@ window.Quarto = {
 
 <section id="what-are-we-doing-here" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">7.1</span> What are we doing here?</h2>
+<p>Now that we’ve learned the basics of how to build models with categorical and continuous variables, we can start to combine them.</p>
+<p>But, before we start to build more complicated models, we should go over the assumptions of a linear model.</p>
 </section>
-<section id="motivating-example" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">7.2</span> Motivating example</h2>
+<section id="linear-model-assumptions" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="linear-model-assumptions"><span class="header-section-number">7.2</span> Linear model assumptions</h2>
+<section id="linearity" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="linearity"><span class="header-section-number">7.2.1</span> Linearity</h3>
+<p>We assume that we can model our response variable by adding up the values in the model equation. The alternative could be multiplying variables together, dividing them, or putting a variable in the exponent (or other things).</p>
+<p>The plots below show data that violates this assumption because it was simulated using an exponential equation of the form <span class="math inline">\(y_i = b^{x_i + e_i}\)</span>. On the left you can see that the linear regression line does not fit the curve very well and on the right it is clear that the residuals are not evenly distributed across the values of Y.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="homoschedasticity" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="homoschedasticity"><span class="header-section-number">7.2.2</span> Homoschedasticity</h3>
+<p>We assume that the variance of our residuals is the same across all of our data. If this is not true and the variance changes across residuals, then our data would be heteroschedastic. The two plots below show data that is heteroschedastic. On left you can see an explanatory and response variable plotted with a regression line. On right is a plot of the residuals of the regression and it is clear that the variance of the residual increases as the explanatory variable increases. In fact, this data was simulated such that the variance of the residual for each point is a function of the explanatory variable.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="independence-of-units" class="level3" data-number="7.2.3">
+<h3 data-number="7.2.3" class="anchored" data-anchor-id="independence-of-units"><span class="header-section-number">7.2.3</span> Independence of units</h3>
+<p>We assume that the observations of data point are independent from each other. Another way of saying this is that we assume that the residuals are independent from each other.</p>
+</section>
+<section id="distribution" class="level3" data-number="7.2.4">
+<h3 data-number="7.2.4" class="anchored" data-anchor-id="distribution"><span class="header-section-number">7.2.4</span> Distribution</h3>
+<p>For general (not generalized) linear models, we assume that our residuals are drawn from a single normal distribution. This somewhat overlaps with some of the previous assumptions – for example, in heteroschedastic data, the variance of the distribution of the residuals differes across the range of the data.</p>
+</section>
+<section id="looking-for-deviations-from-assumptions" class="level3" data-number="7.2.5">
+<h3 data-number="7.2.5" class="anchored" data-anchor-id="looking-for-deviations-from-assumptions"><span class="header-section-number">7.2.5</span> Looking for deviations from assumptions</h3>
+<p>As shown above for some of these cases, you can often diagnose problems with a model fit caused by violations of assumptions by looking at a plot of the residuals against the explanatory variable. You can make these and other diagnostic plots by using the plot() function on the output of lm().</p>
+</section>
+</section>
+<section id="motivating-example" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">7.3</span> Motivating example</h2>
 <p>In the previous sections, we found that both species and bill length affect body mass. Can we build a model that incorporates both?</p>
 <p>To make things a bit simpler we will only look at Adelie and Gentoo penguins</p>
 <div class="cell">
@@ -340,15 +392,15 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Examining the data, we can generate some hypotheses about how bill length and species relate to body mass.</p>
 </section>
-<section id="building-the-model" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="building-the-model"><span class="header-section-number">7.3</span> Building the model</h2>
+<section id="building-the-model" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="building-the-model"><span class="header-section-number">7.4</span> Building the model</h2>
 <p>Let’s think about a model of some response variable (<span class="math inline">\(y\)</span>) based on two explanatory variables, <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y_1\)</span>.</p>
 <p>Our model looks like it did before, except now it has multiple predictors, each with its own coefficient.</p>
 <p><span class="math display">\[ \hat{y}_i = b_0 + b_1x_1i + b_2x_2i e_i\]</span></p>
@@ -356,8 +408,8 @@ window.Quarto = {
 <p><span class="math display">\[ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + e_i \]</span></p>
 <p>where <span class="math inline">\(b_1\)</span> is the difference in means between Gentoo and Adelie and <span class="math inline">\(b_2\)</span> is the effect of increasing bill length one unit on body mass. <span class="math inline">\(b_0\)</span> is the intercept, or the predicted body mass for an Adelie penguin with a bill length of 0 (we may question how useful this value is for predictions but it is certainly useful for the model). Note that this assumes that Adelie and Gentoo penguins have the same slope, which may not always be the case.</p>
 </section>
-<section id="fitting-with-lm" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">7.4</span> Fitting with lm()</h2>
+<section id="fitting-with-lm" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">7.5</span> Fitting with lm()</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>bill_len<span class="sc">+</span>species,<span class="at">data=</span>penguins2)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -375,8 +427,8 @@ Coefficients:
 <p><span class="math display">\[ \text{Body mass} = -267.6 + 484.0 \times \text{Gentoo} + 102.3 \times \text{bill length} + e_i \]</span></p>
 <p>Note that the intercept does not provide a particularly useful prediction.</p>
 </section>
-<section id="interactions" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="interactions"><span class="header-section-number">7.5</span> Interactions</h2>
+<section id="interactions" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="interactions"><span class="header-section-number">7.6</span> Interactions</h2>
 <p>I noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.</p>
 <p>We can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a <strong>statistical interaction</strong>.</p>
 <p><span class="math display">\[ \hat{y}_i = b_0 + b_1x_1i + b_2x_2i + b_3 x_1 \times x_2 e_i\]</span></p>
@@ -412,11 +464,11 @@ F-statistic: 348.4 on 3 and 270 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>In this case the statistical interaction isn’t significant, suggesting that the slope of the relationship between bill length and mass does not differ between species.</p>
 </section>
-<section id="the-general-linear-model" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="the-general-linear-model"><span class="header-section-number">7.6</span> The General Linear Model</h2>
+<section id="the-general-linear-model" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="the-general-linear-model"><span class="header-section-number">7.7</span> The General Linear Model</h2>
 <p>For the last few classes, we have been building up to a General Linear Model (not to be confused with a Generalized Linear Model!).</p>
-<section id="assumptions-of-the-general-linear-model" class="level3" data-number="7.6.1">
-<h3 data-number="7.6.1" class="anchored" data-anchor-id="assumptions-of-the-general-linear-model"><span class="header-section-number">7.6.1</span> Assumptions of the general linear model</h3>
+<section id="assumptions-of-the-general-linear-model" class="level3" data-number="7.7.1">
+<h3 data-number="7.7.1" class="anchored" data-anchor-id="assumptions-of-the-general-linear-model"><span class="header-section-number">7.7.1</span> Assumptions of the general linear model</h3>
 <p>There are a few major assumptions of general linear models.</p>
 <ul>
 <li><p>The predictor <span class="math inline">\(x_1\)</span> is linearly related to the response variable <span class="math inline">\(y_1\)</span>.</p></li>
@@ -433,8 +485,8 @@ F-statistic: 348.4 on 3 and 270 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Whatever you decide to do, be transparent in your paper!</p>
 </section>
 </section>
-<section id="matrix-notation" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="matrix-notation"><span class="header-section-number">7.7</span> Matrix notation</h2>
+<section id="matrix-notation" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="matrix-notation"><span class="header-section-number">7.8</span> Matrix notation</h2>
 <p>It might be helpful for some of you to see a linear model written out in matrix notation. The equation of three matrices below describes a linear model.</p>
 <p><span class="math display">\[\begin{equation}
 \begin{pmatrix}

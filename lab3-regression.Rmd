@@ -50,12 +50,6 @@ Identify which species has the largest residual. Briefly write, in words, what t
 
 Make a plot with the explanatory variable on the x axis and the residuals for each individual on the y axis. Does the residual distribution seem to match the assumptions of a general linear model?
 
-```{r, eval=F, echo=F}
-ggplot(myResids, aes(x=log10_popsize, y=.resid)) + geom_point() +
-theme_classic()+
-  geom_hline(yintercept=0, linetype="dashed")
-
-```
 
 5.
 
@@ -65,3 +59,10 @@ Go back to the output of summary() for the model. What was the p value associate
 
 Pick an additional variable from the table that think might affect log10_diversity. Repeat the steps above to construct a linear model estimating the effect of that variable on genetic diversity.
 
+** New Question Below **
+
+7. Go back to your original model of population size and diversity from question 2. Use the sample() function to sample 1/2 of your data points. 
+
+a) How do you think halving the sample size will affect the p value of your model? Explain why using what you have learned about the t distribution.
+
+b) Rerun the linear model with the halved dataset and compare your p value to the original p value from the full dataset. Were you correct?
