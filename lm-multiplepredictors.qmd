@@ -9,6 +9,7 @@ editor: source
 #| include: false
 
 library(tidyverse)
+library(gridExtra)
 library('DT')
 library(LaCroixColoR)
 palette(lacroix_palette("Mango", type = "discrete"))
@@ -24,42 +25,65 @@ But, before we start to build more complicated models, we should go over the ass
 ## Linear model assumptions
 
 ### Linearity
-We assume that we can model our response variable by adding up the values in the model equation. 
+We assume that we can model our response variable by adding up the values in the model equation. The alternative could be multiplying variables together, dividing them, or putting a variable in the exponent (or other things).
 
-### Homoschedasticity
-We assume that the variance of our residuals is the same across all of our data. If this is not true and the variance changes across residuals, then our data would be heteroschedastic. 
+The plots below show data that violates this assumption because it was simulated using an exponential equation of the form $y_i = b^{x_i + e_i}$. On the left you can see that the linear regression line does not fit the curve very well and on the right it is clear that the residuals are not evenly distributed across the values of Y.
 
 ```{r, echo=F}
-set.seed(127)
-x<-seq(1,200,1)
-err<-NULL
-for(i in c(1:200)) {
-	err[i]<-rnorm(1,0,i)
-	}
-y<-3.8*x+25+err;
-#Auxilliary regression
-naivelm<-lm(y~x)
-absresid<-abs(naivelm$residuals)
-auxreg<-lm(absresid~x+0)
-#no hsked
-errno<-NULL
-for(i in c(1:200)) {
-	errno[i]<-rnorm(1,0,15)
-	};
-yn<-3.8*x+25+errno;
-par(mfrow=c(2,1))
-plot(absresid~x,pch=20,main="Heteroskedastic Residuals",ylab="Absolute Value of Residuals")
-abline(coef=c(0,auxreg$coefficients),col=2)
-plot(abs(lm(yn~x)$residuals)~x,pch=20,main="Homoskedastic Residuals",ylab="Absolute Value of Residuals")
-abline(coef=c(lm(abs(lm(yn~x)$residuals)~x)$coefficients),col=2,lty=2);
+x = runif(200,min=0, max=100)
+mydat = data.frame(explanatory = x, response = 1.05^(x+rnorm(200,0,1)))
 
+mymodel <- lm(response~explanatory, data=mydat)
+mydat$residuals <- mymodel$residuals
+
+p1 <- ggplot(mydat, aes(x = explanatory, y =response)) + 
+  geom_point() +
+  stat_smooth(formula = y ~ x,method = "lm") +
+  theme_classic()
+
+p2 <- ggplot(mydat, aes(x=explanatory, y = residuals))+
+  geom_point()+
+  geom_hline(yintercept=0) +
+  theme_classic()
+
+grid.arrange(p1, p2, nrow = 1)
+```
+
+
+### Homoschedasticity
+We assume that the variance of our residuals is the same across all of our data. If this is not true and the variance changes across residuals, then our data would be heteroschedastic. The two plots below show data that is heteroschedastic. On left you can see an explanatory and response variable plotted with a regression line. On right is a plot of the residuals of the regression and it is clear that the variance of the residual increases as the explanatory variable increases. In fact, this data was simulated such that the variance of the residual for each point is a function of the explanatory variable.
+
+```{r, echo=F}
+set.seed(830)
+
+
+err <- sapply(1:200, function(x){rnorm(1,0,x)})
+mydat = data.frame(explanatory = 1:200, response = 3.8*x+25+err)
+
+mymodel <- lm(response~explanatory, data=mydat)
+mydat$residuals <- mymodel$residuals
+
+p1 <- ggplot(mydat, aes(x = explanatory, y =response)) + 
+  geom_point() +
+  stat_smooth(formula = y ~ x,method = "lm") +
+  theme_classic()
+
+p2 <- ggplot(mydat, aes(x=explanatory, y = residuals))+
+  geom_point()+
+  geom_hline(yintercept=0) +
+  theme_classic()
+
+grid.arrange(p1, p2, nrow = 1)
 ```
 
 ### Independence of units
-We assume that the observations of data point are independent from each other.
+We assume that the observations of data point are independent from each other. Another way of saying this is that we assume that the residuals are independent from each other.
 
 ### Distribution 
-For general (not generalized) linear models, we assume that our residuals are drawn from a single normal distribution.
+For general (not generalized) linear models, we assume that our residuals are drawn from a single normal distribution. This somewhat overlaps with some of the previous assumptions -- for example, in heteroschedastic data, the variance of the distribution of the residuals differes across the range of the data.
+
+### Looking for deviations from assumptions
+As shown above for some of these cases, you can often diagnose problems with a model fit caused by violations of assumptions by looking at a plot of the residuals against the explanatory variable. You can make these and other diagnostic plots by using the plot() function on the output of lm(). 
 
 ## Motivating example
 
