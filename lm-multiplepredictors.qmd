@@ -12,7 +12,9 @@ library(tidyverse)
 library(gridExtra)
 library('DT')
 library(LaCroixColoR)
+library(car)
 palette(lacroix_palette("Mango", type = "discrete"))
+
 
 ```
 
@@ -85,6 +87,13 @@ For general (not generalized) linear models, we assume that our residuals are dr
 ### Looking for deviations from assumptions
 As shown above for some of these cases, you can often diagnose problems with a model fit caused by violations of assumptions by looking at a plot of the residuals against the explanatory variable. You can make these and other diagnostic plots by using the plot() function on the output of lm(). 
 
+### What if your data doesn't meet these assumptions?
+You have options.
+
+1. You can transform your data
+2. You can pick a new model
+3. You can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point
+
 ## Motivating example
 
 In the previous sections, we found that both species and bill length affect body mass. Can we build a model that incorporates both?
@@ -93,7 +102,7 @@ To make things a bit simpler we will only look at Adelie and Gentoo penguins
 
 
 ```{r}
-penguins2 <- penguins |> filter(!is.na(body_mass) & !is.na(bill_len) & !species=="Chinstrap") |> droplevels() ##filter out missing data and chinstrap
+penguins2 <- penguins |> filter(!is.na(body_mass) & !is.na(bill_len) & !species=="Adelie") |> droplevels() ##filter out missing data and chinstrap
 
 
 plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = penguins2$species)
@@ -116,23 +125,61 @@ in our penguin example
 
 $$ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + e_i $$
 
-where $b_1$ is the difference in means between Gentoo and Adelie and $b_2$ is the effect of increasing bill length one unit on body mass. 
-$b_0$ is the intercept, or the predicted body mass for an Adelie penguin with a bill length of 0 (we may question how useful this value is for predictions but it is certainly useful for the model).
-Note that this assumes that Adelie and Gentoo penguins have the same slope, which may not always be the case.
+We will revisit what these terms mean after fitting the model.
 
 
 ## Fitting with lm()
 
 ```{r}
-model1 <- lm(body_mass~bill_len+species,data=penguins2)
-model1
+model1 <- lm(body_mass~species+bill_len,data=penguins2)
+summary(model1)
 ```
 
 We can now rewrite our equation with these estimated values
 
-$$ \text{Body mass} = -267.6 + 484.0 \times \text{Gentoo} + 102.3 \times \text{bill length} + e_i $$
+$$ \text{Body mass} = -648.533 + 1462.168 \times \text{Gentoo} + 89.725 \times \text{bill length} + e_i $$
 
-Note that the intercept does not provide a particularly useful prediction.
+Interpretting what $b_0$, $b_1$, and $b_2$ are is slightly more complicated now. First, we can see that $b_1$ is not exactly the difference in means between Gentoo and Chinstrap penguins. 
+
+```{r}
+penguins2 |> dplyr::group_by(species) |> summarise(mean_body_mass = mean(body_mass))
+5076-3733
+```
+
+Similarly, $b_2$ is actually about twice as large as the coefficient you would get if you ran a linear model without species.
+
+```{r}
+mymodel2 <- lm(body_mass ~ bill_len, data=penguins2)
+summary(mymodel2)
+```
+
+Linear models are about making predictions, so what these coefficients tell us is the predicted value of body mass for a specific bill length and species value. So, within a specific species, we expect that increasing bill length by one unit will increase body mass by approx. 90 units. We can kind of see that if we run the model only on one species at a time.
+
+```{r}
+mymodel3 <- lm(body_mass ~ bill_len, data=dplyr::filter(penguins2,species=="Gentoo"))
+summary(mymodel3)
+
+mymodel4 <- lm(body_mass ~ bill_len, data=dplyr::filter(penguins2,species=="Chinstrap"))
+summary(mymodel4)
+
+
+plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = penguins2$species)
+legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette())
+abline(mymodel3, col=palette()[2], lwd=2)
+abline(mymodel4, col=palette()[1], lwd=2)
+
+
+```
+
+
+Now that we are working with more complicated models, this is also a good time to get in the habit of using Anova() to calculate p values instead of summary(). In this case they provide the same values, but in some cases they will not.
+
+```{r}
+library(car)
+Anova(model1)
+```
+
+Let's try another one for bill length and bill depth
 
 ## Interactions
 
@@ -156,30 +203,6 @@ summary(model2)
 
 In this case the statistical interaction isn't significant, suggesting that the slope of the relationship between bill length and mass does not differ between species.
 
-
-## The General Linear Model
-
-For the last few classes, we have been building up to a General Linear Model (not to be confused with a Generalized Linear Model!). 
-
-### Assumptions of the general linear model
-
-There are a few major assumptions of general linear models.
-
-* The predictor $x_1$ is linearly related to the response variable $y_1$.
-
-* The errors (residuals), $e_i$, are independent and identically distributed
-
-* The errors, $e_i$, have a constant variance $\sigma^2$
-
-* If performing inference, the errors, $e_i$, are normally distributed
-
-However, if your data doesn't seem to meet these assumptions, you have options.
-
-1. You can transform your data
-2. You can pick a new model
-3. You can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point
-
-Whatever you decide to do, be transparent in your paper!
 
 ## Matrix notation
 
