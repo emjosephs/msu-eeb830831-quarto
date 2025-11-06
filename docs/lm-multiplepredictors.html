@@ -302,8 +302,9 @@ window.Quarto = {
   <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">7.3</span> Motivating example</a></li>
   <li><a href="#building-the-model" id="toc-building-the-model" class="nav-link" data-scroll-target="#building-the-model"><span class="header-section-number">7.4</span> Building the model</a></li>
   <li><a href="#fitting-with-lm" id="toc-fitting-with-lm" class="nav-link" data-scroll-target="#fitting-with-lm"><span class="header-section-number">7.5</span> Fitting with lm()</a></li>
-  <li><a href="#interactions" id="toc-interactions" class="nav-link" data-scroll-target="#interactions"><span class="header-section-number">7.6</span> Interactions</a></li>
-  <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation"><span class="header-section-number">7.7</span> Matrix notation</a></li>
+  <li><a href="#multiple-regression" id="toc-multiple-regression" class="nav-link" data-scroll-target="#multiple-regression"><span class="header-section-number">7.6</span> Multiple regression</a></li>
+  <li><a href="#interactions" id="toc-interactions" class="nav-link" data-scroll-target="#interactions"><span class="header-section-number">7.7</span> Interactions</a></li>
+  <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation"><span class="header-section-number">7.8</span> Matrix notation</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lm-multiplepredictors.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
@@ -418,27 +419,15 @@ window.Quarto = {
 <h2 data-number="7.5" class="anchored" data-anchor-id="fitting-with-lm"><span class="header-section-number">7.5</span> Fitting with lm()</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>species<span class="sc">+</span>bill_len,<span class="at">data=</span>penguins2)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
 lm(formula = body_mass ~ species + bill_len, data = penguins2)
 
-Residuals:
-    Min      1Q  Median      3Q     Max 
--859.58 -242.55   32.83  203.62 1080.79 
-
 Coefficients:
-              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   -648.533    414.859  -1.563     0.12    
-speciesGentoo 1462.168     56.837  25.726   &lt;2e-16 ***
-bill_len        89.725      8.446  10.624   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 368.7 on 188 degrees of freedom
-Multiple R-squared:  0.7868,    Adjusted R-squared:  0.7845 
-F-statistic: 346.9 on 2 and 188 DF,  p-value: &lt; 2.2e-16</code></pre>
+  (Intercept)  speciesGentoo       bill_len  
+      -648.53        1462.17          89.73  </code></pre>
 </div>
 </div>
 <p>We can now rewrite our equation with these estimated values</p>
@@ -461,29 +450,18 @@ F-statistic: 346.9 on 2 and 188 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Similarly, <span class="math inline">\(b_2\)</span> is actually about twice as large as the coefficient you would get if you ran a linear model without species.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mymodel2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>penguins2)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mymodel2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mymodel2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
 lm(formula = body_mass ~ bill_len, data = penguins2)
 
-Residuals:
-    Min      1Q  Median      3Q     Max 
--1847.4  -736.5   168.1   643.3  1644.9 
-
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)   
-(Intercept)  2351.65     844.22   2.786  0.00589 **
-bill_len       46.82      17.56   2.667  0.00832 **
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 781.8 on 189 degrees of freedom
-Multiple R-squared:  0.03626,   Adjusted R-squared:  0.03116 
-F-statistic: 7.112 on 1 and 189 DF,  p-value: 0.008323</code></pre>
+(Intercept)     bill_len  
+    2351.65        46.82  </code></pre>
 </div>
 </div>
-<p>Linear models are about making predictions, so what these coefficients tell us is the predicted value of body mass for a specific bill length and species value. So, within a specific species, we expect that increasing bill length by one unit will increase body mass by approx. 90 units. It may be helpful to look at the data again with the lines from the model fits for linear models conducted within each species, along with the fits for a model without species.</p>
+<p>Linear models are about making predictions, so what these coefficients tell us is the predicted value of body mass for a specific bill length and species value. So, within a specific species, we expect that increasing bill length by one unit will increase body mass by approx. 90 units. It may be helpful to look at the data again with the lines from the model fits for linear models conducted within each species, along with the fits for a model without species and the total model. We can see that the slope of the line for the total model matches the slope of the lines for the within-species models.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mymodel3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins2,species<span class="sc">==</span><span class="st">"Gentoo"</span>))</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mymodel4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins2,species<span class="sc">==</span><span class="st">"Chinstrap"</span>))</span>
@@ -520,10 +498,14 @@ Residuals 25557981 188
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>Let’s try another one for bill length and bill depth</p>
+<p>By the way, general models with a continuous variable and a categorical variable are sometimes called <strong>Analysis of covariance</strong> or <strong>ANCOVA</strong> for short.</p>
 </section>
-<section id="interactions" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="interactions"><span class="header-section-number">7.6</span> Interactions</h2>
+<section id="multiple-regression" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="multiple-regression"><span class="header-section-number">7.6</span> Multiple regression</h2>
+<p>We can also build a general linear model with multiple continuous variables. This is sometimes called <strong>multiple regression</strong>.</p>
+</section>
+<section id="interactions" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="interactions"><span class="header-section-number">7.7</span> Interactions</h2>
 <p>I noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.</p>
 <p>We can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a <strong>statistical interaction</strong>.</p>
 <p><span class="math display">\[ \hat{y}_i = b_0 + b_1x_1i + b_2x_2i + b_3 x_1 \times x_2 e_i\]</span></p>
@@ -559,8 +541,8 @@ F-statistic: 243.8 on 3 and 187 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>In this case the statistical interaction isn’t significant, suggesting that the slope of the relationship between bill length and mass does not differ between species.</p>
 </section>
-<section id="matrix-notation" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="matrix-notation"><span class="header-section-number">7.7</span> Matrix notation</h2>
+<section id="matrix-notation" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="matrix-notation"><span class="header-section-number">7.8</span> Matrix notation</h2>
 <p>It might be helpful for some of you to see a linear model written out in matrix notation. The equation of three matrices below describes a linear model.</p>
 <p><span class="math display">\[\begin{equation}
 \begin{pmatrix}

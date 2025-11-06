@@ -132,7 +132,7 @@ We will revisit what these terms mean after fitting the model.
 
 ```{r}
 model1 <- lm(body_mass~species+bill_len,data=penguins2)
-summary(model1)
+model1
 ```
 
 We can now rewrite our equation with these estimated values
@@ -150,7 +150,7 @@ Similarly, $b_2$ is actually about twice as large as the coefficient you would g
 
 ```{r}
 mymodel2 <- lm(body_mass ~ bill_len, data=penguins2)
-summary(mymodel2)
+mymodel2
 ```
 
 Linear models are about making predictions, so what these coefficients tell us is the predicted value of body mass for a specific bill length and species value. So, within a specific species, we expect that increasing bill length by one unit will increase body mass by approx. 90 units. It may be helpful to look at the data again with the lines from the model fits for linear models conducted within each species, along with the fits for a model without species and the total model. We can see that the slope of the line for the total model matches the slope of the lines for the within-species models.
