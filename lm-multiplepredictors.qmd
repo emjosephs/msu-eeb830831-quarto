@@ -164,7 +164,7 @@ plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab 
 abline(mymodel3, col=palette()[2], lwd=2)
 abline(mymodel4, col=palette()[1], lwd=2)
 abline(mymodel2, col="gray", lwd=2, lty=2)
-abline(mymodel, col="black", lwd=2, lty=2)
+abline(model1, col="black", lwd=2, lty=2)
 
 legend("bottomright", c('Gentoo','Chinstrap','no species',"full model"), bty="n", col=c(palette()[2],palette()[1], "gray","black"), lwd=2, lty=c(1,1,2,2))
 ```
@@ -182,6 +182,26 @@ By the way, general models with a continuous variable and a categorical variable
 ## Multiple regression
 
 We can also build a general linear model with multiple continuous variables. This is sometimes called **multiple regression**.
+
+Any general linear model with multiple continuous variables also assumes **limited multicollinearity**: Explanatory variables are not highly correlated with each other. If this assumption is violated, it can be hard to interpret the results of the model.
+
+```{r}
+
+model5 <- lm(body_mass ~  bill_dep + flipper_len + bill_len, data=penguins )
+model5
+Anova(model5)
+```
+
+We can check for multicollinearity using the ggpairs() function from the GGally package.
+
+```{r}
+#install.packages('GGally')
+library(GGally)
+
+multregData <- dplyr::select(penguins, body_mass, bill_dep, flipper_len, bill_len)
+ggpairs(multregData)
+
+```
 
 ## Interactions
 
