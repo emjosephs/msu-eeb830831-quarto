@@ -506,6 +506,112 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <section id="multiple-regression" class="level2" data-number="7.6">
 <h2 data-number="7.6" class="anchored" data-anchor-id="multiple-regression"><span class="header-section-number">7.6</span> Multiple regression</h2>
 <p>We can also build a general linear model with multiple continuous variables. This is sometimes called <strong>multiple regression</strong>.</p>
+<p>Any general linear model with multiple continuous variables also assumes <strong>limited multicollinearity</strong>: Explanatory variables are not highly correlated with each other. If this assumption is violated, it can be hard to interpret the results of the model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>model5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span>  bill_dep <span class="sc">+</span> flipper_len <span class="sc">+</span> bill_len, <span class="at">data=</span>penguins )</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>model5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ bill_dep + flipper_len + bill_len, data = penguins)
+
+Coefficients:
+(Intercept)     bill_dep  flipper_len     bill_len  
+  -6424.765       20.050       50.269        4.162  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type II tests)
+
+Response: body_mass
+              Sum Sq  Df  F value Pr(&gt;F)    
+bill_dep      331766   1   2.1436 0.1441    
+flipper_len 63735497   1 411.8149 &lt;2e-16 ***
+bill_len       94393   1   0.6099 0.4354    
+Residuals   52311359 338                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>We can check for multicollinearity using the ggpairs() function from the GGally package.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('GGally')</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>multregData <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(penguins, body_mass, bill_dep, flipper_len, bill_len)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(multregData)<span class="sc">+</span><span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values
+Removed 2 rows containing missing values
+Removed 2 rows containing missing values</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values
+Removed 2 rows containing missing values</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).
+Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These variables are all pretty correlated with each other, which could create issues in the future.</p>
+<p>Since we have multiple different explanatory variables, we will instead compare the residuals to the fitted values and look at the different values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model5<span class="sc">$</span>fitted.values,model5<span class="sc">$</span>residuals, <span class="at">xlab =</span> <span class="st">"yhat"</span>, <span class="at">ylab =</span> <span class="st">"residuals"</span>, <span class="at">bty=</span><span class="st">"n"</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"gray60"</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(model5<span class="sc">$</span>residuals, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It does look like our residuals are normally distributed and the points are for the most part evenly spaced around 0 across the distribution of yhat. There are some clumps, which I think is the result of not including species and/or sex in the model, since we know that different species and different sexes have very different body masses.</p>
 </section>
 <section id="interactions" class="level2" data-number="7.7">
 <h2 data-number="7.7" class="anchored" data-anchor-id="interactions"><span class="header-section-number">7.7</span> Interactions</h2>
@@ -516,8 +622,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p><span class="math display">\[ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + b_3 \text{Gentoo} \times \text{bill length} + e_i \]</span></p>
 <p>We can fit the model with lm() using the following code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>bill_len<span class="sc">+</span>species<span class="sc">+</span>bill_len<span class="sc">*</span>species,<span class="at">data=</span>penguins2)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>bill_len<span class="sc">+</span>species<span class="sc">+</span>bill_len<span class="sc">*</span>species,<span class="at">data=</span>penguins2)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:

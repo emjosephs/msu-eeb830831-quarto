@@ -97,30 +97,6 @@ model1 <- lm(body_mass_g ~ species, data=penguins2)
 summary(model1)
 ```
 
-### Residuals
-
-The residuals of this model will be the difference between each data point and the conditional means estimated by the model.
-
-```{r, echo=F, label="fig-plotly",message=F, warning=F, cap.location=margin, fig.cap="An interactive plot showing the mean body size of a penguin. Each point represents an individual penguin, and the dashed red line shows model predicted means. Hovering over a point reveals its residual — the difference between the observed value and the mean.", fig.alt="Interactive scatterplot of observed mean body mass of penguins. Points are plotted by index along the x-axis, with predicted body mass on the y-axis. A horizontal dashed lines mark the conditional means for each category. When hovering over a point, the residual (difference between the point’s value and the mean) is displayed."}
-
-resid_plot <- penguins2                          |>
-  mutate(i = 1:n(),
-         e_i = body_mass_g - mean(body_mass_g),
-         e_i = round(e_i, digits = 3),
-         y_hat_i = round(mean(body_mass_g),digits=3),
-         y_i = round(body_mass_g, digits = 3))                         |>
-  ggplot(aes(x = i, y = y_i, y_hat_i = y_hat_i, e_i = e_i, colour=species))+
-  geom_point(size = 4, alpha = .6)+
-  scale_color_manual(values = palette()[1:2])+
-  geom_hline(data = penguins2    |> 
-               group_by(species)|> 
-               summarise(body_mass_g = mean(body_mass_g)),
-             aes(yintercept = body_mass_g, colour=species), linetype = "dashed", linewidth = 2)+
-  labs(y = "Body Mass", title ="This plot is interactive!! Hover over a point to see its residual")+
-  theme(legend.position = "none")
-
-ggplotly(resid_plot)
-```
 
 :::fyi
 **Linear models vs t-tests**
