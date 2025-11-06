@@ -199,9 +199,22 @@ We can check for multicollinearity using the ggpairs() function from the GGally 
 library(GGally)
 
 multregData <- dplyr::select(penguins, body_mass, bill_dep, flipper_len, bill_len)
-ggpairs(multregData)
-
+ggpairs(multregData)+theme_classic()
 ```
+
+These variables are all pretty correlated with each other, which could create issues in the future.
+
+Since we have multiple different explanatory variables, we will instead compare the residuals to the fitted values and look at the different values.
+```{r}
+par(mfrow=c(1,2))
+
+plot(model5$fitted.values,model5$residuals, xlab = "yhat", ylab = "residuals", bty="n")
+abline(h=0, lty=2, col="gray60", lwd=2)
+
+hist(model5$residuals, main="", xlab = "residuals")
+```
+
+It does look like our residuals are normally distributed and the points are for the most part evenly spaced around 0 across the distribution of yhat. There are some clumps, which I think is the result of not including species and/or sex in the model, since we know that different species and different sexes have very different body masses.
 
 ## Interactions
 
