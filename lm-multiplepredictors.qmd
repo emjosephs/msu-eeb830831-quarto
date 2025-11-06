@@ -20,7 +20,7 @@ palette(lacroix_palette("Mango", type = "discrete"))
 
 ## What are we doing here?
 
-Now that we've learned the basics of how to build models with categorical and continuous variables, we can start to combine them. 
+Now that we've learned the basics of how to build models with categorical and continuous variables, we can start to combine them into a **general linear model**. 
 
 But, before we start to build more complicated models, we should go over the assumptions of a linear model.
 
@@ -153,22 +153,20 @@ mymodel2 <- lm(body_mass ~ bill_len, data=penguins2)
 summary(mymodel2)
 ```
 
-Linear models are about making predictions, so what these coefficients tell us is the predicted value of body mass for a specific bill length and species value. So, within a specific species, we expect that increasing bill length by one unit will increase body mass by approx. 90 units. We can kind of see that if we run the model only on one species at a time.
+Linear models are about making predictions, so what these coefficients tell us is the predicted value of body mass for a specific bill length and species value. So, within a specific species, we expect that increasing bill length by one unit will increase body mass by approx. 90 units. It may be helpful to look at the data again with the lines from the model fits for linear models conducted within each species, along with the fits for a model without species and the total model. We can see that the slope of the line for the total model matches the slope of the lines for the within-species models.
 
 ```{r}
 mymodel3 <- lm(body_mass ~ bill_len, data=dplyr::filter(penguins2,species=="Gentoo"))
-summary(mymodel3)
-
 mymodel4 <- lm(body_mass ~ bill_len, data=dplyr::filter(penguins2,species=="Chinstrap"))
-summary(mymodel4)
 
-
-plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = penguins2$species)
-legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette())
+plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = penguins2$species, xlim = c(40,65))
+#legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette())
 abline(mymodel3, col=palette()[2], lwd=2)
 abline(mymodel4, col=palette()[1], lwd=2)
+abline(mymodel2, col="gray", lwd=2, lty=2)
+abline(mymodel, col="black", lwd=2, lty=2)
 
-
+legend("bottomright", c('Gentoo','Chinstrap','no species',"full model"), bty="n", col=c(palette()[2],palette()[1], "gray","black"), lwd=2, lty=c(1,1,2,2))
 ```
 
 
@@ -179,7 +177,11 @@ library(car)
 Anova(model1)
 ```
 
-Let's try another one for bill length and bill depth
+By the way, general models with a continuous variable and a categorical variable are sometimes called **Analysis of covariance** or **ANCOVA** for short.
+
+## Multiple regression
+
+We can also build a general linear model with multiple continuous variables. This is sometimes called **multiple regression**.
 
 ## Interactions
 
