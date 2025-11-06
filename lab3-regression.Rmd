@@ -1,7 +1,6 @@
 ---
 title: "Lab 3 -- Linear Regression"
-format: html
-editor: source
+output: word_document
 ---
 
 This is a lab to practice linear regressions and p values
