@@ -494,7 +494,7 @@
     "href": "lm-multiplepredictors.html#building-the-model",
     "title": "7  Linear models with multiple predictors",
     "section": "7.4 Building the model",
-    "text": "7.4 Building the model\nLet’s think about a model of some response variable (\\(y\\)) based on two explanatory variables, \\(x_1\\) and \\(y_1\\).\nOur model looks like it did before, except now it has multiple predictors, each with its own coefficient.\n\\[ \\hat{y}_i = b_0 + b_1x_1i + b_2x_2i e_i\\]\nin our penguin example\n\\[ \\text{Body mass} = b_0 + b_1 \\text{Gentoo} + b_2 \\text{bill length} + e_i \\]\nWe will revisit what these terms mean after fitting the model.",
+    "text": "7.4 Building the model\nLet’s think about a model of some response variable (\\(y\\)) based on two explanatory variables, \\(x_1\\) and \\(y_1\\).\nOur model looks like it did before, except now it has multiple predictors, each with its own coefficient.\n\\[ \\hat{y}_i = b_0 + b_1x_{1i} + b_2x_{2i} + e_i\\]\nin our penguin example\n\\[ \\text{Body mass} = b_0 + b_1 \\text{Gentoo} + b_2 \\text{bill length} + e_i \\]\nWe will revisit what these terms mean after fitting the model.",
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
     ]
