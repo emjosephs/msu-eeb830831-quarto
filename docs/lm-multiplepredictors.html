@@ -353,7 +353,7 @@ window.Quarto = {
 </section>
 <section id="homoschedasticity" class="level3" data-number="7.2.2">
 <h3 data-number="7.2.2" class="anchored" data-anchor-id="homoschedasticity"><span class="header-section-number">7.2.2</span> Homoschedasticity</h3>
-<p>We assume that the variance of our residuals is the same across all of our data. If this is not true and the variance changes across residuals, then our data would be heteroschedastic. The two plots below show data that is heteroschedastic. On left you can see an explanatory and response variable plotted with a regression line. On right is a plot of the residuals of the regression and it is clear that the variance of the residual increases as the explanatory variable increases. In fact, this data was simulated such that the variance of the residual for each point is a function of the explanatory variable.</p>
+<p>We assume that the variance of our residuals is the same across all of our data. If this is not true and the variance changes across residuals, then our data would be heteroschedastic. The two plots below show data that is heteroschedastic. On left you can see an explanatory and response variable plotted with a regression line. On right is a plot of the residuals of the regression and it is clear that the variance of the residual increases as the fitted value increases. In fact, this data was simulated such that the variance of the residual for each point is a function of the explanatory variable.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -410,7 +410,7 @@ window.Quarto = {
 <h2 data-number="7.4" class="anchored" data-anchor-id="building-the-model"><span class="header-section-number">7.4</span> Building the model</h2>
 <p>Let’s think about a model of some response variable (<span class="math inline">\(y\)</span>) based on two explanatory variables, <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y_1\)</span>.</p>
 <p>Our model looks like it did before, except now it has multiple predictors, each with its own coefficient.</p>
-<p><span class="math display">\[ \hat{y}_i = b_0 + b_1x_{1i} + b_2x_{2i} + e_i\]</span></p>
+<p><span class="math display">\[ y_i = b_0 + b_1x_{1i} + b_2x_{2i} + e_i\]</span></p>
 <p>in our penguin example</p>
 <p><span class="math display">\[ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + e_i \]</span></p>
 <p>We will revisit what these terms mean after fitting the model.</p>
@@ -471,12 +471,9 @@ Coefficients:
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(mymodel3, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(mymodel4, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">1</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(mymodel2, <span class="at">col=</span><span class="st">"gray"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model1, <span class="at">col=</span><span class="st">"black"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in abline(model1, col = "black", lwd = 2, lty = 2): only using the
-first two of 3 regression coefficients</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="fu">c</span>(<span class="st">'Gentoo'</span>,<span class="st">'Chinstrap'</span>,<span class="st">'no species'</span>,<span class="st">"full model"</span>), <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="fu">palette</span>()[<span class="dv">2</span>],<span class="fu">palette</span>()[<span class="dv">1</span>], <span class="st">"gray"</span>,<span class="st">"black"</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="sc">-</span><span class="fl">267.623</span>, <span class="at">b=</span><span class="fl">102.298</span>, <span class="at">col=</span><span class="st">"black"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="fu">c</span>(<span class="st">'Gentoo'</span>,<span class="st">'Chinstrap'</span>,<span class="st">'no species'</span>,<span class="st">"full model"</span>), <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="fu">palette</span>()[<span class="dv">2</span>],<span class="fu">palette</span>()[<span class="dv">1</span>], <span class="st">"gray"</span>,<span class="st">"black"</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -487,8 +484,8 @@ first two of 3 regression coefficients</code></pre>
 </div>
 <p>Now that we are working with more complicated models, this is also a good time to get in the habit of using Anova() to calculate p values instead of summary(). In this case they provide the same values, but in some cases they will not.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type II tests)
 
@@ -508,8 +505,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>We can also build a general linear model with multiple continuous variables. This is sometimes called <strong>multiple regression</strong>.</p>
 <p>Any general linear model with multiple continuous variables also assumes <strong>limited multicollinearity</strong>: Explanatory variables are not highly correlated with each other. If this assumption is violated, it can be hard to interpret the results of the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>model5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span>  bill_dep <span class="sc">+</span> flipper_len <span class="sc">+</span> bill_len, <span class="at">data=</span>penguins )</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>model5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span>  bill_dep <span class="sc">+</span> flipper_len <span class="sc">+</span> bill_len, <span class="at">data=</span>penguins )</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>model5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -519,7 +516,7 @@ Coefficients:
 (Intercept)     bill_dep  flipper_len     bill_len  
   -6424.765       20.050       50.269        4.162  </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type II tests)
 
@@ -535,57 +532,11 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>We can check for multicollinearity using the ggpairs() function from the GGally package.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('GGally')</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>multregData <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(penguins, body_mass, bill_dep, flipper_len, bill_len)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(multregData)<span class="sc">+</span><span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 2 rows containing non-finite outside the scale range
-(`stat_density()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 2 rows containing missing values
-Removed 2 rows containing missing values
-Removed 2 rows containing missing values</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
-(`geom_point()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 2 rows containing non-finite outside the scale range
-(`stat_density()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 2 rows containing missing values
-Removed 2 rows containing missing values</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
-(`geom_point()`).
-Removed 2 rows containing missing values or values outside the scale range
-(`geom_point()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 2 rows containing non-finite outside the scale range
-(`stat_density()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 2 rows containing missing values</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
-(`geom_point()`).
-Removed 2 rows containing missing values or values outside the scale range
-(`geom_point()`).
-Removed 2 rows containing missing values or values outside the scale range
-(`geom_point()`).</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 2 rows containing non-finite outside the scale range
-(`stat_density()`).</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages('GGally')</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>multregData <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(penguins, body_mass, bill_dep, flipper_len, bill_len)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(multregData)<span class="sc">+</span><span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -597,12 +548,12 @@ Removed 2 rows containing missing values or values outside the scale range
 <p>These variables are all pretty correlated with each other, which could create issues in the future.</p>
 <p>Since we have multiple different explanatory variables, we will instead compare the residuals to the fitted values and look at the different values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model5<span class="sc">$</span>fitted.values,model5<span class="sc">$</span>residuals, <span class="at">xlab =</span> <span class="st">"yhat"</span>, <span class="at">ylab =</span> <span class="st">"residuals"</span>, <span class="at">bty=</span><span class="st">"n"</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"gray60"</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(model5<span class="sc">$</span>residuals, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model5<span class="sc">$</span>fitted.values,model5<span class="sc">$</span>residuals, <span class="at">xlab =</span> <span class="st">"yhat"</span>, <span class="at">ylab =</span> <span class="st">"residuals"</span>, <span class="at">bty=</span><span class="st">"n"</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"gray60"</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(model5<span class="sc">$</span>residuals, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -617,13 +568,13 @@ Removed 2 rows containing missing values or values outside the scale range
 <h2 data-number="7.7" class="anchored" data-anchor-id="interactions"><span class="header-section-number">7.7</span> Interactions</h2>
 <p>I noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.</p>
 <p>We can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a <strong>statistical interaction</strong>.</p>
-<p><span class="math display">\[ \hat{y}_i = b_0 + b_1x_1i + b_2x_2i + b_3 x_1 \times x_2 e_i\]</span></p>
+<p><span class="math display">\[ y_i = b_0 + b_1x_1i + b_2x_2i + b_3 x_{1i} \times x_{2i} + e_i\]</span></p>
 <p>in our penguin example</p>
 <p><span class="math display">\[ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + b_3 \text{Gentoo} \times \text{bill length} + e_i \]</span></p>
 <p>We can fit the model with lm() using the following code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>bill_len<span class="sc">+</span>species<span class="sc">+</span>bill_len<span class="sc">*</span>species,<span class="at">data=</span>penguins2)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>bill_len<span class="sc">+</span>species<span class="sc">+</span>bill_len<span class="sc">*</span>species,<span class="at">data=</span>penguins2)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
