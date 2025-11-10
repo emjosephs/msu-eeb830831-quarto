@@ -611,44 +611,26 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>In this case the statistical interaction is significant, but much less significant than the main effects. This is telling us that there is a slight difference in slopes between the two species, which we can see in <a href="#fig-interactions" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>.</p>
 <p>In particular, <span class="math inline">\(b_3\)</span> is the difference in slopes between the Chinstrap-only model and the Gentoo-only model. I was really surprised by this but the code below shows this.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mymodel3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mymodel3<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = body_mass ~ bill_len, data = dplyr::filter(penguins2, 
-    species == "Chinstrap"))
-
-Coefficients:
-(Intercept)     bill_len  
-     846.14        59.12  </code></pre>
+<pre><code>(Intercept)    bill_len 
+  846.14333    59.11773 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>mymodel4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>mymodel4<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = body_mass ~ bill_len, data = dplyr::filter(penguins2, 
-    species == "Gentoo"))
-
-Coefficients:
-(Intercept)     bill_len  
-     -123.8        109.5  </code></pre>
+<pre><code>(Intercept)    bill_len 
+  -123.8279    109.4592 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fl">109.5-59.12</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mymodel4<span class="sc">$</span>coefficients[[<span class="dv">2</span>]] <span class="sc">-</span> mymodel3<span class="sc">$</span>coefficients[[<span class="dv">2</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 50.38</code></pre>
+<pre><code>[1] 50.34143</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>model6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>model6<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = body_mass ~ bill_len + species + bill_len * species, 
-    data = penguins2)
-
-Coefficients:
-           (Intercept)                bill_len           speciesGentoo  
-                846.14                   59.12                 -969.97  
-bill_len:speciesGentoo  
-                 50.34  </code></pre>
+<pre><code>           (Intercept)               bill_len          speciesGentoo 
+             846.14333               59.11773             -969.97126 
+bill_len:speciesGentoo 
+              50.34143 </code></pre>
 </div>
 </div>
 </section>

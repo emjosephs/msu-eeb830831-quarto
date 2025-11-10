@@ -249,13 +249,13 @@ In this case the statistical interaction is significant, but much less significa
 In particular, $b_3$ is the difference in slopes between the Chinstrap-only model and the Gentoo-only model. I was really surprised by this but the code below shows this.
 
 ```{r}
-mymodel3
+mymodel3$coefficients
 
-mymodel4
+mymodel4$coefficients
 
-109.5-59.12
+mymodel4$coefficients[[2]] - mymodel3$coefficients[[2]]
 
-model6
+model6$coefficients
 ```
 
 
