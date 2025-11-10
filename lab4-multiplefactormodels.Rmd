@@ -6,6 +6,7 @@ date: "2025-11-07"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
 ```
 
 ## Multiple regression
@@ -13,10 +14,22 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Interactions
 
-Mole rats have distinct social castes. 
+Mole rats have distinct social castes: workers and reproducing males. However, recent evidence suggests that there may be distinctions within workers. Scantlebury et al. (2006) measured body mass and energy expenditure of active workers and lazy workers in the Damaraland mole rat. They wanted to know how body mass affected energy expenditure and if there was a difference between standard workers and the 'lazy' workers they'd identified: specifically, was there an interaction?
+
+Below is some ggplot code to make a scatter plot of the data with regression lines for each category (I like ggplot for making these types of plots)
 
 ```{r}
-molerats <- read.csv('data/molerats.csv')
+molerats <- read.csv('data/molerat-data.csv')## replace the inside of this with the path to the file.
 
-
+ggplot(molerats)+
+  aes(x = mass, y = energy, color = caste) +
+  geom_point() +
+  geom_smooth(method = "lm", se=F)+
+  theme_classic()
 ```
+
+1. Based on these lines, do you predict that there will be an interaction between mass and caste for energy expenditure? Why or why not?
+
+2. Use lm() to fit a linear model with energy as the response variable and  mass, caste, and their interaction as explanatory variables. Use Anova() to look at the output -- do you see evidence of an interaction?
+
+3. Imagine that you show this analysis to your advisor and they tell you that you should have used log-transformed your data to improve normality (since this is an assumption of a general linear model!). Ue ln() to transform mass and energy and fit a new model of ln(energy) with ln(mass), caste, and their interaction as explanatory variables. Compare this model to the previous model. What do you notice? Which model do you think is most appropriate for understanding the biology of this system?
