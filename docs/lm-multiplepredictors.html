@@ -568,7 +568,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <h2 data-number="7.7" class="anchored" data-anchor-id="interactions"><span class="header-section-number">7.7</span> Interactions</h2>
 <p>I noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.</p>
 <p>We can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a <strong>statistical interaction</strong>.</p>
-<p><span class="math display">\[ y_i = b_0 + b_1x_1i + b_2x_2i + b_3 x_{1i} \times x_{2i} + e_i\]</span></p>
+<p><span class="math display">\[ y_i = b_0 + b_1x_{1i} + b_2x_{2i} + b_3 x_{1i} \times x_{2i} + e_i\]</span></p>
 <p>in our penguin example</p>
 <p><span class="math display">\[ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + b_3 \text{Gentoo} \times \text{bill length} + e_i \]</span></p>
 <p>We can fit the model with lm() using the following code:</p>
