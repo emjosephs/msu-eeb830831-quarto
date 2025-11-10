@@ -218,6 +218,12 @@ It does look like our residuals are normally distributed and the points are for 
 
 ## Interactions
 
+Statistical interactions are everywhere in biology. In my lab, we're often interested in genotype-by-environment interactions, where genotypes differ in how they respond to the environment. For example, the image below shows a genotype-by-environment interaction for two *Arabidopsis thaliana* genotypes, where one shows a strong response to environment and the other does not.
+
+![](figs/gxe-plants.png){fig-alt="A plot of leaf area for two genotypes, where one (547) has no response to environment, and another (947) has lower leaf area in hot,dry than cool, wet."}
+
+
+
 I noted before that our model assumed that the slope of the relationship between bill length and body mass is the same for both species. This may not always be the case.
 
 We can extend our model to incorporate differences in slopes between categories (or between individuals with different values for a continuous variable). This pattern is called a **statistical interaction**.
