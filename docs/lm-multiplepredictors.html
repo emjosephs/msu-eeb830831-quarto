@@ -463,21 +463,26 @@ Coefficients:
 </div>
 <p>Linear models are about making predictions, so what these coefficients tell us is the predicted value of body mass for a specific bill length and species value. So, within a specific species, we expect that increasing bill length by one unit will increase body mass by approx. 90 units. It may be helpful to look at the data again with the lines from the model fits for linear models conducted within each species, along with the fits for a model without species and the total model. We can see that the slope of the line for the total model matches the slope of the lines for the within-species models.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mymodel3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins2,species<span class="sc">==</span><span class="st">"Gentoo"</span>))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mymodel4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins2,species<span class="sc">==</span><span class="st">"Chinstrap"</span>))</span>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mymodel3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins2,species<span class="sc">==</span><span class="st">"Chinstrap"</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mymodel4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>dplyr<span class="sc">::</span><span class="fu">filter</span>(penguins2,species<span class="sc">==</span><span class="st">"Gentoo"</span>))</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> penguins2<span class="sc">$</span>species, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">40</span>,<span class="dv">65</span>))</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette())</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(mymodel3, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(mymodel4, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">1</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(mymodel3, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">1</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(mymodel4, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(mymodel2, <span class="at">col=</span><span class="st">"gray"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="sc">-</span><span class="fl">267.623</span>, <span class="at">b=</span><span class="fl">102.298</span>, <span class="at">col=</span><span class="st">"black"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="fu">c</span>(<span class="st">'Gentoo'</span>,<span class="st">'Chinstrap'</span>,<span class="st">'no species'</span>,<span class="st">"full model"</span>), <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="fu">palette</span>()[<span class="dv">2</span>],<span class="fu">palette</span>()[<span class="dv">1</span>], <span class="st">"gray"</span>,<span class="st">"black"</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="fu">c</span>(<span class="st">'Chinstrap'</span>,<span class="st">'Gentoo'</span>,<span class="st">'no species'</span>,<span class="st">"full model"</span>), <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="fu">palette</span>()[<span class="dv">2</span>],<span class="fu">palette</span>()[<span class="dv">1</span>], <span class="st">"gray"</span>,<span class="st">"black"</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-interactions" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interactions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lm-multiplepredictors_files/figure-html/fig-interactions-1.png" id="fig-interactions" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-interactions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.1
+</figcaption>
 </figure>
 </div>
 </div>
@@ -540,7 +545,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -557,7 +562,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-multiplepredictors_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -575,33 +580,77 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p><span class="math display">\[ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + b_3 \text{Gentoo} \times \text{bill length} + e_i \]</span></p>
 <p>We can fit the model with lm() using the following code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>bill_len<span class="sc">+</span>species<span class="sc">+</span>bill_len<span class="sc">*</span>species,<span class="at">data=</span>penguins2)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass<span class="sc">~</span>bill_len<span class="sc">+</span>species<span class="sc">+</span>bill_len<span class="sc">*</span>species,<span class="at">data=</span>penguins2)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>model6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
 lm(formula = body_mass ~ bill_len + species + bill_len * species, 
     data = penguins2)
 
-Residuals:
-    Min      1Q  Median      3Q     Max 
--918.76 -232.77   -8.65  235.60 1126.27 
+Coefficients:
+           (Intercept)                bill_len           speciesGentoo  
+                846.14                   59.12                 -969.97  
+bill_len:speciesGentoo  
+                 50.34  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type II tests)
+
+Response: body_mass
+                   Sum Sq  Df  F value    Pr(&gt;F)    
+bill_len         15343069   1 117.5553 &lt; 2.2e-16 ***
+species          89970405   1 689.3339 &lt; 2.2e-16 ***
+bill_len:species  1151135   1   8.8197  0.003371 ** 
+Residuals        24406846 187                       
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>In this case the statistical interaction is significant, but much less significant than the main effects. This is telling us that there is a slight difference in slopes between the two species, which we can see in <a href="#fig-interactions" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>.</p>
+<p>In particular, <span class="math inline">\(b_3\)</span> is the difference in slopes between the Chinstrap-only model and the Gentoo-only model. I was really surprised by this but the code below shows this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mymodel3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ bill_len, data = dplyr::filter(penguins2, 
+    species == "Chinstrap"))
 
 Coefficients:
-                       Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)              846.14     646.94   1.308  0.19251    
-bill_len                  59.12      13.22   4.473 1.34e-05 ***
-speciesGentoo           -969.97     820.85  -1.182  0.23884    
-bill_len:speciesGentoo    50.34      16.95   2.970  0.00337 ** 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+(Intercept)     bill_len  
+     846.14        59.12  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>mymodel4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ bill_len, data = dplyr::filter(penguins2, 
+    species == "Gentoo"))
 
-Residual standard error: 361.3 on 187 degrees of freedom
-Multiple R-squared:  0.7964,    Adjusted R-squared:  0.7931 
-F-statistic: 243.8 on 3 and 187 DF,  p-value: &lt; 2.2e-16</code></pre>
+Coefficients:
+(Intercept)     bill_len  
+     -123.8        109.5  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fl">109.5-59.12</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 50.38</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>model6</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = body_mass ~ bill_len + species + bill_len * species, 
+    data = penguins2)
+
+Coefficients:
+           (Intercept)                bill_len           speciesGentoo  
+                846.14                   59.12                 -969.97  
+bill_len:speciesGentoo  
+                 50.34  </code></pre>
 </div>
 </div>
-<p>In this case the statistical interaction isn’t significant, suggesting that the slope of the relationship between bill length and mass does not differ between species.</p>
 </section>
 <section id="matrix-notation" class="level2" data-number="7.8">
 <h2 data-number="7.8" class="anchored" data-anchor-id="matrix-notation"><span class="header-section-number">7.8</span> Matrix notation</h2>
