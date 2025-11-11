@@ -1,5 +1,5 @@
 ---
-title: "lab4-multiplefactormodels"
+title: "Lab 4 Multiple Factor Models"
 format: html
 date: "2025-11-07"
 ---
@@ -20,6 +20,14 @@ Note that this homework uses two data files: clarkia_admix.csv and molerat-data.
 
 A group of researchers travelled to a group of parv plants and collected data on herkogamy, distance to the nearest xan plant ('distance2hetero'), and the amount of seeds produced by this plant with ancestry from a xan pollen-parent ('admixture_proportion'). They wanted to understand how herkogamy and distance together influenced this measure of admixture proportion.
 
+The code below loads in the data
+```{r}
+##load in data
+clarkia_link <- "https://raw.githubusercontent.com/ybrandvain/datasets/refs/heads/master/clarkia_admix_S22P.csv"
+clarkia <- read.csv(clarkia_link)
+
+```
+
 1. Use lm() to construct two models. 1) admixture as the response variable and herkogamy as the explanatory variable. 2) admixture as the response variable and distance2hetero as the explanatory variable. Is there evidence that both explanatory variables affect the response variable?
 
 2. It can be difficult to interpret a multiple regression model if the explanatory variables are correlated with each other (this is called 'multicollinearity'). Make a plot of herkogamy and distance2hetero and use cor.test() to estimate the relationship between these two variables. Are they correlated with each other?
@@ -34,7 +42,7 @@ However, herkogamy is measured on a different scale than phyiscal distance betwe
 
 zTransform <- function(X){(X-mean(X,na.rm = TRUE)) / sd(X,na.rm = TRUE) } ##function to do a z transform
 
-clarkz <- clark%>% mutate_all(zTransform) #make a new dataframe of z transformed data
+clarkz <- clarkia%>% mutate_all(zTransform) #make a new dataframe of z transformed data
 ```
 
 5. Run a new linear model on the z-transformed data with admixture proportion as the response variable and herkogamy and distance2hetero as the explanatory variables. Now, compare the effect size estimates from this model. Which factor matters more for determining admixture?
@@ -47,7 +55,7 @@ Mole rats have distinct social castes: workers and reproducing males. However, r
 Below is some ggplot code to make a scatter plot of the data with regression lines for each category (I like ggplot for making these types of plots)
 
 ```{r}
-molerats <- read.csv('data/molerat-data.csv')## replace the inside of this with the path to the file.
+molerats <- read.csv('https://raw.githubusercontent.com/emjosephs/msu-eeb830831-quarto/refs/heads/main/data/molerat-data.csv')
 
 ggplot(molerats)+
   aes(x = mass, y = energy, color = caste) +

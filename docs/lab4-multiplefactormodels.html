@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2025-11-07">
 
-<title>8&nbsp; Multiple testing issues (and opportunities) – EEB 830 pt 2</title>
+<title>13&nbsp; Lab 4 Multiple Factor Models – EEB 830 pt 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +65,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./GWAS.html" rel="next">
-<link href="./lm-multiplepredictors.html" rel="prev">
+<link href="./lab5.1-regression.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -82,7 +116,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./multipletesting.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multiple testing issues (and opportunities)</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lab1.1-likelihood.html">Labs</a></li><li class="breadcrumb-item"><a href="./lab4-multiplefactormodels.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Lab 4 Multiple Factor Models</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -177,7 +211,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./multipletesting.html" class="sidebar-item-text sidebar-link active">
+  <a href="./multipletesting.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multiple testing issues (and opportunities)</span></span></a>
   </div>
 </li>
@@ -216,7 +250,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab4-multiplefactormodels.html" class="sidebar-item-text sidebar-link">
+  <a href="./lab4-multiplefactormodels.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Lab 4 Multiple Factor Models</span></span></a>
   </div>
 </li>
@@ -232,17 +266,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</a></li>
-  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">8.2</span> Motivating example</a></li>
+  <li><a href="#multiple-regression" id="toc-multiple-regression" class="nav-link active" data-scroll-target="#multiple-regression"><span class="header-section-number">13.1</span> Multiple regression</a></li>
+  <li><a href="#interactions" id="toc-interactions" class="nav-link" data-scroll-target="#interactions"><span class="header-section-number">13.2</span> Interactions</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/multipletesting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lab4-multiplefactormodels.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lab1.1-likelihood.html">Labs</a></li><li class="breadcrumb-item"><a href="./lab4-multiplefactormodels.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Lab 4 Multiple Factor Models</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Multiple testing issues (and opportunities)</span></h1>
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Lab 4 Multiple Factor Models</span></h1>
 </div>
 
 
@@ -250,6 +284,12 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 7, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -259,12 +299,61 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="what-are-we-doing-here" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</h2>
+<p>Note that this homework uses two data files: clarkia_admix.csv and molerat-data.csv. You can find both on d2l.</p>
+<section id="multiple-regression" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="multiple-regression"><span class="header-section-number">13.1</span> Multiple regression</h2>
+<p><em>Clarkia xantiana xantiana</em> (‘xan’) and <em>Clarkia xantiana parviflora</em> (‘parv’) are two closely-related wildflowers that can reproduce with each other. A group of researchers is interested in what factors promote gene flow between these species. They are particularly interested in mating system: Xan is mostly outcrossing, which means it mostly makes seeds using pollen from other individuals while parv is mostly selfing, meaning it uses its own pollen to make seeds. These mating system differences are related to floral differences – parv flowers tend to have pistils that are close to the stigma so that pollen can easily move from pistil to stigma. The distance between pistil and stigma is called “herkogamy”.</p>
+<p>A group of researchers travelled to a group of parv plants and collected data on herkogamy, distance to the nearest xan plant (‘distance2hetero’), and the amount of seeds produced by this plant with ancestry from a xan pollen-parent (‘admixture_proportion’). They wanted to understand how herkogamy and distance together influenced this measure of admixture proportion.</p>
+<p>The code below loads in the data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">##load in data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>clarkia_link <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/ybrandvain/datasets/refs/heads/master/clarkia_admix_S22P.csv"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>clarkia <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(clarkia_link)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="1">
+<li><p>Use lm() to construct two models. 1) admixture as the response variable and herkogamy as the explanatory variable. 2) admixture as the response variable and distance2hetero as the explanatory variable. Is there evidence that both explanatory variables affect the response variable?</p></li>
+<li><p>It can be difficult to interpret a multiple regression model if the explanatory variables are correlated with each other (this is called ‘multicollinearity’). Make a plot of herkogamy and distance2hetero and use cor.test() to estimate the relationship between these two variables. Are they correlated with each other?</p></li>
+<li><p>Use lm() to fit a general linear model with admixture proportion as the response variable and distance2hetero and herkogamy as the explanatory variables. Use Anova() from the car package to look at the p values.</p></li>
+<li><p>You might be interested in whether herkogamy or distance is more important for admixture. Compare the estimages of the coefficients for these two explanatory variables – which one appears more important based on these coefficients?</p></li>
+</ol>
+<p>However, herkogamy is measured on a different scale than phyiscal distance betwen plants. It might be more meaningful to compare these coefficients after standardizing them. The code below does this – it uses a z transform to standardize the explanatory and response variables and then reruns the linear model on this standardized data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>zTransform <span class="ot">&lt;-</span> <span class="cf">function</span>(X){(X<span class="sc">-</span><span class="fu">mean</span>(X,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(X,<span class="at">na.rm =</span> <span class="cn">TRUE</span>) } <span class="do">##function to do a z transform</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>clarkz <span class="ot">&lt;-</span> clarkia<span class="sc">%&gt;%</span> <span class="fu">mutate_all</span>(zTransform) <span class="co">#make a new dataframe of z transformed data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="5" type="1">
+<li>Run a new linear model on the z-transformed data with admixture proportion as the response variable and herkogamy and distance2hetero as the explanatory variables. Now, compare the effect size estimates from this model. Which factor matters more for determining admixture?</li>
+</ol>
 </section>
-<section id="motivating-example" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">8.2</span> Motivating example</h2>
-<p>You may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.</p>
+<section id="interactions" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="interactions"><span class="header-section-number">13.2</span> Interactions</h2>
+<p>Mole rats have distinct social castes: workers and reproducing males. However, recent evidence suggests that there may be distinctions within workers. Scantlebury et al.&nbsp;(2006) measured body mass and energy expenditure of active workers and lazy workers in the Damaraland mole rat. They wanted to know how body mass affected energy expenditure and if there was a difference between standard workers and the ‘lazy’ workers they’d identified: specifically, was there an interaction?</p>
+<p>Below is some ggplot code to make a scatter plot of the data with regression lines for each category (I like ggplot for making these types of plots)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>molerats <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'https://raw.githubusercontent.com/emjosephs/msu-eeb830831-quarto/refs/heads/main/data/molerat-data.csv'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(molerats)<span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> mass, <span class="at">y =</span> energy, <span class="at">color =</span> caste) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span>F)<span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab4-multiplefactormodels_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="6" type="1">
+<li><p>Based on these lines, do you predict that there will be an interaction between mass and caste for energy expenditure? Why or why not?</p></li>
+<li><p>Use lm() to fit a linear model with energy as the response variable and mass, caste, and their interaction as explanatory variables. Use Anova() to look at the output – do you see evidence of an interaction?</p></li>
+<li><p>Imagine that you show this analysis to your advisor and they tell you that you should have used log-transformed your data to improve normality (since this is an assumption of a general linear model!). Ue ln() to transform mass and energy and fit a new model of ln(energy) with ln(mass), caste, and their interaction as explanatory variables. Compare this model to the previous model. What do you notice? Which model do you think is most appropriate for understanding the biology of this system?</p></li>
+</ol>
 
 
 </section>
@@ -689,14 +778,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./lm-multiplepredictors.html" class="pagination-link" aria-label="Linear models with multiple predictors">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Linear models with multiple predictors</span></span>
+      <a href="./lab5.1-regression.html" class="pagination-link" aria-label="Lab 3 -- Linear Regression">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Lab 3 – Linear Regression</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./GWAS.html" class="pagination-link" aria-label="Applying linear models with GWAS">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Applying linear models with GWAS</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -704,4 +790,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/multipletesting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lab4-multiplefactormodels.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>

@@ -26,6 +26,7 @@ book:
         - lab1.1-likelihood.qmd
         - lab4.1-ANOVA.qmd
         - lab5.1-regression.qmd
+        - lab4-multiplefactormodels.qmd
 
 
 
