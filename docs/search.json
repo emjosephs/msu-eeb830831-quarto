@@ -554,7 +554,27 @@
     "href": "multipletesting.html#motivating-example",
     "title": "8  Multiple testing issues (and opportunities)",
     "section": "8.2 Motivating example",
-    "text": "8.2 Motivating example\nYou may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.",
+    "text": "8.2 Motivating example\nImagine that we are interested in a lot of things, so we do a lot of statistical tests. However, remember that the definition of a p value is that it is the likelihood of observing our data if the null hypothesis is true. If we do a lot of statistical tests, we increase our chances of observing data that looks unlikely to fit the null.\nThe code below demonstrates the problem. The doExp() function samples 100 random numbers from a uniform distribution to generate data for an explanatory variable and another 100 random numbers from a uniform distribution to generate data for a response variable. Then it fits a linear model testing if the explanatory variable predicts the response variable. We know, from the code, that the null hypothesis should be true – there should be no relationship between these two variables.\nHowever, let’s look at the distribution of p values when we run the doExp() function 200 times\n\nset.seed(830)\n\ndoExp &lt;- function(i){\n  myX &lt;- runif(100) #sample 100 random numbers\n  myY &lt;- runif(100) #sample 100 random numbers\n  myModel = lm(myY ~ myX) #fit linear model\n  myP = summary(myModel)$coefficients[2,4] #get p value\n  return(myP)\n  }\n\nmyPValues &lt;- sapply(1:200, doExp) ## run doExp 200 times\n\n\nhist(myPValues, col = palette()[4], border=\"white\", main=\"\", xlab = \"pvalues\", breaks=20)\nabline(v=0.05, col=palette()[2], lwd=2,lty=2)\n\n\n\n\n\n\n\n\nAs you can see from the histogram, 10 out of our 200 samples had significant p values for the relationship between our explanatory and response variables, even though these variables were generated from independent processes. This is not just bad luck – it is exactly what is expected for a p value cut off of 0.05! Five percent of the time, we saw a pattern indicating that the explanatory and response variables were related to each other, even though the null hypothesis was true.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Multiple testing issues (and opportunities)</span>"
+    ]
+  },
+  {
+    "objectID": "multipletesting.html#correcting-for-multiple-testing",
+    "href": "multipletesting.html#correcting-for-multiple-testing",
+    "title": "8  Multiple testing issues (and opportunities)",
+    "section": "8.3 “Correcting” for multiple testing",
+    "text": "8.3 “Correcting” for multiple testing\nIf a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a Type I error or false positive. There are a number of approaches that scientists use to try to account for this inflated false positive rate.\n\n8.3.1 Bonferroni correction\n\n\n8.3.2 False discovery rate",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Multiple testing issues (and opportunities)</span>"
+    ]
+  },
+  {
+    "objectID": "multipletesting.html#when-do-you-need-to-correct",
+    "href": "multipletesting.html#when-do-you-need-to-correct",
+    "title": "8  Multiple testing issues (and opportunities)",
+    "section": "8.4 When do you need to correct?",
+    "text": "8.4 When do you need to correct?\nData exploration vs. conclusively establishing effects",
     "crumbs": [
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Multiple testing issues (and opportunities)</span>"
     ]

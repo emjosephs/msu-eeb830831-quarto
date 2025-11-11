@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -40,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -234,6 +268,12 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</a></li>
   <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">8.2</span> Motivating example</a></li>
+  <li><a href="#correcting-for-multiple-testing" id="toc-correcting-for-multiple-testing" class="nav-link" data-scroll-target="#correcting-for-multiple-testing"><span class="header-section-number">8.3</span> “Correcting” for multiple testing</a>
+  <ul class="collapse">
+  <li><a href="#bonferroni-correction" id="toc-bonferroni-correction" class="nav-link" data-scroll-target="#bonferroni-correction"><span class="header-section-number">8.3.1</span> Bonferroni correction</a></li>
+  <li><a href="#false-discovery-rate" id="toc-false-discovery-rate" class="nav-link" data-scroll-target="#false-discovery-rate"><span class="header-section-number">8.3.2</span> False discovery rate</a></li>
+  </ul></li>
+  <li><a href="#when-do-you-need-to-correct" id="toc-when-do-you-need-to-correct" class="nav-link" data-scroll-target="#when-do-you-need-to-correct"><span class="header-section-number">8.4</span> When do you need to correct?</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/multipletesting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
@@ -264,7 +304,48 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="motivating-example" class="level2" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">8.2</span> Motivating example</h2>
-<p>You may have noticed in the plot of penguin body mass in the last chapter that there appeared to be differences between different groups. Let’s look more closely by making a plot of the body masses by color.</p>
+<p>Imagine that we are interested in a lot of things, so we do a lot of statistical tests. However, remember that the definition of a p value is that it is the likelihood of observing our data <em>if</em> the null hypothesis is true. If we do a lot of statistical tests, we increase our chances of observing data that looks unlikely to fit the null.</p>
+<p>The code below demonstrates the problem. The <code>doExp()</code> function samples 100 random numbers from a uniform distribution to generate data for an explanatory variable and another 100 random numbers from a uniform distribution to generate data for a response variable. Then it fits a linear model testing if the explanatory variable predicts the response variable. We know, from the code, that the null hypothesis should be true – there should be no relationship between these two variables.</p>
+<p>However, let’s look at the distribution of p values when we run the <code>doExp()</code> function 200 times</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">830</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>doExp <span class="ot">&lt;-</span> <span class="cf">function</span>(i){</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  myX <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">100</span>) <span class="co">#sample 100 random numbers</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  myY <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">100</span>) <span class="co">#sample 100 random numbers</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  myModel <span class="ot">=</span> <span class="fu">lm</span>(myY <span class="sc">~</span> myX) <span class="co">#fit linear model</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  myP <span class="ot">=</span> <span class="fu">summary</span>(myModel)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">4</span>] <span class="co">#get p value</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(myP)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>myPValues <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>, doExp) <span class="do">## run doExp 200 times</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(myPValues, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">4</span>], <span class="at">border=</span><span class="st">"white"</span>, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"pvalues"</span>, <span class="at">breaks=</span><span class="dv">20</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="fl">0.05</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="multipletesting_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As you can see from the histogram, 10 out of our 200 samples had significant p values for the relationship between our explanatory and response variables, even though these variables were generated from independent processes. This is not just bad luck – it is exactly what is expected for a p value cut off of 0.05! Five percent of the time, we saw a pattern indicating that the explanatory and response variables were related to each other, even though the null hypothesis was true.</p>
+</section>
+<section id="correcting-for-multiple-testing" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="correcting-for-multiple-testing"><span class="header-section-number">8.3</span> “Correcting” for multiple testing</h2>
+<p>If a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a <strong>Type I</strong> error or <strong>false positive</strong>. There are a number of approaches that scientists use to try to account for this inflated false positive rate.</p>
+<section id="bonferroni-correction" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="bonferroni-correction"><span class="header-section-number">8.3.1</span> Bonferroni correction</h3>
+</section>
+<section id="false-discovery-rate" class="level3" data-number="8.3.2">
+<h3 data-number="8.3.2" class="anchored" data-anchor-id="false-discovery-rate"><span class="header-section-number">8.3.2</span> False discovery rate</h3>
+</section>
+</section>
+<section id="when-do-you-need-to-correct" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="when-do-you-need-to-correct"><span class="header-section-number">8.4</span> When do you need to correct?</h2>
+<p>Data exploration vs.&nbsp;conclusively establishing effects</p>
 
 
 </section>
