@@ -1,0 +1,22 @@
+---
+title: "Simulating-data-activity"
+output: word_document
+date: "2025-11-12"
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In the first part of 830 and earlier in this part of the class, you learned how to simulate data from categories with different means. In this activity, you'll learn how to simulate data from a continuous variable that is generated from a general linear model made up of categorical and/or continuous variables . 
+
+Tillman et al. 2006 (https://www.nature.com/articles/nature04742) investigated the effects of species number on ecosystem stability using controlled experiments.
+
+1. Go check out the paper. Specifically, look at figure 1a and read the first methods section (don't worry about the sampling effort detrending analysis sections). What type of data did Tillman et al collect? How many observations did they make at each time point? 
+
+2. Think about 
+
+
+```{r}
+
+
+```
