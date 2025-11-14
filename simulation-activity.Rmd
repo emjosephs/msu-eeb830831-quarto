@@ -9,14 +9,27 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In the first part of 830 and earlier in this part of the class, you learned how to simulate data from categories with different means. In this activity, you'll learn how to simulate data from a continuous variable that is generated from a general linear model made up of categorical and/or continuous variables . 
 
-Tillman et al. 2006 (https://www.nature.com/articles/nature04742) investigated the effects of species number on ecosystem stability using controlled experiments.
+John Willis measured selection on monkeyflowers growing in two natural environments. He measured selection using a linear regression with the following equation:
 
-1. Go check out the paper. Specifically, look at figure 1a and read the first methods section (don't worry about the sampling effort detrending analysis sections). What type of data did Tillman et al collect? How many observations did they make at each time point? 
+$Fitness_i \sim \beta_0 + \beta_1 \times Trait_i + e_i$
 
-2. Think about 
+Fitness is the response variable, trait is the explanatory variable, and beta_1 is the effect of the trait on fitness, or the selection gradient. In this case, fitness is measured as the number of fruit produced by an individual and the experiment looked at a number of traits: date of first flower, leaf length, internode length, corolla length, flower width, and internode separation.
 
+The citation for this paper is: Willis, John H. "Effects of different levels of inbreeding on fitness components in Mimulus guttatus." Evolution 47.3 (1993): 864-876.
+
+1. Simulate trait data and fitness data for one of these experiments with the following parameters: n=186
+Date of first flower is normally distributed with a mean of 40 and a standard deviation of 7.5
+Fruit number is a linear function of fate of first flower where beta = -0.314 and the standard deviation is 7.5
+
+Emily will post a document with separate starter code if you need some help getting started.
 
 ```{r}
+dtf = rnorm(n=186, mean=40, sd=7.5)
+mybeta=-0.314
+fruitno = dtf*mybeta + rnorm(n=186, mean=0, sd=7.5)
 
-
+plot(dtf,fruitno)
+myl <- lm(fruitno~dtf)
+summary(myl)
 ```
+
