@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -103,6 +103,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="assets/sticky-notes.css">
 </head>
@@ -266,14 +295,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</a></li>
-  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">8.2</span> Motivating example</a></li>
-  <li><a href="#correcting-for-multiple-testing" id="toc-correcting-for-multiple-testing" class="nav-link" data-scroll-target="#correcting-for-multiple-testing"><span class="header-section-number">8.3</span> “Correcting” for multiple testing</a>
+  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link active" data-scroll-target="#motivating-example"><span class="header-section-number">8.1</span> Motivating example</a></li>
+  <li><a href="#correcting-for-multiple-testing" id="toc-correcting-for-multiple-testing" class="nav-link" data-scroll-target="#correcting-for-multiple-testing"><span class="header-section-number">8.2</span> “Correcting” for multiple testing</a>
   <ul class="collapse">
-  <li><a href="#bonferroni-correction" id="toc-bonferroni-correction" class="nav-link" data-scroll-target="#bonferroni-correction"><span class="header-section-number">8.3.1</span> Bonferroni correction</a></li>
-  <li><a href="#false-discovery-rate" id="toc-false-discovery-rate" class="nav-link" data-scroll-target="#false-discovery-rate"><span class="header-section-number">8.3.2</span> False discovery rate</a></li>
+  <li><a href="#bonferroni-correction" id="toc-bonferroni-correction" class="nav-link" data-scroll-target="#bonferroni-correction"><span class="header-section-number">8.2.1</span> Bonferroni correction</a></li>
+  <li><a href="#false-discovery-rate" id="toc-false-discovery-rate" class="nav-link" data-scroll-target="#false-discovery-rate"><span class="header-section-number">8.2.2</span> False discovery rate</a></li>
   </ul></li>
-  <li><a href="#when-do-you-need-to-correct" id="toc-when-do-you-need-to-correct" class="nav-link" data-scroll-target="#when-do-you-need-to-correct"><span class="header-section-number">8.4</span> When do you need to correct?</a></li>
+  <li><a href="#when-do-you-need-to-correct" id="toc-when-do-you-need-to-correct" class="nav-link" data-scroll-target="#when-do-you-need-to-correct"><span class="header-section-number">8.3</span> When do you need to correct?</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/multipletesting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
@@ -299,12 +327,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="what-are-we-doing-here" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</h2>
-</section>
-<section id="motivating-example" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">8.2</span> Motivating example</h2>
-<p>Imagine that we are interested in a lot of things, so we do a lot of statistical tests. However, remember that the definition of a p value is that it is the likelihood of observing our data <em>if</em> the null hypothesis is true. If we do a lot of statistical tests, we increase our chances of observing data that looks unlikely to fit the null.</p>
+<section id="motivating-example" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">8.1</span> Motivating example</h2>
+<p>Imagine that we are interested in a lot of things, so we do a lot of statistical tests. However, remember that the definition of a p value is that it is the likelihood of observing our data <em>if</em> the null hypothesis is true (a <strong>type I error</strong>). If we do a lot of statistical tests, we increase our chances of observing data that looks unlikely to fit the null even if the null hypothesis is true.</p>
 <p>The code below demonstrates the problem. The <code>doExp()</code> function samples 100 random numbers from a uniform distribution to generate data for an explanatory variable and another 100 random numbers from a uniform distribution to generate data for a response variable. Then it fits a linear model testing if the explanatory variable predicts the response variable. We know, from the code, that the null hypothesis should be true – there should be no relationship between these two variables.</p>
 <p>However, let’s look at the distribution of p values when we run the <code>doExp()</code> function 200 times</p>
 <div class="cell">
@@ -316,13 +341,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  myModel <span class="ot">=</span> <span class="fu">lm</span>(myY <span class="sc">~</span> myX) <span class="co">#fit linear model</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  myP <span class="ot">=</span> <span class="fu">summary</span>(myModel)<span class="sc">$</span>coefficients[<span class="dv">2</span>,<span class="dv">4</span>] <span class="co">#get p value</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(myP)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>myPValues <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>, doExp) <span class="do">## run doExp 200 times</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>nTests<span class="ot">=</span><span class="dv">200</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(myPValues, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">4</span>], <span class="at">border=</span><span class="st">"white"</span>, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"pvalues"</span>, <span class="at">breaks=</span><span class="dv">20</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="fl">0.05</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>myPValues <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>nTests, doExp) <span class="do">## run doExp 200 times</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(myPValues, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">4</span>], <span class="at">border=</span><span class="st">"white"</span>, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"pvalues"</span>, <span class="at">breaks=</span><span class="dv">20</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="fl">0.05</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>], <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -331,20 +358,47 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>As you can see from the histogram, 10 out of our 200 samples had significant p values for the relationship between our explanatory and response variables, even though these variables were generated from independent processes. This is not just bad luck – it is exactly what is expected for a p value cut off of 0.05! Five percent of the time, we saw a pattern indicating that the explanatory and response variables were related to each other, even though the null hypothesis was true.</p>
+<p>Ten out of our 200 samples had significant p values for the relationship between our explanatory and response variables, even though these variables were generated from independent processes. This is not just bad luck – it is exactly what is expected for a p value cut off of 0.05! Five percent of the time, we saw a pattern indicating that the explanatory and response variables were related to each other, even though the null hypothesis was true.</p>
 </section>
-<section id="correcting-for-multiple-testing" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="correcting-for-multiple-testing"><span class="header-section-number">8.3</span> “Correcting” for multiple testing</h2>
-<p>If a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a <strong>Type I</strong> error or <strong>false positive</strong>. There are a number of approaches that scientists use to try to account for this inflated false positive rate.</p>
-<section id="bonferroni-correction" class="level3" data-number="8.3.1">
-<h3 data-number="8.3.1" class="anchored" data-anchor-id="bonferroni-correction"><span class="header-section-number">8.3.1</span> Bonferroni correction</h3>
+<section id="correcting-for-multiple-testing" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="correcting-for-multiple-testing"><span class="header-section-number">8.2</span> “Correcting” for multiple testing</h2>
+<p>If a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a <strong>Type I</strong> error or <strong>false positive</strong>. The statistical term for the chance of detecting one or more false positives across multiple tests is the <strong>family-wise error rate</strong>. There are a number of approaches that scientists use to try to account for this inflated false positive rate.</p>
+<section id="bonferroni-correction" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="bonferroni-correction"><span class="header-section-number">8.2.1</span> Bonferroni correction</h3>
+<p>The <strong>Bonferroni correction</strong> divides the <span class="math inline">\(\alpha\)</span> value by the number of tests conducted to adjust for the increase in the family-wise error rate that you get by doing multiple tests. So if you’re conducting 10 statistical tests with an <span class="math inline">\(\alpha\)</span> of 0.05, with a Bonferroni correction you need <span class="math inline">\(p &lt; 0.005\)</span> to determine significance.</p>
+<p>In our example from before, we conducted 200 test with an <span class="math inline">\(\alpha\)</span> value of 0.05. A Bonferroni correction would require a p value of 0.00025 to be considered significant. The code below checks if any of the p values from the simulations are below the Bonferroni-corrected threshold.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>newAlpha <span class="ot">=</span> <span class="fl">0.05</span><span class="sc">/</span>nTests</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(myPValues <span class="sc">&lt;</span> newAlpha)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<p>None of them are. Hooray, have we solved the problem?</p>
+<p>Some benefits of the Bonferroni correction: - You can use it to combine all different types of tests into one family-wide error rate control, as long as they use p values. - It’s very easy to use.</p>
+<p>However, the Bonferroni correction has a big problem: it very strongly reduces statistical power to detect true associations, essentially increasing rates of <strong>type II error</strong> or <strong>false negatives</strong>. My own PhD advisor would say “never disrespect your data by using a Bonferroni correction”.</p>
+<p>One thing that helps me think through concerns with the Bonferroni is that no matter what your distribution of p values, the Bonferroni is the same. However, in reality, our own expectations of the underlying false positive and false negative rate my change depending on whether the distribution of p values is flat, right skewed, or left skewed as in <a href="#fig-p-val-dists" class="quarto-xref">Figure&nbsp;<span>8.1</span></a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-p-val-dists" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Three panels showing histograms of values from 0 to 1 with a dotted vertical line at 0.05. On the left is a relatively flat distribution, in the center is a distribution skewed to the left so that many values are below 0.05. On the left is a right skewed distribution so that new values are below 0.05">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-p-val-dists-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="multipletesting_files/figure-html/fig-p-val-dists-1.png" class="img-fluid figure-img" alt="Three panels showing histograms of values from 0 to 1 with a dotted vertical line at 0.05. On the left is a relatively flat distribution, in the center is a distribution skewed to the left so that many values are below 0.05. On the left is a right skewed distribution so that new values are below 0.05" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-p-val-dists-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.1: Three potential p value distributions that could result from 200 tests.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="false-discovery-rate" class="level3" data-number="8.3.2">
-<h3 data-number="8.3.2" class="anchored" data-anchor-id="false-discovery-rate"><span class="header-section-number">8.3.2</span> False discovery rate</h3>
+<section id="false-discovery-rate" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="false-discovery-rate"><span class="header-section-number">8.2.2</span> False discovery rate</h3>
 </section>
 </section>
-<section id="when-do-you-need-to-correct" class="level2" data-number="8.4">
-<h2 data-number="8.4" class="anchored" data-anchor-id="when-do-you-need-to-correct"><span class="header-section-number">8.4</span> When do you need to correct?</h2>
+<section id="when-do-you-need-to-correct" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="when-do-you-need-to-correct"><span class="header-section-number">8.3</span> When do you need to correct?</h2>
 <p>Data exploration vs.&nbsp;conclusively establishing effects</p>
 
 

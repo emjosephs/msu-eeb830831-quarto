@@ -15,13 +15,10 @@ palette(lacroix_palette("Mango", type = "discrete"))
 library(car)
 ```
 
-## What are we doing here?
-
-
 
 ## Motivating example
 
-Imagine that we are interested in a lot of things, so we do a lot of statistical tests. However, remember that the definition of a p value is that it is the likelihood of observing our data *if* the null hypothesis is true. If we do a lot of statistical tests, we increase our chances of observing data that looks unlikely to fit the null. 
+Imagine that we are interested in a lot of things, so we do a lot of statistical tests. However, remember that the definition of a p value is that it is the likelihood of observing our data *if* the null hypothesis is true (a **type I error**). If we do a lot of statistical tests, we increase our chances of observing data that looks unlikely to fit the null even if the null hypothesis is true.
 
 The code below demonstrates the problem. The `doExp()` function samples 100 random numbers from a uniform distribution to generate data for an explanatory variable and another 100 random numbers from a uniform distribution to generate data for a response variable. Then it fits a linear model testing if the explanatory variable predicts the response variable. We know, from the code, that the null hypothesis should be true -- there should be no relationship between these two variables. 
 
@@ -37,9 +34,11 @@ doExp <- function(i){
   myModel = lm(myY ~ myX) #fit linear model
   myP = summary(myModel)$coefficients[2,4] #get p value
   return(myP)
-  }
+}
 
-myPValues <- sapply(1:200, doExp) ## run doExp 200 times
+nTests=200
+
+myPValues <- sapply(1:nTests, doExp) ## run doExp 200 times
 
 
 hist(myPValues, col = palette()[4], border="white", main="", xlab = "pvalues", breaks=20)
@@ -47,13 +46,47 @@ abline(v=0.05, col=palette()[2], lwd=2,lty=2)
 
 ```
 
-As you can see from the histogram, 10 out of our 200 samples had significant p values for the relationship between our explanatory and response variables, even though these variables were generated from independent processes. This is not just bad luck -- it is exactly what is expected for a p value cut off of 0.05! Five percent of the time, we saw a pattern indicating that the explanatory and response variables were related to each other, even though the null hypothesis was true.
+Ten out of our 200 samples had significant p values for the relationship between our explanatory and response variables, even though these variables were generated from independent processes. This is not just bad luck -- it is exactly what is expected for a p value cut off of 0.05! Five percent of the time, we saw a pattern indicating that the explanatory and response variables were related to each other, even though the null hypothesis was true.
 
 ## "Correcting" for multiple testing
 
-If a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a **Type I** error or **false positive**. There are a number of approaches that scientists use to try to account for this inflated false positive rate.
+If a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a **Type I** error or **false positive**. The statistical term for the chance of detecting one or more false positives across multiple tests is the **family-wise error rate**. There are a number of approaches that scientists use to try to account for this inflated false positive rate.
 
 ### Bonferroni correction
+
+The **Bonferroni correction** divides the $\alpha$ value by the number of tests conducted to adjust for the increase in the family-wise error rate that you get by doing multiple tests. So if you're conducting 10 statistical tests with an $\alpha$ of 0.05, with a Bonferroni correction you need $p < 0.005$ to determine significance.
+
+In our example from before, we conducted 200 test with an $\alpha$ value of 0.05. A Bonferroni correction would require a p value of 0.00025 to be considered significant. The code below checks if any of the p values from the simulations are below the Bonferroni-corrected threshold.
+
+```{r}
+newAlpha = 0.05/nTests
+sum(myPValues < newAlpha)
+
+```
+
+None of them are. Hooray, have we solved the problem?
+
+Some benefits of the Bonferroni correction:
+- You can use it to combine all different types of tests into one family-wide error rate control, as long as they use p values.
+- It's very easy to use.
+
+However, the Bonferroni correction has a big problem: it very strongly reduces statistical power to detect true associations, essentially increasing rates of **type II error** or **false negatives**. My own PhD advisor would say "never disrespect your data by using a Bonferroni correction".
+
+One thing that helps me think through concerns with the Bonferroni is that no matter what your distribution of p values, the Bonferroni is the same. However, in reality, our own expectations of the underlying false positive and false negative rate my change depending on whether the distribution of p values is flat, right skewed, or left skewed as in @fig-p-val-dists.
+
+```{r, echo=FALSE}
+#| label: fig-p-val-dists
+#| fig-cap: "Three potential p value distributions that could result from 200 tests."
+#| fig-alt: "Three panels showing histograms of values from 0 to 1 with a dotted vertical line at 0.05. On the left is a relatively flat distribution, in the center is a distribution skewed to the left so that many values are below 0.05. On the left is a right skewed distribution so that new values are below 0.05"
+par(mfrow=c(1,3), mar=c(2,2,2,2))
+hist(runif(200), col = palette()[4], border="white", main="", xlab = "pvalues", breaks=20)
+abline(v=0.05, col=palette()[2], lwd=2,lty=2)
+hist(rnorm(n=200,mean=0.05, sd=0.4), col = palette()[4], border="white", main="", xlab = "pvalues", breaks=40, xlim=c(0,1))
+abline(v=0.05, col=palette()[2], lwd=2,lty=2)
+hist(rnorm(n=200,mean=0.9, sd=0.4), col = palette()[4], border="white", main="", xlab = "pvalues", breaks=40, xlim=c(0,1))
+abline(v=0.05, col=palette()[2], lwd=2,lty=2)
+
+```
 
 ### False discovery rate
 
