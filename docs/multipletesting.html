@@ -136,7 +136,7 @@ window.Quarto = {
 <link rel="stylesheet" href="assets/sticky-notes.css">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -306,7 +306,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/multipletesting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -360,7 +360,7 @@ window.Quarto = {
 </div>
 <p>Ten out of our 200 samples had significant p values for the relationship between our explanatory and response variables, even though these variables were generated from independent processes. This is not just bad luck – it is exactly what is expected for a p value cut off of 0.05! Five percent of the time, we saw a pattern indicating that the explanatory and response variables were related to each other, even though the null hypothesis was true.</p>
 </section>
-<section id="correcting-for-multiple-testing" class="level2" data-number="8.2">
+<section id="correcting-for-multiple-testing" class="level2 page-columns page-full" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="correcting-for-multiple-testing"><span class="header-section-number">8.2</span> “Correcting” for multiple testing</h2>
 <p>If a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a <strong>Type I</strong> error or <strong>false positive</strong>. The statistical term for the chance of detecting one or more false positives across multiple tests is the <strong>family-wise error rate</strong>. There are a number of approaches that scientists use to try to account for this inflated false positive rate.</p>
 <section id="bonferroni-correction" class="level3" data-number="8.2.1">
@@ -393,8 +393,19 @@ Figure&nbsp;8.1: Three potential p value distributions that could result from 20
 </div>
 </div>
 </section>
-<section id="false-discovery-rate" class="level3" data-number="8.2.2">
+<section id="false-discovery-rate" class="level3 page-columns page-full" data-number="8.2.2">
 <h3 data-number="8.2.2" class="anchored" data-anchor-id="false-discovery-rate"><span class="header-section-number">8.2.2</span> False discovery rate</h3>
+<p>Instead of Bonferroni, we can use the information about our distribution of p values to estimate, for a given p value cut-off, the proportion of tests that are true positives and false positives. This estimate is our <strong>false discovery rate</strong> (<strong>FDR</strong>) and we can then modify our p-value cut-off to match a desired FDR.</p>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/FDR.jpg" class="img-fluid figure-img" alt="President Roosevelt in his wheelchair on the porch at Top Cottage in Hyde Park, NY with a child and a dog."></p>
+<figcaption>Not this FDR (FDR Presidential Library &amp; Museum)</figcaption>
+</figure>
+</div>
+</div></div></div>
 </section>
 </section>
 <section id="when-do-you-need-to-correct" class="level2" data-number="8.3">

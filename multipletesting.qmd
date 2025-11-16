@@ -90,6 +90,19 @@ abline(v=0.05, col=palette()[2], lwd=2,lty=2)
 
 ### False discovery rate
 
+Instead of Bonferroni, we can use the information about our distribution of p values to estimate, for a given p value cut-off, the proportion of tests that are true positives and false positives. This estimate is our **false discovery rate** (**FDR**) and we can then modify our p-value cut-off to match a desired FDR.
+
+```{r}
+#| echo: false
+#| column: margin
+#| fig-alt: "President Roosevelt in his wheelchair on the porch at Top Cottage in Hyde Park, NY with a child and a dog."
+#| fig-cap: "Not this FDR (FDR Presidential Library & Museum)"
+library(knitr)
+include_graphics("figs/FDR.jpg")
+```
+
+
+
 ## When do you need to correct?
 
 Data exploration vs. conclusively establishing effects
