@@ -15,6 +15,12 @@ palette(lacroix_palette("Mango", type = "discrete"))
 library(car)
 ```
 
+## What are we doing here?
+
+Our goals in this lesson are to:
+- Define family-wise error rates and link these to the multiple-testing problem 
+- Apply commonly used multiple-testing controls: Bonferroni and FDR
+- Identify benefits and problems with the Bonferroni and FDR methods.
 
 ## Motivating example
 

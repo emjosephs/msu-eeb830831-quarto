@@ -7,21 +7,40 @@ date: "2025-11-12"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In the first part of 830 and earlier in this part of the class, you learned how to simulate data from categories with different means. In this activity, you'll learn how to simulate data from a continuous variable that is generated from a general linear model made up of categorical and/or continuous variables . 
+The scenario for this workshop comes from the following paper: John H. Willis, MEASURES OF PHENOTYPIC SELECTION ARE BIASED BY PARTIAL INBREEDING, Evolution, Volume 50, Issue 4, 1 August 1996, Pages 1501–1511, https://doi.org/10.1111/j.1558-5646.1996.tb03923.x
 
-John Willis measured selection on monkeyflowers growing in two natural environments. He measured selection using a linear regression with the following equation:
+In this paper, John Willis measured traits and fitness (as fruit number) in monkeyflowers in two natural environments. He was particularly interested in inbreeding so he planted individuals that were the result of outcrosses and selfed crosses.
+
+In the first part of 830 and earlier in this part of the class, you learned how to simulate data from categories with different means. In this activity, you'll learn how to simulate data from a continuous variable that is generated from a general linear model made up of categorical and/or continuous variables. 
+
+First, we'll start by refreshing our memories on simulating data from two distributions with different means. In one of the paper's experiments, Willis compared days to flower in inbred plants (the result of selfed crosses) and outbred plants (the result of outcrosses). Below is a summary of his observations from the Cone Peak site:
+
+Mean outbred days to flower: 35
+Outbred Standard deviation days to flower: 4.5
+Outbred n:  93
+Mean selfed days to flower: 38
+Selfed Standard deviation days to flower: 3.9
+Selfed n: 83
+
+1. Simulate Willis's dataset below and then use lm() to fit a linear model for the effect of inbreeding on days to flower.
+
+Emily will post a document with separate starter code for all of these questions if you need some help getting started.
+```{r}
+#code goes here
+
+```
+
+Next, we'll learn how to simulate a continuous response variable that is a function of another explanatory variable. Willis measured selection on monkeyflowers as well. He measured selection using a linear regression with the following equation:
 
 $Fitness_i \sim \beta_0 + \beta_1 \times Trait_i + e_i$
 
 Fitness is the response variable, trait is the explanatory variable, and beta_1 is the effect of the trait on fitness, or the selection gradient. In this case, fitness is measured as the number of fruit produced by an individual and the experiment looked at a number of traits: date of first flower, leaf length, internode length, corolla length, flower width, and internode separation.
 
-The citation for this paper is: Willis, John H. "Effects of different levels of inbreeding on fitness components in Mimulus guttatus." Evolution 47.3 (1993): 864-876.
 
-1. Simulate trait data and fitness data for one of these experiments with the following parameters: n=186
+2. Simulate trait data and fitness data for one of these experiments with the following parameters: n=186
 Date of first flower is normally distributed with a mean of 40 and a standard deviation of 7.5
 Fruit number is a linear function of fate of first flower where beta = -0.314 and the standard deviation is 7.5
 
-Emily will post a document with separate starter code if you need some help getting started.
 
 ```{r}
 dtf = rnorm(n=186, mean=40, sd=7.5)
