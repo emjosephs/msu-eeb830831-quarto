@@ -301,7 +301,6 @@ window.Quarto = {
   <li><a href="#bonferroni-correction" id="toc-bonferroni-correction" class="nav-link" data-scroll-target="#bonferroni-correction"><span class="header-section-number">8.2.1</span> Bonferroni correction</a></li>
   <li><a href="#false-discovery-rate" id="toc-false-discovery-rate" class="nav-link" data-scroll-target="#false-discovery-rate"><span class="header-section-number">8.2.2</span> False discovery rate</a></li>
   </ul></li>
-  <li><a href="#when-do-you-need-to-correct" id="toc-when-do-you-need-to-correct" class="nav-link" data-scroll-target="#when-do-you-need-to-correct"><span class="header-section-number">8.3</span> When do you need to correct?</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/multipletesting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
@@ -363,6 +362,9 @@ window.Quarto = {
 <section id="correcting-for-multiple-testing" class="level2 page-columns page-full" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="correcting-for-multiple-testing"><span class="header-section-number">8.2</span> “Correcting” for multiple testing</h2>
 <p>If a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a <strong>Type I</strong> error or <strong>false positive</strong>. The statistical term for the chance of detecting one or more false positives across multiple tests is the <strong>family-wise error rate</strong>. There are a number of approaches that scientists use to try to account for this inflated false positive rate.</p>
+<div class="fyi">
+<p><strong>What is a family?</strong> Opinions differ on the correct level to do multiple testing control on? Do you want to control family-wide error rate for a specific analysis where you conduct multiple tests? Or across all the tests contained within a single paper? I’ve heard some people joke that scientists themselves should have a lifetime family-wise error test rate, which, as an evolutionary genomics scientist, is a scary prospect!</p>
+</div>
 <section id="bonferroni-correction" class="level3" data-number="8.2.1">
 <h3 data-number="8.2.1" class="anchored" data-anchor-id="bonferroni-correction"><span class="header-section-number">8.2.1</span> Bonferroni correction</h3>
 <p>The <strong>Bonferroni correction</strong> divides the <span class="math inline">\(\alpha\)</span> value by the number of tests conducted to adjust for the increase in the family-wise error rate that you get by doing multiple tests. So if you’re conducting 10 statistical tests with an <span class="math inline">\(\alpha\)</span> of 0.05, with a Bonferroni correction you need <span class="math inline">\(p &lt; 0.005\)</span> to determine significance.</p>
@@ -406,13 +408,49 @@ Figure&nbsp;8.1: Three potential p value distributions that could result from 20
 </figure>
 </div>
 </div></div></div>
-</section>
-</section>
-<section id="when-do-you-need-to-correct" class="level2" data-number="8.3">
-<h2 data-number="8.3" class="anchored" data-anchor-id="when-do-you-need-to-correct"><span class="header-section-number">8.3</span> When do you need to correct?</h2>
-<p>Data exploration vs.&nbsp;conclusively establishing effects</p>
+<p>The idea behind an FDR is that when you conduct a bunch of tests and look at the distribution of p values, you are really looking at a mixture of two distributions: a distribution of p values from tests that fit the null hypothesis and a distribution of p values from tests that do not fit the null hypothesis. As you move your p-value cut-off closer and closer to 0, the collection of p values below that cut-off contains more and more p-values from tests that do not result from the null-hypothesis, reducing the FDR (but increasing your type II error rate.)</p>
+<p>The plot below shows this idea, with a mix of the distribution from tests generated under the null hypothesis and an alternative hypothesis. The two vertical lines show potential p value cut-offs corresponding to potential FDRs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>p_null <span class="ot">=</span> <span class="fu">runif</span>(<span class="at">n=</span><span class="dv">500</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>p_alt <span class="ot">=</span> <span class="fu">rgamma</span>(<span class="at">n=</span><span class="dv">500</span>, <span class="at">shape =</span> <span class="dv">1</span>, <span class="at">scale=</span><span class="dv">2</span>)<span class="sc">/</span><span class="dv">20</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">c</span>(p_alt,p_null), <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">3</span>], <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.01</span>), <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab=</span><span class="fu">c</span>(<span class="st">'p values'</span>))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(p_null, <span class="at">border=</span><span class="st">"white"</span>,<span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>],<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span><span class="fl">0.01</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>,<span class="fu">c</span>(<span class="st">'null'</span>,<span class="st">'alternate'</span>),<span class="at">fill=</span><span class="fu">palette</span>()[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>],<span class="at">bty=</span><span class="st">"n"</span>, <span class="at">border=</span><span class="st">"white"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="fl">0.05</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">1</span>], <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="fl">0.01</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">5</span>], <span class="at">lwd=</span><span class="dv">2</span>,<span class="at">lty=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-fdr" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A stacked histogram ranging from 0 to 1 of a flat distribution (tagged null) and a left-skewed distribution (tagged alternate). Two vertical lines at 0.05 and 0.01.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fdr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="multipletesting_files/figure-html/fig-fdr-1.png" class="img-fluid figure-img" alt="A stacked histogram ranging from 0 to 1 of a flat distribution (tagged null) and a left-skewed distribution (tagged alternate). Two vertical lines at 0.05 and 0.01." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fdr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.2: A mixture of p value distributions from tests based on the null and alternative hypotheses.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The FDR has been widely adopted across fields, from genetics to social science research. R has a nice build in function called <code>p.adjust</code> for calculating a false discovery rate. The code below applies it to our simulated p values from the beginning of the lesson.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fdrs <span class="ot">&lt;-</span> <span class="fu">p.adjust</span>(myPValues, <span class="at">method=</span><span class="st">"fdr"</span>) <span class="co">#calculate FDRs</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fdrs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.2202  0.8663  0.9541  0.9141  0.9769  0.9950 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>myPValues[<span class="fu">which.min</span>(fdrs)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.001100824</code></pre>
+</div>
+</div>
+<p>The code above calcuates the FDR and finds that the smallest FDR in this set is 0.22, corresponding to a p value of 0.001. This means that in this data set, a p value of 0.001 has a 22% chance of being a false positive.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -52,6 +52,11 @@ Ten out of our 200 samples had significant p values for the relationship between
 
 If a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a **Type I** error or **false positive**. The statistical term for the chance of detecting one or more false positives across multiple tests is the **family-wise error rate**. There are a number of approaches that scientists use to try to account for this inflated false positive rate.
 
+:::fyi
+**What is a family?**
+Opinions differ on the correct level to do multiple testing control on? Do you want to control family-wide error rate for a specific analysis where you conduct multiple tests? Or across all the tests contained within a single paper? I've heard some people joke that scientists themselves should have a lifetime family-wise error test rate, which, as an evolutionary genomics scientist, is a scary prospect!
+:::
+
 ### Bonferroni correction
 
 The **Bonferroni correction** divides the $\alpha$ value by the number of tests conducted to adjust for the increase in the family-wise error rate that you get by doing multiple tests. So if you're conducting 10 statistical tests with an $\alpha$ of 0.05, with a Bonferroni correction you need $p < 0.005$ to determine significance.
@@ -101,8 +106,36 @@ library(knitr)
 include_graphics("figs/FDR.jpg")
 ```
 
+The idea behind an FDR is that when you conduct a bunch of tests and look at the distribution of p values, you are really looking at a mixture of two distributions: a distribution of p values from tests that fit the null hypothesis and a distribution of p values from tests that do not fit the null hypothesis. As you move your p-value cut-off closer and closer to 0, the collection of p values below that cut-off contains more and more p-values from tests that do not result from the null-hypothesis, reducing the FDR (but increasing your type II error rate.)
+
+The plot below shows this idea, with a mix of the distribution from tests generated under the null hypothesis and an alternative hypothesis. The two vertical lines show potential p value cut-offs corresponding to potential FDRs.
+
+```{r}
+#| label: fig-fdr
+#| fig-cap: "A mixture of p value distributions from tests based on the null and alternative hypotheses."
+#| fig-alt: "A stacked histogram ranging from 0 to 1 of a flat distribution (tagged null) and a left-skewed distribution (tagged alternate). Two vertical lines at 0.05 and 0.01."
+par(mar=c(5,5,2,2), mfrow=c(1,1))
+p_null = runif(n=500)
+p_alt = rgamma(n=500, shape = 1, scale=2)/20
+
+hist(c(p_alt,p_null), border="white", col=palette()[3], breaks = seq(0,1,by=0.01), main="", xlab=c('p values'))
+hist(p_null, border="white",add=TRUE, col=palette()[2],seq(0,1,by=0.01))
+legend('topright',c('null','alternate'),fill=palette()[2:3],bty="n", border="white")
+
+abline(v=0.05, col=palette()[1], lwd=2,lty=2)
+abline(v=0.01, col=palette()[5], lwd=2,lty=2)
 
 
-## When do you need to correct?
+```
 
-Data exploration vs. conclusively establishing effects
+The FDR has been widely adopted across fields, from genetics to social science research. R has a nice build in function called `p.adjust` for calculating a false discovery rate. The code below applies it to our simulated p values from the beginning of the lesson.
+
+```{r}
+fdrs <- p.adjust(myPValues, method="fdr") #calculate FDRs
+summary(fdrs)
+
+myPValues[which.min(fdrs)]
+
+```
+
+The code above calcuates the FDR and finds that the smallest FDR in this set is 0.22, corresponding to a p value of 0.001. This means that in this data set, a p value of 0.001 has a 22% chance of being a false positive. 
