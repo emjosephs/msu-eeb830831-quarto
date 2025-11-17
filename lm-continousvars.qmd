@@ -354,4 +354,16 @@ anova(model1)
 4. Your friend shows you an analysis of some new data: they have conducted a regression and calculated a 95% confidence interval. They tell you "95% of my data points should fall in this confidence interval." Do you agree with them? Why or why not?
 
 
+```{r, echo=F, eval=F}
+myN=100
+insectCount <- runif(myN, min=0, max=20)
+plantDamage <- insectCount*.3 + rnorm(myN,0,2)
+data.frame(insectCount, plantDamage) |>
+  ggplot() + aes(x=insectCount, y=plantDamage) +
+  geom_point()+
+  theme_classic()
 
+mymodel <- lm(insectCount~plantDamage)
+mymodel
+summary(mymodel)
+```
