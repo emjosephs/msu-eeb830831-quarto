@@ -31,7 +31,7 @@ Emily will post a document with separate starter code for all of these questions
 outbred <- rnorm(n=93,mean=35,sd=4.5)
 selfed <- rnorm(n=83,mean=38, sd=3.9)
 
-df1 <- data.frame(crosstype = c(rep('outbred',130),rep('selfed',150)), daystf = c(outbred,selfed))
+df1 <- data.frame(crosstype = c(rep('outbred',93),rep('selfed',83)), daystf = c(outbred,selfed))
 
 mymodel <- lm(daystf~crosstype, data=df1)
 summary(mymodel)
@@ -70,16 +70,28 @@ summary(myl)
 3. So far Willis has shown that flowering time affects fitness but also that inbreeding affects fitness. He was really interested in understanding how much of the relationship between flowering time and fitness was caused by inbreeding.
 
 a) Simulate data for the following parameters:
-Outcrossed plants:
+Outbred plants:
+Mean fruit no = 28, standard deviation = 3.8, n = 150
+Selfed plants:
+Mean fruit no = 22, standard deviation = 5, n=150
 
 
 ```{r}
-df1$fruitno <- df1$daystf*mybeta + rnorm(n=280, mean=0, sd=5) + 35
+outbred <- rnorm(n=150,mean=28,sd=3.8)
+selfed <- rnorm(n=150,mean=22, sd=5)
 
-ggplot(df1)+aes(x=daystf,y=fruitno, colour=crosstype)+
-geom_point()+theme_classic()
+df1 <- data.frame(crosstype = c(rep('outbred',150),rep('selfed',150)), fruitno = c(outbred,selfed))
 
-model2 <- lm(fruitno ~ daystf+crosstype, data=df1)
+mymodel <- lm(fruitno~crosstype, data=df1)
+summary(mymodel)
+
+ggplot(df1) + aes(x=crosstype, y=fruitno) +
+geom_violin()+ geom_jitter(position=position_jitter(0.05))+
+theme_classic()
+
+df1$fruitno2 = df1$fruitno
+
+model2 <- lm(fruitno ~ daystf*crosstype, data=df1)
 library(car)
 Anova(model2)
 ```

@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -295,11 +295,12 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link active" data-scroll-target="#motivating-example"><span class="header-section-number">8.1</span> Motivating example</a></li>
-  <li><a href="#correcting-for-multiple-testing" id="toc-correcting-for-multiple-testing" class="nav-link" data-scroll-target="#correcting-for-multiple-testing"><span class="header-section-number">8.2</span> “Correcting” for multiple testing</a>
+  <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</a></li>
+  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">8.2</span> Motivating example</a></li>
+  <li><a href="#correcting-for-multiple-testing" id="toc-correcting-for-multiple-testing" class="nav-link" data-scroll-target="#correcting-for-multiple-testing"><span class="header-section-number">8.3</span> “Correcting” for multiple testing</a>
   <ul class="collapse">
-  <li><a href="#bonferroni-correction" id="toc-bonferroni-correction" class="nav-link" data-scroll-target="#bonferroni-correction"><span class="header-section-number">8.2.1</span> Bonferroni correction</a></li>
-  <li><a href="#false-discovery-rate" id="toc-false-discovery-rate" class="nav-link" data-scroll-target="#false-discovery-rate"><span class="header-section-number">8.2.2</span> False discovery rate</a></li>
+  <li><a href="#bonferroni-correction" id="toc-bonferroni-correction" class="nav-link" data-scroll-target="#bonferroni-correction"><span class="header-section-number">8.3.1</span> Bonferroni correction</a></li>
+  <li><a href="#false-discovery-rate" id="toc-false-discovery-rate" class="nav-link" data-scroll-target="#false-discovery-rate"><span class="header-section-number">8.3.2</span> False discovery rate</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/multipletesting.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
@@ -326,8 +327,12 @@ window.Quarto = {
 </header>
 
 
-<section id="motivating-example" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">8.1</span> Motivating example</h2>
+<section id="what-are-we-doing-here" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</h2>
+<p>Our goals in this lesson are to: - Define family-wise error rates and link these to the multiple-testing problem - Apply commonly used multiple-testing controls: Bonferroni and FDR - Identify benefits and problems with the Bonferroni and FDR methods.</p>
+</section>
+<section id="motivating-example" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">8.2</span> Motivating example</h2>
 <p>Imagine that we are interested in a lot of things, so we do a lot of statistical tests. However, remember that the definition of a p value is that it is the likelihood of observing our data <em>if</em> the null hypothesis is true (a <strong>type I error</strong>). If we do a lot of statistical tests, we increase our chances of observing data that looks unlikely to fit the null even if the null hypothesis is true.</p>
 <p>The code below demonstrates the problem. The <code>doExp()</code> function samples 100 random numbers from a uniform distribution to generate data for an explanatory variable and another 100 random numbers from a uniform distribution to generate data for a response variable. Then it fits a linear model testing if the explanatory variable predicts the response variable. We know, from the code, that the null hypothesis should be true – there should be no relationship between these two variables.</p>
 <p>However, let’s look at the distribution of p values when we run the <code>doExp()</code> function 200 times</p>
@@ -359,14 +364,14 @@ window.Quarto = {
 </div>
 <p>Ten out of our 200 samples had significant p values for the relationship between our explanatory and response variables, even though these variables were generated from independent processes. This is not just bad luck – it is exactly what is expected for a p value cut off of 0.05! Five percent of the time, we saw a pattern indicating that the explanatory and response variables were related to each other, even though the null hypothesis was true.</p>
 </section>
-<section id="correcting-for-multiple-testing" class="level2 page-columns page-full" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="correcting-for-multiple-testing"><span class="header-section-number">8.2</span> “Correcting” for multiple testing</h2>
+<section id="correcting-for-multiple-testing" class="level2 page-columns page-full" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="correcting-for-multiple-testing"><span class="header-section-number">8.3</span> “Correcting” for multiple testing</h2>
 <p>If a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a <strong>Type I</strong> error or <strong>false positive</strong>. The statistical term for the chance of detecting one or more false positives across multiple tests is the <strong>family-wise error rate</strong>. There are a number of approaches that scientists use to try to account for this inflated false positive rate.</p>
 <div class="fyi">
 <p><strong>What is a family?</strong> Opinions differ on the correct level to do multiple testing control on? Do you want to control family-wide error rate for a specific analysis where you conduct multiple tests? Or across all the tests contained within a single paper? I’ve heard some people joke that scientists themselves should have a lifetime family-wise error test rate, which, as an evolutionary genomics scientist, is a scary prospect!</p>
 </div>
-<section id="bonferroni-correction" class="level3" data-number="8.2.1">
-<h3 data-number="8.2.1" class="anchored" data-anchor-id="bonferroni-correction"><span class="header-section-number">8.2.1</span> Bonferroni correction</h3>
+<section id="bonferroni-correction" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="bonferroni-correction"><span class="header-section-number">8.3.1</span> Bonferroni correction</h3>
 <p>The <strong>Bonferroni correction</strong> divides the <span class="math inline">\(\alpha\)</span> value by the number of tests conducted to adjust for the increase in the family-wise error rate that you get by doing multiple tests. So if you’re conducting 10 statistical tests with an <span class="math inline">\(\alpha\)</span> of 0.05, with a Bonferroni correction you need <span class="math inline">\(p &lt; 0.005\)</span> to determine significance.</p>
 <p>In our example from before, we conducted 200 test with an <span class="math inline">\(\alpha\)</span> value of 0.05. A Bonferroni correction would require a p value of 0.00025 to be considered significant. The code below checks if any of the p values from the simulations are below the Bonferroni-corrected threshold.</p>
 <div class="cell">
@@ -377,7 +382,11 @@ window.Quarto = {
 </div>
 </div>
 <p>None of them are. Hooray, have we solved the problem?</p>
-<p>Some benefits of the Bonferroni correction: - You can use it to combine all different types of tests into one family-wide error rate control, as long as they use p values. - It’s very easy to use.</p>
+<p>Some benefits of the Bonferroni correction:</p>
+<ul>
+<li>You can use it to combine all different types of tests into one family-wide error rate control, as long as they use p values.</li>
+<li>It’s very easy to use.</li>
+</ul>
 <p>However, the Bonferroni correction has a big problem: it very strongly reduces statistical power to detect true associations, essentially increasing rates of <strong>type II error</strong> or <strong>false negatives</strong>. My own PhD advisor would say “never disrespect your data by using a Bonferroni correction”.</p>
 <p>One thing that helps me think through concerns with the Bonferroni is that no matter what your distribution of p values, the Bonferroni is the same. However, in reality, our own expectations of the underlying false positive and false negative rate my change depending on whether the distribution of p values is flat, right skewed, or left skewed as in <a href="#fig-p-val-dists" class="quarto-xref">Figure&nbsp;<span>8.1</span></a>.</p>
 <div class="cell">
@@ -395,15 +404,15 @@ Figure&nbsp;8.1: Three potential p value distributions that could result from 20
 </div>
 </div>
 </section>
-<section id="false-discovery-rate" class="level3 page-columns page-full" data-number="8.2.2">
-<h3 data-number="8.2.2" class="anchored" data-anchor-id="false-discovery-rate"><span class="header-section-number">8.2.2</span> False discovery rate</h3>
+<section id="false-discovery-rate" class="level3 page-columns page-full" data-number="8.3.2">
+<h3 data-number="8.3.2" class="anchored" data-anchor-id="false-discovery-rate"><span class="header-section-number">8.3.2</span> False discovery rate</h3>
 <p>Instead of Bonferroni, we can use the information about our distribution of p values to estimate, for a given p value cut-off, the proportion of tests that are true positives and false positives. This estimate is our <strong>false discovery rate</strong> (<strong>FDR</strong>) and we can then modify our p-value cut-off to match a desired FDR.</p>
 <div class="cell page-columns page-full">
 
 <div class="no-row-height column-margin column-container"><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figs/FDR.jpg" class="img-fluid figure-img" alt="President Roosevelt in his wheelchair on the porch at Top Cottage in Hyde Park, NY with a child and a dog."></p>
+<p><img src="figs/FDR.jpg" class="img-fluid figure-img" alt="President Roosevelt in his wheelchair on the porch at Top Cottage in Hyde Park, NY with a child and a dog." width="250"></p>
 <figcaption>Not this FDR (FDR Presidential Library &amp; Museum)</figcaption>
 </figure>
 </div>

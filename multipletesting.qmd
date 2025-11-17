@@ -78,6 +78,7 @@ sum(myPValues < newAlpha)
 None of them are. Hooray, have we solved the problem?
 
 Some benefits of the Bonferroni correction:
+
 - You can use it to combine all different types of tests into one family-wide error rate control, as long as they use p values.
 - It's very easy to use.
 
