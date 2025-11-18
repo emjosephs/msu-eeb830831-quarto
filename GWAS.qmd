@@ -16,5 +16,8 @@ palette(lacroix_palette("Mango", type = "discrete"))
 
 ## What are we doing here?
 
+We've spent all semester learning about general linear models, and this lesson will spend some time on one specific application: genome-wide association studies. Even if your research is totally unrelated, I hope that seeing how what we've learnied about general linear models applies to a specific research topic will be useful for relating what we've learned to your own research.
 
-## Motivating example
+## Linking genes to traits
+
+If the alleles at a locus affect a trait, then you expect 
