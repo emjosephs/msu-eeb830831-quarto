@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -296,7 +296,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</a></li>
-  <li><a href="#motivating-example" id="toc-motivating-example" class="nav-link" data-scroll-target="#motivating-example"><span class="header-section-number">8.2</span> Motivating example</a></li>
+  <li><a href="#sec-multtesting" id="toc-sec-multtesting" class="nav-link" data-scroll-target="#sec-multtesting"><span class="header-section-number">8.2</span> More tests more problems</a></li>
   <li><a href="#correcting-for-multiple-testing" id="toc-correcting-for-multiple-testing" class="nav-link" data-scroll-target="#correcting-for-multiple-testing"><span class="header-section-number">8.3</span> “Correcting” for multiple testing</a>
   <ul class="collapse">
   <li><a href="#bonferroni-correction" id="toc-bonferroni-correction" class="nav-link" data-scroll-target="#bonferroni-correction"><span class="header-section-number">8.3.1</span> Bonferroni correction</a></li>
@@ -331,8 +331,8 @@ window.Quarto = {
 <h2 data-number="8.1" class="anchored" data-anchor-id="what-are-we-doing-here"><span class="header-section-number">8.1</span> What are we doing here?</h2>
 <p>Our goals in this lesson are to: - Define family-wise error rates and link these to the multiple-testing problem - Apply commonly used multiple-testing controls: Bonferroni and FDR - Identify benefits and problems with the Bonferroni and FDR methods.</p>
 </section>
-<section id="motivating-example" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">8.2</span> Motivating example</h2>
+<section id="sec-multtesting" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="sec-multtesting"><span class="header-section-number">8.2</span> More tests more problems</h2>
 <p>Imagine that we are interested in a lot of things, so we do a lot of statistical tests. However, remember that the definition of a p value is that it is the likelihood of observing our data <em>if</em> the null hypothesis is true (a <strong>type I error</strong>). If we do a lot of statistical tests, we increase our chances of observing data that looks unlikely to fit the null even if the null hypothesis is true.</p>
 <p>The code below demonstrates the problem. The <code>doExp()</code> function samples 100 random numbers from a uniform distribution to generate data for an explanatory variable and another 100 random numbers from a uniform distribution to generate data for a response variable. Then it fits a linear model testing if the explanatory variable predicts the response variable. We know, from the code, that the null hypothesis should be true – there should be no relationship between these two variables.</p>
 <p>However, let’s look at the distribution of p values when we run the <code>doExp()</code> function 200 times</p>
@@ -412,7 +412,7 @@ Figure&nbsp;8.1: Three potential p value distributions that could result from 20
 <div class="no-row-height column-margin column-container"><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figs/FDR.jpg" class="img-fluid figure-img" alt="President Roosevelt in his wheelchair on the porch at Top Cottage in Hyde Park, NY with a child and a dog."></p>
+<p><img src="figs/FDR.jpg" class="img-fluid figure-img" alt="President Roosevelt in his wheelchair on the porch at Top Cottage in Hyde Park, NY with a child and a dog." width="250"></p>
 <figcaption>Not this FDR (FDR Presidential Library &amp; Museum)</figcaption>
 </figure>
 </div>

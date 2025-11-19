@@ -12,6 +12,8 @@ library(tidyverse)
 library('DT')
 library(LaCroixColoR)
 palette(lacroix_palette("Mango", type = "discrete"))
+library(stringr)
+library(car)
 ```
 
 ## What are we doing here?
@@ -29,15 +31,26 @@ $$ Y_i = b_0 + b_1 \times X_i + e_i $$
 
 where $Y_i$ is the trait value for the $i^{th}$ individual, $b_0$ is an intercept, $b_1$ is the effect of our locus, $e_i$ is a residual, and $X_i$ is the genotype of the $i^{th}$ individual. In diploids, and for a biallelic locus, we can set one allele to 0 and define $X_i$ as the number of alternate alleles the individual carries. So if the two alleles are **A** and **T**, genotype **AA** would be 0, **AT** would be 1, and **TT** would be 2. 
 
-![A reproduction of Figure 2D from Enbody et al. 2023 showing the effect of the S and L alleles at the G01 locus on beak size in Galapagos finches. DOI: 10.1126/science.adf6218 ](figs/birdbeaks.png){#fig-birdbeaks fig-alt="A plot with genotype on the X axis and beak size (PC1) on the Y axis. There are three categories of genotypes: SS, SL, and LL, each with many points and the points are overlaid with black box and whisker plots. While there is overlap between categories it is clear that LL genotypes have larger PC1 values than SL genotypes, which have larger values than SS genotypes" fig-align="center" width=50%}
+![A reproduction of Figure 2D from Enbody et al. 2023 showing the effect of the S and L alleles at the G01 locus on beak size in Darwin's finches. DOI: 10.1126/science.adf6218 ](figs/birdbeaks.png){#fig-birdbeaks fig-alt="A plot with genotype on the X axis and beak size (PC1) on the Y axis. There are three categories of genotypes: SS, SL, and LL, each with many points and the points are overlaid with black box and whisker plots. While there is overlap between categories it is clear that LL genotypes have larger PC1 values than SL genotypes, which have larger values than SS genotypes" fig-align="center" width=50%}
 
-An example is shown in @fig-birdbeaks, of a locus in Galapagos finches (*Geospiza fortis*) that affects beak size. The two alleles in this locus are tagged **S** (for small) and **L** (for large). This paper conducted an ANOVA to estimate effect sizes instead of a linear model, but recall that these techniques are closely related. Ultimately, if the genotype at a locus does not affect phenotype, we expect that the regression line from a linear model will be flat, so $b_1 = 0$, and in an ANOVA, there would be the same amount of variation between groups as within groups.
+An example is shown in @fig-birdbeaks, of a locus in Darwin's finches (*Geospiza fortis*) that affects beak size. The two alleles in this locus are tagged **S** (for small) and **L** (for large). This paper conducted an ANOVA to estimate effect sizes instead of a linear model, but recall that these techniques are closely related. Ultimately, if the genotype at a locus does not affect phenotype, we expect that the regression line from a linear model will be flat, so $b_1 = 0$, and in an ANOVA, there would be the same amount of variation between groups as within groups.
+
 
 ### Scaling up to genome-wide studies
 
+A genome-wide association study (GWAS) does the analysis that was just described, but for every locus in the genome. So hundreds of thousands or millions of little general linear models looking for a relationship between genotype and phenotype. That's it! 
+
+Looking at hundreds of thousands of scatter plots would be impossible, so GWAS studies tend to report their results in Manhattan plots that show the genome location on the x axis and the negative log of the p value from the statistical test on the y axis. Larger values indicate higher significance. Usually a significance line is plotted on these as well (we'll discuss how this is chosen in a bit).
+
+![A reproduction of Figure 2B from Enbody et al. 2023 for a Manhattan plot summarizing the results of a GWAS for  beak size in Darwin's finches. You can see the G01 locus that was shown in @fig-birdbeaks in chromosome 1 on the left side of the plot DOI: 10.1126/science.adf6218 ](figs/birdbeakmanhattanplot.png){#fig-birdmanhattan fig-alt="A manhattan plot for beak size with multiple peaks" fig-align="center" width=70%}
+
 ## Complications to the simple model
 
+I've described GWAS as a relatively simple set of lots of general linear models. But, there are a some things about them that make them more complicated. 
+
 ### Multiple testing
+
+GWAS involve doing lots of tests, and so, as we learned in @sec-multtesting, we expect to get lots of p values below an $\alpha$ of 0.05, even if there is no association between any genotypes and phenotype. GWAS studies tend to use either a Bonferroni correction or an FDR analysis (or sometimes both!).
 
 ### Population structure
 

@@ -40,7 +40,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-1aeb7cac46ffa95228e660f389094de5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -310,26 +310,40 @@ window.Quarto = {
 <p>For a single locus, we can write out a basic model as follows:</p>
 <p><span class="math display">\[ Y_i = b_0 + b_1 \times X_i + e_i \]</span></p>
 <p>where <span class="math inline">\(Y_i\)</span> is the trait value for the <span class="math inline">\(i^{th}\)</span> individual, <span class="math inline">\(b_0\)</span> is an intercept, <span class="math inline">\(b_1\)</span> is the effect of our locus, <span class="math inline">\(e_i\)</span> is a residual, and <span class="math inline">\(X_i\)</span> is the genotype of the <span class="math inline">\(i^{th}\)</span> individual. In diploids, and for a biallelic locus, we can set one allele to 0 and define <span class="math inline">\(X_i\)</span> as the number of alternate alleles the individual carries. So if the two alleles are <strong>A</strong> and <strong>T</strong>, genotype <strong>AA</strong> would be 0, <strong>AT</strong> would be 1, and <strong>TT</strong> would be 2.</p>
-<div id="fig-birdbeaks" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="A plot with genotype on the X axis and beak size (PC1) on the Y axis. There are three categories of genotypes: SS, SL, and LL, each with many points and the points are overlaid with black box and whisker plots. While there is overlap between categories it is clear that LL genotypes have larger PC1 values than SL genotypes, which have larger values than SS genotypes">
+<div id="fig-birdbeaks" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A plot with genotype on the X axis and beak size (PC1) on the Y axis. There are three categories of genotypes: SS, SL, and LL, each with many points and the points are overlaid with black box and whisker plots. While there is overlap between categories it is clear that LL genotypes have larger PC1 values than SL genotypes, which have larger values than SS genotypes" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-birdbeaks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figs/birdbeaks.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%" alt="A plot with genotype on the X axis and beak size (PC1) on the Y axis. There are three categories of genotypes: SS, SL, and LL, each with many points and the points are overlaid with black box and whisker plots. While there is overlap between categories it is clear that LL genotypes have larger PC1 values than SL genotypes, which have larger values than SS genotypes">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-birdbeaks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.1: A reproduction of Figure 2D from Enbody et al.&nbsp;2023 showing the effect of the S and L alleles at the G01 locus on beak size in Galapagos finches. DOI: 10.1126/science.adf6218
+Figure&nbsp;9.1: A reproduction of Figure 2D from Enbody et al.&nbsp;2023 showing the effect of the S and L alleles at the G01 locus on beak size in Darwin’s finches. DOI: 10.1126/science.adf6218
 </figcaption>
 </figure>
 </div>
-<p>An example is shown in <a href="#fig-birdbeaks" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>, of a locus in Galapagos finches (<em>Geospiza fortis</em>) that affects beak size. The two alleles in this locus are tagged <strong>S</strong> (for small) and <strong>L</strong> (for large). This paper conducted an ANOVA to estimate effect sizes instead of a linear model, but recall that these techniques are closely related. Ultimately, if the genotype at a locus does not affect phenotype, we expect that the regression line from a linear model will be flat, so <span class="math inline">\(b_1 = 0\)</span>, and in an ANOVA, there would be the same amount of variation between groups as within groups.</p>
+<p>An example is shown in <a href="#fig-birdbeaks" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>, of a locus in Darwin’s finches (<em>Geospiza fortis</em>) that affects beak size. The two alleles in this locus are tagged <strong>S</strong> (for small) and <strong>L</strong> (for large). This paper conducted an ANOVA to estimate effect sizes instead of a linear model, but recall that these techniques are closely related. Ultimately, if the genotype at a locus does not affect phenotype, we expect that the regression line from a linear model will be flat, so <span class="math inline">\(b_1 = 0\)</span>, and in an ANOVA, there would be the same amount of variation between groups as within groups.</p>
 </section>
 <section id="scaling-up-to-genome-wide-studies" class="level3" data-number="9.2.2">
 <h3 data-number="9.2.2" class="anchored" data-anchor-id="scaling-up-to-genome-wide-studies"><span class="header-section-number">9.2.2</span> Scaling up to genome-wide studies</h3>
+<p>A genome-wide association study (GWAS) does the analysis that was just described, but for every locus in the genome. So hundreds of thousands or millions of little general linear models looking for a relationship between genotype and phenotype. That’s it!</p>
+<p>Looking at hundreds of thousands of scatter plots would be impossible, so GWAS studies tend to report their results in Manhattan plots that show the genome location on the x axis and the negative log of the p value from the statistical test on the y axis. Larger values indicate higher significance. Usually a significance line is plotted on these as well (we’ll discuss how this is chosen in a bit).</p>
+<div id="fig-birdmanhattan" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A manhattan plot for beak size with multiple peaks" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-birdmanhattan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/birdbeakmanhattanplot.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A manhattan plot for beak size with multiple peaks">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-birdmanhattan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.2: A reproduction of Figure 2B from Enbody et al.&nbsp;2023 for a Manhattan plot summarizing the results of a GWAS for beak size in Darwin’s finches. You can see the G01 locus that was shown in <a href="#fig-birdbeaks" class="quarto-xref">Figure&nbsp;<span>9.1</span></a> in chromosome 1 on the left side of the plot DOI: 10.1126/science.adf6218
+</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="complications-to-the-simple-model" class="level2" data-number="9.3">
 <h2 data-number="9.3" class="anchored" data-anchor-id="complications-to-the-simple-model"><span class="header-section-number">9.3</span> Complications to the simple model</h2>
+<p>I’ve described GWAS as a relatively simple set of lots of general linear models. But, there are a some things about them that make them more complicated.</p>
 <section id="multiple-testing" class="level3" data-number="9.3.1">
 <h3 data-number="9.3.1" class="anchored" data-anchor-id="multiple-testing"><span class="header-section-number">9.3.1</span> Multiple testing</h3>
+<p>GWAS involve doing lots of tests, and so, as we learned in <a href="multipletesting.html#sec-multtesting" class="quarto-xref"><span>Section 8.2</span></a></p>
 </section>
 <section id="population-structure" class="level3" data-number="9.3.2">
 <h3 data-number="9.3.2" class="anchored" data-anchor-id="population-structure"><span class="header-section-number">9.3.2</span> Population structure</h3>

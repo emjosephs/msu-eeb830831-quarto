@@ -2,80 +2,103 @@
 title: "Simulating-data-activity"
 output: word_document
 date: "2025-11-12"
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The scenario for this workshop comes from the following paper: John H. Willis, MEASURES OF PHENOTYPIC SELECTION ARE BIASED BY PARTIAL INBREEDING, Evolution, Volume 50, Issue 4, 1 August 1996, Pages 1501–1511, https://doi.org/10.1111/j.1558-5646.1996.tb03923.x
+The scenario for this workshop comes from the following paper: John H.
+Willis, MEASURES OF PHENOTYPIC SELECTION ARE BIASED BY PARTIAL
+INBREEDING, Evolution, Volume 50, Issue 4, 1 August 1996, Pages
+1501–1511, <https://doi.org/10.1111/j.1558-5646.1996.tb03923.x>
 
-In this paper, John Willis measured traits and fitness (as fruit number) in monkeyflowers in two natural environments. He was particularly interested in inbreeding so he planted individuals that were the result of outcrosses and selfed crosses.
+In this paper, John Willis measured traits and fitness (as fruit number)
+in monkeyflowers in two natural environments. He was particularly
+interested in inbreeding so he planted individuals that were the result
+of outcrosses and selfed crosses.
 
-In the first part of 830 and earlier in this part of the class, you learned how to simulate data from categories with different means. In this activity, you'll learn how to simulate data that is generated from a general linear model made up of categorical and/or continuous variables. 
+In the first part of 830 and earlier in this part of the class, you
+learned how to simulate data from categories with different means. In
+this activity, you'll learn how to simulate data that is generated from
+a general linear model made up of categorical and/or continuous
+variables.
 
-First, we'll start by refreshing our memories on simulating data from two distributions with different means. In one of the paper's experiments, Willis compared days to flower in inbred plants (the result of selfed crosses) and outbred plants (the result of outcrosses). Below is a summary of his observations from the Cone Peak site:
+First, we'll start by refreshing our memories on simulating data from
+two distributions with different means. In one of the paper's
+experiments, Willis compared days to flower in inbred plants (the result
+of selfed crosses) and outbred plants (the result of outcrosses). Below
+is a summary of his observations from the Cone Peak site:
 
-Outbred plants:
-Mean date of first flower flower = 35, standard deviation = 4.5, n = 93
-Selfed plants:
-Mean date of first flower = 38, standard deviation = 3.9, n = 83
+Outbred plants: Mean date of first flower flower = 35, standard
+deviation = 4.5, n = 93 Selfed plants: Mean date of first flower = 38,
+standard deviation = 3.9, n = 83
 
-1. 
-a) Simulate Willis's dataset using the above parameters, assuming all are normally distributed. Note that you can use a categorical variable for cross type ('outbred' vs 'selfed') or use a number as an indicator (0 vs 1). Try both options.
-b) Make a plot showing your simulated data with days to flower on the Y axis and plant type on the X axis. 
-c) Use lm() to fit a linear model for the effect of inbreeding on days to flower and record the coefficients and associated p values.
+1.  
 
-Emily will post a document with separate starter code for all of these questions if you need some help getting started.
+<!-- -->
+
+a)  Simulate Willis's dataset using the above parameters, assuming all
+    are normally distributed. Note that you can use a categorical
+    variable for cross type ('outbred' vs 'selfed') or use a number as
+    an indicator (0 vs 1). Try both options and see which you prefer.
+b)  Make a plot showing your simulated data with days to flower on the Y
+    axis and plant type on the X axis.
+c)  Use lm() to fit a linear model for the effect of inbreeding on days
+    to flower and record the coefficients and associated p values.
+
+Emily will post a document with separate starter code for all of these
+questions if you need some help getting started.
+
 ```{r}
 #code goes here
-outbred <- rnorm(n=93,mean=35,sd=4.5)
-selfed <- rnorm(n=83,mean=38, sd=3.9)
-
-df1 <- data.frame(crosstype = c(rep('outbred',93),rep('selfed',83)), daystf = c(outbred,selfed))
-
-mymodel <- lm(daystf~crosstype, data=df1)
-summary(mymodel)
-
-ggplot(df1) + aes(x=crosstype, y=daystf) +
-geom_violin()+ geom_jitter(position=position_jitter(0.05))+
-theme_classic()
 
 ```
 
-Next, we'll learn how to simulate a continuous response variable that is a function of another explanatory variable. Willis measured selection on monkeyflowers using a linear regression with the following equation (you should be able to see the rendered equation by hovering your mouse over it):
+Next, we'll learn how to simulate a continuous response variable that is
+a function of another explanatory variable. Willis measured selection on
+monkeyflowers using a linear regression with the following equation:
 
 $Fitness_i \sim b_0 + b_1 \times Trait_i + e_i$
 
-Fitness is the response variable, trait is the explanatory variable, and beta_1 is the effect of the trait on fitness, or the selection gradient. In this case, fitness is measured as the number of fruit produced by an individual and the experiment looked at a number of traits: date of first flower, leaf length, internode length, corolla length, flower width, and internode separation.
+Fitness is the response variable, trait is the explanatory variable, and
+beta_1 is the effect of the trait on fitness, or the selection gradient.
+In this case, fitness is measured as the number of fruit produced by an
+individual and the experiment looked at a number of traits. We'll focus
+on date of first flower.
 
+2.  
 
-2. 
-a) Simulate trait data and fitness data for one of these experiments with the following parameters: n=186
-Date of first flower is normally distributed with a mean of 40 and a standard deviation of 7.5
-Fruit number is a linear function of date of first flower where b_0 = 35, b_1 = -0.314, and the standard deviation is 5.
-b) Make a plot of your simulated data with date of first flower on the x axis and fruit number on the y axis.
-c) Use lm() to fit a linear model to your simulated data. Record the coefficients of this model and the associated p values.
+<!-- -->
 
+a)  Simulate date of first flower and fruit number with the following
+    parameters: n=186. Date of first flower is normally distributed with
+    a mean of 40 and a standard deviation of 7.5 Fruit number is a
+    linear function of date of first flower where b_0 = 35, b_1 =
+    -0.314, and the standard deviation is 5.
+b)  Make a plot of your simulated data with date of first flower on the
+    x axis and fruit number on the y axis.
+c)  Use lm() to fit a linear model to your simulated data. Record the
+    coefficients of this model and the associated p values.
 
 ```{r}
-dtf = rnorm(n=186, mean=40, sd=7.5)
-mybeta=-0.314
-fruitno = dtf*mybeta + rnorm(n=186, mean=0, sd=5) + 35
-
-plot(dtf,fruitno)
-myl <- lm(fruitno~dtf)
-summary(myl)
+#code goes here
 ```
 
-So far Willis has shown that flowering time affects fitness but also that inbreeding affects fitness. He was really interested in understanding how much of the relationship between flowering time and fitness was caused by inbreeding.
-
-There are a number of different ways to simulate this and Emily is not totally sure of the best option. 
+So far Willis has shown that flowering time affects fitness but also
+that inbreeding affects fitness. He was really interested in
+understanding how much of the relationship between flowering time and
+fitness was caused by inbreeding.
 
 The code below is one way to simulate data for the following parameters:
-150 outbred plants and 150 selfed plants.
-Date of flowering is drawn from a normal distribution with a mean of 40 and standard deviation of 7.5.
-b_0 is 35, b_1 (the effect of date of flowering) is -0.314 and b_2 (the effect of cross type) is -5 (so inbred plants make 5 fewer fruits on average). The error term for the model has a standard deviation of 3.
-
+150 outbred plants and 150 selfed plants. Date of flowering is drawn
+from a normal distribution with a mean of 40 and standard deviation of
+7.5. b_0 is 35, b_1 (the effect of date of flowering) is -0.314 and b_2
+(the effect of cross type) is -5 (so inbred plants make 5 fewer fruits
+on average). The error term for the model has a standard deviation of 3.
 
 ```{r}
 
@@ -91,11 +114,17 @@ b2 = -5
 df2$fruitno = b0+ b1*df2$dtf+ b2*df2$crosstype + rnorm(300,0,3) # simulate fruit type
 ```
 
-3. Run the above code and run a linear model to investigate the effects of days to flowering and cross type (and their interaction) on fruit number. Report the coefficients and p values and make a figure showing how both explanatory variables affect p values.
+3.  Run the above code and run a linear model to investigate the effects
+    of days to flowering and cross type (and their interaction) on fruit
+    number. Report the coefficients and p values and make a figure
+    showing how both explanatory variables affect p values.
 
-4. Emily's code is missing two key things. First, there is no relationship between cross type and date of flowering but we know that this exists in nature (from the paper and part 1). Second, there is no way in this code to add an interaction. Spend some time editting the code to try to add one or both of these features. 
+4.  (Bonus) Emily's code is missing two key things. First, there is no
+    relationship between cross type and date of flowering but we know
+    that this exists in nature (from the paper and part 1). Second,
+    there is no way in this code to add an interaction. Spend some time
+    editting the code to try to add one or both of these features.
 
 ```{r}
-
+#code goes here
 ```
-

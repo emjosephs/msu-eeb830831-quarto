@@ -22,7 +22,7 @@ Our goals in this lesson are to:
 - Apply commonly used multiple-testing controls: Bonferroni and FDR
 - Identify benefits and problems with the Bonferroni and FDR methods.
 
-## Motivating example
+## More tests more problems {#sec-multtesting}
 
 Imagine that we are interested in a lot of things, so we do a lot of statistical tests. However, remember that the definition of a p value is that it is the likelihood of observing our data *if* the null hypothesis is true (a **type I error**). If we do a lot of statistical tests, we increase our chances of observing data that looks unlikely to fit the null even if the null hypothesis is true.
 
@@ -54,7 +54,7 @@ abline(v=0.05, col=palette()[2], lwd=2,lty=2)
 
 Ten out of our 200 samples had significant p values for the relationship between our explanatory and response variables, even though these variables were generated from independent processes. This is not just bad luck -- it is exactly what is expected for a p value cut off of 0.05! Five percent of the time, we saw a pattern indicating that the explanatory and response variables were related to each other, even though the null hypothesis was true.
 
-## "Correcting" for multiple testing
+## "Correcting" for multiple testing 
 
 If a specific analysis or set of analyses does a large number of statistical tests, then there is a larger chance of a **Type I** error or **false positive**. The statistical term for the chance of detecting one or more false positives across multiple tests is the **family-wise error rate**. There are a number of approaches that scientists use to try to account for this inflated false positive rate.
 
