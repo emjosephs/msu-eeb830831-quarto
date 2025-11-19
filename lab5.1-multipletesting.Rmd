@@ -4,7 +4,40 @@ output: word_document
 date: "2025-11-19"
 ---
 
+# Lab 5 (part 1) multiple testing.
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+
+set.seed() ##pick a number to set your seed here
+
+doExp <- function(i){
+  myX <- runif(100) #sample 100 random numbers
+  myY <- runif(100) #sample 100 random numbers
+  myModel = lm(myY ~ myX) #fit linear model
+  myP = summary(myModel)$coefficients[2,4] #get p value
+  return(myP)
+}
+
+nTests=1000
+
+simulated_pvalues <- sapply(1:nTests, doExp) ## run doExp 200 times
+```
+
+The code above simulates sampling 100 individuals with unrelated explanatory (X) and response (Y) variables, conducting linear models, and returning p values for 1000 tests.
+
+1. a) Calculate the family-wide error rate for an alpha value of 0.05 using the formula from the lecture and the notes.
+b) Run the simulations and calculate how many of the simulated p values are below 0.05. How does this compare to your expectation from part a?
+c) Calculate the appropriate Bonferroni cut-off for 1000 tests. How many of the simulated p values are below this cut off?
+d) Use the p.adjust() function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?
+e) Which method do you think worked best for controlling the family-wise error rate? Why?
+
+2. Edit the code above so that the response variable Y is a function of the explanatory variable X. You will need to pick a value for the intercept (b_0), the effect of X (b_1), and the residual (sd of the error term). If you get stuck, check the starter code from the simulation activity. Then, rerun the simulations 1000 times to generate a new set of p values.
+a) Make a histogram of the simulated p values and compare to a histogram of the p values from part 1. 
+b) How many of the simulated p values are below 0.05? Is this more or less than part 1?
+c) How many of the simulated p values are below the Bonferroni cut-off?
+d) Use the p.adjust() function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?
+e) Which method do you think worked best for controlling the family-wise error rate? Why?
