@@ -102,7 +102,7 @@ window.Quarto = {
 <link rel="stylesheet" href="assets/sticky-notes.css">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -271,13 +271,13 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#multiple-testing" id="toc-multiple-testing" class="nav-link" data-scroll-target="#multiple-testing"><span class="header-section-number">9.3.1</span> Multiple testing</a></li>
   <li><a href="#population-structure" id="toc-population-structure" class="nav-link" data-scroll-target="#population-structure"><span class="header-section-number">9.3.2</span> Population structure</a></li>
-  <li><a href="#environmental-confounders" id="toc-environmental-confounders" class="nav-link" data-scroll-target="#environmental-confounders"><span class="header-section-number">9.3.3</span> Environmental confounders</a></li>
   </ul></li>
+  <li><a href="#conducting-a-gwas-in-r" id="toc-conducting-a-gwas-in-r" class="nav-link" data-scroll-target="#conducting-a-gwas-in-r"><span class="header-section-number">9.4</span> Conducting a GWAS in R</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/GWAS.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -324,7 +324,7 @@ Figure&nbsp;9.1: A reproduction of Figure 2D from Enbody et al.&nbsp;2023 showin
 </section>
 <section id="scaling-up-to-genome-wide-studies" class="level3" data-number="9.2.2">
 <h3 data-number="9.2.2" class="anchored" data-anchor-id="scaling-up-to-genome-wide-studies"><span class="header-section-number">9.2.2</span> Scaling up to genome-wide studies</h3>
-<p>A genome-wide association study (GWAS) does the analysis that was just described, but for every locus in the genome. So hundreds of thousands or millions of little general linear models looking for a relationship between genotype and phenotype. That’s it!</p>
+<p>A genome-wide association study (GWAS) does the analysis that was just described, but at every single-nucleotide polymorphism (SNP) in the genome. So hundreds of thousands or millions of little general linear models looking for a relationship between genotype and phenotype. That’s it!</p>
 <p>Looking at hundreds of thousands of scatter plots would be impossible, so GWAS studies tend to report their results in Manhattan plots that show the genome location on the x axis and the negative log of the p value from the statistical test on the y axis. Larger values indicate higher significance. Usually a significance line is plotted on these as well (we’ll discuss how this is chosen in a bit).</p>
 <div id="fig-birdmanhattan" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A manhattan plot for beak size with multiple peaks" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure">
@@ -338,21 +338,49 @@ Figure&nbsp;9.2: A reproduction of Figure 2B from Enbody et al.&nbsp;2023 for a 
 </div>
 </section>
 </section>
-<section id="complications-to-the-simple-model" class="level2" data-number="9.3">
+<section id="complications-to-the-simple-model" class="level2 page-columns page-full" data-number="9.3">
 <h2 data-number="9.3" class="anchored" data-anchor-id="complications-to-the-simple-model"><span class="header-section-number">9.3</span> Complications to the simple model</h2>
 <p>I’ve described GWAS as a relatively simple set of lots of general linear models. But, there are a some things about them that make them more complicated.</p>
 <section id="multiple-testing" class="level3" data-number="9.3.1">
 <h3 data-number="9.3.1" class="anchored" data-anchor-id="multiple-testing"><span class="header-section-number">9.3.1</span> Multiple testing</h3>
-<p>GWAS involve doing lots of tests, and so, as we learned in <a href="multipletesting.html#sec-multtesting" class="quarto-xref"><span>Section 8.2</span></a></p>
+<p>GWAS involve doing lots of tests, and so, as we learned in <a href="multipletesting.html#sec-multtesting" class="quarto-xref"><span>Section 8.2</span></a>, we expect to get lots of p values below an <span class="math inline">\(\alpha\)</span> of 0.05, even if there is no association between any genotypes and phenotype. GWAS studies tend to use either a Bonferroni correction or an FDR analysis (or sometimes both!).</p>
 </section>
-<section id="population-structure" class="level3" data-number="9.3.2">
+<section id="population-structure" class="level3 page-columns page-full" data-number="9.3.2">
 <h3 data-number="9.3.2" class="anchored" data-anchor-id="population-structure"><span class="header-section-number">9.3.2</span> Population structure</h3>
+<p>Recall that one of the assumptions of the general linear model is that all of the data has been independently sampled. But, a GWAS sample can violate this assumption.</p>
+<p>We know that all living organisms are related to each other, and that some are more closely related to each other than others. This variation in genetic relatedness is called <strong>population structure</strong>. For example, you are more closely related to your siblings and cousins than you are to me (unless there’s something funny going on) so your genome will be more similar to your sibilings and cousins than it is to mine. Similarly, when Enbody et al.&nbsp;sampled finches, they found that there was variation in relatedness within <em>G. fortis</em> (the species they did the GWAS on), which you can see in <a href="#fig-finchancestry" class="quarto-xref">Figure&nbsp;<span>9.3</span></a>.</p>
+<div id="fig-finchancestry" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A panel showing ink drawings of four finch species (G. scandens, G. magnirostris, G. fortis, and G. fuliginosa), a tree showing relatedness between all samples. The lartest clade is G. fortis. Below the tree is a structure plot of ancestry showing that G. fortris individuals have some introgression from other species" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-finchancestry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/finchancestry.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A panel showing ink drawings of four finch species (G. scandens, G. magnirostris, G. fortis, and G. fuliginosa), a tree showing relatedness between all samples. The lartest clade is G. fortis. Below the tree is a structure plot of ancestry showing that G. fortris individuals have some introgression from other species">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-finchancestry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.3: A reproduction of Figure 1A&amp;B from Enbody et al.&nbsp;2023 showing relatedness between different birds sampled in their study DOI: 10.1126/science.adf6218
+</figcaption>
+</figure>
+</div>
+<p>Imagine that two distantly related individuals have very different beak sizes because they differ at the G01 allele (plotted in <a href="#fig-birdbeaks" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>). However, they will also differ at lots of other loci because they are distantly related, so a GWAS could find many loci across the genome associated with the trait.</p>
+<p>To avoid this problem, many GWAS studies that use samples from across a range will include a “control” for population structure. The most common approach is to use a matrix describing genetic similarity (the ‘kinship matrix’) between samples as a <strong>random effect</strong>, turning the general linear model into a <strong>mixed model</strong>. These are concepts that you will learn more about in 831, but we will preview them now. The idea of random effects is that they can capture variance in the predictions made by a linear model, but are for factors where we are not interested in predicting specific values for specific individuals.</p>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="margin-aside"><strong>Mixed models</strong> combine random and fixed effects.</span></div></div>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="margin-aside">A <strong>Kinship matrix</strong> or <strong>relatedness matrix</strong> is a matrix describing the genetic similarity of all individuals in a sample. It is technically a ‘variance-covariance’ matrix.</span></div></div>
+<p><a href="#fig-ricegwas" class="quarto-xref">Figure&nbsp;<span>9.4</span></a> shows examples of a GWAS conducted for plant height in rice with, and without, a kinship matrix included as a random effect. Without a kinship matrix, there are many loci across the genome that are associated with height but adding a kinship matrix reduces the number of significant associations.</p>
+<div id="fig-ricegwas" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two manhattan plots. They look relatively similar but the top one has negative log p values that max out around 6, while the bottom one has lots of negative log p values in the 10-30 range" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ricegwas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/ricegwas.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Two manhattan plots. They look relatively similar but the top one has negative log p values that max out around 6, while the bottom one has lots of negative log p values in the 10-30 range">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ricegwas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.4: A reproduction of Figure 3D from Zhao et al.&nbsp;2011 showing a GWAS done with a standard general linear model (bottom) and a mixed model including a relatedness matrix as a random effect (bottom) https://doi.org/10.1038/ncomms1467
+</figcaption>
+</figure>
+</div>
 </section>
-<section id="environmental-confounders" class="level3" data-number="9.3.3">
-<h3 data-number="9.3.3" class="anchored" data-anchor-id="environmental-confounders"><span class="header-section-number">9.3.3</span> Environmental confounders</h3>
+</section>
+<section id="conducting-a-gwas-in-r" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="conducting-a-gwas-in-r"><span class="header-section-number">9.4</span> Conducting a GWAS in R</h2>
+<p>You can conduct a GWAS in using <a href="https://github.com/jiabowang/GAPIT">GAPIT</a>. Check out their website for information on installation.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
