@@ -574,17 +574,27 @@
     "href": "GWAS.html",
     "title": "9  Applying linear models with GWAS",
     "section": "",
-    "text": "9.1 What are we doing here?",
+    "text": "9.1 What are we doing here?\nWe’ve spent all semester learning about general linear models, and this lesson will spend some time on one specific application: genome-wide association studies. Even if your research is totally unrelated, I hope that seeing how what we’ve learnied about general linear models applies to a specific research topic will be useful for relating what we’ve learned to your own research.",
     "crumbs": [
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
     ]
   },
   {
-    "objectID": "GWAS.html#motivating-example",
-    "href": "GWAS.html#motivating-example",
+    "objectID": "GWAS.html#linking-genes-to-traits",
+    "href": "GWAS.html#linking-genes-to-traits",
     "title": "9  Applying linear models with GWAS",
-    "section": "9.2 Motivating example",
-    "text": "9.2 Motivating example",
+    "section": "9.2 Linking genes to traits",
+    "text": "9.2 Linking genes to traits\nThe basic idea for most (all?) genetic mapping is trying to predict phenotypes from genotypes. Over time, geneticists have used a number of different strategies to make these predictions, from pedigree-based mapping to QTL mapping to genome-wide association studies, which we’ll discuss today.\n\n9.2.1 Single locus association tests\nFor a single locus, we can write out a basic model as follows:\n\\[ Y_i = b_0 + b_1 \\times X_i + e_i \\]\nwhere \\(Y_i\\) is the trait value for the \\(i^{th}\\) individual, \\(b_0\\) is an intercept, \\(b_1\\) is the effect of our locus, \\(e_i\\) is a residual, and \\(X_i\\) is the genotype of the \\(i^{th}\\) individual. In diploids, and for a biallelic locus, we can set one allele to 0 and define \\(X_i\\) as the number of alternate alleles the individual carries. So if the two alleles are A and T, genotype AA would be 0, AT would be 1, and TT would be 2.\n\n\n\n\n\n\nFigure 9.1: A reproduction of Figure 2D from Enbody et al. 2023 showing the effect of the S and L alleles at the G01 locus on beak size in Galapagos finches. DOI: 10.1126/science.adf6218\n\n\n\nAn example is shown in Figure 9.1, of a locus in Galapagos finches (Geospiza fortis) that affects beak size. The two alleles in this locus are tagged S (for small) and L (for large). This paper conducted an ANOVA to estimate effect sizes instead of a linear model, but recall that these techniques are closely related. Ultimately, if the genotype at a locus does not affect phenotype, we expect that the regression line from a linear model will be flat, so \\(b_1 = 0\\), and in an ANOVA, there would be the same amount of variation between groups as within groups.\n\n\n9.2.2 Scaling up to genome-wide studies",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
+    ]
+  },
+  {
+    "objectID": "GWAS.html#complications-to-the-simple-model",
+    "href": "GWAS.html#complications-to-the-simple-model",
+    "title": "9  Applying linear models with GWAS",
+    "section": "9.3 Complications to the simple model",
+    "text": "9.3 Complications to the simple model\n\n9.3.1 Multiple testing\n\n\n9.3.2 Population structure\n\n\n9.3.3 Environmental confounders",
     "crumbs": [
       "<span class='chapter-number'>9</span>  <span class='chapter-title'>Applying linear models with GWAS</span>"
     ]

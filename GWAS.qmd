@@ -20,4 +20,29 @@ We've spent all semester learning about general linear models, and this lesson w
 
 ## Linking genes to traits
 
-If the alleles at a locus affect a trait, then you expect 
+The basic idea for most (all?) genetic mapping is trying to predict phenotypes from genotypes. Over time, geneticists have used a number of different strategies to make these predictions, from pedigree-based mapping to QTL mapping to genome-wide association studies, which we'll discuss today. 
+
+### Single locus association tests
+For a single locus, we can write out a basic model as follows:
+
+$$ Y_i = b_0 + b_1 \times X_i + e_i $$
+
+where $Y_i$ is the trait value for the $i^{th}$ individual, $b_0$ is an intercept, $b_1$ is the effect of our locus, $e_i$ is a residual, and $X_i$ is the genotype of the $i^{th}$ individual. In diploids, and for a biallelic locus, we can set one allele to 0 and define $X_i$ as the number of alternate alleles the individual carries. So if the two alleles are **A** and **T**, genotype **AA** would be 0, **AT** would be 1, and **TT** would be 2. 
+
+![A reproduction of Figure 2D from Enbody et al. 2023 showing the effect of the S and L alleles at the G01 locus on beak size in Galapagos finches. DOI: 10.1126/science.adf6218 ](figs/birdbeaks.png){#fig-birdbeaks fig-alt="A plot with genotype on the X axis and beak size (PC1) on the Y axis. There are three categories of genotypes: SS, SL, and LL, each with many points and the points are overlaid with black box and whisker plots. While there is overlap between categories it is clear that LL genotypes have larger PC1 values than SL genotypes, which have larger values than SS genotypes" fig-align="center" width=50%}
+
+An example is shown in @fig-birdbeaks, of a locus in Galapagos finches (*Geospiza fortis*) that affects beak size. The two alleles in this locus are tagged **S** (for small) and **L** (for large). This paper conducted an ANOVA to estimate effect sizes instead of a linear model, but recall that these techniques are closely related. Ultimately, if the genotype at a locus does not affect phenotype, we expect that the regression line from a linear model will be flat, so $b_1 = 0$, and in an ANOVA, there would be the same amount of variation between groups as within groups.
+
+### Scaling up to genome-wide studies
+
+## Complications to the simple model
+
+### Multiple testing
+
+### Population structure
+
+### Environmental confounders
+
+
+
+
