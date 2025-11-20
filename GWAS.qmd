@@ -83,15 +83,16 @@ devtools::install_github("jiabowang/GAPIT",force=TRUE)
 ```
 
 Here is an example of GAPIT using its tuturial dataset of maize data.
-```{r}
+```{r, eval=F}
 library(GAPIT)
 
 myY <- read.table("data/mdp_traits.txt", head = TRUE)
 myG <- read.table("data/mdp_genotype_test.hmp.txt", head = FALSE)
 #Step 2: Run GAPIT
 myGAPIT <- GAPIT(
-Y=myY$EarHT,
+Y=myY[,1:2],
 G=myG,
+file.output = FALSE
 )
 ```
 

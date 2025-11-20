@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -102,7 +136,7 @@ window.Quarto = {
 <link rel="stylesheet" href="assets/sticky-notes.css">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -262,12 +296,22 @@ window.Quarto = {
    
   <ul>
   <li><a href="#what-are-we-doing-here" id="toc-what-are-we-doing-here" class="nav-link active" data-scroll-target="#what-are-we-doing-here"><span class="header-section-number">9.1</span> What are we doing here?</a></li>
-  <li><a href="#linking-genes-to-traits" id="toc-linking-genes-to-traits" class="nav-link" data-scroll-target="#linking-genes-to-traits"><span class="header-section-number">9.2</span> Linking genes to traits</a></li>
+  <li><a href="#linking-genes-to-traits" id="toc-linking-genes-to-traits" class="nav-link" data-scroll-target="#linking-genes-to-traits"><span class="header-section-number">9.2</span> Linking genes to traits</a>
+  <ul class="collapse">
+  <li><a href="#single-locus-association-tests" id="toc-single-locus-association-tests" class="nav-link" data-scroll-target="#single-locus-association-tests"><span class="header-section-number">9.2.1</span> Single locus association tests</a></li>
+  <li><a href="#scaling-up-to-genome-wide-studies" id="toc-scaling-up-to-genome-wide-studies" class="nav-link" data-scroll-target="#scaling-up-to-genome-wide-studies"><span class="header-section-number">9.2.2</span> Scaling up to genome-wide studies</a></li>
+  </ul></li>
+  <li><a href="#complications-to-the-simple-model" id="toc-complications-to-the-simple-model" class="nav-link" data-scroll-target="#complications-to-the-simple-model"><span class="header-section-number">9.3</span> Complications to the simple model</a>
+  <ul class="collapse">
+  <li><a href="#multiple-testing" id="toc-multiple-testing" class="nav-link" data-scroll-target="#multiple-testing"><span class="header-section-number">9.3.1</span> Multiple testing</a></li>
+  <li><a href="#population-structure" id="toc-population-structure" class="nav-link" data-scroll-target="#population-structure"><span class="header-section-number">9.3.2</span> Population structure</a></li>
+  </ul></li>
+  <li><a href="#conducting-a-gwas-in-r" id="toc-conducting-a-gwas-in-r" class="nav-link" data-scroll-target="#conducting-a-gwas-in-r"><span class="header-section-number">9.4</span> Conducting a GWAS in R</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/GWAS.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -294,11 +338,99 @@ window.Quarto = {
 </section>
 <section id="linking-genes-to-traits" class="level2" data-number="9.2">
 <h2 data-number="9.2" class="anchored" data-anchor-id="linking-genes-to-traits"><span class="header-section-number">9.2</span> Linking genes to traits</h2>
-<p>The basic idea for most (all?) genetic mapping is trying to predict phenotypes from genotypes. For a single locus, we can write out a basic model as follows:</p>
+<p>The basic idea for most (all?) genetic mapping is trying to predict phenotypes from genotypes. Over time, geneticists have used a number of different strategies to make these predictions, from pedigree-based mapping to QTL mapping to genome-wide association studies, which we’ll discuss today.</p>
+<section id="single-locus-association-tests" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="single-locus-association-tests"><span class="header-section-number">9.2.1</span> Single locus association tests</h3>
+<p>For a single locus, we can write out a basic model as follows:</p>
 <p><span class="math display">\[ Y_i = b_0 + b_1 \times X_i + e_i \]</span></p>
 <p>where <span class="math inline">\(Y_i\)</span> is the trait value for the <span class="math inline">\(i^{th}\)</span> individual, <span class="math inline">\(b_0\)</span> is an intercept, <span class="math inline">\(b_1\)</span> is the effect of our locus, <span class="math inline">\(e_i\)</span> is a residual, and <span class="math inline">\(X_i\)</span> is the genotype of the <span class="math inline">\(i^{th}\)</span> individual. In diploids, and for a biallelic locus, we can set one allele to 0 and define <span class="math inline">\(X_i\)</span> as the number of alternate alleles the individual carries. So if the two alleles are <strong>A</strong> and <strong>T</strong>, genotype <strong>AA</strong> would be 0, <strong>AT</strong> would be 1, and <strong>TT</strong> would be 2.</p>
-<p>An example is shown in <span class="quarto-unresolved-ref">?fig-0birdbeaks</span>, of a locus in Galapagos finches (<em>Geospiza fortis</em>) that affects beak size. The two alleles in this locus are tagged <strong>S</strong> (for small) and <strong>L</strong> (for large). This paper conducted an ANOVA to estimate effect sizes.</p>
-<p><img src="figs/birdbeaks.png" class="img-fluid quarto-figure quarto-figure-center" style="width:50.0%" alt="A plot with genotype on the X axis and beak size (PC1) on the Y axis. There are three categories of genotypes: SS, SL, and LL, each with many points and the points are overlaid with black box and whisker plots. While there is overlap between categories it is clear that LL genotypes have larger PC1 values than SL genotypes, which have larger values than SS genotypes">{#fig-birdbeaks}</p>
+<div id="fig-birdbeaks" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A plot with genotype on the X axis and beak size (PC1) on the Y axis. There are three categories of genotypes: SS, SL, and LL, each with many points and the points are overlaid with black box and whisker plots. While there is overlap between categories it is clear that LL genotypes have larger PC1 values than SL genotypes, which have larger values than SS genotypes" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-birdbeaks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/birdbeaks.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%" alt="A plot with genotype on the X axis and beak size (PC1) on the Y axis. There are three categories of genotypes: SS, SL, and LL, each with many points and the points are overlaid with black box and whisker plots. While there is overlap between categories it is clear that LL genotypes have larger PC1 values than SL genotypes, which have larger values than SS genotypes">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-birdbeaks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1: A reproduction of Figure 2D from Enbody et al.&nbsp;2023 showing the effect of the S and L alleles at the G01 locus on beak size in Darwin’s finches. DOI: 10.1126/science.adf6218
+</figcaption>
+</figure>
+</div>
+<p>An example is shown in <a href="#fig-birdbeaks" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>, of a locus in Darwin’s finches (<em>Geospiza fortis</em>) that affects beak size. The two alleles in this locus are tagged <strong>S</strong> (for small) and <strong>L</strong> (for large). This paper conducted an ANOVA to estimate effect sizes instead of a linear model, but recall that these techniques are closely related. Ultimately, if the genotype at a locus does not affect phenotype, we expect that the regression line from a linear model will be flat, so <span class="math inline">\(b_1 = 0\)</span>, and in an ANOVA, there would be the same amount of variation between groups as within groups.</p>
+</section>
+<section id="scaling-up-to-genome-wide-studies" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="scaling-up-to-genome-wide-studies"><span class="header-section-number">9.2.2</span> Scaling up to genome-wide studies</h3>
+<p>A genome-wide association study (GWAS) does the analysis that was just described, but at every single-nucleotide polymorphism (SNP) in the genome. So hundreds of thousands or millions of little general linear models looking for a relationship between genotype and phenotype. That’s it!</p>
+<p>Looking at hundreds of thousands of scatter plots would be impossible, so GWAS studies tend to report their results in Manhattan plots that show the genome location on the x axis and the negative log of the p value from the statistical test on the y axis. Larger values indicate higher significance. Usually a significance line is plotted on these as well (we’ll discuss how this is chosen in a bit).</p>
+<div id="fig-birdmanhattan" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A manhattan plot for beak size with multiple peaks" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-birdmanhattan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/birdbeakmanhattanplot.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A manhattan plot for beak size with multiple peaks">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-birdmanhattan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.2: A reproduction of Figure 2B from Enbody et al.&nbsp;2023 for a Manhattan plot summarizing the results of a GWAS for beak size in Darwin’s finches. You can see the G01 locus that was shown in <a href="#fig-birdbeaks" class="quarto-xref">Figure&nbsp;<span>9.1</span></a> in chromosome 1 on the left side of the plot DOI: 10.1126/science.adf6218
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="complications-to-the-simple-model" class="level2 page-columns page-full" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="complications-to-the-simple-model"><span class="header-section-number">9.3</span> Complications to the simple model</h2>
+<p>I’ve described GWAS as a relatively simple set of lots of general linear models. But, there are a some things about them that make them more complicated.</p>
+<section id="multiple-testing" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="multiple-testing"><span class="header-section-number">9.3.1</span> Multiple testing</h3>
+<p>GWAS involve doing lots of tests, and so, as we learned in <a href="multipletesting.html#sec-multtesting" class="quarto-xref"><span>Section 8.2</span></a>, we expect to get lots of p values below an <span class="math inline">\(\alpha\)</span> of 0.05, even if there is no association between any genotypes and phenotype. GWAS studies tend to use either a Bonferroni correction or an FDR analysis (or sometimes both!).</p>
+</section>
+<section id="population-structure" class="level3 page-columns page-full" data-number="9.3.2">
+<h3 data-number="9.3.2" class="anchored" data-anchor-id="population-structure"><span class="header-section-number">9.3.2</span> Population structure</h3>
+<p>Recall that one of the assumptions of the general linear model is that all of the data has been independently sampled. But, a GWAS sample can violate this assumption.</p>
+<p>We know that all living organisms are related to each other, and that some are more closely related to each other than others. This variation in genetic relatedness is called <strong>population structure</strong>. For example, you are more closely related to your siblings and cousins than you are to me (unless there’s something funny going on) so your genome will be more similar to your sibilings and cousins than it is to mine. Similarly, when Enbody et al.&nbsp;sampled finches, they found that there was variation in relatedness within <em>G. fortis</em> (the species they did the GWAS on), which you can see in <a href="#fig-finchancestry" class="quarto-xref">Figure&nbsp;<span>9.3</span></a>.</p>
+<div id="fig-finchancestry" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A panel showing ink drawings of four finch species (G. scandens, G. magnirostris, G. fortis, and G. fuliginosa), a tree showing relatedness between all samples. The lartest clade is G. fortis. Below the tree is a structure plot of ancestry showing that G. fortris individuals have some introgression from other species" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-finchancestry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/finchancestry.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="A panel showing ink drawings of four finch species (G. scandens, G. magnirostris, G. fortis, and G. fuliginosa), a tree showing relatedness between all samples. The lartest clade is G. fortis. Below the tree is a structure plot of ancestry showing that G. fortris individuals have some introgression from other species">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-finchancestry-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.3: A reproduction of Figure 1A&amp;B from Enbody et al.&nbsp;2023 showing relatedness between different birds sampled in their study DOI: 10.1126/science.adf6218
+</figcaption>
+</figure>
+</div>
+<p>Imagine that two distantly related individuals have very different beak sizes because they differ at the G01 allele (plotted in <a href="#fig-birdbeaks" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>). However, they will also differ at lots of other loci because they are distantly related, so a GWAS could find many loci across the genome associated with the trait.</p>
+<p>To avoid this problem, many GWAS studies that use samples from across a range will include a “control” for population structure. The most common approach is to use a matrix describing genetic similarity (the ‘kinship matrix’) between samples as a <strong>random effect</strong>, turning the general linear model into a <strong>mixed model</strong>. These are concepts that you will learn more about in 831, but we will preview them now. The idea of random effects is that they can capture variance in the predictions made by a linear model, but are for factors where we are not interested in predicting specific values for specific individuals.</p>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="margin-aside"><strong>Mixed models</strong> combine random and fixed effects.</span></div></div>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="margin-aside">A <strong>Kinship matrix</strong> or <strong>relatedness matrix</strong> is a matrix describing the genetic similarity of all individuals in a sample. It is technically a ‘variance-covariance’ matrix.</span></div></div>
+<p><a href="#fig-ricegwas" class="quarto-xref">Figure&nbsp;<span>9.4</span></a> shows examples of a GWAS conducted for plant height in rice with, and without, a kinship matrix included as a random effect. Without a kinship matrix, there are many loci across the genome that are associated with height but adding a kinship matrix reduces the number of significant associations.</p>
+<div id="fig-ricegwas" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Two manhattan plots. They look relatively similar but the top one has negative log p values that max out around 6, while the bottom one has lots of negative log p values in the 10-30 range" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ricegwas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/ricegwas.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Two manhattan plots. They look relatively similar but the top one has negative log p values that max out around 6, while the bottom one has lots of negative log p values in the 10-30 range">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ricegwas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.4: A reproduction of Figure 3D from Zhao et al.&nbsp;2011 showing a GWAS done with a standard general linear model (bottom) and a mixed model including a relatedness matrix as a random effect (bottom) https://doi.org/10.1038/ncomms1467
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="conducting-a-gwas-in-r" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="conducting-a-gwas-in-r"><span class="header-section-number">9.4</span> Conducting a GWAS in R</h2>
+<p>You can conduct a GWAS in using <a href="https://github.com/jiabowang/GAPIT">GAPIT</a>. Check out their website for information on installation. I’d suggest installing it with the following approach:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'devtools'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'devtools'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"jiabowang/GAPIT"</span>,<span class="at">force=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here is an example of GAPIT using its tuturial dataset of maize data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GAPIT)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>myY <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"data/mdp_traits.txt"</span>, <span class="at">head =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>myG <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"data/mdp_genotype_test.hmp.txt"</span>, <span class="at">head =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Step 2: Run GAPIT</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>myGAPIT <span class="ot">&lt;-</span> <span class="fu">GAPIT</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="at">Y=</span>myY[,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>],</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">G=</span>myG,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="at">file.output =</span> <span class="cn">FALSE</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 </section>
