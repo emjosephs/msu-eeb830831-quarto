@@ -1,0 +1,27 @@
+---
+title: "lab5.2-gwas"
+output: word_document
+date: "2025-11-19"
+---
+
+# Lab 5 (part 2) GWAS.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this lab we'll be using [GAPIT](https://github.com/jiabowang/GAPIT) to conduct a GWAS. Check out their website for information on installation. I'd suggest installing it with the following approach:
+
+```{r, eval=F}
+install.packages('devtools')
+library('devtools')
+devtools::install_github("jiabowang/GAPIT",force=TRUE)
+
+```
+
+Below is code to run GWAS on an Arabidopsis dataset
+```{r}
+library(GAPIT)
+
+phenos <- read.table('data/phenotypes.pheno')
+```
