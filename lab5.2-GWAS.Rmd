@@ -16,12 +16,11 @@ Actually running a GWAS can be a huge pain because the data files are large and 
 
 The species: *Arabidopsis thaliana*, a cute little herbaceous weed found all over Europe, often in disturbed habitats.
 
-The trait: flowering time 
+The trait: Flowering time, measured in a growth chamber. This trait is really important shaping plant fitness.
 
-
-GWAS with a mixed model (if the file is too large, just load chromosome 5)
+First, here are results for a GWAS with a mixed model. The code below loads in the results as a data table.
 ```{r}
-mixedGwas <- read.table('data/dtf-mixed.assoc.txt', header=T)
+mixedGwas <- read.table('~/Downloads/fl-mixed.assoc.txt', header=T)
 
 mixedGwas$fdr <- p.adjust(mixedGwas$p_lrt, method="fdr")# calculate fdr
 
@@ -32,6 +31,15 @@ dplyr::filter(mixedGwas, fdr<0.01)
 
 GWAS without a mixed model:
 
+```{r}
+refGwas <- read.table('~/Downloads/fl.assoc.txt', header=T)
+
+refGwas$fdr <- p.adjust(mixedGwas$p_lrt, method="fdr")# calculate fdr
+
+plot(refGwas$p_lrt, mixedGwas$p_lrt)
+```
+
+
 Look at a random locus and make a plot with genotype on the x axis and trait on the y axis
 
 Look at a hit from the second gwas and make a plot with genotype on the x axis and trait on the y axis. Compare the p values and effect sizes in the two GWAS results tables with what you get from a simple linear model with lm()
@@ -40,10 +48,10 @@ Look at a hit from the second gwas and make a plot with genotype on the x axis a
 #install.packages('vcfR')
 library(vcfR) #library to read in vcf
 
-
+# read in polymorphism data about this snp
 mysnp <- read.vcfR('data/Chr5_18590501.vcf')
 
-
+# this is a function to calculate genotype numeric scores from the vcf
 sum_genotype <- function(geno_col) {
   sapply(geno_col, function(gt) {
     if (is.na(gt) || gt == "./.") return(NA)  # Handle missing
@@ -52,7 +60,7 @@ sum_genotype <- function(geno_col) {
   })
 }
 
-
+## this is a function to deal with the weird ecotype names
 extract_first_number <- function(col) {
   sapply(col, function(x) {
     strsplit(x, "_")[[1]][1] |> as.numeric()
@@ -60,15 +68,14 @@ extract_first_number <- function(col) {
 }
 
 
-Z <- vcfR2tidy(mysnp, format_fields = "GT")
-genoDf <- data.frame(Z$gt)
+Z <- vcfR2tidy(mysnp, format_fields = "GT") #extract the genotype data from the vcf
+genoDf <- data.frame(Z$gt) # turn into a data frame
 genoDf$genotype = sapply(genoDf$gt_GT, sum_genotype) #turn to a numeric genotype
 genoDf$FID = sapply(genoDf$Indiv, extract_first_number) #fix the genotype id
 
-## merge in the phenos
-
-traits <- read.table('data/phenotypes.pheno', header=T)
-mergedData <- dplyr::inner_join(genoDf, traits, by="FID")
+ 
+traits <- read.table('data/phenotypes.pheno', header=T) #read in trait data
+mergedData <- dplyr::inner_join(genoDf, traits, by="FID") # merge in the phenotypes
 
 library(ggplot2)
 ggplot(mergedData) + aes(x=as.factor(genotype), y=DTF1)+
@@ -83,3 +90,4 @@ summary(mymodel)
 
 ```
 
+Compare to a random SNP [insert vcf info here]
