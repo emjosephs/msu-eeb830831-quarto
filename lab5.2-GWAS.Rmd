@@ -9,47 +9,44 @@ date: "2025-11-19"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+
+library(ggplot2)
 ```
 
+In today's lab you will examine outputs of a GWAS analysis and link it to a general linear model.
 
 Actually running a GWAS can be a huge pain because the data files are large and often use irritating formats (Emily spent a few hours wrangling files before abandoning the idea of you all running your own GWASs on your laptops). Instead, you'll be using the results of a GWAS that Emily has already run for you (you can see the code here: https://github.com/bobvanburen/PLB812_F25_GWAS/blob/main/gwas-lab-2025.ipynb)
 
-The species: *Arabidopsis thaliana*, a cute little herbaceous weed found all over Europe, often in disturbed habitats. Because A. thaliana are selfers, individuals are almost always homozygous, so their numeric genotypes will either be 0 or 2.
+The species: *Arabidopsis thaliana*, a cute little herbaceous weed found all over Europe, often in disturbed habitats. Because *A. thaliana() are selfers, individuals are almost always homozygous, so their numeric genotypes will either be 0 or 2.
 
-The trait: Flowering time, measured in a growth chamber. This trait is really important shaping plant fitness.
+The trait: Flowering time, measured in a growth chamber. This trait is really important shaping plant fitness. It is measured as days to flower ('dtf').
 
-First, here are results for a GWAS with a mixed model. The code below loads in the results as a data table. 
+First, here are results for a GWAS with a mixed model. The code below loads in the results as a data table. You can find all the files on d2l. Some of the files are quite large, so let Emily know if you have trouble loading them into R and she can send you smaller files.
 ```{r}
-mixedGwas <- read.table('~/Downloads/fl-mixed.assoc.txt', header=T)
-
-#mixedGwas$fdr <- p.adjust(mixedGwas$p_lrt, method="fdr")# calculate fdr
-
-#dplyr::filter(mixedGwas, fdr<0.01)
-#summary(mixedGwas$p_lrt)
+mixedGwas <- read.table('fl-mixed.assoc.txt', header=T)
 
 ```
 
-Use p.adjust() to calculate an fdr (I suggest using p_lrt as the p value input). How many SNPs fall below an fdr of 0.05? How does this compare to the number of SNPs with a p value of 0.05?
+1. Use p.adjust() to calculate an fdr (I suggest using p_lrt as the p value input). How many SNPs fall below an fdr of 0.05? How does this compare to the number of SNPs with a p value of 0.05?
 
-Here are the results for the non-mixed model gwas. The code below loads in the data. Compare the p value distribution of this model to the mixed model using summary() or another tool. These files are really big so if you make plots, you may want to sample 1000 or 5000 points from them first.
+Below are the results for the non-mixed model gwas. The code below loads in the data. 
 
 ```{r}
-regGwas <- read.table('~/Downloads/fl.assoc.txt', header=T)
-
-#regGwas$fdr <- p.adjust(mixedGwas$p_lrt, method="fdr")# calculate fdr
-#sum(regGwas$fdr<0.01)
-
-myrows = sample(1:nrow(mixedGwas), size=5000, replace=T)
-plot(-log10(regGwas[myrows,]$p_lrt), -log10(mixedGwas[myrows,]$p_lrt))
-
-plot(regGwas[myrows,]$beta, mixedGwas[myrows,]$beta)
+regGwas <- read.table('fl.assoc.txt', header=T)
 ```
 
-Also spend some time comparing the beta values of the two models (again for plots, sample 1000 or 5000 points first!). Beta here will be the slope of the relationship between genotype and effect size.
+2. Compare the p values and the beta values of the two models (for plots, sample 1000 or 5000 points first!). Beta here will be the slope of the relationship between genotype and trait.
+
+```{r}
+#below is some code to sample 5000 random numbers and then use those numbers to sample from the GWAS results
+#myrows = sample(1:nrow(mixedGwas), size=5000, replace=T)
+#myMixedGwasSample = mixedGwas[myrows,]
+```
 
 Now, let's look at some of the data the underlies this variation.
 
-First, let's look at a random locus. The code below loads in information about the trait value (days to flower) for each ecotype and information about their genotype at this locus. It then plots these individuals and compares their genotypes. There is also code to run a linear model testing for the effect of genotype on phenotype.
+We'll start with a random SNP that didn't affect the trait in the GWAS. The code below loads in information about the trait value (days to flower) for each ecotype and information about their genotype at this locus. It then plots these individuals and compares their genotypes. There is also code to run a linear model testing for the effect of genotype on phenotype. You will need to install the vcfR library to parse the vcf file which stores the genotype data. 
+
 
 
 ```{r}
@@ -85,37 +82,7 @@ genoDf$FID = sapply(genoDf$Indiv, extract_first_number) #fix the genotype id
 traits <- read.table('data/phenotypes.pheno', header=T) #read in trait data
 mergedData <- dplyr::inner_join(genoDf, traits, by="FID") # merge in the phenotypes
 
-library(ggplot2)
-ggplot(mergedData) + aes(x=as.factor(genotype), y=DTF1)+
-  geom_violin()+
-geom_jitter()+
-  theme_classic()
-
-
-mymodel = lm(DTF1~genotype, data=mergedData)
-summary(mymodel)
-```
-
-Copy the code from above and edit to look again at a SNP that was found to be one of the main hits in the GWAS. Make a plot and run the linear model to estimate effect size. Does the effect size match the effect size from the gwas results? 
-
-```{r}
-#install.packages('vcfR')
-library(vcfR) #library to read in vcf
-
-# read in polymorphism data about this snp
-mysnp <- read.vcfR('data/Chr5_18590501.vcf')
-
-
-Z <- vcfR2tidy(mysnp, format_fields = "GT") #extract the genotype data from the vcf
-genoDf <- data.frame(Z$gt) # turn into a data frame
-genoDf$genotype = sapply(genoDf$gt_GT, sum_genotype) #turn to a numeric genotype
-genoDf$FID = sapply(genoDf$Indiv, extract_first_number) #fix the genotype id
-
- 
-
-mergedData <- dplyr::inner_join(genoDf, traits, by="FID") # merge in the phenotypes
-
-
+#make a plot
 ggplot(mergedData) + aes(x=as.factor(genotype), y=DTF1)+
   geom_violin()+
 geom_jitter()+
@@ -125,7 +92,12 @@ geom_jitter()+
 mymodel = lm(DTF1~genotype, data=mergedData)
 summary(mymodel)
 
-dplyr::filter(regGwas, rs=="Chr5_18590501.0")
-
+#here is code to pull out the info from the gwas results:
+dplyr::filter(regGwas, rs=="Chr5_19380396.0") #note the extra .0 in the string that the gwas software has added on for some reason.
+dplyr::filter(mixedGwas, rs=="Chr5_19380396.0")
 ```
 
+3. Run the code above and look at the output. What was the effect size of the model? Does it match the results from the regular GWAS? What about the mixed model GWAS?
+
+
+4. Copy the code from above and edit to look at a SNP that was found to be one of the main hits in the GWAS (Chr5_18590501). Make a plot and run the linear model to estimate effect size. Does the effect size match the effect size from the gwas results? 
