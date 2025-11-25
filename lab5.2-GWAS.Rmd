@@ -14,42 +14,50 @@ library(dplyr)
 
 Actually running a GWAS can be a huge pain because the data files are large and often use irritating formats (Emily spent a few hours wrangling files before abandoning the idea of you all running your own GWASs on your laptops). Instead, you'll be using the results of a GWAS that Emily has already run for you (you can see the code here: https://github.com/bobvanburen/PLB812_F25_GWAS/blob/main/gwas-lab-2025.ipynb)
 
-The species: *Arabidopsis thaliana*, a cute little herbaceous weed found all over Europe, often in disturbed habitats.
+The species: *Arabidopsis thaliana*, a cute little herbaceous weed found all over Europe, often in disturbed habitats. Because A. thaliana are selfers, individuals are almost always homozygous, so their numeric genotypes will either be 0 or 2.
 
 The trait: Flowering time, measured in a growth chamber. This trait is really important shaping plant fitness.
 
-First, here are results for a GWAS with a mixed model. The code below loads in the results as a data table.
+First, here are results for a GWAS with a mixed model. The code below loads in the results as a data table. 
 ```{r}
 mixedGwas <- read.table('~/Downloads/fl-mixed.assoc.txt', header=T)
 
-mixedGwas$fdr <- p.adjust(mixedGwas$p_lrt, method="fdr")# calculate fdr
+#mixedGwas$fdr <- p.adjust(mixedGwas$p_lrt, method="fdr")# calculate fdr
 
-dplyr::filter(mixedGwas, fdr<0.01)
+#dplyr::filter(mixedGwas, fdr<0.01)
+#summary(mixedGwas$p_lrt)
 
 ```
 
+Use p.adjust() to calculate an fdr (I suggest using p_lrt as the p value input). How many SNPs fall below an fdr of 0.05? How does this compare to the number of SNPs with a p value of 0.05?
 
-GWAS without a mixed model:
+Here are the results for the non-mixed model gwas. The code below loads in the data. Compare the p value distribution of this model to the mixed model using summary() or another tool. These files are really big so if you make plots, you may want to sample 1000 or 5000 points from them first.
 
 ```{r}
-refGwas <- read.table('~/Downloads/fl.assoc.txt', header=T)
+regGwas <- read.table('~/Downloads/fl.assoc.txt', header=T)
 
-refGwas$fdr <- p.adjust(mixedGwas$p_lrt, method="fdr")# calculate fdr
+#regGwas$fdr <- p.adjust(mixedGwas$p_lrt, method="fdr")# calculate fdr
+#sum(regGwas$fdr<0.01)
 
-plot(refGwas$p_lrt, mixedGwas$p_lrt)
+myrows = sample(1:nrow(mixedGwas), size=5000, replace=T)
+plot(-log10(regGwas[myrows,]$p_lrt), -log10(mixedGwas[myrows,]$p_lrt))
+
+plot(regGwas[myrows,]$beta, mixedGwas[myrows,]$beta)
 ```
 
+Also spend some time comparing the beta values of the two models (again for plots, sample 1000 or 5000 points first!). Beta here will be the slope of the relationship between genotype and effect size.
 
-Look at a random locus and make a plot with genotype on the x axis and trait on the y axis
+Now, let's look at some of the data the underlies this variation.
 
-Look at a hit from the second gwas and make a plot with genotype on the x axis and trait on the y axis. Compare the p values and effect sizes in the two GWAS results tables with what you get from a simple linear model with lm()
+First, let's look at a random locus. The code below loads in information about the trait value (days to flower) for each ecotype and information about their genotype at this locus. It then plots these individuals and compares their genotypes. There is also code to run a linear model testing for the effect of genotype on phenotype.
+
 
 ```{r}
 #install.packages('vcfR')
 library(vcfR) #library to read in vcf
 
 # read in polymorphism data about this snp
-mysnp <- read.vcfR('data/Chr5_18590501.vcf')
+mysnp <- read.vcfR('data/Chr5_19380396.vcf')
 
 # this is a function to calculate genotype numeric scores from the vcf
 sum_genotype <- function(geno_col) {
@@ -86,8 +94,38 @@ geom_jitter()+
 
 mymodel = lm(DTF1~genotype, data=mergedData)
 summary(mymodel)
+```
 
+Copy the code from above and edit to look again at a SNP that was found to be one of the main hits in the GWAS. Make a plot and run the linear model to estimate effect size. Does the effect size match the effect size from the gwas results? 
+
+```{r}
+#install.packages('vcfR')
+library(vcfR) #library to read in vcf
+
+# read in polymorphism data about this snp
+mysnp <- read.vcfR('data/Chr5_18590501.vcf')
+
+
+Z <- vcfR2tidy(mysnp, format_fields = "GT") #extract the genotype data from the vcf
+genoDf <- data.frame(Z$gt) # turn into a data frame
+genoDf$genotype = sapply(genoDf$gt_GT, sum_genotype) #turn to a numeric genotype
+genoDf$FID = sapply(genoDf$Indiv, extract_first_number) #fix the genotype id
+
+ 
+
+mergedData <- dplyr::inner_join(genoDf, traits, by="FID") # merge in the phenotypes
+
+
+ggplot(mergedData) + aes(x=as.factor(genotype), y=DTF1)+
+  geom_violin()+
+geom_jitter()+
+  theme_classic()
+
+
+mymodel = lm(DTF1~genotype, data=mergedData)
+summary(mymodel)
+
+dplyr::filter(regGwas, rs=="Chr5_18590501.0")
 
 ```
 
-Compare to a random SNP [insert vcf info here]
