@@ -33,16 +33,11 @@ dplyr::filter(mixedGwas, fdr<0.01)
 GWAS without a mixed model:
 
 Look at a random locus and make a plot with genotype on the x axis and trait on the y axis
-
-Look at a hit from the second gwas and make a plot with genotype on the x axis and trait on the y axis. Compare the p values and effect sizes in the two GWAS results tables with what you get from a simple linear model with lm()
-
 ```{r}
-#install.packages('vcfR')
+
 library(vcfR) #library to read in vcf
 
-
-mysnp <- read.vcfR('data/Chr5_18590501.vcf')
-
+mysnp <- read.vcfR('data/Chr5_19380396.vcf')
 
 sum_genotype <- function(geno_col) {
   sapply(geno_col, function(gt) {
@@ -58,6 +53,38 @@ extract_first_number <- function(col) {
     strsplit(x, "_")[[1]][1] |> as.numeric()
   })
 }
+
+
+Z <- vcfR2tidy(mysnp, format_fields = "GT")
+genoDf <- data.frame(Z$gt)
+genoDf$genotype = sapply(genoDf$gt_GT, sum_genotype) #turn to a numeric genotype
+genoDf$FID = sapply(genoDf$Indiv, extract_first_number) #fix the genotype id
+
+## merge in the phenos
+
+mergedData <- dplyr::inner_join(genoDf, traits, by="FID")
+
+ggplot(mergedData) + aes(x=as.factor(genotype), y=DTF1)+
+  geom_violin()+
+geom_jitter()+
+  theme_classic()
+
+
+mymodel = lm(DTF1~genotype, data=mergedData)
+summary(mymodel)
+
+
+```
+
+
+
+Look at a hit from the second gwas and make a plot with genotype on the x axis and trait on the y axis. Compare the p values and effect sizes in the two GWAS results tables with what you get from a simple linear model with lm()
+
+```{r}
+
+mysnp <- read.vcfR('data/Chr5_18590501.vcf')
+
+
 
 
 Z <- vcfR2tidy(mysnp, format_fields = "GT")

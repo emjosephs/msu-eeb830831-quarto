@@ -165,9 +165,11 @@ plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab 
 abline(mymodel3, col=palette()[1], lwd=2)
 abline(mymodel4, col=palette()[2], lwd=2)
 abline(mymodel2, col="gray", lwd=2, lty=2)
-abline(a=-267.623, b=102.298, col="black", lwd=2, lty=2)
+#abline(a=-267.623, b=102.298, col="black", lwd=2, lty=2)
 
-legend("bottomright", c('Chinstrap','Gentoo','no species',"full model"), bty="n", col=c(palette()[2],palette()[1], "gray","black"), lwd=2, lty=c(1,1,2,2))
+
+#legend("bottomright", c('Chinstrap','Gentoo','no species',"full model"), bty="n", #col=c(palette()[2],palette()[1], "gray","black"), lwd=2, lty=c(1,1,2,2))
+legend("bottomright", c('Chinstrap','Gentoo','no species'), bty="n", col=c(palette()[2],palette()[1], "gray"), lwd=2, lty=c(1,1,2))
 ```
 
 
