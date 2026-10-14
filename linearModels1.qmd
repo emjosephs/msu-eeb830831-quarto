@@ -41,7 +41,7 @@ Linear models estimate the conditional mean of the $i^{th}$ observation of a con
 \hat{Y}_i = f(\text{explanatory variables}_i)
 \end{equation} 
 
-These models are "linear" because we estimate of the conditional mean ($\hat{Y}_i$) by adding up all components of the model. So, each explanatory variable $x_{j,i}$ is multiplied by its effect size $b_j$. It might help to look at an example model below:
+These models are "linear" because we estimate of the mean ($\hat{Y}_i$) of the response variables conditional on the explanatory variables by adding up all components of the model. So, each explanatory variable $x_{j,i}$ is multiplied by its effect size $b_j$. It might help to look at an example model below:
 
 \begin{equation} 
 \hat{Y}_i = b_0 + b_1  x_{1,i} + b_2 x_{2,i} + \dots{}
@@ -58,7 +58,7 @@ We are going to start with the simplest linear model possible. You likely alread
 In the simplest linear model we can also think of the mean as the intercept ($b_0$) so 
 we can predict each data point $y_i$ as simply the mean plus an error term or residual ($e_i$).
 
-$$\hat{y}_i = b_0 + e_i$$
+$$y_i = b_0 + e_i$$
 
 ### Wait, what's a residual?
 
