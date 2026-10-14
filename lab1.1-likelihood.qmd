@@ -90,3 +90,25 @@ model1 <- lm(koalaprefs~1)
 ```{r, echo=F, eval=F}
 koalanames[which.max(abs(model1$residuals))]
 ```
+
+## Extra fun
+The following problems are optional and give you a chance to learn some extra stats skills if you have time.
+
+9a. Take 100 samples of the koala preference data where each sample contains 3 koalas. Calculate the mean of each of your samples and plot the distribution of means.
+
+```{r, echo=F, eval=F}
+smallSamples <- sapply(1:100, function(x){
+  samplex <- sample(koalaprefs, size=3)
+  return(mean(samplex))
+})
+
+largeSamples <- sapply(1:100, function(x){
+  samplex <- sample(koalaprefs, size=10)
+  return(mean(samplex))
+})
+
+```
+
+9b. Take another 100 samples of the koala preference data where each sample contains 10 koalas. Calculate the mean of each sample and plot the distribution of the means.
+
+9c. Compare the plots from part a and part b. Are they different? If so, why? 

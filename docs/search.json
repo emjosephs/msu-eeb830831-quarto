@@ -643,6 +643,17 @@
     ]
   },
   {
+    "objectID": "lab1.1-likelihood.html#extra-fun",
+    "href": "lab1.1-likelihood.html#extra-fun",
+    "title": "10  Lab 1 – Likelihood",
+    "section": "10.4 Extra fun",
+    "text": "10.4 Extra fun\nThe following problems are optional and give you a chance to learn some extra stats skills if you have time.\n9a. Take 100 samples of the koala preference data where each sample contains 3 koalas. Calculate the mean of each of your samples and plot the distribution of means.\n9b. Take another 100 samples of the koala preference data where each sample contains 10 koalas. Calculate the mean of each sample and plot the distribution of the means.\n9c. Compare the plots from part a and part b. Are they different? If so, why?",
+    "crumbs": [
+      "Labs",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Lab 1 -- Likelihood</span>"
+    ]
+  },
+  {
     "objectID": "lab4.1-ANOVA.html",
     "href": "lab4.1-ANOVA.html",
     "title": "11  Lab 2 – Categorical Linear Models and ANOVA",
