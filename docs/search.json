@@ -24,17 +24,7 @@
     "href": "01-intro.html#learning-goals",
     "title": "1  Chapter 1 – Introduction",
     "section": "1.2 Learning Goals",
-    "text": "1.2 Learning Goals\nCourse learning goals go here",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
-    ]
-  },
-  {
-    "objectID": "01-intro.html#themes",
-    "href": "01-intro.html#themes",
-    "title": "1  Chapter 1 – Introduction",
-    "section": "1.3 Themes",
-    "text": "1.3 Themes\nThroughout the course we’ll be talking about the following themes…",
+    "text": "1.2 Learning Goals\nProvide a conceptual introduction to model-based analysis and the translation from statistical to biological inference and learn the basics of probability theory and general linear models.\nBe able to interpret the statistics methods section of papers in EEB and write your own statistics methods and results sections.\nLay the foundation for developing a sufficient and appropriate background to teach yourself new methods for data analysis as needed.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
     ]
@@ -43,18 +33,8 @@
     "objectID": "01-intro.html#who-i-am",
     "href": "01-intro.html#who-i-am",
     "title": "1  Chapter 1 – Introduction",
-    "section": "1.4 Who I am",
-    "text": "1.4 Who I am\nI’m an evolutionary geneticist. My lab mostly works on understanding how evolution has shaped quantitative trait variation, especially in the context of environmental variation and genome evolution. We use statistics to infer things about trait variation and genomic sequence variation, and the links between the two.\nI’m actually a second-generation statistics teacher – my dad was a high school math teacher and taught statistics for years.",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
-    ]
-  },
-  {
-    "objectID": "01-intro.html#how-this-book-works",
-    "href": "01-intro.html#how-this-book-works",
-    "title": "1  Chapter 1 – Introduction",
-    "section": "1.5 How this book works",
-    "text": "1.5 How this book works\nStuff about logistics goes here.",
+    "section": "1.3 Who I am",
+    "text": "1.3 Who I am\nI’m an evolutionary geneticist. My lab mostly works on understanding how evolution has shaped quantitative trait variation, especially in the context of environmental variation and genome evolution. We use statistics to infer things about trait variation and genomic sequence variation, and the links between the two.\nI’m actually a second-generation statistics teacher – my dad was a high school math teacher and taught statistics for years.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
     ]
@@ -63,8 +43,8 @@
     "objectID": "01-intro.html#acknowledgements",
     "href": "01-intro.html#acknowledgements",
     "title": "1  Chapter 1 – Introduction",
-    "section": "1.6 Acknowledgements",
-    "text": "1.6 Acknowledgements\nYaniv Brandvain’s online statistics textbook inspired this project and he has answered so many of my statistical and logistical questions.\nThis course section was originally developed by Gideon Bradburd and I learned a ton from teaching it.\nDoc Edge and his cool statistics textbook have been big sources of statistical knowledge.",
+    "section": "1.4 Acknowledgements",
+    "text": "1.4 Acknowledgements\nYaniv Brandvain’s online statistics textbook inspired this project and he has answered so many of my statistical and logistical questions.\nThis course section was originally developed by Gideon Bradburd and I learned a ton from teaching it.\nDoc Edge and his cool statistics textbook have been big sources of statistical knowledge.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Chapter 1 -- Introduction</span>"
     ]
