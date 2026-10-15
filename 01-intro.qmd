@@ -29,7 +29,6 @@ I'm an evolutionary geneticist. My lab mostly works on understanding how evoluti
 
 I'm actually a second-generation statistics teacher -- my dad was a high school math teacher and taught statistics for years.
 
-
 ## Acknowledgements
 
 [Yaniv Brandvain](https://cbs.umn.edu/directory/yaniv-brandvain)'s online statistics textbook inspired this project and he has answered so many of my statistical and logistical questions.

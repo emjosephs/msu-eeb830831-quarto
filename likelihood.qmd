@@ -13,49 +13,49 @@ library(tidyverse)
 
 ## What are we doing here?
 
-Welcome to statistics! You've already learned the basics of R, along with probability. You'll now be using your knowledge to make inferences about the world using data. Today we'll be covering likelihood, a flexible approach for linking data to parameters. 
+Welcome to statistics! You've already learned the basics of R, along with probability. You'll now be using your knowledge to make inferences about the world using data. Today we'll be covering likelihood, a flexible approach for linking data to parameters.
 
 ## Motivating question
 
-Someone hands us a coin and we flip it 100 times and get 46 heads. 
+Someone hands us a coin and we flip it 100 times and get 46 heads.
 
 Is the coin fair? (probability of heads = 50%)
 
-What is the _most likely_ probability of flipping heads for this coin?
-
-
+What is the *most likely* probability of flipping heads for this coin?
 
 ## Likelihood
 
 The **likelihood** of the data is the probability of the data as a function of some unknown parameters.
 
-How is this different from the probability we've been talking about? In probability, we think about some stochastic process, 
-and figure out ways to calculate the probability of possible outcomes.
-For example: given that the coin is fair, what's the probability of getting 46 heads out of 100 flips? When we calculate probabilities, we consider a single parameter value 
-and describe the probabilities of all possible outcomes of a 
-process that is parameterized by that value.
- 		
-In contrast, in statistics, we start with some observed outcomes, and try to figure out the underlying process. For example: given some flip data, can we figure out the fairness of the coin?
-When we calculate likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.
+How is this different from the probability we've been talking about? In probability, we think about some stochastic process, and figure out ways to calculate the probability of possible outcomes. For example: given that the coin is fair, what's the probability of getting 46 heads out of 100 flips? When we calculate probabilities, we consider a single parameter value and describe the probabilities of all possible outcomes of a process that is parameterized by that value.
 
-In formulating the problem this way, 
-we are treating the observed data ($k=46$) as a *known*, 
-and treating $p$ as an *unknown* **parameter** of the model.
+In contrast, in statistics, we start with some observed outcomes, and try to figure out the underlying process. For example: given some flip data, can we figure out the fairness of the coin? When we calculate likelihoods, we consider a single outcome (or set of outcomes) and many possible parameter values that could best explain it.
+
+In formulating the problem this way, we are treating the observed data ($k=46$) as a *known*, and treating $p$ as an *unknown* **parameter** of the model.
 
 ## Parametric statistics
 
-We can use likelihood in a framework of **parametric statistics**.
-In parametric statistics, we treat observed data as draws from 
-an underlying process or **population**, and we try to learn about that population from our sample.
+We can use likelihood in a framework of **parametric statistics**. In parametric statistics, we treat observed data as draws from an underlying process or **population**, and we try to learn about that population from our sample.
 
-A **statistical parameter** is a value that tells you something 
-about a , like the _true_ mean height of students in our class, or the _true_ frequency of a genetic variant in a species.
+A **statistical parameter** is a value that tells you something about a , like the *true* mean height of students in our class, or the *true* frequency of a genetic variant in a species.
 
-BUT, we rarely get to know the truth! (we would know the truth if we censused everyone in a population,  or repeated a random process an infinite number of times). Instead, we can take _samples_ to try to learn about --  or **estimate** -- parameters.
+BUT, we rarely get to know the truth! (we would know the truth if we censused everyone in a population, or repeated a random process an infinite number of times). Instead, we can take *samples* to try to learn about -- or **estimate** -- parameters.
 
 ## A coin flip example
 
 Imagine that we flip a coin 100 times and get 46 heads.
+
+```{r}
+#| echo: false
+#| column: margin
+#| fig-alt: "Two white men in all white clothes stand and look at something in the palm of one of their hands. In black and white."
+#| fig-cap: "Image of Don Bradman and GO Allen tossing for innings, first Test at Brisbane 1936-37. From the collection of the National Library of Australia, accessed at: http://nla.gov.au/nla.pic-an23448715. Public domain." 
+library(knitr)
+include_graphics("figs/BradmanAllenToss.jpg")
+```
+
+
+
 ```{r, echo=FALSE}
 n.heads <- 46
 ```
@@ -81,7 +81,7 @@ dbinom(x=46, p=0.5, size=100)
 
 ```
 
-This code gives us the likelihood of the data for one value of $p$. But what if we want to calculate it for a range of potential $p$s? Turns out we can give dbinom() a vector of $p$ and it will return a vector of probabilities. 
+This code gives us the likelihood of the data for one value of $p$. But what if we want to calculate it for a range of potential $p$s? Turns out we can give dbinom() a vector of $p$ and it will return a vector of probabilities.
 
 ```{r}
 pvector = seq(0,1,length.out=101)
@@ -94,25 +94,21 @@ Instead of printing the list of values, let's make a plot.
 plot(pvector,probabilities, xlim=c(0,1),ylim=c(0,0.1), xlab="probability of heads (p)",ylab="p(data)", pch=20,col=2)
 ```
 
-What we've just is called a **grid search**. It is one strategy to identify the parameter that gives you the highest probability of observing your data (aka likelihood). Looking at the plot above, what $p$ seems to give the highest likelihood? 
+What we've just is called a **grid search**. It is one strategy to identify the parameter that gives you the highest probability of observing your data (aka likelihood). Looking at the plot above, what $p$ seems to give the highest likelihood?
 
 We can calculate this directly with the following code:
+
 ```{r}
 pvector[which.max(probabilities)]
 ```
 
 ## Maximum likelihood
 
-**Maximum likelihood inference** is a method for estimating the values 
-of the parameters of a statistical model that maximize the likelihood 
-of the observed data.
+**Maximum likelihood inference** is a method for estimating the values of the parameters of a statistical model that maximize the likelihood of the observed data.
 
-The **maximum likelihood estimate** (MLE) is the parameter value
-(or, if there are multiple parameters, the vector of parameter values) 
-that maximize the likelihood of the data. The MLE is our best guess at the true value of the unknown  population (or process) parameter.
+The **maximum likelihood estimate** (MLE) is the parameter value (or, if there are multiple parameters, the vector of parameter values) that maximize the likelihood of the data. The MLE is our best guess at the true value of the unknown population (or process) parameter.
 
 Above we used a grid search to identify the MLE. However, grid searches can get unwieldy. Luckily, R has built-in functions to identify the MLE more efficiently. See the code below
-
 
 ```{r,echo=T}
 # function to estimate the p(k=46|n=100,p) for a given p
@@ -125,12 +121,11 @@ Above we used a grid search to identify the MLE. However, grid searches can get 
 	mle$maximum
 ```
 
+## Now hang on...
 
-## Now hang on... 
+Calculating the probability of some possible outcome makes sense... But calculating the probability of something that has *already happened* seems **bananas**!
 
-Calculating the probability of some possible outcome makes sense... But calculating the probability of something that has _already happened_ seems **bananas**!
-
-But, that's not really what we're doing - We're calculating the probability of the observed data as a draw from some distribution, _given_ the values of the parameters of that distribution. Our goal is to use these probabilities to estimate the distribution parameters.
+But, that's not really what we're doing - We're calculating the probability of the observed data as a draw from some distribution, *given* the values of the parameters of that distribution. Our goal is to use these probabilities to estimate the distribution parameters.
 
 ## Log likelihood for lots of data points
 
@@ -163,7 +158,7 @@ We can also calculate the MLE for this datapoint (we'll focus on the mean and no
 	mle$maximum
 ```
 
-Are you surprised that the MLE does not match the mean you used to calculate the data? You may already expect that using a single data point may not be very helpful in estimating the parameter of a distribution. We will get a better estimate using multiple data points. Let's start with the first 2 data points. 
+Are you surprised that the MLE does not match the mean you used to calculate the data? You may already expect that using a single data point may not be very helpful in estimating the parameter of a distribution. We will get a better estimate using multiple data points. Let's start with the first 2 data points.
 
 Remember that if you want to know the probability of observing two things, you can multiply the probability of observing the first thing times the probability of observing the second thing. And remember that likelihoods are just probabilities, so we get the likelihood of two data points by multiplying the likelihood of each data point together.
 
@@ -196,27 +191,22 @@ Now, what about the whole dataset? We should be able to to calculate the likelih
 prod(dnorm(myData, mean=10, sd=3))
 ```
 
-
 Wait, what's going on? How are we getting a probability of 0?
 
 ### Log likelihood solves underflow problems
 
 ![](figs/comp_on_fire.jpg)
 
-The product of small numbers are smaller numbers. Very very very small numbers cannot be represented in your computer's memory.
-This problem is called underflow.
-We often deal with underflow by using logs. You may remember from your high school or undergrad math classes that
+The product of small numbers are smaller numbers. Very very very small numbers cannot be represented in your computer's memory. This problem is called underflow. We often deal with underflow by using logs. You may remember from your high school or undergrad math classes that
 
-$$\text{log}(A \times B \times C) = \text{log}(A) + \text{log}(B) + \text{log}(C)$$
-\
+$$\text{log}(A \times B \times C) = \text{log}(A) + \text{log}(B) + \text{log}(C)$$\
 and more generally:
 
-$$\text{log}\left(\prod\limits_{i=1}^n X_i \right) = \sum\limits_{i=1}^n \text{log}(X_i)$$
-Additionally, the log is monotonic which means that
+$$\text{log}\left(\prod\limits_{i=1}^n X_i \right) = \sum\limits_{i=1}^n \text{log}(X_i)$$ Additionally, the log is monotonic which means that
 
 If $X > Y$ then $\text{log}(X) > \text{log}(Y)$
 
-In practice, instead of multiplying likelihoods together to calculate the likelihood of observing a large data set, we can sum log likelihoods together. 
+In practice, instead of multiplying likelihoods together to calculate the likelihood of observing a large data set, we can sum log likelihoods together.
 
 The code below calculates the log likelihood of all of the data we simulated. Note that we replace the prod() function with the sum() function and use the log=T option in the dnorm() function.
 
@@ -225,7 +215,8 @@ sum(dnorm(myData, mean=10, sd=3, log=T))
 
 ```
 
-We can now optimize this function 
+We can now optimize this function
+
 ```{r}
 # function to estimate the likelihood for a given mean
 	l.norm <- function(u){
@@ -240,10 +231,9 @@ This returns something pretty close to the value we used to simulate the data. I
 
 ## Law of large numbers
 
-The law of large numbers simply states that **as the number of samples increases, the sample average converges on the population average**.
-(Note that the law of large numbers is often written regarding the *expectation*, which is a mathematical way of specifying the population average)
+The law of large numbers simply states that **as the number of samples increases, the sample average converges on the population average**. (Note that the law of large numbers is often written regarding the *expectation*, which is a mathematical way of specifying the population average)
 
-Intuitively, the law of large numbers explains why when we tried to calculate the sample mean above, we got a much better estimate of the mean used to simulate the data when we used more data than when we used just one or two data points. 
+Intuitively, the law of large numbers explains why when we tried to calculate the sample mean above, we got a much better estimate of the mean used to simulate the data when we used more data than when we used just one or two data points.
 
 The following visualization might be helpful. Imagine that we sequentially sample from a normal distribution with a mean of 10 (as we did above) and with each sample, we calculate the mean and plot it below.
 
@@ -281,14 +271,14 @@ While this may seem obvious, it is a fundamental principal across the sciences. 
 
 ## Practice problems
 
-1. Someone tells you that the average height of a 4-year-old is 1 meter with a standard deviation of 5 centimeters. You want to know if this is accurate so you go to a daycare and measure the heights of 10 4-year-olds.Write, in math, the probability distribution you expect for 4-year-old height.
+1.  Someone tells you that the average height of a 4-year-old is 1 meter with a standard deviation of 5 centimeters. You want to know if this is accurate so you go to a daycare and measure the heights of 10 4-year-olds.Write, in math, the probability distribution you expect for 4-year-old height.
 
-2. Use R to calculate the likelihood of observing a 4-year-old who is 110 cm tall if your information is accurate.
+2.  Use R to calculate the likelihood of observing a 4-year-old who is 110 cm tall if your information is accurate.
 
-3. What if the actual mean height of a 4-year-old is 115 cm? Now, what is the likelihood of observing a 110 cm tall 4-year-old?
+3.  What if the actual mean height of a 4-year-old is 115 cm? Now, what is the likelihood of observing a 110 cm tall 4-year-old?
 
-4. You measure a second kid and find that they are 105 cm tall. Use R to calculate the likelihood of observing both kids if the underlying mean is 1 meter. What about if the underlying mean height is 110 cm?
+4.  You measure a second kid and find that they are 105 cm tall. Use R to calculate the likelihood of observing both kids if the underlying mean is 1 meter. What about if the underlying mean height is 110 cm?
 
-5. You measure all the kids and get the following vector of heights: 112  89 112 102 126 114 111 112 112 114. Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare).
+5.  You measure all the kids and get the following vector of heights: 112 89 112 102 126 114 111 112 112 114. Use a grid search to estimate the MLE for mean height for this data. You can use likelihood or log-likelihood (or both and compare).
 
-6. Does it make sense to travel to another daycare to measure the height of another 10 kids to get a better estimate of height? How many kids would you want to measure to feel confident?
+6.  Does it make sense to travel to another daycare to measure the height of another 10 kids to get a better estimate of height? How many kids would you want to measure to feel confident?

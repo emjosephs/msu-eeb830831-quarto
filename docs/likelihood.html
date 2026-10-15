@@ -136,7 +136,7 @@ window.Quarto = {
 <link rel="stylesheet" href="assets/sticky-notes.css">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -315,7 +315,7 @@ window.Quarto = {
 <div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/likelihood.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -359,9 +359,19 @@ window.Quarto = {
 <p>A <strong>statistical parameter</strong> is a value that tells you something about a , like the <em>true</em> mean height of students in our class, or the <em>true</em> frequency of a genetic variant in a species.</p>
 <p>BUT, we rarely get to know the truth! (we would know the truth if we censused everyone in a population, or repeated a random process an infinite number of times). Instead, we can take <em>samples</em> to try to learn about – or <strong>estimate</strong> – parameters.</p>
 </section>
-<section id="a-coin-flip-example" class="level2" data-number="2.5">
+<section id="a-coin-flip-example" class="level2 page-columns page-full" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="a-coin-flip-example"><span class="header-section-number">2.5</span> A coin flip example</h2>
 <p>Imagine that we flip a coin 100 times and get 46 heads.</p>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figs/BradmanAllenToss.jpg" class="img-fluid figure-img" alt="Two white men in all white clothes stand and look at something in the palm of one of their hands. In black and white." width="210"></p>
+<figcaption>Image of Don Bradman and GO Allen tossing for innings, first Test at Brisbane 1936-37. From the collection of the National Library of Australia, accessed at: http://nla.gov.au/nla.pic-an23448715. Public domain.</figcaption>
+</figure>
+</div>
+</div></div></div>
 <p>We know that we can model coin flipping using a Binomial distribution where <span class="math inline">\(x\)</span> is the number of heads, <span class="math inline">\(n\)</span> is the number of flips, and <span class="math inline">\(p\)</span> is the probability of heads:</p>
 <p><span class="math display">\[ x \sim B(n,p)\]</span></p>
 <p>For this particular case:</p>
@@ -388,7 +398,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="likelihood_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="likelihood_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -437,7 +447,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="likelihood_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="likelihood_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -544,7 +554,7 @@ and more generally:</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="likelihood_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="likelihood_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -560,7 +570,7 @@ and more generally:</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="likelihood_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="likelihood_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
