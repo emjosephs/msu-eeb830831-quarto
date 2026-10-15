@@ -114,7 +114,7 @@ $$ e_i \sim N(0, \sigma^2)$$
 where $\sigma^2$ is the variance of the residuals. The mean of the residuals is 0.
 
 :::fyi
-Remember that the standard deviation is the squsre root of the variance and the standard error is the standard deviation divided by the square root of the sample size: $\sigma_{\bar{x}} = \frac{\sigma}{\sqrt{n}}$
+Remember that the standard deviation is the square root of the variance and the standard error is the standard deviation divided by the square root of the sample size: $\sigma_{\bar{x}} = \frac{\sigma}{\sqrt{n}}$
 
 :::
 
