@@ -83,18 +83,18 @@ We could rewrite the above equation as two equations that describe the mass of i
 $$ \text{Mass}_{i|\text{Gentoo}} = b_0 + e_i$$
 $$ \text{Mass}_{i|\text{Adelie}} = b_0 + b_1 + e_i$$
 
-We can work through these equations to estimate the parameters of the model. The mean mass of an Adelie penguin ($b_0$) is 3701 and since the mean mass of a Gentoo penguin is 5076, $b_1 = 1375$.
-
 ### Fitting a model with lm()
+
+We can use lm() to fit our categorical model and estimate $b_0$ and $b_1$.
 
 ```{r}
 ## first filter out chinstraps and anything with missing data
-penguins2 <- penguins                                             |>
+penguins2 <- penguins |>
   filter(!is.na(body_mass_g) , species != "Chinstrap") |> 
   droplevels()
 
 model1 <- lm(body_mass_g ~ species, data=penguins2)
-summary(model1)
+model1
 ```
 
 
@@ -113,8 +113,6 @@ t.test(adelies$body_mass_g, gentoos$body_mass_g)
 
 Both a t-test and the linear models we've discussed so far are based on a normal distribution.
 However, the t-test uses a t distribution. The t-distribution incorporates uncertainty in our estimate of the standard deviation of a normal distribution. The more data we have, the closer the t-distribution approximates a normal distribution.
-
-Note that we can compare the output of our t.test above and the summary of the corresponding linear model and the t-value for species is the same!
 
 :::
 
@@ -137,7 +135,6 @@ $$\text{Mass}_i = b_0 + b_1 \times \text{Adelie}_i +b_2 \times \text{Chinstrap} 
 ```{r}
 model2 <- lm(body_mass_g ~ species, data = penguins)
 model2
-summary(model2)
 ```
 
 ### A note on the reference categories.
@@ -163,7 +160,7 @@ Formally, we are asking if individuals from different groups are drawn from the 
 
 The ANOVA also solves some other problems with multiple category linear models. The model above compares Gentoo and Chinstrap penguins with Adelie penguins but it doesn't compare Gentoo and Chinstrap with each other. Making that comparison requires rearranging the order of the model. 
 
-###
+### How ANOVAs work
 
 ANOVAs work by estimating the amount of variation within groups and among groups.
 The null hypothesis suggests that individuals from different groups will be no more different from each other than individuals from the same group.
@@ -268,7 +265,7 @@ We can then use an F-test to test the hypothesis that F is different from 1.
 pf(q = ftable$F_value, df1 = ftable$df_groups, df2 = ftable$df_error, lower.tail = FALSE)
 ```
 
-### Fitting an ANOVA with in R
+### Fitting an ANOVA with R
 
 Instead of calculating everything by hand, we can use R to fit an ANOVA with the following code:
 
