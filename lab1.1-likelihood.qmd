@@ -35,28 +35,31 @@ koalaprefs = c(-2,2,6,9,13,2,5,7,2,-6,4,3,2,6,-6)
 koalanames = c("Sprite","Nivea","Miniata","Trace","Donatella","Snorkle","Theresa","Crumpet","Yulara","Kat","Crumble","Chassis","Eeyore","Violet","Paddle")
 ```
 
+Answer the following questions using R using the .Rmd homework template from d2l. Include the code with your answers.
+
+
 ## Part 1: Likelihood
 
-1. Take the sixth  koala in your simulated dataset. Her name is Snorkle. What is the likelihood of getting a the data corresponding with Snorkle if the mean preference is 0 and sd is 5?
+1. Take the sixth  koala in your simulated dataset. Her name is Snorkle. What is the likelihood of getting a the data corresponding with Snorkle if preference is normally distributed with a mean of 0 and standard deviation of 5?
 
 ```{r, echo=F, eval=F}
 dnorm(koalaprefs[6],mean=0, sd=5)
 ```
 
-2. The eight Koala is named Crumpet. Calculate the likelihood of getting the data for Crumpet and Snorkle if the mean preference is 0 and sd is 5.
+2. The eight Koala is named Crumpet. Calculate the likelihood of getting the data for Crumpet and Snorkle if preference is normally distributed with a mean of 0 and standard deviation of 5.
 ```{r, echo=F, eval=F}
 
 prod(dnorm(myData[c(6,8)],mean=0, sd=5))
 ```
 
 
-3. Calculate the likelihood of all Koalas if the mean preference is 0 and sd is 5.
+3. Calculate the likelihood of all Koalas if preference is normally distributed with a mean of 0 and standard deviation of 5.
 ```{r, echo=F, eval=F}
 
 prod(dnorm(koalaprefs,mean=0, sd=5))
 ```
 
-4. Calculate the log likelihood of all Koalas if the mean preference is 0 and sd is 5.
+4. Calculate the log likelihood of all if preference is normally distributed with a mean of 0 and standard deviation of 5.
 ```{r, echo=F, eval=F}
 sum(dnorm(myData,mean=0, sd=5, log=T))
 
@@ -76,13 +79,11 @@ plot(means, mylikelihood)
 
 ## Part 2: Linear models
 
-6. Let's model this data with a very simple linear model. Write an equation describing a model that includes a response variable (preference) as a function of a mean and residual.
+6. Let's model this data with a very simple linear model. Write an equation describing a model that includes a response variable (preference) as a function of a mean value ($b_0$) and residual (you don't need to do this in R). 
 
 7. Use lm() to fit this linear model. Does the mean found my lm() match your maximum likelihood estimate from question 5?
 ```{r, echo=F, eval=F}
 model1 <- lm(koalaprefs~1)
-
-
 ```
 
 
@@ -91,10 +92,16 @@ model1 <- lm(koalaprefs~1)
 koalanames[which.max(abs(model1$residuals))]
 ```
 
+9. What is the mean of the residuals?
+
+10. Plot a histogram of the residuals and look at the distribution.
+
+11. Do you think your linear model has done a good job of fitting the data? Why or why not?
+
 ## Extra fun
 The following problems are optional and give you a chance to learn some extra stats skills if you have time.
 
-9a. Take 100 samples of the koala preference data where each sample contains 3 koalas. Calculate the mean of each of your samples and plot the distribution of means.
+12a. Take 100 samples of the koala preference data where each sample contains 3 koalas. Calculate the mean of each of your samples and plot the distribution of means.
 
 ```{r, echo=F, eval=F}
 smallSamples <- sapply(1:100, function(x){
@@ -109,6 +116,9 @@ largeSamples <- sapply(1:100, function(x){
 
 ```
 
-9b. Take another 100 samples of the koala preference data where each sample contains 10 koalas. Calculate the mean of each sample and plot the distribution of the means.
+12b. Take another 100 samples of the koala preference data where each sample contains 10 koalas. Calculate the mean of each sample and plot the distribution of the means.
 
-9c. Compare the plots from part a and part b. Are they different? If so, why? 
+12c. Compare the plots from part a and part b. Are they different? If so, why? 
+
+
+

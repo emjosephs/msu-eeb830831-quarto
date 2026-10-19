@@ -594,7 +594,7 @@
     "href": "lab1.1-likelihood.html",
     "title": "10  Lab 1 – Likelihood",
     "section": "",
-    "text": "10.1 Koala bellows\nThis is a lab to practice likelihood and simple mean-only linear models.\nA koala (photo by David Illif)\nKoalas bellow to attract mates. Charlton et al. studied female response to male bellows by exposing females to loudspeakers playing a bellow from a large male on one side and a small male on the other. They counted the number of times that females looked at each loudspeaker and calculate the preference for large males as the times females looked at the speaker with the large male minus the times looked at the speaker with the small male. (see https://doi.org/10.1016/j.anbehav.2012.09.034 for more)\nHere is data from their paper:\nkoalaprefs = c(-2,2,6,9,13,2,5,7,2,-6,4,3,2,6,-6)\nkoalanames = c(\"Sprite\",\"Nivea\",\"Miniata\",\"Trace\",\"Donatella\",\"Snorkle\",\"Theresa\",\"Crumpet\",\"Yulara\",\"Kat\",\"Crumble\",\"Chassis\",\"Eeyore\",\"Violet\",\"Paddle\")",
+    "text": "10.1 Koala bellows\nThis is a lab to practice likelihood and simple mean-only linear models.\nA koala (photo by David Illif)\nKoalas bellow to attract mates. Charlton et al. studied female response to male bellows by exposing females to loudspeakers playing a bellow from a large male on one side and a small male on the other. They counted the number of times that females looked at each loudspeaker and calculate the preference for large males as the times females looked at the speaker with the large male minus the times looked at the speaker with the small male. (see https://doi.org/10.1016/j.anbehav.2012.09.034 for more)\nHere is data from their paper:\nkoalaprefs = c(-2,2,6,9,13,2,5,7,2,-6,4,3,2,6,-6)\nkoalanames = c(\"Sprite\",\"Nivea\",\"Miniata\",\"Trace\",\"Donatella\",\"Snorkle\",\"Theresa\",\"Crumpet\",\"Yulara\",\"Kat\",\"Crumble\",\"Chassis\",\"Eeyore\",\"Violet\",\"Paddle\")\nAnswer the following questions using R using the .Rmd homework template from d2l. Include the code with your answers.",
     "crumbs": [
       "Labs",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Lab 1 -- Likelihood</span>"
@@ -605,7 +605,7 @@
     "href": "lab1.1-likelihood.html#part-1-likelihood",
     "title": "10  Lab 1 – Likelihood",
     "section": "10.2 Part 1: Likelihood",
-    "text": "10.2 Part 1: Likelihood\n\nTake the sixth koala in your simulated dataset. Her name is Snorkle. What is the likelihood of getting a the data corresponding with Snorkle if the mean preference is 0 and sd is 5?\n\n\nThe eight Koala is named Crumpet. Calculate the likelihood of getting the data for Crumpet and Snorkle if the mean preference is 0 and sd is 5.\n\n\nCalculate the likelihood of all Koalas if the mean preference is 0 and sd is 5.\n\n\nCalculate the log likelihood of all Koalas if the mean preference is 0 and sd is 5.\n\n\nUse a grid search to calculate the maximum likelihood estimate for the mean (assume the sd is 5, use a log likelihood). Make a plot of with mean on the x axis and likelihood values on the y axis.",
+    "text": "10.2 Part 1: Likelihood\n\nTake the sixth koala in your simulated dataset. Her name is Snorkle. What is the likelihood of getting a the data corresponding with Snorkle if preference is normally distributed with a mean of 0 and standard deviation of 5?\n\n\nThe eight Koala is named Crumpet. Calculate the likelihood of getting the data for Crumpet and Snorkle if preference is normally distributed with a mean of 0 and standard deviation of 5.\n\n\nCalculate the likelihood of all Koalas if preference is normally distributed with a mean of 0 and standard deviation of 5.\n\n\nCalculate the log likelihood of all if preference is normally distributed with a mean of 0 and standard deviation of 5.\n\n\nUse a grid search to calculate the maximum likelihood estimate for the mean (assume the sd is 5, use a log likelihood). Make a plot of with mean on the x axis and likelihood values on the y axis.",
     "crumbs": [
       "Labs",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Lab 1 -- Likelihood</span>"
@@ -616,7 +616,7 @@
     "href": "lab1.1-likelihood.html#part-2-linear-models",
     "title": "10  Lab 1 – Likelihood",
     "section": "10.3 Part 2: Linear models",
-    "text": "10.3 Part 2: Linear models\n\nLet’s model this data with a very simple linear model. Write an equation describing a model that includes a response variable (preference) as a function of a mean and residual.\nUse lm() to fit this linear model. Does the mean found my lm() match your maximum likelihood estimate from question 5?\n\n\nExamine the residuals from your linear model. What is the name of the Koala with the largest residual?",
+    "text": "10.3 Part 2: Linear models\n\nLet’s model this data with a very simple linear model. Write an equation describing a model that includes a response variable (preference) as a function of a mean value (\\(b_0\\)) and residual (you don’t need to do this in R).\nUse lm() to fit this linear model. Does the mean found my lm() match your maximum likelihood estimate from question 5?\n\n\nExamine the residuals from your linear model. What is the name of the Koala with the largest residual?\n\n\nWhat is the mean of the residuals?\nPlot a histogram of the residuals and look at the distribution.\nDo you think your linear model has done a good job of fitting the data? Why or why not?",
     "crumbs": [
       "Labs",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Lab 1 -- Likelihood</span>"
@@ -627,7 +627,7 @@
     "href": "lab1.1-likelihood.html#extra-fun",
     "title": "10  Lab 1 – Likelihood",
     "section": "10.4 Extra fun",
-    "text": "10.4 Extra fun\nThe following problems are optional and give you a chance to learn some extra stats skills if you have time.\n9a. Take 100 samples of the koala preference data where each sample contains 3 koalas. Calculate the mean of each of your samples and plot the distribution of means.\n9b. Take another 100 samples of the koala preference data where each sample contains 10 koalas. Calculate the mean of each sample and plot the distribution of the means.\n9c. Compare the plots from part a and part b. Are they different? If so, why?",
+    "text": "10.4 Extra fun\nThe following problems are optional and give you a chance to learn some extra stats skills if you have time.\n12a. Take 100 samples of the koala preference data where each sample contains 3 koalas. Calculate the mean of each of your samples and plot the distribution of means.\n12b. Take another 100 samples of the koala preference data where each sample contains 10 koalas. Calculate the mean of each sample and plot the distribution of the means.\n12c. Compare the plots from part a and part b. Are they different? If so, why?",
     "crumbs": [
       "Labs",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Lab 1 -- Likelihood</span>"
