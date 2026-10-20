@@ -229,6 +229,53 @@ We can now optimize this function
 
 This returns something pretty close to the value we used to simulate the data. Is it close enough that we trust that our simulation worked? That's a question we'll address in a future class.
 
+### Grid searches for lots of data and log likelihoods
+
+The code for running a grid search with lots of data points can be a bit complicated, so we'll walk through it here.
+
+In the earlier grid search for coin flips, we used the magic of R vectorization to calculate likelihoods of a single data point across a range of potential values for $p$. The code for that is below.
+
+```{r, echo=T, eval=F}
+pvector = seq(0,1,length.out=101)
+  probabilities <- dbinom(x=46,size=100,p=pvector)
+```
+
+However, to calculate log likelihoods for multiple data points across multiple potential parameters, we'll need to write code that is a bit more complicated. What we'll want to do is walk through our potential parameter values one at a time and, for each one, calculate the log likelihood. We could use a loop to do this or an apply statement. I like sapply, so I'll walk through how to do that.
+
+First, we'll make our grid of possible parameter values for the mean. We'll use the range of values to set the edges of the grid
+```{r}
+mygrid = seq(0,20,length.out=101)
+
+```
+
+If we want to calculate the likelihood of the data for a specific parameter value, say the 10th value in our grid, we'd use the following code.
+
+```{r, eval=F}
+sum(dnorm(myData, mean=mygrid[10], sd=5, log=T))
+```
+
+To calculate the likelihood for every parameter value in the grid, we'll stick the line above into an sapply() function so that we can apply it to every value in the grid.
+```{r}
+mylikelihoods <- sapply(mygrid, function(x){
+  sum(dnorm(myData,mean=x, sd=5, log=T))
+})
+
+```
+
+Now, we have a vector of likelihoods that correspond to each parameter value in the grid. We can plot them:
+
+```{r}
+plot(mygrid, mylikelihoods, bty="n", main="", xlab = "mean", ylab = "log likelihood")
+
+```
+
+Or directly calculate the maximum likelihood estimate
+
+```{r}
+mygrid[which.max(mylikelihoods)]
+
+```
+
 ## Law of large numbers
 
 The law of large numbers simply states that **as the number of samples increases, the sample average converges on the population average**. (Note that the law of large numbers is often written regarding the *expectation*, which is a mathematical way of specifying the population average)

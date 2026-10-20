@@ -308,6 +308,7 @@ window.Quarto = {
   <li><a href="#log-likelihood-for-lots-of-data-points" id="toc-log-likelihood-for-lots-of-data-points" class="nav-link" data-scroll-target="#log-likelihood-for-lots-of-data-points"><span class="header-section-number">2.8</span> Log likelihood for lots of data points</a>
   <ul class="collapse">
   <li><a href="#log-likelihood-solves-underflow-problems" id="toc-log-likelihood-solves-underflow-problems" class="nav-link" data-scroll-target="#log-likelihood-solves-underflow-problems"><span class="header-section-number">2.8.1</span> Log likelihood solves underflow problems</a></li>
+  <li><a href="#grid-searches-for-lots-of-data-and-log-likelihoods" id="toc-grid-searches-for-lots-of-data-and-log-likelihoods" class="nav-link" data-scroll-target="#grid-searches-for-lots-of-data-and-log-likelihoods"><span class="header-section-number">2.8.2</span> Grid searches for lots of data and log likelihoods</a></li>
   </ul></li>
   <li><a href="#law-of-large-numbers" id="toc-law-of-large-numbers" class="nav-link" data-scroll-target="#law-of-large-numbers"><span class="header-section-number">2.9</span> Law of large numbers</a></li>
   <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">2.10</span> Practice problems</a></li>
@@ -544,6 +545,48 @@ and more generally:</p>
 </div>
 <p>This returns something pretty close to the value we used to simulate the data. Is it close enough that we trust that our simulation worked? That’s a question we’ll address in a future class.</p>
 </section>
+<section id="grid-searches-for-lots-of-data-and-log-likelihoods" class="level3" data-number="2.8.2">
+<h3 data-number="2.8.2" class="anchored" data-anchor-id="grid-searches-for-lots-of-data-and-log-likelihoods"><span class="header-section-number">2.8.2</span> Grid searches for lots of data and log likelihoods</h3>
+<p>The code for running a grid search with lots of data points can be a bit complicated, so we’ll walk through it here.</p>
+<p>In the earlier grid search for coin flips, we used the magic of R vectorization to calculate likelihoods of a single data point across a range of potential values for <span class="math inline">\(p\)</span>. The code for that is below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>pvector <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">length.out=</span><span class="dv">101</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  probabilities <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="at">x=</span><span class="dv">46</span>,<span class="at">size=</span><span class="dv">100</span>,<span class="at">p=</span>pvector)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>However, to calculate log likelihoods for multiple data points across multiple potential parameters, we’ll need to write code that is a bit more complicated. What we’ll want to do is walk through our potential parameter values one at a time and, for each one, calculate the log likelihood. We could use a loop to do this or an apply statement. I like sapply, so I’ll walk through how to do that.</p>
+<p>First, we’ll make our grid of possible parameter values for the mean. We’ll use the range of values to set the edges of the grid</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mygrid <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="at">length.out=</span><span class="dv">101</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we want to calculate the likelihood of the data for a specific parameter value, say the 10th value in our grid, we’d use the following code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">dnorm</span>(myData, <span class="at">mean=</span>mygrid[<span class="dv">10</span>], <span class="at">sd=</span><span class="dv">5</span>, <span class="at">log=</span>T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To calculate the likelihood for every parameter value in the grid, we’ll stick the line above into an sapply() function so that we can apply it to every value in the grid.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>mylikelihoods <span class="ot">&lt;-</span> <span class="fu">sapply</span>(mygrid, <span class="cf">function</span>(x){</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">dnorm</span>(myData,<span class="at">mean=</span>x, <span class="at">sd=</span><span class="dv">5</span>, <span class="at">log=</span>T))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, we have a vector of likelihoods that correspond to each parameter value in the grid. We can plot them:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mygrid, mylikelihoods, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"mean"</span>, <span class="at">ylab =</span> <span class="st">"log likelihood"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="likelihood_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Or directly calculate the maximum likelihood estimate</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>mygrid[<span class="fu">which.max</span>(mylikelihoods)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9.8</code></pre>
+</div>
+</div>
+</section>
 </section>
 <section id="law-of-large-numbers" class="level2" data-number="2.9">
 <h2 data-number="2.9" class="anchored" data-anchor-id="law-of-large-numbers"><span class="header-section-number">2.9</span> Law of large numbers</h2>
@@ -554,23 +597,23 @@ and more generally:</p>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="likelihood_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="likelihood_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>We can see that for the first few samples we got a lower running mean but over time we end up close to the mean used to simulate the data. If we repeat this exercise a bunch of times we get the following plot:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="dv">0</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,n),<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>),<span class="at">type=</span><span class="st">'n'</span>,</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">xlab=</span><span class="st">"number of draws from a normal"</span>,</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">ylab=</span><span class="st">"running mean"</span>)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">draw.running.mean</span>(<span class="at">r =</span> <span class="dv">100</span>,<span class="at">n =</span> <span class="dv">100</span>)</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">10</span>,<span class="at">col=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(<span class="dv">0</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,n),<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>),<span class="at">type=</span><span class="st">'n'</span>,</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">xlab=</span><span class="st">"number of draws from a normal"</span>,</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">ylab=</span><span class="st">"running mean"</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">draw.running.mean</span>(<span class="at">r =</span> <span class="dv">100</span>,<span class="at">n =</span> <span class="dv">100</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">10</span>,<span class="at">col=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="likelihood_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="likelihood_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -616,7 +659,7 @@ Show answer
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dnorm</span>(<span class="dv">110</span>, <span class="at">mean=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dnorm</span>(<span class="dv">110</span>, <span class="at">mean=</span><span class="dv">100</span>, <span class="at">sd=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.01079819</code></pre>
 </div>
@@ -640,7 +683,7 @@ Show answer
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dnorm</span>(<span class="dv">110</span>, <span class="at">mean=</span><span class="dv">115</span>, <span class="at">sd=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dnorm</span>(<span class="dv">110</span>, <span class="at">mean=</span><span class="dv">115</span>, <span class="at">sd=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.04839414</code></pre>
 </div>
@@ -664,13 +707,13 @@ Show answer
 <div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mean = 100</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(<span class="fu">c</span>(<span class="dv">105</span>,<span class="dv">110</span>),<span class="at">mean=</span><span class="dv">100</span>,<span class="at">sd=</span><span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mean = 100</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(<span class="fu">c</span>(<span class="dv">105</span>,<span class="dv">110</span>),<span class="at">mean=</span><span class="dv">100</span>,<span class="at">sd=</span><span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.0005225693</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mean = 110</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(<span class="fu">c</span>(<span class="dv">105</span>,<span class="dv">110</span>),<span class="at">mean=</span><span class="dv">110</span>,<span class="at">sd=</span><span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mean = 110</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prod</span>(<span class="fu">dnorm</span>(<span class="fu">c</span>(<span class="dv">105</span>,<span class="dv">110</span>),<span class="at">mean=</span><span class="dv">110</span>,<span class="at">sd=</span><span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.003861294</code></pre>
 </div>
@@ -694,13 +737,13 @@ Show answer
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>kidheights <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">112</span>, <span class="dv">89</span>, <span class="dv">112</span>, <span class="dv">102</span>, <span class="dv">126</span>, <span class="dv">114</span>, <span class="dv">111</span>, <span class="dv">112</span>, <span class="dv">112</span>, <span class="dv">114</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>mygrid <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">80</span>,<span class="dv">120</span>,<span class="at">length.out=</span><span class="dv">41</span>)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>mylikelihoods <span class="ot">&lt;-</span> <span class="fu">sapply</span>(mygrid, <span class="cf">function</span>(x){</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">dnorm</span>(kidheights,<span class="at">mean=</span>x, <span class="at">sd=</span><span class="dv">5</span>, <span class="at">log=</span>T))</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>mygrid[<span class="fu">which.max</span>(mylikelihoods)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>kidheights <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">112</span>, <span class="dv">89</span>, <span class="dv">112</span>, <span class="dv">102</span>, <span class="dv">126</span>, <span class="dv">114</span>, <span class="dv">111</span>, <span class="dv">112</span>, <span class="dv">112</span>, <span class="dv">114</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>mygrid <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">80</span>,<span class="dv">120</span>,<span class="at">length.out=</span><span class="dv">41</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>mylikelihoods <span class="ot">&lt;-</span> <span class="fu">sapply</span>(mygrid, <span class="cf">function</span>(x){</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">dnorm</span>(kidheights,<span class="at">mean=</span>x, <span class="at">sd=</span><span class="dv">5</span>, <span class="at">log=</span>T))</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>mygrid[<span class="fu">which.max</span>(mylikelihoods)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 110</code></pre>
 </div>
