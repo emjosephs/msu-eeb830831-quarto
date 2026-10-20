@@ -350,7 +350,7 @@ $$ \text{Bill length}_i \sim N(b_0, \sigma^2) $$
 
 ::: {.callout-tip collapse="true"}
 ## Show answer
-
+The $b_0$ part is the deterministic part and the normal distribution part is the stochastic part
 :::
 
 
