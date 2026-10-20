@@ -336,6 +336,7 @@ $$ \text{Bill length}_i = b_0 + e_i\ $$
 1. Describe what $b_0$ and $e_i$ represent.
 
 ::: {.callout-tip collapse="true"}
+## Show answer
 $b_0$ is the intercept of the model and also the mean bill length. 
 
 $e_i$ is the residual, and the difference between individual $i$'s bill length from the mean.
@@ -348,6 +349,7 @@ $$ \text{Bill length}_i \sim N(b_0, \sigma^2) $$
 2. Which part of the above equation is the deterministic part of the model? Which part is the stochastic part of the model?
 
 ::: {.callout-tip collapse="true"}
+## Show answer
 
 :::
 
@@ -365,6 +367,7 @@ points(250, penguins$bill_length_mm[250], col=palette()[3], pch=8, cex=2, lwd=2)
 3.The plot above shows the data from our model. Each point represents a penguin and three penguins are highlighted in dark blue by either a square, triangle, or star. Which penguin has the largest residual?
 
 ::: {.callout-tip collapse="true"}
+## Show answer
 The triangle has the largest residual
 :::
 
@@ -387,5 +390,6 @@ sum(dnorm(penguins$bill_length_mm, mean=500, sd=5, log=T))
 ```
 
 ::: {.callout-tip collapse="true"}
+## Show answer
 a
 :::
