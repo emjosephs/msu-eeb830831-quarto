@@ -120,5 +120,5 @@ largeSamples <- sapply(1:100, function(x){
 
 12c. Compare the plots from part a and part b. Are they different? If so, why? 
 
-
+13. In question 5, you calculated the MLE for the dataset mean using a grid search given a specific standard deviation. Can you write code to conduct a grid search simultaneously for the mean and standard deviation of the dataset?
 
