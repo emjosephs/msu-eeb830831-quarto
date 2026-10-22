@@ -9,6 +9,7 @@ editor: source
 #| include: false
 
 library(tidyverse)
+library(palmerpenguins)
 ```
 
 ## What are we doing here?
@@ -21,13 +22,13 @@ We previously used a linear model to estimate the conditional mean body mass of 
 ```{r}
 ## filter out chinstraps and anything with missing data
 penguins2 <- penguins |>
-  filter(!is.na(body_mass) ,species != "Chinstrap") |> 
+  filter(!is.na(body_mass_g) ,species != "Chinstrap") |> 
   droplevels()
 
-model1 <- lm(body_mass ~ species, data=penguins2)
+model1 <- lm(body_mass_g ~ species, data=penguins2)
 summary(model1)
 
-plot(penguins2$body_mass, bty="n", ylab = "body mass", 
+plot(penguins2$body_mass_g, bty="n", ylab = "body mass", 
      col=penguins2$species, lwd=2)
 legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette())
 ```
@@ -67,7 +68,7 @@ The code below will calculate the variance and standard deviation of our Adelie 
 myN <- penguins2 |> filter(species=="Adelie") |> count() #get n
 
 AdelieVar <- penguins2 |> filter(species=="Adelie") |>#filter only Adelies
-  mutate(diffs = (body_mass - mean(body_mass))^2)  |> #calculate sqaured difference between each penguin's body mass and mean body mass
+  mutate(diffs = (body_mass_g - mean(body_mass_g))^2)  |> #calculate sqaured difference between each penguin's body mass and mean body mass
   summarise(var = sum(diffs))/(myN-1) #get the expectation
 
 AdelieVar
@@ -76,7 +77,7 @@ AdelieVar
 You can also use a built in R function var().
 
 ```{r}
-penguins2 |> filter(species=="Adelie") |> select(body_mass) |> var()
+penguins2 |> filter(species=="Adelie") |> select(body_mass_g) |> var()
 ```
 
 The **standard deviation** is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as $\sigma$ compared to the variance, which is written as $\sigma^2$ so we can express the standard deviation kind of funnily as: $\sigma = \sqrt{\sigma^2}$. When we calculate the standard deviation of a sample, it is often refered to as $s$ to distinguish it from the true standard deviation of the population ($\sigma$). 
@@ -90,8 +91,8 @@ sqrt(AdelieVar$var)
 or by using the built in R function sd().
 
 ```{r}
-adelieMasses <- penguins2 |> filter(species=="Adelie") |> select(body_mass) 
-sd(adelieMasses$body_mass)
+adelieMasses <- penguins2 |> filter(species=="Adelie") |> select(body_mass_g) 
+sd(adelieMasses$body_mass_g)
 ```
 
 ### Standard error
@@ -103,8 +104,8 @@ The **standard error** is the standard deviation  adjusted for the sample size. 
 Here is code for calculating the standard error of our sample of Adelie penguins.
 
 ```{r}
-adelieMasses <- penguins2 |> filter(species=="Adelie") |> select(body_mass) 
-sdAdelies = sd(adelieMasses$body_mass)/(sqrt(nrow(adelieMasses)))
+adelieMasses <- penguins2 |> filter(species=="Adelie") |> select(body_mass_g) 
+sdAdelies = sd(adelieMasses$body_mass_g)/(sqrt(nrow(adelieMasses)))
 sdAdelies
 ```
 
@@ -113,7 +114,7 @@ And here is a plot of how the standard error scales with sample size (from incre
 ```{r}
 set.seed(1000)
 sampleAdelies <- function(n){
-  mySample = sample(adelieMasses$body_mass, size=n,replace=F)
+  mySample = sample(adelieMasses$body_mass_g, size=n,replace=F)
   return(sd(mySample)/(sqrt(n-1)))
 }
 
@@ -151,7 +152,7 @@ Returning to our penguins, we might have a somewhat contrived null hypothesis th
 using the following code:
 
 ```{r}
-xbar = mean(adelieMasses$body_mass)
+xbar = mean(adelieMasses$body_mass_g)
 mu0 = 4000
 
 myT = (xbar-mu0)/sdAdelies
@@ -161,7 +162,7 @@ myT
 This tells us that the mean body mass of our Adelie penguin sample is 5.3 standard errors below 3500g. This kind of makes sense -- we can see that if we add the mean mass of the Adelie penguins in the sample to the product of our t statistic and the standard error of the Adelie masses, we get 3500.
 
 ```{r}
-mean(adelieMasses$body_mass)-myT*sdAdelies
+mean(adelieMasses$body_mass_g)-myT*sdAdelies
 ```
 
 This seems pretty different! But how different?
@@ -193,9 +194,9 @@ Instead of testing for a difference in sample means, we are now testing for a di
 Let's try an example, testing a model where the predictor variable is bill length and the response variable is body mass.
 
 ```{r}
-penguins3 <- penguins |> filter(!is.na(body_mass)) #filter out NAs
+penguins3 <- penguins |> filter(!is.na(body_mass_g)) #filter out NAs
 
-model2 <- lm(body_mass ~ bill_len, data=penguins3)
+model2 <- lm(body_mass_g ~ bill_length_mm, data=penguins3)
 model2
 ```
 
@@ -208,10 +209,10 @@ $$ SE_b = \sqrt{\frac{\Sigma(Y_i-\hat{Y_i})^2}{\Sigma(X_i - \hat{X_i})^2}} \time
 This equation is kind of gnarly. Here.s how I interpret it. $\Sigma(Y_i-\hat{Y_i})^2$ is the variance of the response variable, and the square root of it is the standard deviation of that response variable. Similarly, $\Sigma(X_i-\hat{X_i})^2$ is the variance of the explanatory variable the the square root of it is the standard deviation of the response variable. By dividing these two values we get the standard deviation of the slope. Finally, to get the standard error, we divide the standard deviation by the square root of the degrees of freedom, which in this case is $n-2$ since have used up two degrees of freedom in the calculation of slope and intercept.
 
 ```{r}
-varY <- penguins3 |> mutate(diffs = (body_mass - mean(body_mass))^2) |>
+varY <- penguins3 |> mutate(diffs = (body_mass_g - mean(body_mass_g))^2) |>
   summarise(var=sum(diffs))
 
-varX <- penguins3 |> mutate(diffs = (bill_len - mean(bill_len))^2) |>
+varX <- penguins3 |> mutate(diffs = (bill_length_mm - mean(bill_length_mm))^2) |>
   summarise(var=sum(diffs))
 dfb <- nrow(penguins3)-2
 SEb <- sqrt(varY/(varX*dfb))[[1]]
@@ -260,7 +261,7 @@ The following code looks at variability in penguin bill length.
 myN <- nrow(penguins2)
 
 sumSquares <- penguins2 |> 
-  mutate(diffs = (bill_len - mean(bill_len))^2)  |> 
+  mutate(diffs = (bill_length_mm - mean(bill_length_mm))^2)  |> 
   summarise(sum(diffs))
 
 valueA <- sqrt(sumSquares[1,1]/(myN-1))

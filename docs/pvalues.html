@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-c070a593f77c277f96034645df36e7e4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -348,15 +348,15 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## filter out chinstraps and anything with missing data</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass) ,species <span class="sc">!=</span> <span class="st">"Chinstrap"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass_g) ,species <span class="sc">!=</span> <span class="st">"Chinstrap"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> species, <span class="at">data=</span>penguins2)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass_g <span class="sc">~</span> species, <span class="at">data=</span>penguins2)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = body_mass ~ species, data = penguins2)
+lm(formula = body_mass_g ~ species, data = penguins2)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
@@ -373,13 +373,13 @@ Residual standard error: 479.5 on 272 degrees of freedom
 Multiple R-squared:  0.6721,    Adjusted R-squared:  0.6709 
 F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, </span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>body_mass_g, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span>penguins2<span class="sc">$</span>species, <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topleft'</span>,<span class="fu">levels</span>(penguins2<span class="sc">$</span>species),<span class="at">bty=</span><span class="st">"n"</span>, <span class="at">pch=</span><span class="dv">1</span>, <span class="at">pt.lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="fu">palette</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="pvalues_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="pvalues_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -389,7 +389,7 @@ F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="no-row-height column-margin column-container"><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figs/Chinstrap-penguin.jpg" class="img-fluid figure-img" alt="Two penguins on a rock" width="320"></p>
+<p><img src="figs/Chinstrap-penguin.jpg" class="img-fluid figure-img" alt="Two penguins on a rock"></p>
 <figcaption>Chinstrap Penguins – Christopher Michel, CC BY 2.0 <a href="https://creativecommons.org/licenses/by/2.0" class="uri">https://creativecommons.org/licenses/by/2.0</a>, via Wikimedia Commons</figcaption>
 </figure>
 </div>
@@ -418,7 +418,7 @@ F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>myN <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">count</span>() <span class="co">#get n</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>AdelieVar <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span><span class="co">#filter only Adelies</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diffs =</span> (body_mass <span class="sc">-</span> <span class="fu">mean</span>(body_mass))<span class="sc">^</span><span class="dv">2</span>)  <span class="sc">|&gt;</span> <span class="co">#calculate sqaured difference between each penguin's body mass and mean body mass</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diffs =</span> (body_mass_g <span class="sc">-</span> <span class="fu">mean</span>(body_mass_g))<span class="sc">^</span><span class="dv">2</span>)  <span class="sc">|&gt;</span> <span class="co">#calculate sqaured difference between each penguin's body mass and mean body mass</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">var =</span> <span class="fu">sum</span>(diffs))<span class="sc">/</span>(myN<span class="dv">-1</span>) <span class="co">#get the expectation</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>AdelieVar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -429,10 +429,10 @@ F-statistic: 557.6 on 1 and 272 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>You can also use a built in R function var().</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass) <span class="sc">|&gt;</span> <span class="fu">var</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass_g) <span class="sc">|&gt;</span> <span class="fu">var</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          body_mass
-body_mass  210282.9</code></pre>
+<pre><code>            body_mass_g
+body_mass_g    210282.9</code></pre>
 </div>
 </div>
 <p>The <strong>standard deviation</strong> is the square root of the variance. The standard deviation can be useful because it is measured in the same units as the original data (while the variance is in squared units). This property makes it a bit easier to interpret. The standard deviation is sometimes written as <span class="math inline">\(\sigma\)</span> compared to the variance, which is written as <span class="math inline">\(\sigma^2\)</span> so we can express the standard deviation kind of funnily as: <span class="math inline">\(\sigma = \sqrt{\sigma^2}\)</span>. When we calculate the standard deviation of a sample, it is often refered to as <span class="math inline">\(s\)</span> to distinguish it from the true standard deviation of the population (<span class="math inline">\(\sigma\)</span>).</p>
@@ -445,8 +445,8 @@ body_mass  210282.9</code></pre>
 </div>
 <p>or by using the built in R function sd().</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>adelieMasses <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass) </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(adelieMasses<span class="sc">$</span>body_mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>adelieMasses <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass_g) </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(adelieMasses<span class="sc">$</span>body_mass_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 458.5661</code></pre>
 </div>
@@ -457,8 +457,8 @@ body_mass  210282.9</code></pre>
 <p>The <strong>standard error</strong> is the standard deviation adjusted for the sample size. So for a sample size of <span class="math inline">\(n\)</span> and a sample standard deviation of <span class="math inline">\(s\)</span>, the standard error (<span class="math inline">\(SE\)</span>) equals <span class="math inline">\(\frac{s}{\sqrt{n}}\)</span>.</p>
 <p>Here is code for calculating the standard error of our sample of Adelie penguins.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>adelieMasses <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass) </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sdAdelies <span class="ot">=</span> <span class="fu">sd</span>(adelieMasses<span class="sc">$</span>body_mass)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="fu">nrow</span>(adelieMasses)))</span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>adelieMasses <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass_g) </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>sdAdelies <span class="ot">=</span> <span class="fu">sd</span>(adelieMasses<span class="sc">$</span>body_mass_g)<span class="sc">/</span>(<span class="fu">sqrt</span>(<span class="fu">nrow</span>(adelieMasses)))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sdAdelies</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 37.31758</code></pre>
@@ -468,7 +468,7 @@ body_mass  210282.9</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1000</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>sampleAdelies <span class="ot">&lt;-</span> <span class="cf">function</span>(n){</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  mySample <span class="ot">=</span> <span class="fu">sample</span>(adelieMasses<span class="sc">$</span>body_mass, <span class="at">size=</span>n,<span class="at">replace=</span>F)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  mySample <span class="ot">=</span> <span class="fu">sample</span>(adelieMasses<span class="sc">$</span>body_mass_g, <span class="at">size=</span>n,<span class="at">replace=</span>F)</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sd</span>(mySample)<span class="sc">/</span>(<span class="fu">sqrt</span>(n<span class="dv">-1</span>)))</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -478,7 +478,7 @@ body_mass  210282.9</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="pvalues_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="pvalues_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -508,7 +508,7 @@ body_mass  210282.9</code></pre>
 <p><span class="math display">\[ t = \frac{\bar{x}-\mu_0}{SE_x}\]</span></p>
 <p>Returning to our penguins, we might have a somewhat contrived null hypothesis that the mean body mass of Adelie penguins is 4000g and want to test to see if our sample mean is consistent with the null hypothesis. We can calculate <span class="math inline">\(t\)</span> using the following code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">=</span> <span class="fu">mean</span>(adelieMasses<span class="sc">$</span>body_mass)</span>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">=</span> <span class="fu">mean</span>(adelieMasses<span class="sc">$</span>body_mass_g)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mu0 <span class="ot">=</span> <span class="dv">4000</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>myT <span class="ot">=</span> (xbar<span class="sc">-</span>mu0)<span class="sc">/</span>sdAdelies</span>
@@ -519,7 +519,7 @@ body_mass  210282.9</code></pre>
 </div>
 <p>This tells us that the mean body mass of our Adelie penguin sample is 5.3 standard errors below 3500g. This kind of makes sense – we can see that if we add the mean mass of the Adelie penguins in the sample to the product of our t statistic and the standard error of the Adelie masses, we get 3500.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(adelieMasses<span class="sc">$</span>body_mass)<span class="sc">-</span>myT<span class="sc">*</span>sdAdelies</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(adelieMasses<span class="sc">$</span>body_mass_g)<span class="sc">-</span>myT<span class="sc">*</span>sdAdelies</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4000</code></pre>
 </div>
@@ -549,18 +549,18 @@ body_mass  210282.9</code></pre>
 <p>Instead of testing for a difference in sample means, we are now testing for a difference between the slope of the regression line and 0. Fortunately, this value, divided by its standard error, will follow a t distribution and we can use the same procedure as above to calculate a p value.</p>
 <p>Let’s try an example, testing a model where the predictor variable is bill length and the response variable is body mass.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>penguins3 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass)) <span class="co">#filter out NAs</span></span>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>penguins3 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass_g)) <span class="co">#filter out NAs</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>penguins3)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass_g <span class="sc">~</span> bill_length_mm, <span class="at">data=</span>penguins3)</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>model2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = body_mass ~ bill_len, data = penguins3)
+lm(formula = body_mass_g ~ bill_length_mm, data = penguins3)
 
 Coefficients:
-(Intercept)     bill_len  
-     362.31        87.42  </code></pre>
+   (Intercept)  bill_length_mm  
+        362.31           87.42  </code></pre>
 </div>
 </div>
 <p>The effect size of bill length (<span class="math inline">\(b\)</span>), which is the same as the slope of the regression line, is 87.42. But can we reject the null hypothesis that the slope is 0?</p>
@@ -568,10 +568,10 @@ Coefficients:
 <p><span class="math display">\[ SE_b = \sqrt{\frac{\Sigma(Y_i-\hat{Y_i})^2}{\Sigma(X_i - \hat{X_i})^2}} \times \frac{1}{\sqrt{(n-2)}}\]</span></p>
 <p>This equation is kind of gnarly. Here.s how I interpret it. <span class="math inline">\(\Sigma(Y_i-\hat{Y_i})^2\)</span> is the variance of the response variable, and the square root of it is the standard deviation of that response variable. Similarly, <span class="math inline">\(\Sigma(X_i-\hat{X_i})^2\)</span> is the variance of the explanatory variable the the square root of it is the standard deviation of the response variable. By dividing these two values we get the standard deviation of the slope. Finally, to get the standard error, we divide the standard deviation by the square root of the degrees of freedom, which in this case is <span class="math inline">\(n-2\)</span> since have used up two degrees of freedom in the calculation of slope and intercept.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>varY <span class="ot">&lt;-</span> penguins3 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">diffs =</span> (body_mass <span class="sc">-</span> <span class="fu">mean</span>(body_mass))<span class="sc">^</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>varY <span class="ot">&lt;-</span> penguins3 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">diffs =</span> (body_mass_g <span class="sc">-</span> <span class="fu">mean</span>(body_mass_g))<span class="sc">^</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">var=</span><span class="fu">sum</span>(diffs))</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>varX <span class="ot">&lt;-</span> penguins3 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">diffs =</span> (bill_len <span class="sc">-</span> <span class="fu">mean</span>(bill_len))<span class="sc">^</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>varX <span class="ot">&lt;-</span> penguins3 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">diffs =</span> (bill_length_mm <span class="sc">-</span> <span class="fu">mean</span>(bill_length_mm))<span class="sc">^</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">var=</span><span class="fu">sum</span>(diffs))</span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>dfb <span class="ot">&lt;-</span> <span class="fu">nrow</span>(penguins3)<span class="sc">-</span><span class="dv">2</span></span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>SEb <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(varY<span class="sc">/</span>(varX<span class="sc">*</span>dfb))[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -610,16 +610,16 @@ Coefficients:
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = body_mass ~ bill_len, data = penguins3)
+lm(formula = body_mass_g ~ bill_length_mm, data = penguins3)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
 -1762.08  -446.98    32.59   462.31  1636.86 
 
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  362.307    283.345   1.279    0.202    
-bill_len      87.415      6.402  13.654   &lt;2e-16 ***
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     362.307    283.345   1.279    0.202    
+bill_length_mm   87.415      6.402  13.654   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -641,7 +641,7 @@ F-statistic: 186.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>myN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(penguins2)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>sumSquares <span class="ot">&lt;-</span> penguins2 <span class="sc">|&gt;</span> </span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diffs =</span> (bill_len <span class="sc">-</span> <span class="fu">mean</span>(bill_len))<span class="sc">^</span><span class="dv">2</span>)  <span class="sc">|&gt;</span> </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diffs =</span> (bill_length_mm <span class="sc">-</span> <span class="fu">mean</span>(bill_length_mm))<span class="sc">^</span><span class="dv">2</span>)  <span class="sc">|&gt;</span> </span>
 <span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">sum</span>(diffs))</span>
 <span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>valueA <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(sumSquares[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">/</span>(myN<span class="dv">-1</span>))</span>
