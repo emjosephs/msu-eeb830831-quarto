@@ -19,7 +19,7 @@ library(car)
 
 ![](figs/anthercolorlabeled.jpg){fig-alt="An image of a trout lily with yellow anthers and an image of a trout lily with red anthers"}
 
-Trout lilys (*Erythronium americanum*) have two distinct anther color morphs: yellow or red. The ecological consequences of anther color are unknown. Ripley and colleagues were interested in whether anther color affected pollinator preference. They went to a population of red-anthered flowers and counted the number of pollinator visits to local red flowers, and red and yellow flowers from a population 19km away. They chose these categories to disentangle the effects of color from the effects of novelty.
+Trout lilys (*Erythronium americanum*) have two distinct anther color morphs: yellow or red. The ecological consequences of anther color are unknown. Ripley and colleagues were interested in whether anther color affected pollinator preference and how this related to flower novelty. They planted an array of plants with three types of flowers: 1) red-anthered flowers from nearby, 2) red-anthered flowers from 19km away, and 3) yellow-anthered flowers from 19 km away. They counted the number of pollinator visits to each flower. 
 
 (scenario is from https://doi.org/10.17912/micropub.biology.001286)
 

@@ -14,7 +14,7 @@ library('DT')
 library(LaCroixColoR)
 library(car)
 palette(lacroix_palette("Mango", type = "discrete"))
-
+library('palmerpenguins')
 
 ```
 
@@ -102,10 +102,10 @@ To make things a bit simpler we will only look at Adelie and Gentoo penguins
 
 
 ```{r}
-penguins2 <- penguins |> filter(!is.na(body_mass) & !is.na(bill_len) & !species=="Adelie") |> droplevels() ##filter out missing data and chinstrap
+penguins2 <- penguins |> filter(!is.na(body_mass_g) & !is.na(bill_length_mm) & !species=="Adelie") |> droplevels() ##filter out missing data and chinstrap
 
 
-plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = penguins2$species)
+plot(penguins2$bill_length_mm, penguins2$body_mass_g, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = penguins2$species)
 legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette())
 
 ```
@@ -131,7 +131,7 @@ We will revisit what these terms mean after fitting the model.
 ## Fitting with lm()
 
 ```{r}
-model1 <- lm(body_mass~species+bill_len,data=penguins2)
+model1 <- lm(body_mass_g~species+bill_length_mm,data=penguins2)
 model1
 ```
 
@@ -142,14 +142,14 @@ $$ \text{Body mass} = -648.533 + 1462.168 \times \text{Gentoo} + 89.725 \times \
 Interpretting what $b_0$, $b_1$, and $b_2$ are is slightly more complicated now. First, we can see that $b_1$ is not exactly the difference in means between Gentoo and Chinstrap penguins. 
 
 ```{r}
-penguins2 |> dplyr::group_by(species) |> summarise(mean_body_mass = mean(body_mass))
+penguins2 |> dplyr::group_by(species) |> summarise(mean_body_mass_g = mean(body_mass_g))
 5076-3733
 ```
 
 Similarly, $b_2$ is actually about twice as large as the coefficient you would get if you ran a linear model without species.
 
 ```{r}
-mymodel2 <- lm(body_mass ~ bill_len, data=penguins2)
+mymodel2 <- lm(body_mass_g ~ bill_length_mm, data=penguins2)
 mymodel2
 ```
 
@@ -157,10 +157,10 @@ Linear models are about making predictions, so what these coefficients tell us i
 
 ```{r, warning=F, message=F}
 #| label: fig-interactions
-mymodel3 <- lm(body_mass ~ bill_len, data=dplyr::filter(penguins2,species=="Chinstrap"))
-mymodel4 <- lm(body_mass ~ bill_len, data=dplyr::filter(penguins2,species=="Gentoo"))
+mymodel3 <- lm(body_mass_g ~ bill_length_mm, data=dplyr::filter(penguins2,species=="Chinstrap"))
+mymodel4 <- lm(body_mass_g ~ bill_length_mm, data=dplyr::filter(penguins2,species=="Gentoo"))
 
-plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = penguins2$species, xlim = c(40,65))
+plot(penguins2$bill_length_mm, penguins2$body_mass_g, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = penguins2$species, xlim = c(40,65))
 #legend('topleft',levels(penguins2$species),bty="n", pch=1, pt.lwd=2, col=palette())
 abline(mymodel3, col=palette()[1], lwd=2)
 abline(mymodel4, col=palette()[2], lwd=2)
@@ -190,7 +190,7 @@ Any general linear model with multiple continuous variables also assumes **limit
 
 ```{r}
 
-model5 <- lm(body_mass ~  bill_dep + flipper_len + bill_len, data=penguins )
+model5 <- lm(body_mass_g ~  bill_depth_mm + flipper_len + bill_length_mm, data=penguins )
 model5
 Anova(model5)
 ```
@@ -201,7 +201,7 @@ We can check for multicollinearity using the ggpairs() function from the GGally 
 #install.packages('GGally')
 library(GGally)
 
-multregData <- dplyr::select(penguins, body_mass, bill_dep, flipper_len, bill_len)
+multregData <- dplyr::select(penguins, body_mass_g, bill_depth_mm, flipper_len, bill_length_mm)
 ggpairs(multregData)+theme_classic()
 ```
 
@@ -240,7 +240,7 @@ $$ \text{Body mass} = b_0 + b_1 \text{Gentoo} + b_2 \text{bill length} + b_3 \te
 We can fit the model with lm() using the following code:
 
 ```{r}
-model6 <- lm(body_mass~bill_len+species+bill_len*species,data=penguins2)
+model6 <- lm(body_mass_g~bill_length_mm+species+bill_length_mm*species,data=penguins2)
 model6
 Anova(model6)
 
