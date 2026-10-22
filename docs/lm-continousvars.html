@@ -94,7 +94,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-c070a593f77c277f96034645df36e7e4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -370,12 +370,12 @@ window.Quarto = {
 <h2 data-number="5.2" class="anchored" data-anchor-id="motivating-example"><span class="header-section-number">5.2</span> Motivating example</h2>
 <p>Continuing with the penguin example data, imagine that we are interested in understanding how bill length determines body mass – do penguins with longer bills also have larger bodies?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(bill_len)) <span class="do">##filter out ones with NAs</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>penguins2 <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(body_mass_g) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(bill_length_mm)) <span class="do">##filter out ones with NAs</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_length_mm, penguins2<span class="sc">$</span>body_mass_g, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -385,7 +385,7 @@ window.Quarto = {
 <div class="no-row-height column-margin column-container"><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figs/hatpenguins.png" class="img-fluid figure-img" alt="A cartoon of two penguins wearing hats" width="183"></p>
+<p><img src="figs/hatpenguins.png" class="img-fluid figure-img" alt="A cartoon of two penguins wearing hats"></p>
 <figcaption>But do the penguins have hats? (Jeanette Warmuth, Public domain, via Wikimedia Commons)</figcaption>
 </figure>
 </div>
@@ -434,7 +434,7 @@ window.Quarto = {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -445,21 +445,21 @@ window.Quarto = {
 <p>Let’s try applying a linear model to our penguin data. We’ll use the lm() function in R.</p>
 <p><span class="math display">\[\text{Body mass}_i = b_0 + b_1 \times \text{Bill length}_i \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass <span class="sc">~</span> bill_len, <span class="at">data=</span>penguins2)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass_g <span class="sc">~</span> bill_length_mm, <span class="at">data=</span>penguins2)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = body_mass ~ bill_len, data = penguins2)
+lm(formula = body_mass_g ~ bill_length_mm, data = penguins2)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
 -1762.08  -446.98    32.59   462.31  1636.86 
 
 Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  362.307    283.345   1.279    0.202    
-bill_len      87.415      6.402  13.654   &lt;2e-16 ***
+               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)     362.307    283.345   1.279    0.202    
+bill_length_mm   87.415      6.402  13.654   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -482,12 +482,12 @@ F-statistic: 186.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><span class="math display">\[ \text{Body mass}_i \sim N(362.31 + 87.42 \times \text{Bill length}_i, 645.43) \]</span></p>
 <p>We can also plot the predictions from this model over the raw data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_len, penguins2<span class="sc">$</span>body_mass, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">1</span>])</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(penguins2<span class="sc">$</span>bill_length_mm, penguins2<span class="sc">$</span>body_mass_g, <span class="at">bty=</span><span class="st">"n"</span>, <span class="at">ylab =</span> <span class="st">"body mass"</span>, <span class="at">xlab =</span> <span class="st">"bill length"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col =</span> <span class="fu">palette</span>()[<span class="dv">1</span>])</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(model1, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">3</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -497,7 +497,7 @@ F-statistic: 186.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="no-row-height column-margin column-container"><div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="figs/19610701_Penguin_bowling_pins_at_inauguration_of_McMurdo_Station,_Antarctica,_bowling_alley.jpg" class="img-fluid figure-img" alt="A black and white photo of a group of penguins in a bowling alley, standing where the pins would be" width="560"></p>
+<p><img src="figs/19610701_Penguin_bowling_pins_at_inauguration_of_McMurdo_Station,_Antarctica,_bowling_alley.jpg" class="img-fluid figure-img" alt="A black and white photo of a group of penguins in a bowling alley, standing where the pins would be"></p>
 <figcaption>Don’t get any ideas (Bruce Raymond, United States Navy, credited photographer, Public domain, via Wikimedia Commons)</figcaption>
 </figure>
 </div>
@@ -510,13 +510,13 @@ F-statistic: 186.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Let’s look at the residuals from this model</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>myResiduals <span class="ot">&lt;-</span> <span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass, .fitted, .resid)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>myResiduals <span class="ot">&lt;-</span> <span class="fu">augment</span>(model1) <span class="sc">|&gt;</span> <span class="fu">select</span>(body_mass_g, .fitted, .resid)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(myResiduals<span class="sc">$</span>.resid, <span class="at">main=</span><span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"residuals"</span>, <span class="at">border=</span><span class="st">"white"</span>, <span class="at">col=</span><span class="fu">palette</span>()[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -526,7 +526,7 @@ F-statistic: 186.4 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lm-continousvars_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -594,10 +594,10 @@ Barnett, Adrian G, Jolieke C Van Der Pols, and Annette J Dobson. 2005. <span>“
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
-Response: body_mass
-           Df    Sum Sq  Mean Sq F value    Pr(&gt;F)    
-bill_len    1  77669072 77669072  186.44 &lt; 2.2e-16 ***
-Residuals 340 141638626   416584                      
+Response: body_mass_g
+                Df    Sum Sq  Mean Sq F value    Pr(&gt;F)    
+bill_length_mm   1  77669072 77669072  186.44 &lt; 2.2e-16 ***
+Residuals      340 141638626   416584                      
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>

@@ -16,6 +16,7 @@ library('DT')
 library(LaCroixColoR)
 palette(lacroix_palette("Mango", type = "discrete"))
 library(broom)
+library(palmerpenguins)
 ```
 
 ## What are we doing here?
@@ -27,8 +28,8 @@ Many of the variables you are interested are continuous, not categorical. In thi
 Continuing with the penguin example data, imagine that we are interested in understanding how bill length determines body mass -- do penguins with longer bills also have larger bodies?
 
 ```{r}
-penguins2 <- penguins |> filter(!is.na(body_mass) & !is.na(bill_len)) ##filter out ones with NAs
-plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
+penguins2 <- penguins |> filter(!is.na(body_mass_g) & !is.na(bill_length_mm)) ##filter out ones with NAs
+plot(penguins2$bill_length_mm, penguins2$body_mass_g, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
 
 ```
 
@@ -146,7 +147,7 @@ Let's try applying a linear model to our penguin data. We'll use the lm() functi
 $$\text{Body mass}_i = b_0 + b_1 \times \text{Bill length}_i $$
 
 ```{r}
-model1 <- lm(body_mass ~ bill_len, data=penguins2)
+model1 <- lm(body_mass_g ~ bill_length_mm, data=penguins2)
 summary(model1)
 ```
 
@@ -171,7 +172,7 @@ $$ \text{Body mass}_i \sim N(362.31 + 87.42 \times \text{Bill length}_i, 645.43)
 We can also plot the predictions from this model over the raw data.
 
 ```{r}
-plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
+plot(penguins2$bill_length_mm, penguins2$body_mass_g, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
 abline(model1, col=palette()[3], lwd=2)
 
 ```
@@ -194,7 +195,7 @@ Often we assume that the response data needs to be normally distributed to use a
 Let's look at the residuals from this model
 ```{r}
 library(broom)
-myResiduals <- augment(model1) |> select(body_mass, .fitted, .resid)
+myResiduals <- augment(model1) |> select(body_mass_g, .fitted, .resid)
 
 hist(myResiduals$.resid, main="", xlab = "residuals", border="white", col=palette()[2])
 ```
@@ -205,7 +206,7 @@ It helps me to imagine that the values themselves follow a normal distribution c
 
 par(mfrow=c(1,2))
 
-plot(penguins2$bill_len, penguins2$body_mass, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
+plot(penguins2$bill_length_mm, penguins2$body_mass_g, bty="n", ylab = "body mass", xlab = "bill length", lwd=2, col = palette()[1])
 abline(model1, col=palette()[3], lwd=2)
 abline(v=40, col=palette()[2], lty=2, lwd=2)
 abline(v=47, col=palette()[4], lty=2, lwd=2)
@@ -287,29 +288,29 @@ We can partition variation in our regression the same way we did in ANOVA. The c
 
 ```{r varpartregresion, fig.cap = "An ANOVA framework for a linear regression. **A** Shows the difference between each observation, $Y_i$, and the  mean, $\\overline{Y}$. This is the basis for calculating $MS_{total}$.  **B** Shows the difference between each predicted value $\\widehat{Y_i}$ and the mean, $\\overline{Y}$. This is the basis for calculating $MS_{model}$. **C** Shows the difference between each observation, $Y_i$, and its predicted value  $\\widehat{Y_i}$. This is the basis for calculating $MS_{error}$.", fig.height=2.3, fig.width=7.6, echo=FALSE, warning=F, message=F}
 library(cowplot)
-a <- ggplot(mutate(penguins2, mean_mass = mean(body_mass)) , 
-            aes(x = bill_len, y = body_mass))+
+a <- ggplot(mutate(penguins2, mean_mass = mean(body_mass_g)) , 
+            aes(x = bill_length_mm, y = body_mass_g))+
   geom_point(alpha = .5)+
   geom_hline(aes(yintercept = mean_mass))+
-  geom_segment(aes(xend = bill_len, yend = mean_mass), 
+  geom_segment(aes(xend = bill_length_mm, yend = mean_mass), 
                color = "black", alpha = .5)+
   theme_classic()+ 
   labs(title = "Total deviation               =")
 
-b<-ggplot(mutate(augment(model1), mean_mass = mean(body_mass)) ,
-          aes(x = bill_len, y = body_mass))+
+b<-ggplot(mutate(augment(model1), mean_mass = mean(body_mass_g)) ,
+          aes(x = bill_length_mm, y = body_mass_g))+
   geom_point(alpha = .2)+
   geom_hline(aes(yintercept = mean_mass))+
-  geom_segment(aes( xend = bill_len,y = .fitted,  yend = mean_mass ), 
+  geom_segment(aes( xend = bill_length_mm,y = .fitted,  yend = mean_mass ), 
                color = "black", alpha = .5)+
   geom_line(aes(y = .fitted), alpha  = 2, color = palette()[2])+
  theme_classic()+ 
   labs(title = "Model deviation             +")
 
 c<-ggplot(augment(model1) ,
-          aes(x = bill_len, y = body_mass))+
+          aes(x = bill_length_mm, y = body_mass_g))+
   geom_point(alpha = .5)+
-  geom_segment(aes( xend = bill_len,  yend = .fitted), 
+  geom_segment(aes( xend = bill_length_mm,  yend = .fitted), 
                color = "black", alpha = .5)+
     geom_line(aes(y = .fitted), alpha  = 2, color = palette()[2])+ 
   theme_classic()+ 
