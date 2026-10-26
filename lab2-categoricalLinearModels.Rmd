@@ -132,10 +132,13 @@ pf(q=myF, df1 = [degrees of freedom for MS_groups], df2 = [degrees of freedom fo
 
 ```
 
-**Q4: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results -- what matters most for dtermining pollinator visits?**
+**Q4: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results -- does color or distance matter most for determining pollinator visits?**
 
-```{r}
-#code goes here
+```{r, eval=F, echo=F}
+library(emmeans)
+
+out.emmeans <- emmeans(model1, specs = "flowertype")
+pairs(out.emmeans)
 
 ```
 

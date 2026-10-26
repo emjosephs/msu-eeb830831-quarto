@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c070a593f77c277f96034645df36e7e4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -322,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lab4.1-ANOVA_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="lab4.1-ANOVA_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -330,32 +330,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Q1.1: Make a linear model with lm() to assess whether flower category affects number of visits. How do you interpret the output of the linear model? What do the results tell you about pollinator behavior?</strong></p>
 <p><strong>Q1.2 What is the reference category for the model you just made?</strong></p>
 <p><strong>Q1.3 Make a new model where the yellow distant flowers are the reference category. Report the output. Does this change your interpretation? </strong></p>
+<p><strong>Q2.1: Pick a single flower from the dataset and calculate the residual from the first model (Q1.1) for that flower. Describe in words what this residual means. </strong></p>
+<p><strong>Q2.2: Using the same flower, calculate the residual for the model from Q1.3, where yellow distant is the reference level. Is the residual the same for both models? Why or why not?</strong></p>
 <p>Next, we’ll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation.</p>
-<p><strong>Q2: Do an ANOVA using your model from Q1 and Anova() from the car package</strong></p>
-<p><strong>Q2.1 Optional Challenge Question. Edit the code below to conduct the ANOVA by hand. I’ve included some phrases in []s that you will need to replace with variable names or numbers</strong></p>
+<p><strong>Q3.1: Do an ANOVA using your model from Q1.1 and Anova() from the car package</strong></p>
+<p><strong>Q3.2 Optional Challenge Question. Edit the code below to conduct the ANOVA by hand. I’ve included some phrases in []s that you will need to replace with variable names or numbers</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate SS_groups</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>SS_groups <span class="ot">&lt;-</span> <span class="fu">sum</span>((<span class="fu">augment</span>([model])<span class="sc">$</span>.fitted <span class="sc">-</span> <span class="fu">mean</span>(simData<span class="sc">$</span>resp))<span class="sc">^</span><span class="dv">2</span>) <span class="do">##replace [model] with whatever you called your model from the previous question</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate MS_groups</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>MS_groups <span class="ot">&lt;-</span> SS_groups<span class="sc">/</span>([degrees of freedom])</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate SS_error</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>SS_error <span class="ot">&lt;-</span> <span class="fu">sum</span>((<span class="fu">augment</span>([model])<span class="sc">$</span>.resid)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">##SS_error &lt;- sum((augment(model1)$resp - augment(model1)$.fitted)^2) THIS ALSO WORKS</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate MS_error</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>MS_error <span class="ot">&lt;-</span> SS_error<span class="sc">/</span>([degrees of freedom])</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate F</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>myF <span class="ot">=</span> MS_groups<span class="sc">/</span>MS_error</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Do the F test</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">pf</span>(<span class="at">q=</span>myF, <span class="at">df1 =</span> [degrees of freedom <span class="cf">for</span> MS_groups], <span class="at">df2 =</span> [degrees of freedom <span class="cf">for</span> MS_error], <span class="at">lower.tail=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate SS_groups</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>SS_groups <span class="ot">&lt;-</span> <span class="fu">sum</span>((<span class="fu">augment</span>([model])<span class="sc">$</span>.fitted <span class="sc">-</span> <span class="fu">mean</span>(simData<span class="sc">$</span>resp))<span class="sc">^</span><span class="dv">2</span>) <span class="do">##replace [model] with whatever you called your model from the previous question</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate MS_groups</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>MS_groups <span class="ot">&lt;-</span> SS_groups<span class="sc">/</span>([degrees of freedom])</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate SS_error</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>SS_error <span class="ot">&lt;-</span> <span class="fu">sum</span>((<span class="fu">augment</span>([model])<span class="sc">$</span>.resid)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">##SS_error &lt;- sum((augment(model1)$resp - augment(model1)$.fitted)^2) THIS ALSO WORKS</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate MS_error</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>MS_error <span class="ot">&lt;-</span> SS_error<span class="sc">/</span>([degrees of freedom])</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate F</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>myF <span class="ot">=</span> MS_groups<span class="sc">/</span>MS_error</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Do the F test</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">pf</span>(<span class="at">q=</span>myF, <span class="at">df1 =</span> [degrees of freedom <span class="cf">for</span> MS_groups], <span class="at">df2 =</span> [degrees of freedom <span class="cf">for</span> MS_error], <span class="at">lower.tail=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Q3: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results – what matters most for dtermining pollinator visits?</strong></p>
-<p><strong>Q4: Ripley et al.&nbsp;discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the simulation code above to simulate data for an additional category with a mean of 2 visits per flower.</strong></p>
-<p><strong>Q5: Rerun the linear model, ANOVA (with the anova() function), and emmeans on this new data. Interpret the outputs.</strong></p>
+<p><strong>Q4: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results – does color or distance matter most for determining pollinator visits?</strong></p>
+<p><strong>Q5: Ripley et al.&nbsp;discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the simulation code above to simulate data for an additional category with a mean of 2 visits per flower.</strong></p>
+<p><strong>Q6: Rerun the linear model, ANOVA (with the anova() function), and emmeans on this new data. Interpret the outputs.</strong></p>
 
 
 

@@ -190,7 +190,7 @@ Any general linear model with multiple continuous variables also assumes **limit
 
 ```{r}
 
-model5 <- lm(body_mass_g ~  bill_depth_mm + flipper_len + bill_length_mm, data=penguins )
+model5 <- lm(body_mass_g ~  bill_depth_mm + flipper_length_mm + bill_length_mm, data=penguins )
 model5
 Anova(model5)
 ```
@@ -201,7 +201,7 @@ We can check for multicollinearity using the ggpairs() function from the GGally 
 #install.packages('GGally')
 library(GGally)
 
-multregData <- dplyr::select(penguins, body_mass_g, bill_depth_mm, flipper_len, bill_length_mm)
+multregData <- dplyr::select(penguins, body_mass_g, bill_depth_mm, flipper_length_mm, bill_length_mm)
 ggpairs(multregData)+theme_classic()
 ```
 
