@@ -46,7 +46,7 @@ group3 <- round(
 
 ## but data together in a dataframe
 simData <- data.frame(visits = c(group1, group2, group3), 
-		    flowertype=c(rep('redlocal', n.1), rep('reddistant', n.2),rep('yellowdistant',n.3)))
+		    flowertype=as.factor(c(rep('redlocal', n.1), rep('reddistant', n.2),rep('yellowdistant',n.3))))
 
 #look at it
 plot(jitter(rep(c(0, .5,1), c(n.1, n.2,n.3))), simData$visits, bty="n", xlim=c(-.5,1.5),
@@ -67,21 +67,50 @@ model1
 **Q1.3 Make a new model where the yellow distant flowers are the reference category. Report the output. Does this change your interpretation? **
 
 ```{r, eval=F, echo=F}
-10
+model2 <- lm(visits ~relevel(flowertype, ref="yellowdistant"), data=simData)
+model2
+```
+
+**Q2.1: Pick a single flower from the dataset and calculate the residual from the first model (Q1.1) for that flower. Describe in words what this residual means. **
+
+```{r, eval=F, echo=F}
+myIndex = sample(1:nrow(simData), size=1)
+myFlower = simData[myIndex,]
+myResid = model1$residuals[myIndex]
+myEstimate = model1$fitted.values[myIndex]
+
+myResid
+myFlower$visits - myEstimate
+
+#it's the difference between the number of visits for this flower and the mean from the model for red local flowers
+```
+
+**Q2.2: Using the same flower, calculate the residual for the model from Q1.3, where yellow distant is the reference level. Is the residual the same for both models? Why or why not?**
+
+```{r, eval=F, echo=F}
+
+myResid2 = model2$residuals[myIndex]
+myEstimate2 = model2$fitted.values[myIndex]
+
+myResid2
+myFlower$visits - myEstimate2
+
+#yep, it's the same. Even though the reference category is different, which changes the effect estimates, the underlying mean estimates are the same.
 ```
 
 Next, we'll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation.
 
-**Q2: Do an ANOVA using your model from Q1 and Anova() from the car package**
+**Q3.1: Do an ANOVA using your model from Q1.1 and Anova() from the car package**
 
 ```{r, eval=F, echo=F}
 library(car)
 Anova(model1)
 ```
 
-**Q2.1 Optional Challenge Question. Edit the code below to conduct the ANOVA by hand. I've included some phrases in []s that you will need to replace with variable names or numbers**
+**Q3.2 Optional Challenge Question. Edit the code below to conduct the ANOVA by hand. I've included some phrases in []s that you will need to replace with variable names or numbers**
 
 ```{r, eval=F}
+library(broom)
 ## Calculate SS_groups
 SS_groups <- sum((augment([model])$.fitted - mean(simData$resp))^2) ##replace [model] with whatever you called your model from the previous question
 
@@ -103,13 +132,13 @@ pf(q=myF, df1 = [degrees of freedom for MS_groups], df2 = [degrees of freedom fo
 
 ```
 
-**Q3: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results -- what matters most for dtermining pollinator visits?**
+**Q4: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results -- what matters most for dtermining pollinator visits?**
 
 ```{r}
 #code goes here
 
 ```
 
-**Q4: Ripley et al. discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the simulation code above to simulate data for an additional category with a mean of 2 visits per flower.**
+**Q5: Ripley et al. discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the simulation code above to simulate data for an additional category with a mean of 2 visits per flower.**
 
 **Q6: Rerun the linear model, ANOVA (with the anova() function), and emmeans on this new data. Interpret the outputs.**
