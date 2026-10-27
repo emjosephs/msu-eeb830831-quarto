@@ -261,8 +261,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#categorical-linear-models" id="toc-categorical-linear-models" class="nav-link active" data-scroll-target="#categorical-linear-models"><span class="header-section-number">11.1</span> Categorical linear models</a></li>
+  <li><a href="#anova" id="toc-anova" class="nav-link" data-scroll-target="#anova"><span class="header-section-number">11.2</span> ANOVA</a></li>
+  <li><a href="#extra-fun" id="toc-extra-fun" class="nav-link" data-scroll-target="#extra-fun"><span class="header-section-number">11.3</span> Extra fun</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lab4.1-ANOVA.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -327,14 +335,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p><strong>Q1.1: Make a linear model with lm() to assess whether flower category affects number of visits. How do you interpret the output of the linear model? What do the results tell you about pollinator behavior?</strong></p>
-<p><strong>Q1.2 What is the reference category for the model you just made?</strong></p>
-<p><strong>Q1.3 Make a new model where the yellow distant flowers are the reference category. Report the output. Does this change your interpretation? </strong></p>
-<p><strong>Q2.1: Pick a single flower from the dataset and calculate the residual from the first model (Q1.1) for that flower. Describe in words what this residual means. </strong></p>
-<p><strong>Q2.2: Using the same flower, calculate the residual for the model from Q1.3, where yellow distant is the reference level. Is the residual the same for both models? Why or why not?</strong></p>
+<section id="categorical-linear-models" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="categorical-linear-models"><span class="header-section-number">11.1</span> Categorical linear models</h2>
+<p>Q1.1: Make a linear model with <code>lm()</code> to assess whether flower category affects number of visits. How do you interpret the output of the linear model? What do the results tell you about pollinator behavior?</p>
+<p>Q1.2 What is the reference category for the model you just made?</p>
+<p>Q1.3 Make a new model where the yellow distant flowers are the reference category. Report the output. Does this change your interpretation?</p>
+<p>Q2.1: Pick a single flower from the dataset and calculate the residual from the first model (Q1.1) for that flower. Describe in words what this residual means.</p>
+<p>Q2.2: Using the same flower, calculate the residual for the model from Q1.3, where yellow distant is the reference level. Is the residual the same for both models? Why or why not?</p>
+</section>
+<section id="anova" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="anova"><span class="header-section-number">11.2</span> ANOVA</h2>
 <p>Next, we’ll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation.</p>
-<p><strong>Q3.1: Do an ANOVA using your model from Q1.1 and Anova() from the car package</strong></p>
-<p><strong>Q3.2 Optional Challenge Question. Edit the code below to conduct the ANOVA by hand. I’ve included some phrases in []s that you will need to replace with variable names or numbers</strong></p>
+<p>Q3.1: Do an ANOVA using your model from Q1.1 and <code>Anova()</code> from the car package</p>
+<p>Q3.2 Optional Challenge Question. Edit the code below to conduct the ANOVA by hand. I’ve included some phrases in []s that you will need to replace with variable names or numbers</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate SS_groups</span></span>
@@ -356,11 +369,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Do the F test</span></span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">pf</span>(<span class="at">q=</span>myF, <span class="at">df1 =</span> [degrees of freedom <span class="cf">for</span> MS_groups], <span class="at">df2 =</span> [degrees of freedom <span class="cf">for</span> MS_error], <span class="at">lower.tail=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Q4: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results – does color or distance matter most for determining pollinator visits?</strong></p>
-<p><strong>Q5: Ripley et al.&nbsp;discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the simulation code above to simulate data for an additional category with a mean of 2 visits per flower.</strong></p>
-<p><strong>Q6: Rerun the linear model, ANOVA (with the anova() function), and emmeans on this new data. Interpret the outputs.</strong></p>
+<p>Q4.1: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results – does color or distance matter most for determining pollinator visits?</p>
+<p>Q4.2 Compare the output from emmeans in the previous question to the output from <code>summary()</code>. Which one gives you better information about differences among groups?</p>
+</section>
+<section id="extra-fun" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="extra-fun"><span class="header-section-number">11.3</span> Extra fun</h2>
+<p>The following problems are optional and give you a chance to learn some extra stats skills if you have time.</p>
+<p>Q5: Ripley et al.&nbsp;discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the simulation code above to simulate data for an additional category with a mean of 2 visits per flower.</p>
+<p>Q6: Rerun the linear model, ANOVA (with the <code>Anova()</code> function), and emmeans on this new data. Interpret the outputs.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -797,4 +816,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lab4.1-ANOVA.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lab4.1-ANOVA.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
