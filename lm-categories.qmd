@@ -306,9 +306,11 @@ Note that our calculations match the Anova function!
 
 ### Pairwise comparisons
 
-Now, to determine if there is a difference between any pair of categories, like Chinstrap and Gentoo, we can do a post-hoc pairwise comparison. **Post-hoc** tells us that we are doing these tests after we reject the null hypothesis that all of these categories have the same distribution.
+Now, to determine if there is a difference between any pair of categories, like Chinstrap and Gentoo, we can do a post-hoc pairwise comparison. **Post-hoc** tells us that we are doing these tests after we reject the null hypothesis that all of these categories have the same distribution. 
 
-If we want to look at all possible comparisons, this is called doing **unplanned comparisons**
+If we want to look at all possible comparisons, this is called doing **unplanned comparisons** in constrast to **planned comparisons**, where we would only look at specific comparisons of interest. 
+
+Below is code to do unplanned comparisons.
 
 ```{r, message=FALSE}
 #install.packages("emmeans")
@@ -317,6 +319,16 @@ library(emmeans)
 out.emmeans <- emmeans(model2, specs = "species")
 pairs(out.emmeans)
 ```
+
+It might be helpful to compare the output of our post-hoc tests with the output of the `summary()`.
+
+```{r}
+summary(model2)$coefficients
+```
+
+Note that summary is giving us information about the comparison of each species with whatever species was chosen as a reference, so it isn't doing all possible comparisons.
+
+In addition, post-hoc tests like in `emmeans` will account for multiple testing and that we know that we've already rejected the ANOVA null hypothesis, so the p values are slightly different from what we get from `summary()`.
 
 ### Assumptions of an ANOVA
 
@@ -348,12 +360,39 @@ ggplot(data = mm, aes(x = yield, y = incidence_rate_per_ten_thousand)) +
 
 ```
 
-1. Write out an equation for a linear model testing for the effects of each yield category on malaria rates. Define each variable in the model (all the $b$ values)
+1. Write out an equation for a linear model testing for the effects of each yield category on malaria rates. Define each variable in the model and state what the reference level is.
+
+::: {.callout-tip collapse="true"}
+## Show answer
+
+$\text{Malaria rate}_i \sim b_0 + b_1 \times \text{Medium}_i + b_2 \times \text{High}_i + e_i$
+
+$b_0$ is the mean malaria rate of low (the reference).
+
+$b_1$ is the difference between the malaria rates in low and medium.
+
+$b_2$ is the difference between the malaria rates in low and high.
+
+$e_i$ is the residual, the difference between the $i^{th}$ rate and the mean of its category.
+
+$\text{Medium}_i$ and $\text{High}_i$ are indicator variables that are $1$ if the $i^{th}$ individual is in that category and, otherwise, $0$.
+
+:::
 
 2. What if you were interested in whether yield in general affected malaria rate? Would you use a linear model or an ANOVA? Why?
 
+::: {.callout-tip collapse="true"}
+## Show answer
+I would use an ANOVA (although since these values are ordered, a linear regression might be more appropriate)
+:::
+
+
 3. Does it look like this data matches the assumptions of an ANOVA? If not, why not?
 
+::: {.callout-tip collapse="true"}
+## Show answer
+The variance in groups does not look equal, violating the assumptions of an ANOVA.
+:::
 
 
 
