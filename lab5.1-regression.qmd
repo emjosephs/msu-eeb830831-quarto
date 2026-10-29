@@ -70,13 +70,12 @@ theme_classic()+
 
 ```
 
-Go back to the output of summary() for the model? What was the p value associated with the estimation of the effect size of your explanatory variable? Briefly describe below what this p value tells us about the effect size. (Bonus question -- how does lm() calculate p values?)
+Q5: Look at the output of summary() for the model. What was the p value associated with the estimation of the effect size of your explanatory variable? Briefly describe below what this p value tells us about the effect size.
 
-Pick an additional variable from the table that think might affect log10_diversity. Repeat the steps above to construct a linear model estimating the effect of that variable on genetic diversity.
+Q6: Pick an additional variable from the table that think might affect log10_diversity. Repeat the steps above to construct a linear model estimating the effect of that variable on genetic diversity.
 
 
-
-Go back to your original model of population size and diversity. Use the sample() function to sample 1/2 of your data points and rerun the model. 
+Q7: Go back to your original model of population size and diversity. Use the sample() function to sample 1/2 of your data points and rerun the model from above. Look at the output from summary() for this model and compare it to the previou model. How does it differ?
 
 ```{r, eval=F, echo=F}
 myData2 <-myData1[sample(1:300,150),]
