@@ -346,13 +346,33 @@ anova(model1)
 
 ## Review questions
 
-1. Imagine you are a penguin researcher and you measure additional data on lifespan. You want to construct a linear model that models lifespan as a function of body mass. Write out the equation describing this model, and describe which parts of the equation correspond to the stochastic function vs the deterministic function.
+1. Imagine you are a penguin researcher and you measure additional data on lifespan. You want to construct a linear model that models lifespan as a function of body mass. Write out the equation describing this model.
+
+::: {.callout-tip collapse="true"}
+## Show answer
+$\text{Lifespan} =  b_0 + b_1 \times \text{Body_Mass} + e_i$
+:::
 
 2. What are the key differences between covariance, correlation, and linear regression?
+::: {.callout-tip collapse="true"}
+## Show answer
+Correlation is the covariance standardized by variance in each parameter. It tells us a bit about how reliable the covariance is.
+
+Unlike covariance and correlation, in linear regression, the value will change if you swap the x and y values since linear regression is standardized only by variance in x.
+:::
+
 
 3. What is the key assumption about the normal distribution made in a linear regression?
+::: {.callout-tip collapse="true"}
+## Show answer
+We are assuming that the residuals are normally distributed
+:::
 
 4. Your friend shows you an analysis of some new data: they have conducted a regression and calculated a 95% confidence interval. They tell you "95% of my data points should fall in this confidence interval." Do you agree with them? Why or why not?
+::: {.callout-tip collapse="true"}
+## Show answer
+I disagree -- the confidence interval here is for the slope, not each data point.
+:::
 
 
 ```{r, echo=F, eval=F}
