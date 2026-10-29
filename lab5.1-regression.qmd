@@ -4,7 +4,7 @@ format: html
 editor: source
 ---
 
-This is a lab to practice linear regressions and p values
+This is a lab to practice linear regressions and p values. Please do your work in the .Rmd homework template and turn in the knitted file. 
 
 
 ```{r}
@@ -28,19 +28,19 @@ myData <- read.table('data/buffalo_combined_data.tsv', sep="\t", header=T) #note
 
 ```
 
-First, remove individuals that are missing data for diversity and log10_popsize
+Q1: Remove individuals that are missing data for diversity and log10_popsize
 
 ```{r, echo=F, eval=F}
 myData1 <- dplyr::filter(myData, !is.na(log10_popsize), !is.na(diversity))
 
 ```
 
-Use lm() to fit a linear model with diversity as the response variable and log10_popsize as the explanatory variable. Look at the output of the model wiht summary(). Make a plot of the data with explanatory variable on the x axis and response variable on the y axis and plot your model fit line on top of the data.
+Q2: Use lm() to fit a linear model with diversity as the response variable and log10_popsize as the explanatory variable and look at the output. Make a plot of the data with explanatory variable on the x axis and response variable on the y axis and plot your model fit line on top of the data.
 
 ```{r, eval=F, echo=F}
 model1 <- lm(diversity~log10_popsize,data=myData1)
 
-summary(model1)
+model1
 
 ggplot(myData1, aes(x=log10_popsize, y=diversity)) + geom_point() +
 theme_classic() + 
@@ -48,7 +48,7 @@ geom_smooth(method='lm', formula= y~x)
 
 ```
 
-Identify which species has the largest residual. Briefly write, in words, what this large residual means.
+Q3: Identify which species has the largest residual. Briefly write, in words, what this large residual means.
 
 
 ```{r,eval=F, echo=F}
@@ -60,7 +60,7 @@ myResids[which.max(abs(myResids$.resid)),]
 myData1[which.max(abs(myResids$.resid)),]$species
 ```
 
-Make a plot with the explanatory variable on the x axis and the residuals for each individual on the y axis. Does the residual distribution seem to match the assumptions of a general linear model?
+Q4: Make a plot with the explanatory variable on the x axis and the residuals for each individual on the y axis. Does the residual distribution seem to match the assumptions of a general linear model?
 
 
 ```{r, eval=F, echo=F}
