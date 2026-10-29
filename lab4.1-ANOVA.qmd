@@ -112,7 +112,7 @@ library(car)
 Anova(model1)
 ```
 
-Q3.2 Optional Challenge Question. Edit the code below to conduct the ANOVA by hand. I've included some phrases in []s that you will need to replace with variable names or numbers
+Q3.2 Edit the code below to conduct the ANOVA by hand. I've included some phrases in []s that you will need to replace with variable names or numbers. Compare the outputs of this code to the Anova() output from the previous question. Do they match?
 
 ```{r, eval=F}
 library(broom)
