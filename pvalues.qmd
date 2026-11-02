@@ -266,11 +266,40 @@ sumSquares <- penguins2 |>
 
 valueA <- sqrt(sumSquares[1,1]/(myN-1))
 valueB <- sumSquares[1,1]/(myN-1)
-valueC <- sqrt(sumSquares[1,1]/(myN-1))/sqrt(myN-1)
+valueC <- sqrt(sumSquares[1,1]/(myN-1))/sqrt(myN)
 ```
 
 1. Match 'valueA','valueB', and 'valueC' with the variance, standard deviation, and standard error.
 
-2. Imagine that you are interested in understanding if flipper length affects bill length in the penguin dataset. Describe a potential null hypothesis for this test.
+::: {.callout-tip collapse="true"}
+## Show answer
+valueB is the variance
+
+valueA is the standard deviation (square root of the variance) 
+
+valueC is the standard error (standard deviation divided by square root of n)
+:::
+
+2. Imagine that you are interested in understanding if sex affects bill length in the penguin dataset. Describe a potential null hypothesis for this test.
+
+::: {.callout-tip collapse="true"}
+## Show answer
+Our null hypothesis could be that the effect size for species equals 0.
+
+:::
+
 
 3. Use lm() to conduct a linear model for the scenario described above. Look at the p value that is outputted from lm() and describe, in words, what it tells us about the relationship between flipper length and bill length. 
+
+::: {.callout-tip collapse="true"}
+## Show answer
+
+```{r}
+modelq3 <- lm(bill_length_mm ~ sex, data=penguins)
+summary(modelq3)
+
+```
+
+This tells us that we are pretty unlikely to see our observed difference in bill length between sexes if the effect size in the model is truly equal to 0.
+
+:::
