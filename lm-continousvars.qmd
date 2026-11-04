@@ -349,8 +349,11 @@ anova(model1)
 1. Imagine you are a penguin researcher and you measure additional data on lifespan. You want to construct a linear model that models lifespan as a function of body mass. Write out the equation describing this model.
 
 ::: {.callout-tip collapse="true"}
+  
 ## Show answer
-$\text{Lifespan} =  b_0 + b_1 \times \text{Body_Mass} + e_i$
+
+$\text{Lifespan} =  b_0 + b_1 \times \text{Body Mass} + e_i$
+
 :::
 
 2. What are the key differences between covariance, correlation, and linear regression?
