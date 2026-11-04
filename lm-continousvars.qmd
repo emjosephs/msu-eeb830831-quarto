@@ -351,8 +351,12 @@ anova(model1)
 ::: {.callout-tip collapse="true"}
   
 ## Show answer
+<<<<<<< HEAD
 
 $\text{Lifespan} =  b_0 + b_1 \times \text{Body Mass} + e_i$
+=======
+$\text{Lifespan} =  b_0 + b_1 \times \text{Body_Mass} + e_i$
+>>>>>>> c9e95808df6da7b31d7185f24421bc479ec6937d
 
 :::
 
