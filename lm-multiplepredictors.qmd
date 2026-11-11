@@ -94,6 +94,20 @@ You have options.
 2. You can pick a new model
 3. You can continue onward. Linear models (particularly ANOVAs) tend to be robust to assumption breaking, but only to a point
 
+:::fyi
+**General vs Generalized linear models**
+
+These are often confused!
+
+This section will discuss a general linear model.
+
+In contrast, generalized linear models are linear models that relax the assumption that the residuals are normally distributed.
+Instead, the residuals can follow alternative distributions like the exponential, binomial, poisson... etc.
+You will learn more about these models in 831
+:::
+
+
+
 ## Motivating example
 
 In the previous sections, we found that both species and bill length affect body mass. Can we build a model that incorporates both?
@@ -302,8 +316,3 @@ The dot product of these two matrices gives us the predicted value for the respo
 
 
 
-:::fyi
-**General vs Generalized linear models**
-
-These are often confused!
-:::
