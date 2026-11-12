@@ -10,7 +10,7 @@ date: "2025-11-07"
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(dplyr)
-
+library(car)
 ```
 
 
@@ -27,13 +27,45 @@ clarkia <- read.csv(clarkia_link)
 
 ```
 
-1. Use lm() to construct two models. 1) admixture as the response variable and herkogamy as the explanatory variable. 2) admixture as the response variable and distance2hetero as the explanatory variable. Is there evidence that both explanatory variables affect the response variable?
+1. Use lm() to construct two models. 1) admixture as the response variable and herkogamy as the explanatory variable. 2) admixture_proportion as the response variable and distance2hetero as the explanatory variable. Look at the outputs of the model. Is there evidence that both explanatory variables affect the response variable?
+
+```{r, echo=F, eval=F}
+model2 <- lm(admixture_proportion~distance2hetero, data=clarkia)
+model1 <- lm(admixture_proportion~herkogamy, data=clarkia)
+
+model1
+model2
+anova(model1)
+anova(model2)
+
+#Yes, both explanatory variabes affect the response variable
+```
 
 2. It can be difficult to interpret a multiple regression model if the explanatory variables are correlated with each other (this is called 'multicollinearity'). Make a plot of herkogamy and distance2hetero and use cor.test() to estimate the relationship between these two variables. Are they correlated with each other?
 
+```{r, echo=F, eval=F}
+plot(clarkia$herkogamy, clarkia$distance2hetero, bty="n")
+abline(lm(clarkia$distance2hetero~ clarkia$herkogamy))
+cor.test(clarkia$herkogamy, clarkia$distance2hetero)
+
+#Nope
+```
+
 3. Use lm() to fit a general linear model with admixture proportion as the response variable and distance2hetero and herkogamy as the explanatory variables. Use Anova() from the car package to look at the p values.
 
-4. You might be interested in whether herkogamy or distance is more important for admixture. Compare the estimages of the coefficients for these two explanatory variables -- which one appears more important based on these coefficients?
+```{r, echo=F, eval=F}
+model3 <- lm(admixture_proportion ~ herkogamy + distance2hetero, data=clarkia)
+model3
+Anova(model3)
+
+```
+
+4. You might be interested in whether herkogamy or distance is more important for admixture. Compare the estimates of the coefficients for these two explanatory variables -- which one appears more important based on these coefficients?
+
+```{r echo=F, eval=F}
+#herkogamy seems more important because it has a larger effect size 
+
+```
 
 However, herkogamy is measured on a different scale than phyiscal distance betwen plants. It might be more meaningful to compare these coefficients after standardizing them. The code below does this -- it uses a z transform to standardize the explanatory and response variables and then reruns the linear model on this standardized data.
 
@@ -44,8 +76,44 @@ zTransform <- function(X){(X-mean(X,na.rm = TRUE)) / sd(X,na.rm = TRUE) } ##func
 clarkz <- clarkia%>% mutate_all(zTransform) #make a new dataframe of z transformed data
 ```
 
-5. Run a new linear model on the z-transformed data with admixture proportion as the response variable and herkogamy and distance2hetero as the explanatory variables. Now, compare the effect size estimates from this model. Which factor matters more for determining admixture?
+5. Run a new linear model on the z-transformed data with admixture proportion as the response variable and herkogamy and distance2hetero as the explanatory variables. Now, compare the effect size estimates from this model. Which factor matters more for determining admixture? Have the p values changed?
 
+```{r, eval=F, echo=F}
+
+model4 <- lm(admixture_proportion ~ herkogamy + distance2hetero, data=clarkz)
+model4
+Anova(model4)
+
+#The p values have not changed (cool). It still looks like the effect size of herkogamy is higher.
+
+```
+
+Petal size can also be important for attracting pollinators, and thus affect admixture. But imagine that petal size is correlated with herkogamy. The code below simulates this possibility.
+
+```{r}
+set.seed(101)
+clarkia$petal_size = .26*clarkia$herkogamy + rnorm(nrow(clarkia), mean=0, sd=.2)+5
+
+```
+
+6. Construct a linear model with petal size as the explanatory variable and admixture_proportion as the response variable. Does petal size affect admixture proportion?
+
+7. Now, make a model with admixture_proportion as the response variable and both petal_size and herkogamy as the explanatory variables. Compare the estimates and p values for petal size in the two models. Are they different or the same? Why do you think this is?
+
+```{r, echo=F, eval=F}
+
+plot(clarkia$herkogamy, clarkia$petal_size)
+cor.test(clarkia$herkogamy, clarkia$petal_size)
+
+model5 <- lm(admixture_proportion~petal_size, data=clarkia)
+model5
+Anova(model5)
+
+
+model6 <- lm(admixture_proportion~petal_size + herkogamy, data=clarkia)
+model6
+Anova(model6)
+```
 
 ## Interactions
 
