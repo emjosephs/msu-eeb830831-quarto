@@ -314,5 +314,6 @@ The middle matrix is a list of the estimated effect sizes for each corresponding
 The dot product of these two matrices gives us the predicted value for the response variable for each individual.
 
 
+## Review questions
 
 
