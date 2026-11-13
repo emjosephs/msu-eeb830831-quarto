@@ -15,6 +15,15 @@ library(car)
 ```
 
 
+```{r, out.width = "400px"}
+#| echo: false
+#| fig-alt: "Multiple white and purple flowers of different shapes on a black background"
+#| fig-cap: "A diversity of Clarkia flowers from a population of recombinanet inbred lines" 
+library(knitr)
+include_graphics("figs/ril_collage3.png")
+```
+
+
 ## Multiple regression
 *Clarkia xantiana xantiana* ('xan') and *Clarkia xantiana parviflora* ('parv') are two closely-related wildflowers that can reproduce with each other. A group of researchers is interested in what factors promote gene flow between these species. They are particularly interested in mating system: Xan is mostly outcrossing, which means it mostly makes seeds using pollen from other individuals while parv is mostly selfing, meaning it uses its own pollen to make seeds. These mating system differences are related to floral differences -- parv flowers tend to have pistils that are close to the stigma so that pollen can easily move from pistil to stigma. The distance between pistil and stigma is called "herkogamy". 
 
