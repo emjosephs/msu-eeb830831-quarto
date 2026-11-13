@@ -233,6 +233,14 @@ hist(model5$residuals, main="", xlab = "residuals")
 
 It does look like our residuals are normally distributed and the points are for the most part evenly spaced around 0 across the distribution of yhat. There are some clumps, which I think is the result of not including species and/or sex in the model, since we know that different species and different sexes have very different body masses.
 
+:::fyi
+**Does multiple regression control for other variables?**
+
+When we talk about multiple regressions, we'll sometimes say that we "controlled" for a specific variable by including it in a regression.
+
+However, remember that regression cannot directly inform causality and including something in a multiple regression is not the same thing as an experimental control.
+:::
+
 ## Interactions
 
 Statistical interactions are everywhere in biology. In my lab, we're often interested in genotype-by-environment interactions, where genotypes differ in how they respond to the environment. For example, the image below shows a genotype-by-environment interaction for two *Arabidopsis thaliana* genotypes, where one shows a strong response to environment and the other does not.

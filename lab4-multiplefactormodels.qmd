@@ -18,7 +18,7 @@ library(car)
 ```{r, out.width = "400px"}
 #| echo: false
 #| fig-alt: "Multiple white and purple flowers of different shapes on a black background"
-#| fig-cap: "A diversity of Clarkia flowers from a population of recombinanet inbred lines" 
+#| fig-cap: "A diversity of Clarkia flowers from a population of recombinant inbred lines" 
 library(knitr)
 include_graphics("figs/ril_collage3.png")
 ```
