@@ -74,7 +74,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c070a593f77c277f96034645df36e7e4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8113be787f79969ba645dd3b6582be9f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -299,15 +299,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="multiple-regression" class="level2" data-number="13.1">
 <h2 data-number="13.1" class="anchored" data-anchor-id="multiple-regression"><span class="header-section-number">13.1</span> Multiple regression</h2>
 <p><em>Clarkia xantiana xantiana</em> (‘xan’) and <em>Clarkia xantiana parviflora</em> (‘parv’) are two closely-related wildflowers that can reproduce with each other. A group of researchers is interested in what factors promote gene flow between these species. They are particularly interested in mating system: Xan is mostly outcrossing, which means it mostly makes seeds using pollen from other individuals while parv is mostly selfing, meaning it uses its own pollen to make seeds. These mating system differences are related to floral differences – parv flowers tend to have pistils that are close to the stigma so that pollen can easily move from pistil to stigma. The distance between pistil and stigma is called “herkogamy”.</p>
 <p>A group of researchers travelled to a group of parv plants and collected data on herkogamy, distance to the nearest xan plant (‘distance2hetero’), and the amount of seeds produced by this plant with ancestry from a xan pollen-parent (‘admixture_proportion’). They wanted to understand how herkogamy and distance together influenced this measure of admixture proportion.</p>
 <p>The code below loads in the data</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">##load in data</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>clarkia_link <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/ybrandvain/datasets/refs/heads/master/clarkia_admix_S22P.csv"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>clarkia <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(clarkia_link)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">##load in data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>clarkia_link <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/ybrandvain/datasets/refs/heads/master/clarkia_admix_S22P.csv"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>clarkia <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(clarkia_link)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol type="1">
 <li>Use lm() to construct two models. 1) admixture as the response variable and herkogamy as the explanatory variable. 2) admixture_proportion as the response variable and distance2hetero as the explanatory variable. Look at the outputs of the model. Is there evidence that both explanatory variables affect the response variable?</li>
@@ -323,35 +329,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>However, herkogamy is measured on a different scale than phyiscal distance betwen plants. It might be more meaningful to compare these coefficients after standardizing them. The code below does this – it uses a z transform to standardize the explanatory and response variables and then reruns the linear model on this standardized data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>zTransform <span class="ot">&lt;-</span> <span class="cf">function</span>(X){(X<span class="sc">-</span><span class="fu">mean</span>(X,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(X,<span class="at">na.rm =</span> <span class="cn">TRUE</span>) } <span class="do">##function to do a z transform</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>clarkz <span class="ot">&lt;-</span> clarkia<span class="sc">%&gt;%</span> <span class="fu">mutate_all</span>(zTransform) <span class="co">#make a new dataframe of z transformed data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>zTransform <span class="ot">&lt;-</span> <span class="cf">function</span>(X){(X<span class="sc">-</span><span class="fu">mean</span>(X,<span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">/</span> <span class="fu">sd</span>(X,<span class="at">na.rm =</span> <span class="cn">TRUE</span>) } <span class="do">##function to do a z transform</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>clarkz <span class="ot">&lt;-</span> clarkia<span class="sc">%&gt;%</span> <span class="fu">mutate_all</span>(zTransform) <span class="co">#make a new dataframe of z transformed data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="5" type="1">
-<li>Run a new linear model on the z-transformed data with admixture proportion as the response variable and herkogamy and distance2hetero as the explanatory variables. Now, compare the effect size estimates from this model. Which factor matters more for determining admixture? Have the p values changed?</li>
+<li><p>Make some plots of the original data and the z transformed data to get a sense of what the z transformation has done.</p></li>
+<li><p>Run a new linear model on the z-transformed data with admixture proportion as the response variable and herkogamy and distance2hetero as the explanatory variables. Now, compare the effect size estimates from this model. Which factor matters more for determining admixture? Have the p values changed?</p></li>
 </ol>
-<p>Petal size can also be important for attracting pollinators, and thus affect admixture. But imagine that petal size is correlated with herkogamy. The code below simulates this possibility.</p>
+<p>Petal size can also be important for attracting pollinators, and thus affect admixture. But imagine that petal size is correlated with herkogamy. The code below simulates a hypothetical petal size trait that is correlated with herkogamy.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">101</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>clarkia<span class="sc">$</span>petal_size <span class="ot">=</span> .<span class="dv">26</span><span class="sc">*</span>clarkia<span class="sc">$</span>herkogamy <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(clarkia), <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span>.<span class="dv">2</span>)<span class="sc">+</span><span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">101</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>clarkia<span class="sc">$</span>petal_size <span class="ot">=</span> .<span class="dv">26</span><span class="sc">*</span>clarkia<span class="sc">$</span>herkogamy <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">nrow</span>(clarkia), <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span>.<span class="dv">2</span>)<span class="sc">+</span><span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol start="6" type="1">
+<ol start="7" type="1">
 <li><p>Construct a linear model with petal size as the explanatory variable and admixture_proportion as the response variable. Does petal size affect admixture proportion?</p></li>
 <li><p>Now, make a model with admixture_proportion as the response variable and both petal_size and herkogamy as the explanatory variables. Compare the estimates and p values for petal size in the two models. Are they different or the same? Why do you think this is?</p></li>
 </ol>
 </section>
 <section id="interactions" class="level2" data-number="13.2">
 <h2 data-number="13.2" class="anchored" data-anchor-id="interactions"><span class="header-section-number">13.2</span> Interactions</h2>
-<p>Mole rats have distinct social castes: workers and reproducing males. However, recent evidence suggests that there may be distinctions within workers. Scantlebury et al.&nbsp;(2006) measured body mass and energy expenditure of active workers and lazy workers in the Damaraland mole rat. They wanted to know how body mass affected energy expenditure and if there was a difference between standard workers and the ‘lazy’ workers they’d identified: specifically, was there an interaction?</p>
-<p>Below is some ggplot code to make a scatter plot of the data with regression lines for each category (I like ggplot for making these types of plots)</p>
+<p>Let’s look at another Clarkia dataset that investigated on a different set of genotypes. This time, researchers were interested in whether flower color and size (measured as petal area) affected the admixture proportion.</p>
+<p>Below is some ggplot code to download the data and make a scatter plot of the data with regression lines for each category (I like ggplot for making these types of plots). Note that the admixture proportion is now called “prop_hybrid” in this table.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>molerats <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'https://raw.githubusercontent.com/emjosephs/msu-eeb830831-quarto/refs/heads/main/data/molerat-data.csv'</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(molerats)<span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> mass, <span class="at">y =</span> energy, <span class="at">color =</span> caste) <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span>F)<span class="sc">+</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ril_link <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/ybrandvain/datasets/refs/heads/master/clarkia_rils.csv"</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>rils <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(ril_link, <span class="at">show_col_types=</span>F) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(ril, prop_hybrid, petal_area_mm, asd_mm, location, petal_color) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rils)<span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> petal_area_mm, </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> prop_hybrid, </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> petal_color) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span>F)<span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -363,10 +375,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<ol start="6" type="1">
-<li><p>Based on these lines, do you predict that there will be an interaction between mass and caste for energy expenditure? Why or why not?</p></li>
-<li><p>Use lm() to fit a linear model with energy as the response variable and mass, caste, and their interaction as explanatory variables. Use Anova() to look at the output – do you see evidence of an interaction?</p></li>
-<li><p>Imagine that you show this analysis to your advisor and they tell you that you should have used log-transformed your data to improve normality (since this is an assumption of a general linear model!). Ue ln() to transform mass and energy and fit a new model of ln(energy) with ln(mass), caste, and their interaction as explanatory variables. Compare this model to the previous model. What do you notice? Which model do you think is most appropriate for understanding the biology of this system?</p></li>
+<ol start="9" type="1">
+<li><p>Based on these lines, do you predict that there will be an interaction between petal color and petal area for energy expenditure? Why or why not?</p></li>
+<li><p>Use lm() to fit a linear model with prop_hybrid as the response variable and with petal color and petal area as explanatory variables. Use Anova() to look at the output – do you see evidence of an interaction?</p></li>
+</ol>
+<ol start="11" type="1">
+<li><p>Imagine that you show these results to your advisor and they tell you that you should have transformed your response variable to improve normality (since this is an assumption of a general linear model!). Look at the distribution of prop_hybrid. Does it look normal?</p></li>
+<li><p>Your advisor suggests the arcsin square root transformation since your response data is a proportion. Do you agree with your advisor that you should normalize the response variable? If so, conduct the suggested transformation, generate a new model, and compare the outputs. If not, explain how you would respond to your advisor and justify your choice.</p></li>
 </ol>
 
 

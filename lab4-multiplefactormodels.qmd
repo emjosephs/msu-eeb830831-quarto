@@ -6,6 +6,7 @@ date: "2025-11-07"
 
 ```{r setup}
 #| label: load-packages
+#| message: false
 #| include: true
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
@@ -58,6 +59,9 @@ model3 <- lm(admixture_proportion ~ herkogamy + distance2hetero, data=clarkia)
 model3
 Anova(model3)
 
+model3i <- lm(admixture_proportion ~ herkogamy*distance2hetero, data=clarkia)
+model3i
+Anova(model3i)
 ```
 
 4. You might be interested in whether herkogamy or distance is more important for admixture. Compare the estimates of the coefficients for these two explanatory variables -- which one appears more important based on these coefficients?
@@ -76,7 +80,9 @@ zTransform <- function(X){(X-mean(X,na.rm = TRUE)) / sd(X,na.rm = TRUE) } ##func
 clarkz <- clarkia%>% mutate_all(zTransform) #make a new dataframe of z transformed data
 ```
 
-5. Run a new linear model on the z-transformed data with admixture proportion as the response variable and herkogamy and distance2hetero as the explanatory variables. Now, compare the effect size estimates from this model. Which factor matters more for determining admixture? Have the p values changed?
+5. Make some plots of the original data and the z transformed data to get a sense of what the z transformation has done.
+
+6. Run a new linear model on the z-transformed data with admixture proportion as the response variable and herkogamy and distance2hetero as the explanatory variables. Now, compare the effect size estimates from this model. Which factor matters more for determining admixture? Have the p values changed?
 
 ```{r, eval=F, echo=F}
 
@@ -96,9 +102,9 @@ clarkia$petal_size = .26*clarkia$herkogamy + rnorm(nrow(clarkia), mean=0, sd=.2)
 
 ```
 
-6. Construct a linear model with petal size as the explanatory variable and admixture_proportion as the response variable. Does petal size affect admixture proportion?
+7. Construct a linear model with petal size as the explanatory variable and admixture_proportion as the response variable. Does petal size affect admixture proportion?
 
-7. Now, make a model with admixture_proportion as the response variable and both petal_size and herkogamy as the explanatory variables. Compare the estimates and p values for petal size in the two models. Are they different or the same? Why do you think this is?
+8. Now, make a model with admixture_proportion as the response variable and both petal_size and herkogamy as the explanatory variables. Compare the estimates and p values for petal size in the two models. Are they different or the same? Why do you think this is?
 
 ```{r, echo=F, eval=F}
 
@@ -136,9 +142,9 @@ ggplot(rils)+
   theme_classic()
 ```
 
-6. Based on these lines, do you predict that there will be an interaction between petal color and petal area for energy expenditure? Why or why not?
+9. Based on these lines, do you predict that there will be an interaction between petal color and petal area for energy expenditure? Why or why not?
 
-7. Use lm() to fit a linear model with prop_hybrid as the response variable and with  petal color and petal area as explanatory variables. Use Anova() to look at the output -- do you see evidence of an interaction?
+10. Use lm() to fit a linear model with prop_hybrid as the response variable and with  petal color and petal area as explanatory variables. Use Anova() to look at the output -- do you see evidence of an interaction?
 
 ```{r, eval=F, echo=F}
 model7 <- lm(prop_hybrid~petal_area_mm*petal_color, data=rils)
@@ -147,14 +153,10 @@ model7
 Anova(model7)
 ```
 
-6. Imagine that you show these results to your advisor and they tell you that you should have transformed your response variable to improve normality (since this is an assumption of a general linear model!). Look at the distribution of prop_hybrid. Does it look normal?
+11. Imagine that you show these results to your advisor and they tell you that you should have transformed your response variable to improve normality (since this is an assumption of a general linear model!). Look at the distribution of prop_hybrid. Does it look normal?
 
-7. One common way to try to get data to be more normal is the arcsin square root transformation. (`asin(sqrt(x))` in R). Use this to transform admixture_proportion and compare it to your original data. Does this transformation make the data look more normal?
+12. Your advisor suggests the arcsin square root transformation since your response data is a proportion. Do you agree with your advisor that you should normalize the response variable? If so, conduct the suggested transformation, generate a new model, and compare the outputs. If not, explain how you would respond to your advisor and justify your choice.
 
-
-
-
-fit a new model with this as your response variable the the same explanatory variables as before. Compare this model to the previous model (from question 3). What do you notice? Which model do you think is most appropriate for understanding the biology of this system? It may help to plot the residuals to make your decision.
 
 ```{r, eval=F, echo=F}
 clarkia$admix_t <- asin(sqrt(clarkia$admixture_proportion))
@@ -166,5 +168,7 @@ Anova(model8)
 plot(model7$fitted.values, model7$residuals)
 hist(model7$residuals)
 hist(model8$residuals)
+
+# or just point out the residuals are pretty normal so you don't need to transform
 ```
 
