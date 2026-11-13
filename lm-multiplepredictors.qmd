@@ -270,7 +270,7 @@ Anova(model6)
 
 In this case the statistical interaction is significant, but much less significant than the main effects. This is telling us that there is a slight difference in slopes between the two species, which we can see in @fig-interactions.
 
-In particular, $b_3$ is the difference in slopes between the Chinstrap-only model and the Gentoo-only model. I was really surprised by this but the code below shows this.
+In particular, $b_3$ is the difference in slopes between the Chinstrap-only model and the Gentoo-only model.
 
 ```{r}
 mymodel3$coefficients
@@ -283,6 +283,28 @@ model6$coefficients
 ```
 
 
+We can also expand our model to three species, below. 
+```{r}
+
+model7 <- lm(body_mass_g~bill_length_mm*species,data=penguins)
+Anova(model7)
+
+
+```
+
+```{r, warning=F, message=F}
+#| label: fig-interactions-3species
+
+ggplot(penguins)+
+  aes(x = body_mass_g, 
+                 y = bill_length_mm, 
+                 color = species) +
+  geom_point() +
+  geom_smooth(method = "lm", se=F)+
+  theme_classic()
+
+
+```
 
 ## Matrix notation
 

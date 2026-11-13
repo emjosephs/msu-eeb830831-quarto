@@ -630,7 +630,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 <p>In this case the statistical interaction is significant, but much less significant than the main effects. This is telling us that there is a slight difference in slopes between the two species, which we can see in <a href="#fig-interactions" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>.</p>
-<p>In particular, <span class="math inline">\(b_3\)</span> is the difference in slopes between the Chinstrap-only model and the Gentoo-only model. I was really surprised by this but the code below shows this.</p>
+<p>In particular, <span class="math inline">\(b_3\)</span> is the difference in slopes between the Chinstrap-only model and the Gentoo-only model.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mymodel3<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -652,6 +652,44 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
                    846.14333                     59.11773 
                speciesGentoo bill_length_mm:speciesGentoo 
                   -969.97126                     50.34143 </code></pre>
+</div>
+</div>
+<p>We can also expand our model to three species, below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model7 <span class="ot">&lt;-</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span>bill_length_mm<span class="sc">*</span>species,<span class="at">data=</span>penguins)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(model7)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Anova Table (Type II tests)
+
+Response: body_mass_g
+                         Sum Sq  Df F value  Pr(&gt;F)    
+bill_length_mm         24829776   1  179.62 &lt; 2e-16 ***
+species                94024918   2  340.09 &lt; 2e-16 ***
+bill_length_mm:species  1166702   2    4.22 0.01549 *  
+Residuals              46447006 336                    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins)<span class="sc">+</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> body_mass_g, </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">y =</span> bill_length_mm, </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> species) <span class="sc">+</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span>F)<span class="sc">+</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-interactions-3species" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interactions-3species-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lm-multiplepredictors_files/figure-html/fig-interactions-3species-1.png" id="fig-interactions-3species" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-interactions-3species-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.2
+</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
