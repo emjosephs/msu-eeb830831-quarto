@@ -6,7 +6,7 @@ date: "2025-11-07"
 
 ```{r setup}
 #| label: load-packages
-#| include: false
+#| include: true
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(dplyr)
@@ -35,8 +35,8 @@ model1 <- lm(admixture_proportion~herkogamy, data=clarkia)
 
 model1
 model2
-anova(model1)
-anova(model2)
+Anova(model1)
+Anova(model2)
 
 #Yes, both explanatory variabes affect the response variable
 ```
@@ -88,7 +88,7 @@ Anova(model4)
 
 ```
 
-Petal size can also be important for attracting pollinators, and thus affect admixture. But imagine that petal size is correlated with herkogamy. The code below simulates this possibility.
+Petal size can also be important for attracting pollinators, and thus affect admixture. But imagine that petal size is correlated with herkogamy. The code below simulates a hypothetical petal size trait that is correlated with herkogamy.
 
 ```{r}
 set.seed(101)
@@ -117,22 +117,54 @@ Anova(model6)
 
 ## Interactions
 
-Mole rats have distinct social castes: workers and reproducing males. However, recent evidence suggests that there may be distinctions within workers. Scantlebury et al. (2006) measured body mass and energy expenditure of active workers and lazy workers in the Damaraland mole rat. They wanted to know how body mass affected energy expenditure and if there was a difference between standard workers and the 'lazy' workers they'd identified: specifically, was there an interaction?
+Let's look at another Clarkia dataset that investigated on a different set of genotypes. This time, researchers were interested in whether flower color and size (measured as petal area) affected the admixture proportion.
 
-Below is some ggplot code to make a scatter plot of the data with regression lines for each category (I like ggplot for making these types of plots)
+Below is some ggplot code to download the data and make a scatter plot of the data with regression lines for each category (I like ggplot for making these types of plots). Note that the admixture proportion is now called "prop_hybrid" in this table.
 
 ```{r}
-molerats <- read.csv('https://raw.githubusercontent.com/emjosephs/msu-eeb830831-quarto/refs/heads/main/data/molerat-data.csv')
+ril_link <- "https://raw.githubusercontent.com/ybrandvain/datasets/refs/heads/master/clarkia_rils.csv"
+rils <- readr::read_csv(ril_link, show_col_types=F) |>
+  dplyr::select(ril, prop_hybrid, petal_area_mm, asd_mm, location, petal_color) |>
+  na.omit()
 
-ggplot(molerats)+
-  aes(x = mass, y = energy, color = caste) +
+ggplot(rils)+
+  aes(x = petal_area_mm, 
+                 y = prop_hybrid, 
+                 color = petal_color) +
   geom_point() +
   geom_smooth(method = "lm", se=F)+
   theme_classic()
 ```
 
-6. Based on these lines, do you predict that there will be an interaction between mass and caste for energy expenditure? Why or why not?
+6. Based on these lines, do you predict that there will be an interaction between petal color and petal area for energy expenditure? Why or why not?
 
-7. Use lm() to fit a linear model with energy as the response variable and  mass, caste, and their interaction as explanatory variables. Use Anova() to look at the output -- do you see evidence of an interaction?
+7. Use lm() to fit a linear model with prop_hybrid as the response variable and with  petal color and petal area as explanatory variables. Use Anova() to look at the output -- do you see evidence of an interaction?
 
-8. Imagine that you show this analysis to your advisor and they tell you that you should have used log-transformed your data to improve normality (since this is an assumption of a general linear model!). Ue ln() to transform mass and energy and fit a new model of ln(energy) with ln(mass), caste, and their interaction as explanatory variables. Compare this model to the previous model. What do you notice? Which model do you think is most appropriate for understanding the biology of this system?
+```{r, eval=F, echo=F}
+model7 <- lm(prop_hybrid~petal_area_mm*petal_color, data=rils)
+model7
+
+Anova(model7)
+```
+
+6. Imagine that you show these results to your advisor and they tell you that you should have transformed your response variable to improve normality (since this is an assumption of a general linear model!). Look at the distribution of prop_hybrid. Does it look normal?
+
+7. One common way to try to get data to be more normal is the arcsin square root transformation. (`asin(sqrt(x))` in R). Use this to transform admixture_proportion and compare it to your original data. Does this transformation make the data look more normal?
+
+
+
+
+fit a new model with this as your response variable the the same explanatory variables as before. Compare this model to the previous model (from question 3). What do you notice? Which model do you think is most appropriate for understanding the biology of this system? It may help to plot the residuals to make your decision.
+
+```{r, eval=F, echo=F}
+clarkia$admix_t <- asin(sqrt(clarkia$admixture_proportion))
+model7 <- lm(admix_t~distance2hetero + herkogamy, data=clarkia)
+model7
+
+Anova(model8)
+
+plot(model7$fitted.values, model7$residuals)
+hist(model7$residuals)
+hist(model8$residuals)
+```
+
