@@ -99,6 +99,18 @@ c)  Use lm() to fit a linear model to your simulated data. Record the
 
 ```{r}
 #code goes here
+simdtf = rnorm(n=186, mean=40, sd=7.5)
+fruitnum <- 35+-0.314*simdtf+rnorm(186,mean=0,sd=5)
+
+df2 <- data.frame(simdtf,fruitnum)
+
+ggplot(data=df2, aes(x=simdtf,y=fruitnum))+
+  geom_point()+
+  theme_classic()
+
+model2 <- lm(fruitnum~simdtf,data=df2)
+summary(model2)
+
 ```
 
 So far Willis has shown that flowering time affects fitness but also
@@ -117,14 +129,14 @@ on average). The error term for the model has a standard deviation of 3.
 
 # simulate cross type and date of flowering time
 #outbred is 0
-df2 <- data.frame(crosstype = c(rep(0,150),rep(1,150)),
+df3 <- data.frame(crosstype = c(rep(0,150),rep(1,150)),
                   dtf = rnorm(n=300, mean=40, sd=7.5))
 
 # set parameters
 b0 = 35
 b1 = -.314
 b2 = -5
-df2$fruitno = b0+ b1*df2$dtf+ b2*df2$crosstype + rnorm(300,0,3) # simulate fruit type
+df3$fruitno = b0+ b1*df2$dtf+ b2*df2$crosstype + rnorm(300,0,3) # simulate fruit type
 ```
 
 3.  Run the above code and run a linear model to investigate the effects
@@ -140,4 +152,15 @@ df2$fruitno = b0+ b1*df2$dtf+ b2*df2$crosstype + rnorm(300,0,3) # simulate fruit
 
 ```{r}
 #code goes here
+model3 <- lm(fruitno ~ dtf*crosstype, data=df3)
+
+library(car)
+Anova(model3)
+
+
+ggplot(df3)+
+  aes(x = dtf, y = fruitno, color = as.factor(crosstype)) +
+  geom_point() +
+  geom_smooth(method = "lm", se=F)+
+  theme_classic()
 ```
