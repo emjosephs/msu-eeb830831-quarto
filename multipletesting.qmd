@@ -18,8 +18,11 @@ library(car)
 ## What are we doing here?
 
 Our goals in this lesson are to:
+
 - Define family-wise error rates and link these to the multiple-testing problem 
+
 - Apply commonly used multiple-testing controls: Bonferroni and FDR
+
 - Identify benefits and problems with the Bonferroni and FDR methods.
 
 ## More tests more problems {#sec-multtesting}
@@ -62,6 +65,22 @@ If a specific analysis or set of analyses does a large number of statistical tes
 **What is a family?**
 Opinions differ on the correct level to do multiple testing control on? Do you want to control family-wide error rate for a specific analysis where you conduct multiple tests? Or across all the tests contained within a single paper? I've heard some people joke that scientists themselves should have a lifetime family-wise error test rate, which, as an evolutionary genomics scientist, is a scary prospect!
 :::
+
+### Calculating the family-wise error rate
+We can use the rules of probability to calculate the family-wise error rate.
+
+First, imagine a family of just one test. Our probability of getting a false positive is the same as $\alpha$. So if $\alpha = 0.05$, there is a 0.05 chance of getting a false positive and a $1-\alpha$ or 0.95 chance of getting a true negative value if $H_0$ is true.
+
+If we do two tests, we need to calculate our probability of not getting a false positive across the two tests, which is the same as the probability of *not* getting two true negatives. In math,
+$$
+P(\geq 1\ \text{False positive}) = 1 - P(2\ \text{True negatives}) = 1 - (1-\alpha)^2
+$$
+We can generalize to $n$ tests with the same formula
+
+$$
+1 - P(n\ \text{True negatives}) = 1 - (1-\alpha)^n
+$$
+
 
 ### Bonferroni correction
 
