@@ -11,6 +11,8 @@ date: "2026-11-17"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Part 1 -- Multiple Testing
+
 The code below simulates sampling 100 individuals with unrelated explanatory (X) and response (Y) variables, conducting linear models, and returning p values for 200 tests. You will need to edit it to set a seed.
 
 
@@ -31,13 +33,13 @@ nTests=200
 simulated_pvalues <- sapply(1:nTests, doExp) ## run doExp 1000 times
 ```
 
-1. a) Calculate the family-wide error rate for an alpha value of 0.05 and 200 tests using the formula from the lecture and the notes.
+**1a) Calculate the family-wide error rate for an alpha value of 0.05 and 200 tests using the formula from the lecture and the notes.**
 
 ```{r, eval=F, echo=F}
 1 - (1-0.05)^200
 ```
 
-b) Run the simulations in the code above and calculate how many of the simulated p values are below 0.05. How does this compare to your expectation from part a?
+**1b) Run the simulations in the code above and calculate how many of the simulated p values are below 0.05. How does this compare to your expectation from part a?**
 
 ```{r, eval=F, echo=F}
 set.seed(31) ##pick a number to set your seed here
@@ -59,7 +61,7 @@ sum(simulated_pvalues<0.05)
 ```
 
 
-c) Calculate the appropriate Bonferroni cut-off for 200 tests. How many of the simulated p values are below this cut off?
+**1c) Calculate the appropriate Bonferroni cut-off for 200 tests. How many of the simulated p values are below this cut off?**
 
 ```{r, echo=F, eval=F}
 bonf = 0.05/200
@@ -69,7 +71,7 @@ sum(simulated_pvalues<bonf)
 #none
 ```
 
-d) Use the `p.adjust()` function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?
+**1d) Use the `p.adjust()` function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?**
 
 ```{r, echo=F, eval=F}
 fdrs <- p.adjust(simulated_pvalues, method="fdr") #calculate FDRs
@@ -77,10 +79,10 @@ fdrs <- p.adjust(simulated_pvalues, method="fdr") #calculate FDRs
 sum(simulated_pvalues<bonf)
 ```
 
-e) Which method do you think worked best for controlling the family-wise error rate? Why?
+**1e) Which method do you think worked best for controlling the family-wise error rate? Why?**
 
 
-2. Edit the code above so that the response variable Y is a function of the explanatory variable X. Pick any `b_0`, but set `b_1 = 2` and set the standard deviation of the residuals to `3`. If you get stuck, check the starter code from the simulation activity from last week. Then, rerun the simulations 200 times to generate a new set of p values.
+**2a) Edit the code above so that the response variable Y is a function of the explanatory variable X. Pick any `b_0`, but set `b_1 = 2` and set the standard deviation of the residuals to `3`. If you get stuck, check the starter code from the simulation activity from last week. Then, rerun the simulations 200 times to generate a new set of p values.**
 
 ```{r, eval=F, echo=F}
 set.seed(31) ##pick a number to set your seed here
@@ -101,7 +103,7 @@ nTests=200
 simulated_pvalues2 <- sapply(1:nTests, doExp2) ## run doExp2 200 times
 ```
 
-a) Make a histogram of the simulated p values and compare to a histogram of the p values from part 1. 
+**2b) Make a histogram of the simulated p values and compare to a histogram of the p values from part 1. **
 
 ```{r, echo=F,eval=F}
 hist(simulated_pvalues)
@@ -109,14 +111,14 @@ hist(simulated_pvalues2)
 
 ```
 
-b) How many of the simulated p values are below 0.05? Is this more or less than part 1?
+**2c) How many of the simulated p values are below 0.05? Is this more or less than part 1?**
 
 ```{r, echo=F, eval=F}
 
 sum(simulated_pvalues2<0.05) #more
 ```
 
-c) How many of the simulated p values are below the Bonferroni cut-off?
+**2d) How many of the simulated p values are below the Bonferroni cut-off?**
 
 ```{r, echo=F, eval=F}
 
@@ -124,7 +126,7 @@ sum(simulated_pvalues2<0.05/200)
 ```
 
 
-d) Use the p.adjust() function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?
+**2e) Use the p.adjust() function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?**
 
 
 ```{r, echo=F, eval=F}
@@ -136,4 +138,89 @@ min(fdrs)
 ```
 
 
-e) Which method do you think worked best for controlling the family-wise error rate? Why?
+**2f) Which method do you think worked best for controlling the family-wise error rate? Why?**
+
+## Part 2 -- Genome Wide Association Studies.
+
+In this part of the lab you will examine outputs of a GWAS analysis and link it to a general linear model. Actually running a GWAS can be a huge pain because the data files are large and often use irritating formats (Emily spent a few hours wrangling files before abandoning the idea of you all running your own GWASs on your laptops). Instead, you'll be using the results of a GWAS that Emily has already run for you (you can see the code here: https://github.com/bobvanburen/PLB812_F25_GWAS/blob/main/gwas-lab-2025.ipynb)
+
+The species: *Arabidopsis thaliana*, a cute little herbaceous weed found all over Europe, often in disturbed habitats. Because *A. thaliana() are selfers, individuals are almost always homozygous, so their numeric genotypes will either be 0 or 2.
+
+The trait: Flowering time, measured in a growth chamber. This trait is really important shaping plant fitness. It is measured as days to flower ('dtf').
+
+First, here are results for a GWAS with a mixed model. The code below loads in the results as a data table. You can find all the files on d2l. Some of the files are quite large, so let Emily know if you have trouble loading them into R and she can send you smaller files.
+
+```{r, eval=F}
+mixedGwas <- read.table('fl-mixed.assoc.txt', header=T)
+```
+
+**3) Use p.adjust() to calculate an fdr (I suggest using p_lrt as the p value input). How many SNPs fall below an fdr of 0.05? How does this compare to the number of SNPs with a p value of 0.05?**
+
+```{r, eval=F, echo=F}
+fdrs <- p.adjust(mixedGwas$p_lrt, method='fdr')
+
+sum(fdrs < 0.05)
+
+sum(mixedGwas$p_lrt < 0.05)
+```
+
+Now, let's look at some of the data the underlies this variation.
+
+We'll start with a random SNP that didn't affect the trait in the GWAS. The code below loads in information about the trait value (days to flower) for each ecotype and information about their genotype at this locus. It then plots these individuals and compares their genotypes. There is also code to run a linear model testing for the effect of genotype on phenotype. 
+
+```{r, eval=F, echo=F}
+library(vcfR) #library to read in vcf
+# read in polymorphism data about this snp
+mysnp <- read.vcfR('Chr5_19380396.vcf')
+
+# this is a function to calculate genotype numeric scores from the vcf
+
+sum_genotype <- function(geno_col) {
+  sapply(geno_col, function(gt) {
+    if (is.na(gt) || gt == "./.") return(NA)  # Handle missing
+    alleles <- unlist(strsplit(gt, "/"))      # Split by "/"
+    sum(as.numeric(alleles))                  # Sum the two numbers
+  })
+}
+
+## this is a function to deal with the weird ecotype names
+extract_first_number <- function(col) {
+  sapply(col, function(x) {
+    strsplit(x, "_")[[1]][1] |> as.numeric()
+  })
+}
+
+Z <- vcfR2tidy(mysnp, format_fields = "GT") #extract the genotype data from the vcf
+genoDf <- data.frame(Z$gt) # turn into a data frame
+genoDf$genotype = sapply(genoDf$gt_GT, sum_genotype) #turn to a numeric genotype
+genoDf$FID = sapply(genoDf$Indiv, extract_first_number) #fix the genotype id
+
+traits <- read.table('phenotypes.pheno', header=T) #read in trait data
+mergedData <- dplyr::inner_join(genoDf, traits, by="FID") # merge in the phenotypes
+outData = data.frame(mergedData$genotype, mergedData$DTF1)
+names(outData) = c('genotype', 'dtf')
+write.table(outData,file='~/Documents/msu-eeb830831-quarto/data/Chr5_19380396.txt', row.names=F, quote=F)
+
+
+mysnp <- read.vcfR('Chr5_18590501.vcf')
+
+
+Z <- vcfR2tidy(mysnp, format_fields = "GT")
+genoDf <- data.frame(Z$gt)
+genoDf$genotype = sapply(genoDf$gt_GT, sum_genotype) #turn to a numeric genotype
+genoDf$FID = sapply(genoDf$Indiv, extract_first_number) #fix the genotype id
+
+## merge in the phenos
+
+mergedData <- dplyr::inner_join(genoDf, traits, by="FID")
+outData = data.frame(mergedData$genotype, mergedData$DTF1)
+names(outData) = c('genotype', 'dtf')
+write.table(outData,file='~/Documents/msu-eeb830831-quarto/data/Chr5_18590501.txt', row.names=F, quote=F)
+
+
+#here is code to pull out the info from the gwas results:
+dplyr::filter(regGwas, rs=="Chr5_19380396.0") #note the extra .0 in the string that the gwas software has added on for some reason.
+dplyr::filter(mixedGwas, rs=="Chr5_19380396.0")
+
+```
+

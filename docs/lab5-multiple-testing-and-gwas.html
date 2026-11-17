@@ -267,8 +267,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#part-1-multiple-testing" id="toc-part-1-multiple-testing" class="nav-link active" data-scroll-target="#part-1-multiple-testing"><span class="header-section-number">14.1</span> Part 1 – Multiple Testing</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lab5-multiple-testing-and-gwas.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -298,6 +304,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="part-1-multiple-testing" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="part-1-multiple-testing"><span class="header-section-number">14.1</span> Part 1 – Multiple Testing</h2>
 <p>The code below simulates sampling 100 individuals with unrelated explanatory (X) and response (Y) variables, conducting linear models, and returning p values for 200 tests. You will need to edit it to set a seed.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>() <span class="do">##pick a number to set your seed here</span></span>
@@ -314,43 +322,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>simulated_pvalues <span class="ot">&lt;-</span> <span class="fu">sapply</span>(<span class="dv">1</span><span class="sc">:</span>nTests, doExp) <span class="do">## run doExp 1000 times</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol type="1">
-<li><ol type="a">
-<li>Calculate the family-wide error rate for an alpha value of 0.05 and 200 tests using the formula from the lecture and the notes.</li>
-</ol></li>
-</ol>
-<ol start="2" type="a">
-<li>Run the simulations in the code above and calculate how many of the simulated p values are below 0.05. How does this compare to your expectation from part a?</li>
-</ol>
-<ol start="3" type="a">
-<li>Calculate the appropriate Bonferroni cut-off for 200 tests. How many of the simulated p values are below this cut off?</li>
-</ol>
-<ol start="4" type="a">
-<li>Use the <code>p.adjust()</code> function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?</li>
-</ol>
-<ol start="5" type="a">
-<li>Which method do you think worked best for controlling the family-wise error rate? Why?</li>
-</ol>
-<ol start="2" type="1">
-<li>Edit the code above so that the response variable Y is a function of the explanatory variable X. Pick any <code>b_0</code>, but set <code>b_1 = 2</code> and set the standard deviation of the residuals to <code>3</code>. If you get stuck, check the starter code from the simulation activity from last week. Then, rerun the simulations 200 times to generate a new set of p values.</li>
-</ol>
-<ol type="a">
-<li>Make a histogram of the simulated p values and compare to a histogram of the p values from part 1.</li>
-</ol>
-<ol start="2" type="a">
-<li>How many of the simulated p values are below 0.05? Is this more or less than part 1?</li>
-</ol>
-<ol start="3" type="a">
-<li>How many of the simulated p values are below the Bonferroni cut-off?</li>
-</ol>
-<ol start="4" type="a">
-<li>Use the p.adjust() function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?</li>
-</ol>
-<ol start="5" type="a">
-<li>Which method do you think worked best for controlling the family-wise error rate? Why?</li>
-</ol>
+<p><strong>1a) Calculate the family-wide error rate for an alpha value of 0.05 and 200 tests using the formula from the lecture and the notes.</strong></p>
+<p><strong>1b) Run the simulations in the code above and calculate how many of the simulated p values are below 0.05. How does this compare to your expectation from part a?</strong></p>
+<p><strong>1c) Calculate the appropriate Bonferroni cut-off for 200 tests. How many of the simulated p values are below this cut off?</strong></p>
+<p><strong>1d) Use the <code>p.adjust()</code> function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?</strong></p>
+<p><strong>1e) Which method do you think worked best for controlling the family-wise error rate? Why?</strong></p>
+<p><strong>2a) Edit the code above so that the response variable Y is a function of the explanatory variable X. Pick any <code>b_0</code>, but set <code>b_1 = 2</code> and set the standard deviation of the residuals to <code>3</code>. If you get stuck, check the starter code from the simulation activity from last week. Then, rerun the simulations 200 times to generate a new set of p values.</strong></p>
+<p><strong>2b) Make a histogram of the simulated p values and compare to a histogram of the p values from part 1. </strong></p>
+<p><strong>2c) How many of the simulated p values are below 0.05? Is this more or less than part 1?</strong></p>
+<p><strong>2d) How many of the simulated p values are below the Bonferroni cut-off?</strong></p>
+<p><strong>2e) Use the p.adjust() function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?</strong></p>
+<p><strong>2f) Which method do you think worked best for controlling the family-wise error rate? Why?</strong></p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -784,4 +769,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lab5-multiple-testing-and-gwas.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/emjosephs/msu-eeb830831-quarto/edit/main/lab5-multiple-testing-and-gwas.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>

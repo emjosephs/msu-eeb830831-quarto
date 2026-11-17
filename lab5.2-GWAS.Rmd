@@ -57,15 +57,15 @@ Look at a random locus and make a plot with genotype on the x axis and trait on 
 
 library(vcfR) #library to read in vcf
 
-<<<<<<< HEAD
+
 mysnp <- read.vcfR('data/Chr5_19380396.vcf')
 
-=======
+
 # read in polymorphism data about this snp
 mysnp <- read.vcfR('data/Chr5_19380396.vcf')
 
 # this is a function to calculate genotype numeric scores from the vcf
->>>>>>> ddc84c62e3efc21e98dc07aa701542594d8a5a86
+
 sum_genotype <- function(geno_col) {
   sapply(geno_col, function(gt) {
     if (is.na(gt) || gt == "./.") return(NA)  # Handle missing
