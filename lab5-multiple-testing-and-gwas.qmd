@@ -1,0 +1,139 @@
+---
+title: "Lab 5 Multiple Testing and GWAS"
+format: html
+date: "2026-11-17"
+---
+
+```{r setup}
+#| label: load-packages
+#| message: false
+#| include: false
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The code below simulates sampling 100 individuals with unrelated explanatory (X) and response (Y) variables, conducting linear models, and returning p values for 200 tests. You will need to edit it to set a seed.
+
+
+```{r, eval=F}
+
+set.seed() ##pick a number to set your seed here
+
+doExp <- function(i){
+  myX <- runif(100) #sample 100 random numbers
+  myY <- runif(100) #sample 100 random numbers
+  myModel = lm(myY ~ myX) #fit linear model
+  myP = summary(myModel)$coefficients[2,4] #get p value
+  return(myP)
+}
+
+nTests=200
+
+simulated_pvalues <- sapply(1:nTests, doExp) ## run doExp 1000 times
+```
+
+1. a) Calculate the family-wide error rate for an alpha value of 0.05 and 200 tests using the formula from the lecture and the notes.
+
+```{r, eval=F, echo=F}
+1 - (1-0.05)^200
+```
+
+b) Run the simulations in the code above and calculate how many of the simulated p values are below 0.05. How does this compare to your expectation from part a?
+
+```{r, eval=F, echo=F}
+set.seed(31) ##pick a number to set your seed here
+
+doExp <- function(i){
+  myX <- runif(100) #sample 100 random numbers
+  myY <- runif(100) #sample 100 random numbers
+  myModel = lm(myY ~ myX) #fit linear model
+  myP = summary(myModel)$coefficients[2,4] #get p value
+  return(myP)
+}
+
+nTests=200
+
+simulated_pvalues <- sapply(1:nTests, doExp) ## run doExp 1000 times
+
+sum(simulated_pvalues<0.05)
+#there were 4 significant results at alpha=0.05, matching my expectation that I would get at least one significant result
+```
+
+
+c) Calculate the appropriate Bonferroni cut-off for 200 tests. How many of the simulated p values are below this cut off?
+
+```{r, echo=F, eval=F}
+bonf = 0.05/200
+bonf
+
+sum(simulated_pvalues<bonf)
+#none
+```
+
+d) Use the `p.adjust()` function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?
+
+```{r, echo=F, eval=F}
+fdrs <- p.adjust(simulated_pvalues, method="fdr") #calculate FDRs
+
+sum(simulated_pvalues<bonf)
+```
+
+e) Which method do you think worked best for controlling the family-wise error rate? Why?
+
+
+2. Edit the code above so that the response variable Y is a function of the explanatory variable X. Pick any `b_0`, but set `b_1 = 2` and set the standard deviation of the residuals to `3`. If you get stuck, check the starter code from the simulation activity from last week. Then, rerun the simulations 200 times to generate a new set of p values.
+
+```{r, eval=F, echo=F}
+set.seed(31) ##pick a number to set your seed here
+b_0=5
+b_1 = 2
+mysd = 3
+
+doExp2 <- function(i){
+  myX <- runif(100) #sample 100 random numbers
+  myY <- b_0+b_1*myX+rnorm(n=100,mean=0,sd=mysd)
+  myModel = lm(myY ~ myX) #fit linear model
+  myP = summary(myModel)$coefficients[2,4] #get p value
+  return(myP)
+}
+
+nTests=200
+
+simulated_pvalues2 <- sapply(1:nTests, doExp2) ## run doExp2 200 times
+```
+
+a) Make a histogram of the simulated p values and compare to a histogram of the p values from part 1. 
+
+```{r, echo=F,eval=F}
+hist(simulated_pvalues)
+hist(simulated_pvalues2)
+
+```
+
+b) How many of the simulated p values are below 0.05? Is this more or less than part 1?
+
+```{r, echo=F, eval=F}
+
+sum(simulated_pvalues2<0.05) #more
+```
+
+c) How many of the simulated p values are below the Bonferroni cut-off?
+
+```{r, echo=F, eval=F}
+
+sum(simulated_pvalues2<0.05/200) 
+```
+
+
+d) Use the p.adjust() function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?
+
+
+```{r, echo=F, eval=F}
+fdrs <- p.adjust(simulated_pvalues2, method="fdr") #calculate FDRs
+
+sum(fdrs<0.05)
+
+min(fdrs)
+```
+
+
+e) Which method do you think worked best for controlling the family-wise error rate? Why?

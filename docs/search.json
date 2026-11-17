@@ -520,11 +520,31 @@
     ]
   },
   {
+    "objectID": "lm-multiplepredictors.html#review-questions",
+    "href": "lm-multiplepredictors.html#review-questions",
+    "title": "7  Linear models with multiple predictors",
+    "section": "7.9 Review questions",
+    "text": "7.9 Review questions",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
+    ]
+  },
+  {
     "objectID": "multipletesting.html",
     "href": "multipletesting.html",
     "title": "8  Multiple testing issues (and opportunities)",
     "section": "",
     "text": "8.1 What are we doing here?\nOur goals in this lesson are to:",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Multiple testing issues (and opportunities)</span>"
+    ]
+  },
+  {
+    "objectID": "multipletesting.html#what-are-we-doing-here",
+    "href": "multipletesting.html#what-are-we-doing-here",
+    "title": "8  Multiple testing issues (and opportunities)",
+    "section": "",
+    "text": "Define family-wise error rates and link these to the multiple-testing problem\nApply commonly used multiple-testing controls: Bonferroni and FDR\nIdentify benefits and problems with the Bonferroni and FDR methods.",
     "crumbs": [
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Multiple testing issues (and opportunities)</span>"
     ]
@@ -645,6 +665,28 @@
     ]
   },
   {
+    "objectID": "lab4.1-ANOVA.html#anova",
+    "href": "lab4.1-ANOVA.html#anova",
+    "title": "11  Lab 2 – Categorical Linear Models and ANOVA",
+    "section": "11.2 ANOVA",
+    "text": "11.2 ANOVA\nNext, we’ll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation.\nQ3.1: Do an ANOVA using your model from Q1.1 and Anova() from the car package\nQ3.2 Edit the code below to conduct the ANOVA by hand. I’ve included some phrases in []s that you will need to replace with variable names or numbers. Compare the outputs of this code to the Anova() output from the previous question. Do they match?\n\nlibrary(broom)\n## Calculate SS_groups\nSS_groups &lt;- sum((augment([model])$.fitted - mean(simData$resp))^2) ##replace [model] with whatever you called your model from the previous question\n\n## Calculate MS_groups\nMS_groups &lt;- SS_groups/([degrees of freedom])\n\n## Calculate SS_error\nSS_error &lt;- sum((augment([model])$.resid)^2)\n##SS_error &lt;- sum((augment(model1)$resp - augment(model1)$.fitted)^2) THIS ALSO WORKS\n\n## Calculate MS_error\nMS_error &lt;- SS_error/([degrees of freedom])\n\n## Calculate F\nmyF = MS_groups/MS_error\n\n## Do the F test\npf(q=myF, df1 = [degrees of freedom for MS_groups], df2 = [degrees of freedom for MS_error], lower.tail=F)\n\nQ4.1: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results – does color or distance matter most for determining pollinator visits?\nQ4.2 Compare the output from emmeans in the previous question to the output from summary(). Which one gives you better information about differences among groups?",
+    "crumbs": [
+      "Labs",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Lab 2 -- Categorical Linear Models and ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "lab4.1-ANOVA.html#extra-fun",
+    "href": "lab4.1-ANOVA.html#extra-fun",
+    "title": "11  Lab 2 – Categorical Linear Models and ANOVA",
+    "section": "11.3 Extra fun",
+    "text": "11.3 Extra fun\nThe following problems are optional and give you a chance to learn some extra stats skills if you have time.\nQ5: Ripley et al. discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the simulation code above to simulate data for an additional category with a mean of 2 visits per flower.\nQ6: Rerun the linear model, ANOVA (with the Anova() function), and emmeans on this new data. Interpret the outputs.",
+    "crumbs": [
+      "Labs",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Lab 2 -- Categorical Linear Models and ANOVA</span>"
+    ]
+  },
+  {
     "objectID": "lab5.1-regression.html",
     "href": "lab5.1-regression.html",
     "title": "12  Lab 3 – Linear Regression",
@@ -689,55 +731,14 @@
     ]
   },
   {
-    "objectID": "lab4.1-ANOVA.html#anova",
-    "href": "lab4.1-ANOVA.html#anova",
-    "title": "11  Lab 2 – Categorical Linear Models and ANOVA",
-    "section": "11.2 ANOVA",
-    "text": "11.2 ANOVA\nNext, we’ll use this data to do an ANOVA to determine how much flower type in general affects pollinator visitation.\nQ3.1: Do an ANOVA using your model from Q1.1 and Anova() from the car package\nQ3.2 Edit the code below to conduct the ANOVA by hand. I’ve included some phrases in []s that you will need to replace with variable names or numbers. Compare the outputs of this code to the Anova() output from the previous question. Do they match?\n\nlibrary(broom)\n## Calculate SS_groups\nSS_groups &lt;- sum((augment([model])$.fitted - mean(simData$resp))^2) ##replace [model] with whatever you called your model from the previous question\n\n## Calculate MS_groups\nMS_groups &lt;- SS_groups/([degrees of freedom])\n\n## Calculate SS_error\nSS_error &lt;- sum((augment([model])$.resid)^2)\n##SS_error &lt;- sum((augment(model1)$resp - augment(model1)$.fitted)^2) THIS ALSO WORKS\n\n## Calculate MS_error\nMS_error &lt;- SS_error/([degrees of freedom])\n\n## Calculate F\nmyF = MS_groups/MS_error\n\n## Do the F test\npf(q=myF, df1 = [degrees of freedom for MS_groups], df2 = [degrees of freedom for MS_error], lower.tail=F)\n\nQ4.1: Use emmeans to test for pairwise differences between each population. Interpret the ANOVA and emmeans results – does color or distance matter most for determining pollinator visits?\nQ4.2 Compare the output from emmeans in the previous question to the output from summary(). Which one gives you better information about differences among groups?",
-    "crumbs": [
-      "Labs",
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Lab 2 -- Categorical Linear Models and ANOVA</span>"
-    ]
-  },
-  {
-    "objectID": "lab4.1-ANOVA.html#extra-fun",
-    "href": "lab4.1-ANOVA.html#extra-fun",
-    "title": "11  Lab 2 – Categorical Linear Models and ANOVA",
-    "section": "11.3 Extra fun",
-    "text": "11.3 Extra fun\nThe following problems are optional and give you a chance to learn some extra stats skills if you have time.\nQ5: Ripley et al. discover a rare purple-anthered morph. They repeat the experiment including the purple anthered morph. Copy and edit the simulation code above to simulate data for an additional category with a mean of 2 visits per flower.\nQ6: Rerun the linear model, ANOVA (with the Anova() function), and emmeans on this new data. Interpret the outputs.",
-    "crumbs": [
-      "Labs",
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Lab 2 -- Categorical Linear Models and ANOVA</span>"
-    ]
-  },
-  {
-    "objectID": "lm-continousvars.html#show-answer",
-    "href": "lm-continousvars.html#show-answer",
-    "title": "5  Linear models with continuous variables",
-    "section": "5.10 Show answer",
-    "text": "5.10 Show answer\n\\(\\text{Lifespan} =  b_0 + b_1 \\times \\text{Body_Mass} + e_i\\)\n:::\n\nWhat are the key differences between covariance, correlation, and linear regression?\n\n\n\n\n\n\n\nShow answer\n\n\n\n\n\nCorrelation is the covariance standardized by variance in each parameter. It tells us a bit about how reliable the covariance is.\nUnlike covariance and correlation, in linear regression, the value will change if you swap the x and y values since linear regression is standardized only by variance in x.\n\n\n\n\nWhat is the key assumption about the normal distribution made in a linear regression?\n\n\n\n\n\n\n\nShow answer\n\n\n\n\n\nWe are assuming that the residuals are normally distributed\n\n\n\n\nYour friend shows you an analysis of some new data: they have conducted a regression and calculated a 95% confidence interval. They tell you “95% of my data points should fall in this confidence interval.” Do you agree with them? Why or why not?\n\n\n\n\n\n\n\nShow answer\n\n\n\n\n\nI disagree – the confidence interval here is for the slope, not each data point.",
-    "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Linear models with continuous variables</span>"
-    ]
-  },
-  {
-    "objectID": "lm-multiplepredictors.html#review-questions",
-    "href": "lm-multiplepredictors.html#review-questions",
-    "title": "7  Linear models with multiple predictors",
-    "section": "7.9 Review questions",
-    "text": "7.9 Review questions",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Linear models with multiple predictors</span>"
-    ]
-  },
-  {
-    "objectID": "multipletesting.html#what-are-we-doing-here",
-    "href": "multipletesting.html#what-are-we-doing-here",
-    "title": "8  Multiple testing issues (and opportunities)",
+    "objectID": "lab5-multiple-testing-and-gwas.html",
+    "href": "lab5-multiple-testing-and-gwas.html",
+    "title": "14  Lab 5 Multiple Testing and GWAS",
     "section": "",
-    "text": "Define family-wise error rates and link these to the multiple-testing problem\nApply commonly used multiple-testing controls: Bonferroni and FDR\nIdentify benefits and problems with the Bonferroni and FDR methods.",
+    "text": "The code below simulates sampling 100 individuals with unrelated explanatory (X) and response (Y) variables, conducting linear models, and returning p values for 200 tests. You will need to edit it to set a seed.\n\nset.seed() ##pick a number to set your seed here\n\ndoExp &lt;- function(i){\n  myX &lt;- runif(100) #sample 100 random numbers\n  myY &lt;- runif(100) #sample 100 random numbers\n  myModel = lm(myY ~ myX) #fit linear model\n  myP = summary(myModel)$coefficients[2,4] #get p value\n  return(myP)\n}\n\nnTests=200\n\nsimulated_pvalues &lt;- sapply(1:nTests, doExp) ## run doExp 1000 times\n\n\n\nCalculate the family-wide error rate for an alpha value of 0.05 and 200 tests using the formula from the lecture and the notes.\n\n\n\nRun the simulations in the code above and calculate how many of the simulated p values are below 0.05. How does this compare to your expectation from part a?\n\n\nCalculate the appropriate Bonferroni cut-off for 200 tests. How many of the simulated p values are below this cut off?\n\n\nUse the p.adjust() function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?\n\n\nWhich method do you think worked best for controlling the family-wise error rate? Why?\n\n\nEdit the code above so that the response variable Y is a function of the explanatory variable X. Pick any b_0, but set b_1 = 2 and set the standard deviation of the residuals to 3. If you get stuck, check the starter code from the simulation activity from last week. Then, rerun the simulations 200 times to generate a new set of p values.\n\n\nMake a histogram of the simulated p values and compare to a histogram of the p values from part 1.\n\n\nHow many of the simulated p values are below 0.05? Is this more or less than part 1?\n\n\nHow many of the simulated p values are below the Bonferroni cut-off?\n\n\nUse the p.adjust() function to calculate an fdr corresponding each simulated p value. What is the lowest fdr? How many fdr valures are below 0.05?\n\n\nWhich method do you think worked best for controlling the family-wise error rate? Why?",
     "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Multiple testing issues (and opportunities)</span>"
+      "Labs",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>Lab 5 Multiple Testing and GWAS</span>"
     ]
   }
 ]
