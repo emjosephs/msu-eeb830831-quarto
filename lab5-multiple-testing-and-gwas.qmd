@@ -153,7 +153,9 @@ First, here are results for a GWAS with a mixed model. The code below loads in t
 mixedGwas <- read.table('fl-mixed.assoc.txt', header=T)
 ```
 
-**3) Use p.adjust() to calculate an fdr (I suggest using p_lrt as the p value input). How many SNPs fall below an fdr of 0.05? How does this compare to the number of SNPs with a p value of 0.05?**
+**3a) Make a histogram of the pvalues (p_lrt) with 100 or more bins. **
+
+**3b) Use p.adjust() to calculate an fdr (I suggest using p_lrt as the p value input). How many SNPs fall below an fdr of 0.05? How does this compare to the number of SNPs with a p value of 0.05?**
 
 ```{r, eval=F, echo=F}
 fdrs <- p.adjust(mixedGwas$p_lrt, method='fdr')

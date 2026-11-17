@@ -344,7 +344,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mixedGwas <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">'fl-mixed.assoc.txt'</span>, <span class="at">header=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>3) Use p.adjust() to calculate an fdr (I suggest using p_lrt as the p value input). How many SNPs fall below an fdr of 0.05? How does this compare to the number of SNPs with a p value of 0.05?</strong></p>
+<p><strong>3a) Make a histogram of the pvalues (p_lrt) with 100 or more bins. </strong></p>
+<p><strong>3b) Use p.adjust() to calculate an fdr (I suggest using p_lrt as the p value input). How many SNPs fall below an fdr of 0.05? How does this compare to the number of SNPs with a p value of 0.05?</strong></p>
 <p>Now, let’s look at some of the data the underlies this variation.</p>
 <p>We’ll start with a random SNP that didn’t affect the trait in the GWAS, Chr5_19380396. The code below looks at the GWAS results for this SNP. It also loads data for the phenotype and genotype at this SNP for every individual in the experiment.</p>
 <div class="cell">
