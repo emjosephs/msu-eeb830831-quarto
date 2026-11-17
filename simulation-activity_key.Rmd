@@ -64,6 +64,7 @@ df1 <- data.frame(crosstype = c(rep("outbred",93),rep("selfed",83)), daystf = c(
 library(ggplot2)
 
 ggplot(data=df1, aes(x=crosstype, y=daystf))+
+  geom_boxplot(outliers = FALSE)+
   geom_jitter(position = position_jitter(width = 0.1),colour="gray")+
   theme_classic()
 
