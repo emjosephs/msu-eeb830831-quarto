@@ -346,4 +346,5 @@ The dot product of these two matrices gives us the predicted value for the respo
 
 ## Review questions
 
+1. 
 
