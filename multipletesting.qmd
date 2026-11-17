@@ -136,7 +136,7 @@ The idea behind an FDR is that when you conduct a bunch of tests and look at the
 
 The plot below shows this idea, with a mix of the distribution from tests generated under the null hypothesis and an alternative hypothesis. The two vertical lines show potential p value cut-offs corresponding to potential FDRs.
 
-```{r}
+```{r, echo=F}
 #| label: fig-fdr
 #| fig-cap: "A mixture of p value distributions from tests based on the null and alternative hypotheses."
 #| fig-alt: "A stacked histogram ranging from 0 to 1 of a flat distribution (tagged null) and a left-skewed distribution (tagged alternate). Two vertical lines at 0.05 and 0.01."
