@@ -5,7 +5,6 @@ date: "2026-11-17"
 ---
 
 ```{r setup}
-#| label: load-packages
 #| message: false
 #| include: false
 knitr::opts_chunk$set(echo = TRUE)
@@ -166,7 +165,85 @@ sum(mixedGwas$p_lrt < 0.05)
 
 Now, let's look at some of the data the underlies this variation.
 
-We'll start with a random SNP that didn't affect the trait in the GWAS. The code below loads in information about the trait value (days to flower) for each ecotype and information about their genotype at this locus. It then plots these individuals and compares their genotypes. There is also code to run a linear model testing for the effect of genotype on phenotype. 
+We'll start with a random SNP that didn't affect the trait in the GWAS, Chr5_19380396. The code below looks at the GWAS results for this SNP. It also loads data for the phenotype and genotype at this SNP for every individual in the experiment.
+
+```{r, eval=F}
+#here is code to pull out the info from the gwas results:
+dplyr::filter(mixedGwas, rs=="Chr5_19380396.0") #note the extra .0 in the 
+
+snp1_link <- "https://raw.githubusercontent.com/emjosephs/msu-eeb830831-quarto/refs/heads/main/data/Chr5_19380396.txt"
+snp1 <- read.table(snp1_link, header=T)
+
+```
+
+**4a) Make a figure showing genotype on the x axis and phenotype (days to flower) on the Y axis for the dataset.**
+
+```{r, eval=F, echo=F}
+snp1_link <- "https://raw.githubusercontent.com/emjosephs/msu-eeb830831-quarto/refs/heads/main/data/Chr5_19380396.txt"
+snp1 <- read.table(snp1_link, header=T)
+
+ggplot(snp1) + aes(x=as.factor(genotype), y=dtf)+
+  geom_violin()+
+geom_jitter()+
+  theme_classic()
+```
+
+**4b) Run a linear model estimating the effect of genotype on days to flower for this snp. Interpret the results**
+
+```{r, echo=F, eval=F}
+modelsnp1 <- lm(dtf~genotype, data=snp1)
+summary(modelsnp1)
+```
+
+Next, we'll look at a SNP that did affect the trait in the GWAS, Chr5_18590501. 
+
+```{r, eval=F}
+#here is code to pull out the info from the gwas results:
+dplyr::filter(mixedGwas, rs=="Chr5_18590501.0") #note the extra .0 in the 
+
+snp2_link <- "https://raw.githubusercontent.com/emjosephs/msu-eeb830831-quarto/refs/heads/main/data/Chr5_18590501.txt"
+snp2 <- read.table(snp2_link, header=T)
+
+```
+
+
+**5a) For the second SNP, make a figure showing genotype on the x axis and phenotype (days to flower) on the Y axis for the dataset.**
+
+```{r, eval=F, echo=F}
+snp2_link <- "https://raw.githubusercontent.com/emjosephs/msu-eeb830831-quarto/refs/heads/main/data/Chr5_18590501.txt"
+snp2 <- read.table(snp2_link, header=T)
+
+ggplot(snp2) + aes(x=as.factor(genotype), y=dtf)+
+  geom_violin()+
+geom_jitter()+
+  theme_classic()
+```
+
+**5b) Run a linear model estimating the effect of genotype in the second snp on days to flower for this snp. Interpret the results**
+
+```{r, echo=F, eval=F}
+modelsnp2 <- lm(dtf~genotype, data=snp2)
+summary(modelsnp2)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ```{r, eval=F, echo=F}
 library(vcfR) #library to read in vcf
@@ -217,10 +294,6 @@ outData = data.frame(mergedData$genotype, mergedData$DTF1)
 names(outData) = c('genotype', 'dtf')
 write.table(outData,file='~/Documents/msu-eeb830831-quarto/data/Chr5_18590501.txt', row.names=F, quote=F)
 
-
-#here is code to pull out the info from the gwas results:
-dplyr::filter(regGwas, rs=="Chr5_19380396.0") #note the extra .0 in the string that the gwas software has added on for some reason.
-dplyr::filter(mixedGwas, rs=="Chr5_19380396.0")
 
 ```
 
